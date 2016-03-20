@@ -1,0 +1,91 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Settings.Connection"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Settings"
+    xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <utilities:ViewExtender.Resources>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}" Value="User1">
+                    <Setter Property="ContentTemplate" Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </utilities:ViewExtender.Resources>
+    <dxlc:LayoutGroup Margin="0,30,0,0" Header="Adatbázis kapcsolat adatai" View="GroupBox" Orientation="Vertical" Width="400" 
+        VerticalAlignment="Top" HorizontalAlignment="Center">
+        <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
+            <dxlc:LayoutItem Label="Adatbázisszerver elérhetősége:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="hostName" EditValue="{Binding ConnectionM.HostName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                    NullText="Írja be az elérhetőséget" Margin="0,0,1,0" AllowNullInput="True">
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Használni kívánt port száma:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="portNumber" EditValue="{Binding ConnectionM.PortNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                    NullText="Írja be a portszámot" Margin="0,0,1,0" AllowNullInput="True">
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Adatbázis neve:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="databaseName" EditValue="{Binding ConnectionM.DatabaseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                    NullText="Írja be az adatbázis nevét" Margin="0,0,1,0" AllowNullInput="True">
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Felhasználói azonosító:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="userId" EditValue="{Binding ConnectionM.UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" 
+                    NullText="Írja be a felhasználói azonosítót" Margin="0,0,1,0" AllowNullInput="True">
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Jelszó:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="password" EditValue="{Binding ConnectionM.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                    Margin="0,0,1,0" AllowNullInput="True" IsTabStop="False">
+                    <dxe:ButtonEdit.EditTemplate>
+                        <ControlTemplate>
+                            <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Írja be a jelszót" ShowBorder="False" Height="22"/>
+                        </ControlTemplate>
+                    </dxe:ButtonEdit.EditTemplate>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem HorizontalAlignment="Center">
+                <Button x:Name="modify" Content="Adatok módosítása" Margin="0,10,0,5" Height="30" KeyDown="SecurityDatasChangeWithEnter" Click="SecurityDatasChangeExecute"/>
+            </dxlc:LayoutItem>
+        </dxlc:LayoutControl>
+    </dxlc:LayoutGroup>
+</utilities:ViewExtender>

@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="medicalModelStoreContainer" CdmEntityContainer="medicalEntities">
+    <EntitySetMapping Name="accountdatas">
+      <EntityTypeMapping TypeName="medicalModel.accountdata">
+        <MappingFragment StoreEntitySet="accountdata">
+          <ScalarProperty Name="IdAD" ColumnName="IdAD" />
+          <ScalarProperty Name="UserNameAD" ColumnName="UserNameAD" />
+          <ScalarProperty Name="PasswordAD" ColumnName="PasswordAD" />
+          <ScalarProperty Name="PassSaltAD" ColumnName="PassSaltAD" />
+          <ScalarProperty Name="PriviledgesIdAD" ColumnName="PriviledgesIdAD" />
+          <ScalarProperty Name="VerifiedByAdminAD" ColumnName="VerifiedByAdminAD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="companydatas">
+      <EntityTypeMapping TypeName="medicalModel.companydata">
+        <MappingFragment StoreEntitySet="companydata">
+          <ScalarProperty Name="IdCD" ColumnName="IdCD" />
+          <ScalarProperty Name="NameCD" ColumnName="NameCD" />
+          <ScalarProperty Name="ZipCodeCD" ColumnName="ZipCodeCD" />
+          <ScalarProperty Name="SettlementCD" ColumnName="SettlementCD" />
+          <ScalarProperty Name="AddressCD" ColumnName="AddressCD" />
+          <ScalarProperty Name="TAXNumberCD" ColumnName="TAXNumberCD" />
+          <ScalarProperty Name="RegistrationNumberCD" ColumnName="RegistrationNumberCD" />
+          <ScalarProperty Name="InvoiceNumberCD" ColumnName="InvoiceNumberCD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="doctorschedules">
+      <EntityTypeMapping TypeName="medicalModel.doctorschedule">
+        <MappingFragment StoreEntitySet="doctorschedule">
+          <ScalarProperty Name="IdDS" ColumnName="IdDS" />
+          <ScalarProperty Name="UserDataIdDS" ColumnName="UserDataIdDS" />
+          <ScalarProperty Name="DateDS" ColumnName="DateDS" />
+          <ScalarProperty Name="StartTimeDS" ColumnName="StartTimeDS" />
+          <ScalarProperty Name="FinishTimeDS" ColumnName="FinishTimeDS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="examinationdatas">
+      <EntityTypeMapping TypeName="medicalModel.examinationdata">
+        <MappingFragment StoreEntitySet="examinationdata">
+          <ScalarProperty Name="IdED" ColumnName="IdED" />
+          <ScalarProperty Name="PatientIdED" ColumnName="PatientIdED" />
+          <ScalarProperty Name="UserDataIdED" ColumnName="UserDataIdED" />
+          <ScalarProperty Name="ScheduleIdED" ColumnName="ScheduleIdED" />
+          <ScalarProperty Name="DateTimeED" ColumnName="DateTimeED" />
+          <ScalarProperty Name="DataED" ColumnName="DataED" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="gender_fx">
+      <EntityTypeMapping TypeName="medicalModel.gender_fx">
+        <MappingFragment StoreEntitySet="gender_fx">
+          <ScalarProperty Name="IdG" ColumnName="IdG" />
+          <ScalarProperty Name="DataG" ColumnName="DataG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="labresultsdatas">
+      <EntityTypeMapping TypeName="medicalModel.labresultsdata">
+        <MappingFragment StoreEntitySet="labresultsdata">
+          <ScalarProperty Name="IdLRD" ColumnName="IdLRD" />
+          <ScalarProperty Name="IdSD" ColumnName="IdSD" />
+          <ScalarProperty Name="TitleLRD" ColumnName="TitleLRD" />
+          <ScalarProperty Name="DateTimeLRD" ColumnName="DateTimeLRD" />
+          <ScalarProperty Name="DataLRD" ColumnName="DataLRD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="patientdatas">
+      <EntityTypeMapping TypeName="medicalModel.patientdata">
+        <MappingFragment StoreEntitySet="patientdata">
+          <ScalarProperty Name="IdPD" ColumnName="IdPD" />
+          <ScalarProperty Name="NamePD" ColumnName="NamePD" />
+          <ScalarProperty Name="BirthNamePD" ColumnName="BirthNamePD" />
+          <ScalarProperty Name="TAJNumberPD" ColumnName="TAJNumberPD" />
+          <ScalarProperty Name="GenderPD" ColumnName="GenderPD" />
+          <ScalarProperty Name="BirthDatePD" ColumnName="BirthDatePD" />
+          <ScalarProperty Name="BirthPlacePD" ColumnName="BirthPlacePD" />
+          <ScalarProperty Name="ZipCodePD" ColumnName="ZipCodePD" />
+          <ScalarProperty Name="SettlementPD" ColumnName="SettlementPD" />
+          <ScalarProperty Name="AddressPD" ColumnName="AddressPD" />
+          <ScalarProperty Name="MotherNamePD" ColumnName="MotherNamePD" />
+          <ScalarProperty Name="EmailPD" ColumnName="EmailPD" />
+          <ScalarProperty Name="PhonePD" ColumnName="PhonePD" />
+          <ScalarProperty Name="BillingNamePD" ColumnName="BillingNamePD" />
+          <ScalarProperty Name="BillingZipCodePD" ColumnName="BillingZipCodePD" />
+          <ScalarProperty Name="BillingSettlementPD" ColumnName="BillingSettlementPD" />
+          <ScalarProperty Name="BillingAddressPD" ColumnName="BillingAddressPD" />
+          <ScalarProperty Name="TAXNumberPD" ColumnName="TAXNumberPD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="priviledges_fx">
+      <EntityTypeMapping TypeName="medicalModel.priviledges_fx">
+        <MappingFragment StoreEntitySet="priviledges_fx">
+          <ScalarProperty Name="IdP" ColumnName="IdP" />
+          <ScalarProperty Name="NameP" ColumnName="NameP" />
+          <ScalarProperty Name="SheduleP" ColumnName="SheduleP" />
+          <ScalarProperty Name="PatientP" ColumnName="PatientP" />
+          <ScalarProperty Name="EvidenceP" ColumnName="EvidenceP" />
+          <ScalarProperty Name="ExaminationP" ColumnName="ExaminationP" />
+          <ScalarProperty Name="LabP" ColumnName="LabP" />
+          <ScalarProperty Name="PrescriptionP" ColumnName="PrescriptionP" />
+          <ScalarProperty Name="BillingP" ColumnName="BillingP" />
+          <ScalarProperty Name="StatisticP" ColumnName="StatisticP" />
+          <ScalarProperty Name="UsersP" ColumnName="UsersP" />
+          <ScalarProperty Name="SettingP" ColumnName="SettingP" />
+          <ScalarProperty Name="HelpP" ColumnName="HelpP" />
+          <ScalarProperty Name="LogoutP" ColumnName="LogoutP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="scheduledatas">
+      <EntityTypeMapping TypeName="medicalModel.scheduledata">
+        <MappingFragment StoreEntitySet="scheduledata">
+          <ScalarProperty Name="IdSD" ColumnName="IdSD" />
+          <ScalarProperty Name="PatientIdSD" ColumnName="PatientIdSD" />
+          <ScalarProperty Name="DoctorIdSD" ColumnName="DoctorIdSD" />
+          <ScalarProperty Name="StartSD" ColumnName="StartSD" />
+          <ScalarProperty Name="Finish" ColumnName="Finish" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="settlement_fx">
+      <EntityTypeMapping TypeName="medicalModel.settlement_fx">
+        <MappingFragment StoreEntitySet="settlement_fx">
+          <ScalarProperty Name="IdS" ColumnName="IdS" />
+          <ScalarProperty Name="DataS" ColumnName="DataS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="status_fx">
+      <EntityTypeMapping TypeName="medicalModel.status_fx">
+        <MappingFragment StoreEntitySet="status_fx">
+          <ScalarProperty Name="IdS" ColumnName="IdS" />
+          <ScalarProperty Name="DataS" ColumnName="DataS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="treatmentdatas">
+      <EntityTypeMapping TypeName="medicalModel.treatmentdata">
+        <MappingFragment StoreEntitySet="treatmentdata">
+          <ScalarProperty Name="IdTD" ColumnName="IdTD" />
+          <ScalarProperty Name="NameTD" ColumnName="NameTD" />
+          <ScalarProperty Name="PriceTD" ColumnName="PriceTD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="userdatas">
+      <EntityTypeMapping TypeName="medicalModel.userdata">
+        <MappingFragment StoreEntitySet="userdata">
+          <ScalarProperty Name="IdUD" ColumnName="IdUD" />
+          <ScalarProperty Name="AccountDataIdUD" ColumnName="AccountDataIdUD" />
+          <ScalarProperty Name="NameUD" ColumnName="NameUD" />
+          <ScalarProperty Name="BirthNameUD" ColumnName="BirthNameUD" />
+          <ScalarProperty Name="JobTitleUD" ColumnName="JobTitleUD" />
+          <ScalarProperty Name="SealNumberUD" ColumnName="SealNumberUD" />
+          <ScalarProperty Name="TAJNumberUD" ColumnName="TAJNumberUD" />
+          <ScalarProperty Name="TAXNumberUD" ColumnName="TAXNumberUD" />
+          <ScalarProperty Name="GenderUD" ColumnName="GenderUD" />
+          <ScalarProperty Name="MotherNameUD" ColumnName="MotherNameUD" />
+          <ScalarProperty Name="BirthDateUD" ColumnName="BirthDateUD" />
+          <ScalarProperty Name="BirthPlaceUD" ColumnName="BirthPlaceUD" />
+          <ScalarProperty Name="ZipCodeUD" ColumnName="ZipCodeUD" />
+          <ScalarProperty Name="SettlementUD" ColumnName="SettlementUD" />
+          <ScalarProperty Name="AddressUD" ColumnName="AddressUD" />
+          <ScalarProperty Name="PhoneUD" ColumnName="PhoneUD" />
+          <ScalarProperty Name="JobPhoneUD" ColumnName="JobPhoneUD" />
+          <ScalarProperty Name="EmailUD" ColumnName="EmailUD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zipcode_fx">
+      <EntityTypeMapping TypeName="medicalModel.zipcode_fx">
+        <MappingFragment StoreEntitySet="zipcode_fx">
+          <ScalarProperty Name="IdZC" ColumnName="IdZC" />
+          <ScalarProperty Name="DataZC" ColumnName="DataZC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="belong_st" TypeName="medicalModel.belong_st" StoreEntitySet="belong_st">
+      <EndProperty Name="userdata">
+        <ScalarProperty Name="IdUD" ColumnName="IdDD" />
+      </EndProperty>
+      <EndProperty Name="patientdata">
+        <ScalarProperty Name="IdPD" ColumnName="IdPD" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="labresultseachexamination_st" TypeName="medicalModel.labresultseachexamination_st" StoreEntitySet="labresultseachexamination_st">
+      <EndProperty Name="examinationdata">
+        <ScalarProperty Name="IdED" ColumnName="IdED" />
+      </EndProperty>
+      <EndProperty Name="labresultsdata">
+        <ScalarProperty Name="IdLRD" ColumnName="IdLRD" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="settlementzipcode_st" TypeName="medicalModel.settlementzipcode_st" StoreEntitySet="settlementzipcode_st">
+      <EndProperty Name="settlement_fx">
+        <ScalarProperty Name="IdS" ColumnName="IdS" />
+      </EndProperty>
+      <EndProperty Name="zipcode_fx">
+        <ScalarProperty Name="IdZC" ColumnName="IdZC" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="treatseachexam_st" TypeName="medicalModel.treatseachexam_st" StoreEntitySet="treatseachexam_st">
+      <EndProperty Name="examinationdata">
+        <ScalarProperty Name="IdED" ColumnName="IdED" />
+      </EndProperty>
+      <EndProperty Name="treatmentdata">
+        <ScalarProperty Name="IdTD" ColumnName="IdTD" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

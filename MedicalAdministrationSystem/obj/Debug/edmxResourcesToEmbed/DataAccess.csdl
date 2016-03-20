@@ -1,0 +1,622 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="medicalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="accountdata">
+    <Key>
+      <PropertyRef Name="IdAD" />
+    </Key>
+    <Property Name="IdAD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserNameAD" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PasswordAD" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PassSaltAD" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PriviledgesIdAD" Type="Int32" Nullable="false" />
+    <Property Name="VerifiedByAdminAD" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="userdatas" Relationship="Self.fk_UserData_AccountData1" FromRole="accountdata" ToRole="userdata" />
+    <NavigationProperty Name="priviledges_fx" Relationship="Self.fk_UserData_PriviledgeST1" FromRole="accountdata" ToRole="priviledges_fx" />
+  </EntityType>
+  <EntityType Name="companydata">
+    <Key>
+      <PropertyRef Name="IdCD" />
+    </Key>
+    <Property Name="IdCD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NameCD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ZipCodeCD" Type="Int32" Nullable="false" />
+    <Property Name="SettlementCD" Type="Int32" Nullable="false" />
+    <Property Name="AddressCD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TAXNumberCD" Type="Decimal" Nullable="false" />
+    <Property Name="RegistrationNumberCD" Type="Decimal" />
+    <Property Name="InvoiceNumberCD" Type="Decimal" />
+    <NavigationProperty Name="settlement_fx" Relationship="Self.fk_CompanyData_SettlementFX1" FromRole="companydata" ToRole="settlement_fx" />
+    <NavigationProperty Name="zipcode_fx" Relationship="Self.fk_CompanyData_ZipCodeFX1" FromRole="companydata" ToRole="zipcode_fx" />
+  </EntityType>
+  <EntityType Name="doctorschedule">
+    <Key>
+      <PropertyRef Name="IdDS" />
+    </Key>
+    <Property Name="IdDS" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserDataIdDS" Type="Int32" Nullable="false" />
+    <Property Name="DateDS" Type="DateTime" Nullable="false" />
+    <Property Name="StartTimeDS" Type="Time" Nullable="false" />
+    <Property Name="FinishTimeDS" Type="Time" Nullable="false" />
+    <NavigationProperty Name="userdata" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="doctorschedule" ToRole="userdata" />
+  </EntityType>
+  <EntityType Name="examinationdata">
+    <Key>
+      <PropertyRef Name="IdED" />
+    </Key>
+    <Property Name="IdED" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PatientIdED" Type="Int32" Nullable="false" />
+    <Property Name="UserDataIdED" Type="Int32" Nullable="false" />
+    <Property Name="ScheduleIdED" Type="Int32" />
+    <Property Name="DateTimeED" Type="DateTime" Nullable="false" />
+    <Property Name="DataED" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="userdata" Relationship="Self.fk_ExaminationData_DoctorData1" FromRole="examinationdata" ToRole="userdata" />
+    <NavigationProperty Name="patientdata" Relationship="Self.fk_ExaminationData_PatientData1" FromRole="examinationdata" ToRole="patientdata" />
+    <NavigationProperty Name="scheduledata" Relationship="Self.fk_ExaminationData_ScheduleData1" FromRole="examinationdata" ToRole="scheduledata" />
+    <NavigationProperty Name="labresultsdatas" Relationship="Self.labresultseachexamination_st" FromRole="examinationdata" ToRole="labresultsdata" />
+    <NavigationProperty Name="treatmentdatas" Relationship="Self.treatseachexam_st" FromRole="examinationdata" ToRole="treatmentdata" />
+  </EntityType>
+  <EntityType Name="gender_fx">
+    <Key>
+      <PropertyRef Name="IdG" />
+    </Key>
+    <Property Name="IdG" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="patientdatas" Relationship="Self.fk_PatientData_Gender" FromRole="gender_fx" ToRole="patientdata" />
+    <NavigationProperty Name="userdatas" Relationship="Self.fk_UserData_Gender1" FromRole="gender_fx" ToRole="userdata" />
+  </EntityType>
+  <EntityType Name="labresultsdata">
+    <Key>
+      <PropertyRef Name="IdLRD" />
+    </Key>
+    <Property Name="IdLRD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdSD" Type="Int32" Nullable="false" />
+    <Property Name="TitleLRD" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DateTimeLRD" Type="DateTime" Nullable="false" />
+    <Property Name="DataLRD" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="patientdata" Relationship="Self.fk_LabResultsData_PatientData1" FromRole="labresultsdata" ToRole="patientdata" />
+    <NavigationProperty Name="examinationdatas" Relationship="Self.labresultseachexamination_st" FromRole="labresultsdata" ToRole="examinationdata" />
+  </EntityType>
+  <EntityType Name="patientdata">
+    <Key>
+      <PropertyRef Name="IdPD" />
+    </Key>
+    <Property Name="IdPD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NamePD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BirthNamePD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="TAJNumberPD" Type="Decimal" Nullable="false" />
+    <Property Name="GenderPD" Type="Int32" Nullable="false" />
+    <Property Name="BirthDatePD" Type="DateTime" Nullable="false" />
+    <Property Name="BirthPlacePD" Type="Int32" Nullable="false" />
+    <Property Name="ZipCodePD" Type="Int32" Nullable="false" />
+    <Property Name="SettlementPD" Type="Int32" Nullable="false" />
+    <Property Name="AddressPD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MotherNamePD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailPD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="PhonePD" Type="Decimal" />
+    <Property Name="BillingNamePD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="BillingZipCodePD" Type="Int32" />
+    <Property Name="BillingSettlementPD" Type="Int32" />
+    <Property Name="BillingAddressPD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="TAXNumberPD" Type="Decimal" />
+    <NavigationProperty Name="examinationdatas" Relationship="Self.fk_ExaminationData_PatientData1" FromRole="patientdata" ToRole="examinationdata" />
+    <NavigationProperty Name="gender_fx" Relationship="Self.fk_PatientData_Gender" FromRole="patientdata" ToRole="gender_fx" />
+    <NavigationProperty Name="labresultsdatas" Relationship="Self.fk_LabResultsData_PatientData1" FromRole="patientdata" ToRole="labresultsdata" />
+    <NavigationProperty Name="settlement_fx" Relationship="Self.fk_PatientData_Settlement1" FromRole="patientdata" ToRole="settlement_fx" />
+    <NavigationProperty Name="settlement_fx1" Relationship="Self.fk_PatientData_Settlement2" FromRole="patientdata" ToRole="settlement_fx" />
+    <NavigationProperty Name="settlement_fx2" Relationship="Self.fk_PatientData_Settlement3" FromRole="patientdata" ToRole="settlement_fx" />
+    <NavigationProperty Name="zipcode_fx" Relationship="Self.fk_PatientData_ZipCode1" FromRole="patientdata" ToRole="zipcode_fx" />
+    <NavigationProperty Name="zipcode_fx1" Relationship="Self.fk_PatientData_ZipCode2" FromRole="patientdata" ToRole="zipcode_fx" />
+    <NavigationProperty Name="scheduledatas" Relationship="Self.fk_ScheduleData_PatientData1" FromRole="patientdata" ToRole="scheduledata" />
+    <NavigationProperty Name="userdatas" Relationship="Self.belong_st" FromRole="patientdata" ToRole="userdata" />
+  </EntityType>
+  <EntityType Name="priviledges_fx">
+    <Key>
+      <PropertyRef Name="IdP" />
+    </Key>
+    <Property Name="IdP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NameP" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SheduleP" Type="Boolean" Nullable="false" />
+    <Property Name="PatientP" Type="Boolean" Nullable="false" />
+    <Property Name="EvidenceP" Type="Boolean" />
+    <Property Name="ExaminationP" Type="Boolean" Nullable="false" />
+    <Property Name="LabP" Type="Boolean" />
+    <Property Name="PrescriptionP" Type="Boolean" Nullable="false" />
+    <Property Name="BillingP" Type="Boolean" Nullable="false" />
+    <Property Name="StatisticP" Type="Boolean" Nullable="false" />
+    <Property Name="UsersP" Type="Boolean" Nullable="false" />
+    <Property Name="SettingP" Type="Boolean" Nullable="false" />
+    <Property Name="HelpP" Type="Boolean" Nullable="false" />
+    <Property Name="LogoutP" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="accountdatas" Relationship="Self.fk_UserData_PriviledgeST1" FromRole="priviledges_fx" ToRole="accountdata" />
+  </EntityType>
+  <EntityType Name="scheduledata">
+    <Key>
+      <PropertyRef Name="IdSD" />
+    </Key>
+    <Property Name="IdSD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PatientIdSD" Type="Int32" Nullable="false" />
+    <Property Name="DoctorIdSD" Type="Int32" Nullable="false" />
+    <Property Name="StartSD" Type="DateTime" Nullable="false" />
+    <Property Name="Finish" Type="DateTime" Nullable="false" />
+    <Property Name="Status" Type="Int32" />
+    <NavigationProperty Name="examinationdatas" Relationship="Self.fk_ExaminationData_ScheduleData1" FromRole="scheduledata" ToRole="examinationdata" />
+    <NavigationProperty Name="patientdata" Relationship="Self.fk_ScheduleData_PatientData1" FromRole="scheduledata" ToRole="patientdata" />
+    <NavigationProperty Name="userdata" Relationship="Self.fk_ScheduleData_DoctorData1" FromRole="scheduledata" ToRole="userdata" />
+    <NavigationProperty Name="status_fx" Relationship="Self.fk_ScheduleData_StatusFX1" FromRole="scheduledata" ToRole="status_fx" />
+  </EntityType>
+  <EntityType Name="settlement_fx">
+    <Key>
+      <PropertyRef Name="IdS" />
+    </Key>
+    <Property Name="IdS" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataS" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="companydatas" Relationship="Self.fk_CompanyData_SettlementFX1" FromRole="settlement_fx" ToRole="companydata" />
+    <NavigationProperty Name="patientdatas" Relationship="Self.fk_PatientData_Settlement1" FromRole="settlement_fx" ToRole="patientdata" />
+    <NavigationProperty Name="patientdatas1" Relationship="Self.fk_PatientData_Settlement2" FromRole="settlement_fx" ToRole="patientdata" />
+    <NavigationProperty Name="patientdatas2" Relationship="Self.fk_PatientData_Settlement3" FromRole="settlement_fx" ToRole="patientdata" />
+    <NavigationProperty Name="userdatas" Relationship="Self.fk_UserData_Settlement1" FromRole="settlement_fx" ToRole="userdata" />
+    <NavigationProperty Name="userdatas1" Relationship="Self.fk_UserData_Settlement2" FromRole="settlement_fx" ToRole="userdata" />
+    <NavigationProperty Name="zipcode_fx" Relationship="Self.settlementzipcode_st" FromRole="settlement_fx" ToRole="zipcode_fx" />
+  </EntityType>
+  <EntityType Name="status_fx">
+    <Key>
+      <PropertyRef Name="IdS" />
+    </Key>
+    <Property Name="IdS" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="scheduledatas" Relationship="Self.fk_ScheduleData_StatusFX1" FromRole="status_fx" ToRole="scheduledata" />
+  </EntityType>
+  <EntityType Name="treatmentdata">
+    <Key>
+      <PropertyRef Name="IdTD" />
+    </Key>
+    <Property Name="IdTD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NameTD" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PriceTD" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="examinationdatas" Relationship="Self.treatseachexam_st" FromRole="treatmentdata" ToRole="examinationdata" />
+  </EntityType>
+  <EntityType Name="userdata">
+    <Key>
+      <PropertyRef Name="IdUD" />
+    </Key>
+    <Property Name="IdUD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountDataIdUD" Type="Int32" Nullable="false" />
+    <Property Name="NameUD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BirthNameUD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="JobTitleUD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SealNumberUD" Type="Decimal" Nullable="false" />
+    <Property Name="TAJNumberUD" Type="Decimal" Nullable="false" />
+    <Property Name="TAXNumberUD" Type="Decimal" />
+    <Property Name="GenderUD" Type="Int32" Nullable="false" />
+    <Property Name="MotherNameUD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="BirthDateUD" Type="DateTime" Nullable="false" />
+    <Property Name="BirthPlaceUD" Type="Int32" Nullable="false" />
+    <Property Name="ZipCodeUD" Type="Int32" />
+    <Property Name="SettlementUD" Type="Int32" />
+    <Property Name="AddressUD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneUD" Type="Decimal" />
+    <Property Name="JobPhoneUD" Type="Decimal" />
+    <Property Name="EmailUD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="accountdata" Relationship="Self.fk_UserData_AccountData1" FromRole="userdata" ToRole="accountdata" />
+    <NavigationProperty Name="doctorschedules" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="userdata" ToRole="doctorschedule" />
+    <NavigationProperty Name="examinationdatas" Relationship="Self.fk_ExaminationData_DoctorData1" FromRole="userdata" ToRole="examinationdata" />
+    <NavigationProperty Name="gender_fx" Relationship="Self.fk_UserData_Gender1" FromRole="userdata" ToRole="gender_fx" />
+    <NavigationProperty Name="scheduledatas" Relationship="Self.fk_ScheduleData_DoctorData1" FromRole="userdata" ToRole="scheduledata" />
+    <NavigationProperty Name="settlement_fx" Relationship="Self.fk_UserData_Settlement1" FromRole="userdata" ToRole="settlement_fx" />
+    <NavigationProperty Name="settlement_fx1" Relationship="Self.fk_UserData_Settlement2" FromRole="userdata" ToRole="settlement_fx" />
+    <NavigationProperty Name="zipcode_fx" Relationship="Self.fk_UserData_ZipCode1" FromRole="userdata" ToRole="zipcode_fx" />
+    <NavigationProperty Name="patientdatas" Relationship="Self.belong_st" FromRole="userdata" ToRole="patientdata" />
+  </EntityType>
+  <EntityType Name="zipcode_fx">
+    <Key>
+      <PropertyRef Name="IdZC" />
+    </Key>
+    <Property Name="IdZC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataZC" Type="Decimal" Nullable="false" />
+    <NavigationProperty Name="companydatas" Relationship="Self.fk_CompanyData_ZipCodeFX1" FromRole="zipcode_fx" ToRole="companydata" />
+    <NavigationProperty Name="patientdatas" Relationship="Self.fk_PatientData_ZipCode1" FromRole="zipcode_fx" ToRole="patientdata" />
+    <NavigationProperty Name="patientdatas1" Relationship="Self.fk_PatientData_ZipCode2" FromRole="zipcode_fx" ToRole="patientdata" />
+    <NavigationProperty Name="userdatas" Relationship="Self.fk_UserData_ZipCode1" FromRole="zipcode_fx" ToRole="userdata" />
+    <NavigationProperty Name="settlement_fx" Relationship="Self.settlementzipcode_st" FromRole="zipcode_fx" ToRole="settlement_fx" />
+  </EntityType>
+  <Association Name="fk_UserData_AccountData1">
+    <End Role="accountdata" Type="Self.accountdata" Multiplicity="1" />
+    <End Role="userdata" Type="Self.userdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="accountdata">
+        <PropertyRef Name="IdAD" />
+      </Principal>
+      <Dependent Role="userdata">
+        <PropertyRef Name="AccountDataIdUD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserData_PriviledgeST1">
+    <End Role="priviledges_fx" Type="Self.priviledges_fx" Multiplicity="1" />
+    <End Role="accountdata" Type="Self.accountdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="priviledges_fx">
+        <PropertyRef Name="IdP" />
+      </Principal>
+      <Dependent Role="accountdata">
+        <PropertyRef Name="PriviledgesIdAD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_CompanyData_SettlementFX1">
+    <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="1" />
+    <End Role="companydata" Type="Self.companydata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="settlement_fx">
+        <PropertyRef Name="IdS" />
+      </Principal>
+      <Dependent Role="companydata">
+        <PropertyRef Name="SettlementCD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_CompanyData_ZipCodeFX1">
+    <End Role="zipcode_fx" Type="Self.zipcode_fx" Multiplicity="1" />
+    <End Role="companydata" Type="Self.companydata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zipcode_fx">
+        <PropertyRef Name="IdZC" />
+      </Principal>
+      <Dependent Role="companydata">
+        <PropertyRef Name="ZipCodeCD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_DoctorSchedule_DoctorData1">
+    <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+    <End Role="doctorschedule" Type="Self.doctorschedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="userdata">
+        <PropertyRef Name="IdUD" />
+      </Principal>
+      <Dependent Role="doctorschedule">
+        <PropertyRef Name="UserDataIdDS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ExaminationData_DoctorData1">
+    <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="userdata">
+        <PropertyRef Name="IdUD" />
+      </Principal>
+      <Dependent Role="examinationdata">
+        <PropertyRef Name="UserDataIdED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ExaminationData_PatientData1">
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="patientdata">
+        <PropertyRef Name="IdPD" />
+      </Principal>
+      <Dependent Role="examinationdata">
+        <PropertyRef Name="PatientIdED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ExaminationData_ScheduleData1">
+    <End Role="scheduledata" Type="Self.scheduledata" Multiplicity="0..1" />
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="scheduledata">
+        <PropertyRef Name="IdSD" />
+      </Principal>
+      <Dependent Role="examinationdata">
+        <PropertyRef Name="ScheduleIdED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_PatientData_Gender">
+    <End Role="gender_fx" Type="Self.gender_fx" Multiplicity="1" />
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="gender_fx">
+        <PropertyRef Name="IdG" />
+      </Principal>
+      <Dependent Role="patientdata">
+        <PropertyRef Name="GenderPD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserData_Gender1">
+    <End Role="gender_fx" Type="Self.gender_fx" Multiplicity="1" />
+    <End Role="userdata" Type="Self.userdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="gender_fx">
+        <PropertyRef Name="IdG" />
+      </Principal>
+      <Dependent Role="userdata">
+        <PropertyRef Name="GenderUD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_LabResultsData_PatientData1">
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
+    <End Role="labresultsdata" Type="Self.labresultsdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="patientdata">
+        <PropertyRef Name="IdPD" />
+      </Principal>
+      <Dependent Role="labresultsdata">
+        <PropertyRef Name="IdSD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_PatientData_Settlement1">
+    <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="1" />
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="settlement_fx">
+        <PropertyRef Name="IdS" />
+      </Principal>
+      <Dependent Role="patientdata">
+        <PropertyRef Name="SettlementPD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_PatientData_Settlement2">
+    <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="1" />
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="settlement_fx">
+        <PropertyRef Name="IdS" />
+      </Principal>
+      <Dependent Role="patientdata">
+        <PropertyRef Name="BirthPlacePD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_PatientData_Settlement3">
+    <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="0..1" />
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="settlement_fx">
+        <PropertyRef Name="IdS" />
+      </Principal>
+      <Dependent Role="patientdata">
+        <PropertyRef Name="BillingSettlementPD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_PatientData_ZipCode1">
+    <End Role="zipcode_fx" Type="Self.zipcode_fx" Multiplicity="1" />
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zipcode_fx">
+        <PropertyRef Name="IdZC" />
+      </Principal>
+      <Dependent Role="patientdata">
+        <PropertyRef Name="ZipCodePD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_PatientData_ZipCode2">
+    <End Role="zipcode_fx" Type="Self.zipcode_fx" Multiplicity="0..1" />
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zipcode_fx">
+        <PropertyRef Name="IdZC" />
+      </Principal>
+      <Dependent Role="patientdata">
+        <PropertyRef Name="BillingZipCodePD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ScheduleData_PatientData1">
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
+    <End Role="scheduledata" Type="Self.scheduledata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="patientdata">
+        <PropertyRef Name="IdPD" />
+      </Principal>
+      <Dependent Role="scheduledata">
+        <PropertyRef Name="PatientIdSD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ScheduleData_DoctorData1">
+    <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+    <End Role="scheduledata" Type="Self.scheduledata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="userdata">
+        <PropertyRef Name="IdUD" />
+      </Principal>
+      <Dependent Role="scheduledata">
+        <PropertyRef Name="DoctorIdSD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ScheduleData_StatusFX1">
+    <End Role="status_fx" Type="Self.status_fx" Multiplicity="0..1" />
+    <End Role="scheduledata" Type="Self.scheduledata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="status_fx">
+        <PropertyRef Name="IdS" />
+      </Principal>
+      <Dependent Role="scheduledata">
+        <PropertyRef Name="Status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserData_Settlement1">
+    <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="1" />
+    <End Role="userdata" Type="Self.userdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="settlement_fx">
+        <PropertyRef Name="IdS" />
+      </Principal>
+      <Dependent Role="userdata">
+        <PropertyRef Name="BirthPlaceUD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserData_Settlement2">
+    <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="0..1" />
+    <End Role="userdata" Type="Self.userdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="settlement_fx">
+        <PropertyRef Name="IdS" />
+      </Principal>
+      <Dependent Role="userdata">
+        <PropertyRef Name="SettlementUD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserData_ZipCode1">
+    <End Role="zipcode_fx" Type="Self.zipcode_fx" Multiplicity="0..1" />
+    <End Role="userdata" Type="Self.userdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zipcode_fx">
+        <PropertyRef Name="IdZC" />
+      </Principal>
+      <Dependent Role="userdata">
+        <PropertyRef Name="ZipCodeUD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="belong_st">
+    <End Role="userdata" Type="Self.userdata" Multiplicity="*" />
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="*" />
+  </Association>
+  <Association Name="labresultseachexamination_st">
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+    <End Role="labresultsdata" Type="Self.labresultsdata" Multiplicity="*" />
+  </Association>
+  <Association Name="settlementzipcode_st">
+    <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="*" />
+    <End Role="zipcode_fx" Type="Self.zipcode_fx" Multiplicity="*" />
+  </Association>
+  <Association Name="treatseachexam_st">
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+    <End Role="treatmentdata" Type="Self.treatmentdata" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="medicalEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="accountdatas" EntityType="Self.accountdata" />
+    <EntitySet Name="companydatas" EntityType="Self.companydata" />
+    <EntitySet Name="doctorschedules" EntityType="Self.doctorschedule" />
+    <EntitySet Name="examinationdatas" EntityType="Self.examinationdata" />
+    <EntitySet Name="gender_fx" EntityType="Self.gender_fx" />
+    <EntitySet Name="labresultsdatas" EntityType="Self.labresultsdata" />
+    <EntitySet Name="patientdatas" EntityType="Self.patientdata" />
+    <EntitySet Name="priviledges_fx" EntityType="Self.priviledges_fx" />
+    <EntitySet Name="scheduledatas" EntityType="Self.scheduledata" />
+    <EntitySet Name="settlement_fx" EntityType="Self.settlement_fx" />
+    <EntitySet Name="status_fx" EntityType="Self.status_fx" />
+    <EntitySet Name="treatmentdatas" EntityType="Self.treatmentdata" />
+    <EntitySet Name="userdatas" EntityType="Self.userdata" />
+    <EntitySet Name="zipcode_fx" EntityType="Self.zipcode_fx" />
+    <AssociationSet Name="fk_UserData_AccountData1" Association="Self.fk_UserData_AccountData1">
+      <End Role="accountdata" EntitySet="accountdatas" />
+      <End Role="userdata" EntitySet="userdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserData_PriviledgeST1" Association="Self.fk_UserData_PriviledgeST1">
+      <End Role="priviledges_fx" EntitySet="priviledges_fx" />
+      <End Role="accountdata" EntitySet="accountdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_CompanyData_SettlementFX1" Association="Self.fk_CompanyData_SettlementFX1">
+      <End Role="settlement_fx" EntitySet="settlement_fx" />
+      <End Role="companydata" EntitySet="companydatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_CompanyData_ZipCodeFX1" Association="Self.fk_CompanyData_ZipCodeFX1">
+      <End Role="zipcode_fx" EntitySet="zipcode_fx" />
+      <End Role="companydata" EntitySet="companydatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_DoctorSchedule_DoctorData1" Association="Self.fk_DoctorSchedule_DoctorData1">
+      <End Role="userdata" EntitySet="userdatas" />
+      <End Role="doctorschedule" EntitySet="doctorschedules" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ExaminationData_DoctorData1" Association="Self.fk_ExaminationData_DoctorData1">
+      <End Role="userdata" EntitySet="userdatas" />
+      <End Role="examinationdata" EntitySet="examinationdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ExaminationData_PatientData1" Association="Self.fk_ExaminationData_PatientData1">
+      <End Role="patientdata" EntitySet="patientdatas" />
+      <End Role="examinationdata" EntitySet="examinationdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ExaminationData_ScheduleData1" Association="Self.fk_ExaminationData_ScheduleData1">
+      <End Role="scheduledata" EntitySet="scheduledatas" />
+      <End Role="examinationdata" EntitySet="examinationdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_PatientData_Gender" Association="Self.fk_PatientData_Gender">
+      <End Role="gender_fx" EntitySet="gender_fx" />
+      <End Role="patientdata" EntitySet="patientdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserData_Gender1" Association="Self.fk_UserData_Gender1">
+      <End Role="gender_fx" EntitySet="gender_fx" />
+      <End Role="userdata" EntitySet="userdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_LabResultsData_PatientData1" Association="Self.fk_LabResultsData_PatientData1">
+      <End Role="patientdata" EntitySet="patientdatas" />
+      <End Role="labresultsdata" EntitySet="labresultsdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_PatientData_Settlement1" Association="Self.fk_PatientData_Settlement1">
+      <End Role="settlement_fx" EntitySet="settlement_fx" />
+      <End Role="patientdata" EntitySet="patientdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_PatientData_Settlement2" Association="Self.fk_PatientData_Settlement2">
+      <End Role="settlement_fx" EntitySet="settlement_fx" />
+      <End Role="patientdata" EntitySet="patientdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_PatientData_Settlement3" Association="Self.fk_PatientData_Settlement3">
+      <End Role="settlement_fx" EntitySet="settlement_fx" />
+      <End Role="patientdata" EntitySet="patientdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_PatientData_ZipCode1" Association="Self.fk_PatientData_ZipCode1">
+      <End Role="zipcode_fx" EntitySet="zipcode_fx" />
+      <End Role="patientdata" EntitySet="patientdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_PatientData_ZipCode2" Association="Self.fk_PatientData_ZipCode2">
+      <End Role="zipcode_fx" EntitySet="zipcode_fx" />
+      <End Role="patientdata" EntitySet="patientdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ScheduleData_PatientData1" Association="Self.fk_ScheduleData_PatientData1">
+      <End Role="patientdata" EntitySet="patientdatas" />
+      <End Role="scheduledata" EntitySet="scheduledatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ScheduleData_DoctorData1" Association="Self.fk_ScheduleData_DoctorData1">
+      <End Role="userdata" EntitySet="userdatas" />
+      <End Role="scheduledata" EntitySet="scheduledatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ScheduleData_StatusFX1" Association="Self.fk_ScheduleData_StatusFX1">
+      <End Role="status_fx" EntitySet="status_fx" />
+      <End Role="scheduledata" EntitySet="scheduledatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserData_Settlement1" Association="Self.fk_UserData_Settlement1">
+      <End Role="settlement_fx" EntitySet="settlement_fx" />
+      <End Role="userdata" EntitySet="userdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserData_Settlement2" Association="Self.fk_UserData_Settlement2">
+      <End Role="settlement_fx" EntitySet="settlement_fx" />
+      <End Role="userdata" EntitySet="userdatas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserData_ZipCode1" Association="Self.fk_UserData_ZipCode1">
+      <End Role="zipcode_fx" EntitySet="zipcode_fx" />
+      <End Role="userdata" EntitySet="userdatas" />
+    </AssociationSet>
+    <AssociationSet Name="belong_st" Association="Self.belong_st">
+      <End Role="userdata" EntitySet="userdatas" />
+      <End Role="patientdata" EntitySet="patientdatas" />
+    </AssociationSet>
+    <AssociationSet Name="labresultseachexamination_st" Association="Self.labresultseachexamination_st">
+      <End Role="examinationdata" EntitySet="examinationdatas" />
+      <End Role="labresultsdata" EntitySet="labresultsdatas" />
+    </AssociationSet>
+    <AssociationSet Name="settlementzipcode_st" Association="Self.settlementzipcode_st">
+      <End Role="settlement_fx" EntitySet="settlement_fx" />
+      <End Role="zipcode_fx" EntitySet="zipcode_fx" />
+    </AssociationSet>
+    <AssociationSet Name="treatseachexam_st" Association="Self.treatseachexam_st">
+      <End Role="examinationdata" EntitySet="examinationdatas" />
+      <End Role="treatmentdata" EntitySet="treatmentdatas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

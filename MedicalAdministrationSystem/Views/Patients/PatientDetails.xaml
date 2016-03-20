@@ -1,0 +1,253 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Patients.PatientDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Patients"
+    xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <utilities:ViewExtender.Resources>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}" Value="User1">
+                    <Setter Property="ContentTemplate" Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </utilities:ViewExtender.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <dxlc:LayoutGroup Orientation="Vertical" MinWidth="800" MaxWidth="1200" Margin="30" VerticalAlignment="Top" ItemSpace="10">
+            <dxlc:LayoutGroup Orientation="Horizontal" ItemSpace="10">
+                <dxlc:LayoutGroup Header="Személyes adatok" View="GroupBox" Orientation="Vertical">
+                    <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
+                        <dxlc:LayoutItem Label="Felhasználó neve:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="userName" EditValue="{Binding PatientDetailsMViewElements.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                Mask="(([A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]{1,4})\.?\ )*[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+(-[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)*(\ [A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)+" 
+                                MaskType="RegEx" MaskShowPlaceHolders="False" NullText="Neve..." AllowNullInput="True" Margin="0,0,1,0" TextBoxBase.TextChanged="TextChanged">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Születési neve:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="birthName" EditValue="{Binding PatientDetailsMViewElements.BirthName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                Mask="(([A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]{1,4})\.?\ )*[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+(-[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)*(\ [A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)+" 
+                                MaskType="RegEx" MaskShowPlaceHolders="False" NullText="Születési neve..." AllowNullInput="True" Margin="0,0,1,0" TextBoxBase.TextChanged="TextChanged">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Neme:" Padding="10,0,0,0">
+                            <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="gender" AutoComplete="True"
+                                ItemsSource="{Binding PatientDetailsMDataSet.ViewGenderList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding PatientDetailsMViewElements.GenderSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Neme..." InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" 
+                                AllowDefaultButton="False" NullValueButtonPlacement="None">
+                                <dxe:ComboBoxEdit.Buttons>
+                                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ComboBoxEditErase" ToolTip="Mező törlése"/>
+                                    <dxe:ButtonInfo GlyphKind="DropDown" Command="{Binding Path=(dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>
+                                </dxe:ComboBoxEdit.Buttons>
+                            </dxe:ComboBoxEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Anyja neve:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="motherName" EditValue="{Binding PatientDetailsMViewElements.MotherName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                Mask="(([A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]{1,4})\.?\ )*[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+(-[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)*(\ [A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)+" 
+                                MaskType="RegEx" MaskShowPlaceHolders="False" NullText="Anyja neve..." AllowNullInput="True" Margin="0,0,1,0" TextBoxBase.TextChanged="TextChanged">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Születési helye:" Padding="10,0,0,0">
+                            <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="birthPlace" AutoComplete="True" 
+                                ItemsSource="{Binding PatientDetailsMDataSet.ViewBirthPlaceList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding PatientDetailsMViewElements.BirthPlaceSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Születési helye..." InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                AllowDefaultButton="False" NullValueButtonPlacement="None">
+                                <dxe:ComboBoxEdit.Buttons>
+                                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ComboBoxEditErase" ToolTip="Mező törlése"/>
+                                    <dxe:ButtonInfo GlyphKind="DropDown"
+                                            Command="{Binding Path=(dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>
+                                </dxe:ComboBoxEdit.Buttons>
+                            </dxe:ComboBoxEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Születési dátuma:" Padding="10,0,0,0">
+                            <dxe:DateEdit Margin="0,0,1,0" x:Name="birthDate" EditValue="{Binding PatientDetailsMViewElements.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                NullValueButtonPlacement="None" NullText="Szültési dátuma..." Mask="D" MaskType="DateTimeAdvancingCaret"
+                                MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowWeekNumbers="True" ShowClearButton="False" Spin="birthDate_Spin">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése"/>
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings/>
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="TAJ száma:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="tajNumber" EditValue="{Binding PatientDetailsMViewElements.TajNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                Mask="\d{3} \d{3} \d{3}" MaskType="RegEx" MaskShowPlaceHolders="False" NullText="TAJ száma..." 
+                                AllowNullInput="True" Margin="0,0,1,0" MaskUseAsDisplayFormat="True" TextBoxBase.TextChanged="TextChanged">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Adóazonosító jele:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="taxNumber" EditValue="{Binding PatientDetailsMViewElements.TaxNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                Mask="\d{10}" MaskType="RegEx" MaskShowPlaceHolders="False" NullText="Adóazonosító jele..." 
+                                AllowNullInput="True" Margin="0,0,1,0" TextBoxBase.TextChanged="TextChanged">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutControl>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="Elérhetőségei" View="GroupBox" Orientation="Vertical" VerticalAlignment="Top" >
+                    <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
+                        <dxlc:LayoutGroup Header="Lakcíme" View="GroupBox" Orientation="Vertical" Padding="5" VerticalAlignment="Top">
+                            <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0">
+                                <dxlc:LayoutItem Label="Irányítószáma" Padding="10,0,0,0">
+                                    <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="zipCode" AutoComplete="True" 
+                                        ItemsSource="{Binding PatientDetailsMDataSet.ViewZipCodeList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        SelectedItem="{Binding PatientDetailsMViewElements.ZipCodeSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        NullText="Irányítószáma..." InvalidValueBehavior="AllowLeaveEditor"
+                                        ValidateOnEnterKeyPressed="False" AllowDefaultButton="False" NullValueButtonPlacement="None">
+                                        <dxe:ComboBoxEdit.Buttons>
+                                            <dxe:ButtonInfo GlyphKind="Cancel" Click="zipCodeErase" ToolTip="Mező törlése"/>
+                                            <dxe:ButtonInfo GlyphKind="DropDown"
+                                                    Command="{Binding Path=(dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>
+                                        </dxe:ComboBoxEdit.Buttons>
+                                    </dxe:ComboBoxEdit>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Települése" Padding="10,0,0,0">
+                                    <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="settlement" AutoComplete="True" 
+                                        ItemsSource="{Binding PatientDetailsMDataSet.ViewSettlementList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        SelectedItem="{Binding PatientDetailsMViewElements.SettlementSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        NullText="Települése..." InvalidValueBehavior="AllowLeaveEditor"
+                                        ValidateOnEnterKeyPressed="False" AllowDefaultButton="False" NullValueButtonPlacement="None">
+                                        <dxe:ComboBoxEdit.Buttons>
+                                            <dxe:ButtonInfo GlyphKind="Cancel" Click="settlementErase" ToolTip="Mező törlése"/>
+                                            <dxe:ButtonInfo GlyphKind="DropDown"
+                                                    Command="{Binding Path=(dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>
+                                        </dxe:ComboBoxEdit.Buttons>
+                                    </dxe:ComboBoxEdit>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Címe" Padding="10,0,0,0">
+                                    <dxe:ButtonEdit x:Name="address" EditValue="{Binding PatientDetailsMViewElements.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                        AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" 
+                                        AllowNullInput="True" Margin="0,0,1,0" NullText="Címe...">
+                                        <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                                    </dxe:ButtonEdit>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutControl>
+                        </dxlc:LayoutGroup>
+                        <dxlc:LayoutItem Label="Otthoni telefonszáma:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="phone" EditValue="{Binding PatientDetailsMViewElements.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextBoxBase.TextChanged="TextChanged"
+                                MaskType="RegEx" Mask="\+36 \(\d{2}\) \d{3} - \d{3}|\+36 \(1\) \d{3} - \d{4}" NullText="Otthoni Telefonszáma..." Margin="0,0,1,0"
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" AllowNullInput="True" 
+                                MaskShowPlaceHolders="False" MaskUseAsDisplayFormat="True">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Mobil telefonszáma:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="mobilePhone" EditValue="{Binding PatientDetailsMViewElements.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 MaskType="RegEx" Mask="\+36 \(\d{2}\) \d{3} - \d{4}" Margin="0,0,1,0" TextBoxBase.TextChanged="TextChanged"
+                                 AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" AllowNullInput="True"
+                                 NullText="Mobil Telefonszáma..." MaskShowPlaceHolders="False" MaskUseAsDisplayFormat="True">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="E-mail címe:" Padding="10,0,0,0">
+                            <dxe:ButtonEdit x:Name="eMail" EditValue="{Binding PatientDetailsMViewElements.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                MaskType="RegEx" Mask="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" NullText="E-mail címe..." Margin="0,0,1,0"
+                                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                MaskShowPlaceHolders="False" MaskUseAsDisplayFormat="True" AllowNullInput="True" TextBoxBase.TextChanged="TextChanged" Padding="0">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutControl>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="Számlázási adatok" View="GroupBox" Orientation="Vertical" VerticalAlignment="Top" >
+                    <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
+                        <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0">
+                            <dxlc:LayoutItem Label="Számlázási név:" Padding="10,0,0,0">
+                                <dxe:ButtonEdit x:Name="billingName" EditValue="{Binding PatientDetailsMViewElements.BillingName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                                    Mask="(([A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]{1,4})\.?\ )*[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+(-[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)*(\ [A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)+" 
+                                    MaskType="RegEx" MaskShowPlaceHolders="False" NullText="Neve..." AllowNullInput="True" Margin="0,0,1,0" TextBoxBase.TextChanged="TextChanged">
+                                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                                </dxe:ButtonEdit>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Irányítószáma" Padding="10,0,0,0">
+                                <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="billingZipCode" AutoComplete="True" 
+                                    ItemsSource="{Binding PatientDetailsMDataSet.ViewBillingZipCodeList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedItem="{Binding PatientDetailsMViewElements.BillingZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    NullText="Irányítószáma..." InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" AllowDefaultButton="False" NullValueButtonPlacement="None">
+                                    <dxe:ComboBoxEdit.Buttons>
+                                        <dxe:ButtonInfo GlyphKind="Cancel" Click="zipCodeErase" ToolTip="Mező törlése"/>
+                                        <dxe:ButtonInfo GlyphKind="DropDown"
+                                                Command="{Binding Path=(dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>
+                                    </dxe:ComboBoxEdit.Buttons>
+                                </dxe:ComboBoxEdit>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Települése" Padding="10,0,0,0">
+                                <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="billingSettlement" AutoComplete="True" 
+                                    ItemsSource="{Binding PatientDetailsMDataSet.ViewBillingSettlementList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedItem="{Binding PatientDetailsMViewElements.BillingSettlement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    NullText="Települése..." InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" AllowDefaultButton="False" NullValueButtonPlacement="None">
+                                    <dxe:ComboBoxEdit.Buttons>
+                                        <dxe:ButtonInfo GlyphKind="Cancel" Click="settlementErase" ToolTip="Mező törlése"/>
+                                        <dxe:ButtonInfo GlyphKind="DropDown"
+                                                Command="{Binding Path=(dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>
+                                    </dxe:ComboBoxEdit.Buttons>
+                                </dxe:ComboBoxEdit>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Címe" Padding="10,0,0,0">
+                                <dxe:ButtonEdit x:Name="billingAddress" EditValue="{Binding PatientDetailsMViewElements.BillingAddress, Mode=TwoWay, 
+                                    UpdateSourceTrigger=PropertyChanged}" AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" AllowNullInput="True" Margin="0,0,1,0"  NullText="Címe...">
+                                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                                </dxe:ButtonEdit>
+                            </dxlc:LayoutItem>
+                            <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
+                                <TextBlock TextWrapping="Wrap" Padding="0" VerticalAlignment="Center"  Foreground="Black" Width="188" Margin="0,0,39,0">
+                                    A számlázási adatok egyezzenek meg a felhasználói adatokkal:</TextBlock>
+                                <Button Content="Ok" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Compare" Width="39" Height="29" Padding="0"/>
+                            </Grid>
+                        </dxlc:LayoutControl>
+                    </dxlc:LayoutControl>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Header="Megjegyzések" View="GroupBox">
+                <dxe:TextEdit Margin="-12" EditValue="{Binding PatientDetailsMViewElements.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    TextWrapping="WrapWithOverflow" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" MinHeight="60" MaxHeight="200" AcceptsReturn="True"/>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutItem HorizontalAlignment="Center">
+                <Button x:Name="modify" Content="Adatok mentése" Margin="0,15,0,5" Height="30" KeyDown="ModifyWithEnter" Click="ModifyExecute"/>
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+    </ScrollViewer>
+</utilities:ViewExtender>

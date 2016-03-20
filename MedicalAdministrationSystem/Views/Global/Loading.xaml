@@ -1,0 +1,12 @@
+﻿<Dialogs:CustomDialog x:Class="MedicalAdministrationSystem.Views.Global.Loading"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Global">
+    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Controls:ProgressRing Foreground="White" Width="70" Height="70"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" FontSize="18.667" Foreground="White" FontWeight="Medium">Betöltés</TextBlock>
+    </StackPanel>
+</Dialogs:CustomDialog>

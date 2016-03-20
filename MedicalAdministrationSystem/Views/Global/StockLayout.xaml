@@ -1,0 +1,87 @@
+﻿<UserControl
+	xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"  
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+	xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+	x:Class="MedicalAdministrationSystem.Views.Global.StockLayout" SnapsToDevicePixels="True">
+    <DockPanel LastChildFill="True">
+        <dxnav:TileBar x:Name="tileBar" Padding="0,15,0,15" VerticalAlignment="Top" DockPanel.Dock="Top">
+            <dxnav:TileBarItem x:Name="scheduleTBI" Content="Előjegyzés" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF3C6193" 
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Schedule.png"
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False" Click="scheduleTBIClick"/>
+            <dxnav:TileBarItem x:Name="patientsTBI" Content="Páciensek" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF991E40"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Patients.png" Click="patientsTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False"/>
+            <dxnav:TileBarItem x:Name="examinationTBI" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF37892F"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Examination.png" Click="examinationTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False" IsEnabled="False">
+                <dxnav:TileBarItem.Content>
+                    <Grid>
+                        <Label Background="{x:Null}" Content="Vizsgálatok," HorizontalAlignment="Right" Margin="0,-10,0,13" Foreground="White"/>
+                        <Label Background="{x:Null}" Content="kezelések" Margin="0,7,0,-7" HorizontalAlignment="Right" Foreground="White"/>
+                    </Grid>
+                </dxnav:TileBarItem.Content>
+            </dxnav:TileBarItem>
+            <dxnav:TileBarItem x:Name="labTBI" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FFBD3DA6"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Lab3.png" Click="labTBIClick"
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False">
+                <dxnav:TileBarItem.Content>
+                    <Grid>
+                        <Label Background="{x:Null}" Content="Labor-" HorizontalAlignment="Right" Margin="0,-10,0,13" Foreground="White"/>
+                        <Label Background="{x:Null}" Content="eredmények" Margin="0,7,0,-7" Foreground="White"/>
+                    </Grid>
+                </dxnav:TileBarItem.Content>
+            </dxnav:TileBarItem>
+            <dxnav:TileBarItem x:Name="evidenceTBI" Content="Státusz" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FFE4AE39"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Evidence.png" Click="evidenceTBIClick"
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False" IsEnabled="False"/>
+            <dxnav:TileBarItem x:Name="prescriptionTBI" Content="Receptek" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF46B295"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Pills.png" Click="prescriptionTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False" IsEnabled="False"/>
+            <dxnav:TileBarItem x:Name="billingTBI" Content="Számlázás" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF234372"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Wallet.png" Click="billingTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False" IsEnabled="False"/>
+            <dxnav:TileBarItem x:Name="statisticsTBI" Content="Statisztika" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF666641"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Charts.png" Click="statisticsTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False"/>
+            <dxnav:TileBarItem x:Name="usersTBI" Content="Felhasználók" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FFCB7272"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Users.png" Click="usersTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False"/>
+            <dxnav:TileBarItem x:Name="settingsTBI" Content="Beállítások" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF7E7E7E"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Cog.png" Click="settingsTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False"/>
+            <dxnav:TileBarItem x:Name="helpTBI" Content="Súgó" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF6AB023"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Help.png" Click="helpTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False"/>
+            <dxnav:TileBarItem x:Name="logoutTBI" Content="Kijelentkezés" SelectionPadding="2" Height="78" Width="160" Margin="0" Padding="5" 
+				VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="#FF95591E"
+				TileGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Logout.png" Click="logoutTBIClick" 
+				Visibility="Collapsed" FontWeight="Medium" FontSize="13.333" IsTabStop="False"/>
+        </dxnav:TileBar>
+        <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+        <DockPanel x:Name="dock" LastChildFill="True">
+            <ScrollViewer DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <StackPanel x:Name="verticalMenu" Orientation="Vertical" Width="160"/>
+            </ScrollViewer>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <DockPanel LastChildFill="True">
+                <ContentControl DockPanel.Dock="Top" x:Name="headerContent" IsTabStop="False"/>
+                <ContentControl x:Name="actualContent" IsTabStop="False" />
+            </DockPanel>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,109 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Settings.Security"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Settings"
+    xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <utilities:ViewExtender.Resources>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}"/>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}" Value="User1">
+                    <Setter Property="ContentTemplate" Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </utilities:ViewExtender.Resources>
+    <dxlc:LayoutGroup Margin="0,30,0,0" Header="Biztonsági profil" View="GroupBox" Orientation="Vertical" Width="450" 
+        VerticalAlignment="Top" HorizontalAlignment="Center">
+        <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
+            <dxlc:LayoutItem Label="Biztonsági felhasználónév:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="currSecurityUser" EditValue="{Binding SecurityM.CurrSecurityUser, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" Margin="0,0,1,0" AllowNullInput="True" IsTabStop="False">
+                    <dxe:ButtonEdit.EditTemplate>
+                        <ControlTemplate>
+                            <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=currSecurityUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Írja be a jelenlegi biztonsági nevet" ShowBorder="False" Height="22"/>
+                        </ControlTemplate>
+                    </dxe:ButtonEdit.EditTemplate>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Új biztonsági felhasználónév:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="newSecurityUser" EditValue="{Binding SecurityM.NewSecurityUser, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" AllowNullInput="True" Margin="0,0,1,0" IsEnabled="False" IsTabStop="False">
+                    <dxe:ButtonEdit.EditTemplate>
+                        <ControlTemplate>
+                            <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=newSecurityUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Írja be az új biztonsági nevet" ShowBorder="False" Height="22"/>
+                        </ControlTemplate>
+                    </dxe:ButtonEdit.EditTemplate>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Jelenlegi biztonsági jelszó:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="currSecurityPass" EditValue="{Binding SecurityM.CurrSecurityPass, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" AllowNullInput="True" Margin="0,0,1,0" IsTabStop="False">
+                    <dxe:ButtonEdit.EditTemplate>
+                        <ControlTemplate>
+                            <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=currSecurityPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Írja be a jelenlegi biztonsági jelszót" ShowBorder="False" Height="22"/>
+                        </ControlTemplate>
+                    </dxe:ButtonEdit.EditTemplate>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Új biztonsági jelszó:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="newSecurityPass" EditValue="{Binding SecurityM.NewSecurityPass, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" IsEnabled="False" Margin="0,0,1,0" AllowNullInput="True" IsTabStop="False">
+                    <dxe:ButtonEdit.EditTemplate>
+                        <ControlTemplate>
+                            <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=newSecurityPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Írja be az új biztonsági jelszót" ShowBorder="False" Height="22"/>
+                        </ControlTemplate>
+                    </dxe:ButtonEdit.EditTemplate>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Új biztonsági jelszó megerőstése:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="confSecurityPass" EditValue="{Binding SecurityM.ConfSecurityPass, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" IsEnabled="False" Margin="0,0,1,0" AllowNullInput="True" IsTabStop="False">
+                    <dxe:ButtonEdit.EditTemplate>
+                        <ControlTemplate>
+                            <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=confSecurityPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Írja be mégegyszer" ShowBorder="False" Height="22"/>
+                        </ControlTemplate>
+                    </dxe:ButtonEdit.EditTemplate>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem HorizontalAlignment="Center">
+                <Button x:Name="modify" Content="Adatok módosítása" Margin="0,10,0,5" Height="30" KeyDown="SecurityDatasChangeWithEnter" Click="SecurityDatasChangeExecute"/>
+            </dxlc:LayoutItem>
+        </dxlc:LayoutControl>
+    </dxlc:LayoutGroup>
+</utilities:ViewExtender>
