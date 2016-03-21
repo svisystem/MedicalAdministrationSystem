@@ -70,11 +70,11 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             Utilities.Loading.Hide();
         }
-        protected internal void ExecuteMethod()
+        protected internal async void ExecuteMethod()
         {
             if (UserCheck(LoginM.Username))
             {
-                Utilities.Loading.Show();
+                await Utilities.Loading.Show();
                 Execute = new BackgroundWorker();
                 Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
                 Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);

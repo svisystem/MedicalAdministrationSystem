@@ -31,9 +31,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        protected internal void Refresh()
+        protected internal async void Refresh()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             new FormChecking(Loading.RunWorkerAsync, Dummy, true);
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
@@ -88,9 +88,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             PriviledgesM.Priviledges.Where(p => p.NameP == PriviledgesM.PriviledgesList.Where
             (l => l.IdP.Equals(GlobalVM.GlobalM.PriviledgeID)).Select(l => l.NameP).Single()).Single().Enabled = false;
         }
-        protected internal void ExecuteMethod()
+        protected internal async void ExecuteMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
@@ -243,9 +243,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 "A jogosultsági profil törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();
         }
-        private void Erase()
+        private async void Erase()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             EraseBackground = new BackgroundWorker();
             EraseBackground.DoWork += new DoWorkEventHandler(EraseBackgroundDoWork);
             EraseBackground.RunWorkerCompleted += new RunWorkerCompletedEventHandler(EraseBackgroundComplete);

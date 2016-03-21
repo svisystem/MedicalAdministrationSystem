@@ -13,7 +13,11 @@ namespace MedicalAdministrationSystem.Views.Users
         private RegistrationValid registrationValid { get; set; }
         public Registration()
         {
-            Loading.Show();
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             registrationValid = new RegistrationValid();
             RegistrationVM = new RegistrationVM();
             this.DataContext = RegistrationVM.RegistrationM;

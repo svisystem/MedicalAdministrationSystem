@@ -13,7 +13,11 @@ namespace MedicalAdministrationSystem.Views.Settings
         private int currentInt { get; set; }
         public UserAdministrate()
         {
-            Loading.Show();
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             UserAdministrateVM = new UserAdministrateVM(view_Loaded);
             this.DataContext = UserAdministrateVM;
             InitializeComponent();

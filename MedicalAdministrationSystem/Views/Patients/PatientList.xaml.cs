@@ -15,7 +15,11 @@ namespace MedicalAdministrationSystem.Views.Patients
         protected internal Action Selected { get; set; }
         public PatientList(Action Selected)
         {
-            Loading.Show();
+            Start(Selected);
+        }
+        private async void Start(Action Selected)
+        {
+            await Loading.Show();
             PatientListVM = new PatientListVM(view_Loaded);
             this.Selected = Selected;
             this.DataContext = PatientListVM;

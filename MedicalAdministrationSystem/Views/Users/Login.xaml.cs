@@ -13,7 +13,11 @@ namespace MedicalAdministrationSystem.Views.Users
         private LoginValid loginValid { get; set; } = new LoginValid();
         public Login()
         {
-            Loading.Show();
+            Start();   
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             loginValid = new LoginValid();
             LoginVM = new LoginVM();
             this.DataContext = LoginVM.LoginM;

@@ -22,9 +22,9 @@ namespace MedicalAdministrationSystem.Views.Users
         {
             Start(fromPatient);
         }
-        private void Start(bool? fromPatient)
+        private async void Start(bool? fromPatient)
         {
-            Loading.Show();
+            await Loading.Show();
             EditorLocalizer.Active = new Localizer();
             detailsModifyValid = new DetailsModifyValid();
             if (fromPatient == null) DetailsModifyVM = new DetailsModifyVM();

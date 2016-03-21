@@ -16,7 +16,11 @@ namespace MedicalAdministrationSystem.Views.Settings
         private EmptyValid emptyValid { get; set; }
         public Security(Action SecurityLoad)
         {
-            Loading.Show();
+            Start(SecurityLoad);   
+        }
+        private async void Start(Action SecurityLoad)
+        {
+            await Loading.Show();
             SecurityVM = new SecurityVM(SecurityLoad);
             inputValid = new InputValid();
             securityValid = new SecurityValid();

@@ -185,9 +185,9 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             }
         }
 
-        protected internal void ExecuteMethod()
+        protected internal async void ExecuteMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             BackgroundWorker Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
@@ -258,13 +258,13 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             else ConnectionMessage();
         }
         bool fullRefresh;
-        protected internal void Question(bool fullRefreshGiven)
+        protected internal async void Question(bool fullRefreshGiven)
         {
             Action Ok;
             Action No;
             if (fullRefreshGiven)
             {
-                Utilities.Loading.Show();
+                await Utilities.Loading.Show();
                 Ok = Loading.RunWorkerAsync;
                 fullRefresh = fullRefreshGiven;
             }

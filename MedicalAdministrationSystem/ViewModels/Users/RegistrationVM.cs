@@ -1,6 +1,5 @@
 ﻿using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Users;
-using MedicalAdministrationSystem.ViewModels.MenuItem;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
 using System;
@@ -24,9 +23,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        protected internal void ExecuteMethod()
+        protected internal async void ExecuteMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);

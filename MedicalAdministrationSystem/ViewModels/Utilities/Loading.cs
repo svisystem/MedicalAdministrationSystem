@@ -32,13 +32,13 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 showed = false;
             }
         }
-        private static void Loaded(object sender, RoutedEventArgs e)
+        private static async void Loaded(object sender, RoutedEventArgs e)
         {
             showed = true;
             if (counter.Equals(0))
             {
                 GlobalVM.MainWindow.Focusable = true;
-                metroWindow.HideMetroDialogAsync(loading);
+                await metroWindow.HideMetroDialogAsync(loading);
                 showed = false;
             }
             loading.Loaded -= Loaded;

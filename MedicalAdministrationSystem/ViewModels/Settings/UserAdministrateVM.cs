@@ -31,9 +31,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        protected internal void Refresh()
+        protected internal async void Refresh()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             new FormChecking(Loading.RunWorkerAsync, Dummy, true);
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
@@ -85,9 +85,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             UsersMViewElements.Users.Where(m => m.UserName == GlobalVM.GlobalM.AccountName).Single().Enabled = false;
         }
-        protected internal void ExecuteMethod()
+        protected internal async void ExecuteMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);

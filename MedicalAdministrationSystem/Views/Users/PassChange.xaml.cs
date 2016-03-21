@@ -14,7 +14,11 @@ namespace MedicalAdministrationSystem.Views.Users
         private PassChangeValid passChangeValid { get; set; }
         public PassChange()
         {
-            Loading.Show();
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             passChangeValid = new PassChangeValid();
             PassChangeVM = new PassChangeVM();
             this.DataContext = PassChangeVM.PassChangeM;

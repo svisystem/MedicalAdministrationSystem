@@ -187,9 +187,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             dialog.content = new TextBlock(text + " és alkalmazza jelenlegi intézmény adatokkén?");
             dialog.Start();
         }
-        private void OkMethod()
+        private async void OkMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
@@ -266,13 +266,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             else ConnectionMessage();
         }
         bool fullRefresh;
-        protected internal void Question(bool fullRefreshGiven)
+        protected internal async void Question(bool fullRefreshGiven)
         {
             Action func;
             Action func2;
             if (fullRefreshGiven)
             {
-                Utilities.Loading.Show();
+                await Utilities.Loading.Show();
                 func = Loading.RunWorkerAsync;
                 fullRefresh = fullRefreshGiven;
             }

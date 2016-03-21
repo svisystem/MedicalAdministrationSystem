@@ -13,7 +13,11 @@ namespace MedicalAdministrationSystem.Views.Settings
         private ConnectionValid connectionValid { get; set; }
         public Connection()
         {
-            Loading.Show();
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             connectionValid = new ConnectionValid();
             ConnectionVM = new ConnectionVM();
             this.DataContext = ConnectionVM;

@@ -69,63 +69,63 @@ namespace MedicalAdministrationSystem.Views.Global
             //TODO
             SelectedPatient();
         }
-        protected internal void PatiensLoad()
+        protected async internal void PatiensLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             PatientsVM patients = new PatientsVM();
             patients.PatientListLoad();
             currentItem = patientsTBI;
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void PatiensLoad(bool modifier)
+        protected async internal void PatiensLoad(bool modifier)
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             PatientsVM patients = new PatientsVM();
             if (modifier) patients.PatientDetailsLoad();
             else patients.PatientListLoad();
             currentItem = patientsTBI;
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void EvidenceLoad()
+        protected async internal void EvidenceLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             //TODO
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void ExaminationLoad()
+        protected async internal void ExaminationLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             //TODO
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void LabLoad()
+        protected async internal void LabLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             //TODO
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void PrescriptionLoad()
+        protected async internal void PrescriptionLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             //TODO
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void BillingLoad()
+        protected async internal void BillingLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             BillingVM billing = new BillingVM();
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void StatisticsLoad()
+        protected async internal void StatisticsLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             //TODO
             SelectedPatient();
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void UsersLoad()
+        protected async internal void UsersLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             UsersVM users = new UsersVM();
             if (GlobalVM.GlobalM.AccountName == null) users.LoginLoad();
             else users.DetailsModifyLoad();
@@ -133,9 +133,9 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void UsersLoad(bool modifier)
+        protected async internal void UsersLoad(bool modifier)
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             UsersVM users = new UsersVM();
             if (modifier) users.fromPatient = modifier;
             if (!modifier) users.RegistrationLoad();
@@ -148,9 +148,9 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void SettingsLoad()
+        protected async internal void SettingsLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             SettingsVM settings = new SettingsVM();
             if (GlobalVM.GlobalM.Secure) settings.ConnectionLoad();
             else settings.UsersLoad();
@@ -158,27 +158,27 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void HelpLoad()
+        protected async internal void HelpLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             //TODO
             SelectedPatient();
             ViewModels.Utilities.Loading.Hide();
         }
-        protected internal void LogOutLoad()
+        protected async internal void LogOutLoad()
         {
-            ViewModels.Utilities.Loading.Show();
+            await ViewModels.Utilities.Loading.Show();
             LogoutVM logout = new LogoutVM();
             logout.Click(Back);
             currentItem = logoutTBI;
             ViewModels.Utilities.Loading.Hide();
         }
-        private void Check(TileBarItem select, Action OK, Action No)
+        private async void Check(TileBarItem select, Action OK, Action No)
         {
             earlierItem = currentItem;
             if (!currentItem.Equals(select))
             {
-                ViewModels.Utilities.Loading.Show();
+                await ViewModels.Utilities.Loading.Show();
                 currentItem = select;
                 new FormChecking(OK, No, true);
             }

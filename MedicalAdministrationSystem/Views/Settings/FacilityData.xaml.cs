@@ -14,7 +14,11 @@ namespace MedicalAdministrationSystem.Views.Settings
         private FacilityDataValid facilityDataValid { get; set; }
         public FacilityData()
         {
-            Loading.Show();
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             EditorLocalizer.Active = new Localizer();
             facilityDataValid = new FacilityDataValid();
             FacilityDataVM = new FacilityDataVM();

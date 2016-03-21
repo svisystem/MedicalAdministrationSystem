@@ -84,12 +84,12 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             Check((sender as Button).Parent as StockVerticalMenuItem, SecurityLoad, Back);
             
         }
-        private void Check(StockVerticalMenuItem select, Action OK, Action No)
+        private async void Check(StockVerticalMenuItem select, Action OK, Action No)
         {
             earlierItem = currentItem;
             if (!currentItem.Equals(select))
             {
-                Utilities.Loading.Show();
+                await Utilities.Loading.Show();
                 currentItem = select;
                 new FormChecking(OK, No, true);
             }
@@ -99,34 +99,34 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             currentItem = earlierItem;
             currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
-        protected internal void ServicesLoad()
+        protected internal async void ServicesLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new Services(); }), services);
         }
-        protected internal void UsersLoad()
+        protected internal async void UsersLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new UserAdministrate(); }), users);
         }
-        protected internal void PriviledgesLoad()
+        protected internal async void PriviledgesLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new Priviledges(); }), priviledges);
         }
-        protected internal void FacilityDataLoad()
+        protected internal async void FacilityDataLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new FacilityData(); }), facilityData);
         }
-        protected internal void ConnectionLoad()
+        protected internal async void ConnectionLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new Connection(); }), connection);
         }
-        protected internal void SecurityLoad()
+        protected internal async void SecurityLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new Security(SecurityLoad); }), security);
         }
     }

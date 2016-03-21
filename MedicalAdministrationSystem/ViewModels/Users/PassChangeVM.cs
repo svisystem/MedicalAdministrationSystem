@@ -33,9 +33,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         }
         private void CanelMethod() { }
 
-        private void OkMethod()
+        private async void OkMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);

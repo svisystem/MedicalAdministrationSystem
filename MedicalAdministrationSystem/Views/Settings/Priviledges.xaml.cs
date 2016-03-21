@@ -13,12 +13,15 @@ namespace MedicalAdministrationSystem.Views.Settings
         private int currentInt { get; set; }
         public Priviledges()
         {
-            Loading.Show();
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             PriviledgesVM = new PriviledgesVM(view_Loaded);
             this.DataContext = PriviledgesVM;
             InitializeComponent();
         }
-
         private void Update(object sender, RoutedEventArgs e)
         {
             grid.ClearSorting();

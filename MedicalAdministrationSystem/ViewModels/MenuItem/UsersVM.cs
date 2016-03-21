@@ -93,9 +93,9 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
                 "A módosítás végrehajtása után nem visszavonható!");
             dialog.Start();
         }
-        private void DeleteMethod()
+        private async void DeleteMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             BackgroundWorker Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
@@ -141,12 +141,12 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             LogoutVM logout = new LogoutVM();
             logout.OkMethod();
         }
-        private void Check(StockVerticalMenuItem select, Action OK, Action No)
+        private async void Check(StockVerticalMenuItem select, Action OK, Action No)
         {
             earlierItem = currentItem;
             if (!currentItem.Equals(select))
             {
-                Utilities.Loading.Show();
+                await Utilities.Loading.Show();
                 currentItem = select;
                 new FormChecking(OK, No, true);
             }
@@ -178,33 +178,33 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             currentItem = earlierItem;
             currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
-        protected internal void RegistrationLoad()
+        protected internal async void RegistrationLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new Registration(); }), registration);
         }
-        protected internal void LoginLoad()
+        protected internal async void LoginLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new Login(); }), login);
         }
-        protected internal void PassChangeLoad()
+        protected internal async void PassChangeLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new PassChange(); }), passChange);
         }
-        protected internal void DetailsModifyLoad()
+        protected internal async void DetailsModifyLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate ()
             {
                 if (!fromPatient) return new DetailsModify();
                 else return new DetailsModify(fromPatient);
             }), detailsModify);
         }
-        protected internal void SurgeryTimeLoad()
+        protected internal async void SurgeryTimeLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new SurgeryTime(); }), surgeryTime);
         }
     }

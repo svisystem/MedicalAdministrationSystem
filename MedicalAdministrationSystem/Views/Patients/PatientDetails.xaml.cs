@@ -16,7 +16,11 @@ namespace MedicalAdministrationSystem.Views.Patients
         protected internal bool newView { get; private set; }
         public PatientDetails(bool newView)
         {
-            Loading.Show();
+            Start(newView);
+        }
+        private async void Start(bool newView)
+        {
+            await Loading.Show();
             this.newView = newView;
             EditorLocalizer.Active = new Localizer();
             patientDetailsValid = new PatientDetailsValid();

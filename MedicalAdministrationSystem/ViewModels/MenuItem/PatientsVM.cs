@@ -78,12 +78,12 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             Check((sender as Button).Parent as StockVerticalMenuItem, PatientDetailsLoad, Back);
         }
-        private void Check(StockVerticalMenuItem select, Action OK, Action No)
+        private async void Check(StockVerticalMenuItem select, Action OK, Action No)
         {
             earlierItem = currentItem;
             if (!currentItem.Equals(select))
             {
-                Utilities.Loading.Show();
+                await Utilities.Loading.Show();
                 currentItem = select;
                 new FormChecking(OK, No, true);
             }
@@ -93,19 +93,19 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             currentItem = earlierItem;
             currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
-        protected internal void NewPatientLoad()
+        protected internal async void NewPatientLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new PatientDetails(true); }), newPatient);
         }
-        protected internal void PatientListLoad()
+        protected internal async void PatientListLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new PatientList(Selected); }), patientList);
         }
-        protected internal void PatientDetailsLoad()
+        protected internal async void PatientDetailsLoad()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             ViewLoad(new Func<UserControl>(delegate () { return new PatientDetails(false); }), patientDetails);
         }
     }

@@ -12,7 +12,11 @@ namespace MedicalAdministrationSystem.Views.Settings
         protected internal ServicesVM ServicesVM { get; set; }
         public Services()
         {
-            Loading.Show();
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             ServicesVM = new ServicesVM(view_Loaded);
             this.DataContext = ServicesVM;
             InitializeComponent();

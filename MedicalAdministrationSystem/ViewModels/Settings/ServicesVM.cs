@@ -69,9 +69,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             }
             else ConnectionMessage();
         }
-        protected internal void ExecuteMethod()
+        protected internal async void ExecuteMethod()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             Execute = new BackgroundWorker();
             Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
@@ -153,9 +153,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             if (ServicesM.Services.Any(s => s.IsChanged)) return true;
             return modified;
         }
-        protected internal void Refresh()
+        protected internal async void Refresh()
         {
-            Utilities.Loading.Show();
+            await Utilities.Loading.Show();
             new FormChecking(Loading.RunWorkerAsync, Dummy, true);
         }
         private void Dummy() { }
