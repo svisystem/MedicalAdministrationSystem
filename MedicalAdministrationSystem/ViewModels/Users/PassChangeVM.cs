@@ -15,7 +15,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         private BackgroundWorker Execute { get; set; }
         private medicalEntities me { get; set; }
         private PasswordManager PasswordManager { get; set; }
-        private bool workingConn { get; set; }
         protected internal PassChangeVM()
         {
             PassChangeM = new PassChangeM();

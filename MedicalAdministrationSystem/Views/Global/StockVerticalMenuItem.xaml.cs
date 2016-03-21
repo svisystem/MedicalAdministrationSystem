@@ -35,6 +35,7 @@ namespace MedicalAdministrationSystem.Views.Global
             set
             {
                 if (!value) button.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
+                else button.Foreground = new SolidColorBrush(Colors.Black);
                 button.IsEnabled = value;
             }
         }

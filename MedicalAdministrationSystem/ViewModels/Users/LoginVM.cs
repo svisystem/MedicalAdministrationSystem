@@ -21,7 +21,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         private BackgroundWorker bgw2 { get; set; }
         private BackgroundWorker offlinebgw { get; set; }
         private medicalEntities me { get; set; }
-        private bool workingConn { get; set; }
         private Configuration config { get; set; }
         protected internal LoginVM()
         {

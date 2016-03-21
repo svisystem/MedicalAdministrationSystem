@@ -14,7 +14,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
         private medicalEntities me { get; set; }
-        private bool workingConn { get; set; }
         protected internal RegistrationVM()
         {
             RegistrationM = new RegistrationM();

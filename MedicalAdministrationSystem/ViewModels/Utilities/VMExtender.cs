@@ -13,6 +13,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         protected internal StockVerticalMenuItem currentItem { get; set; }
         protected internal StockVerticalMenuItem earlierItem { get; set; }
         protected internal Dialog dialog { get; set; }
+        protected internal bool workingConn { get; set; }
         protected internal void ConnectionMessage()
         {
             dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", Application.Current.Shutdown);
@@ -28,12 +29,31 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
 
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate { GlobalVM.StockLayout.actualContent.Content = task.Result; }));
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
+                {
+                    GlobalVM.StockLayout.actualContent.Content = task.Result;
+                    button.button_Click(button.button, new RoutedEventArgs(Button.ClickEvent));
+                }));
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             });
-            button.button_Click(button.button, new RoutedEventArgs(Button.ClickEvent));
             currentItem = button;
             Loading.Hide();
+        }
+
+        protected internal async void Check(StockVerticalMenuItem select, Action OK, Action No)
+        {
+            earlierItem = currentItem;
+            if (!currentItem.Equals(select))
+            {
+                await Utilities.Loading.Show();
+                currentItem = select;
+                new FormChecking(OK, No, true);
+            }
+        }
+        protected internal void Back()
+        {
+            currentItem = earlierItem;
+            currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
     }
 }

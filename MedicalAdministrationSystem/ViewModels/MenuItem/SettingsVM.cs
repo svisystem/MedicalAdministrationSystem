@@ -82,22 +82,6 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         private void SecurityView(object sender, EventArgs e)
         {
             Check((sender as Button).Parent as StockVerticalMenuItem, SecurityLoad, Back);
-            
-        }
-        private async void Check(StockVerticalMenuItem select, Action OK, Action No)
-        {
-            earlierItem = currentItem;
-            if (!currentItem.Equals(select))
-            {
-                await Utilities.Loading.Show();
-                currentItem = select;
-                new FormChecking(OK, No, true);
-            }
-        }
-        private void Back()
-        {
-            currentItem = earlierItem;
-            currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
         protected internal async void ServicesLoad()
         {

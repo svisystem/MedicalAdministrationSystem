@@ -1,4 +1,5 @@
 ﻿using MedicalAdministrationSystem.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,9 +8,9 @@ namespace MedicalAdministrationSystem.Views.Global
     public partial class SelectedPatient : UserControl
     {
         protected internal SelectedPatientVM SelectedPatientVM { get; set; }
-        public SelectedPatient()
+        public SelectedPatient(Action Selected)
         {
-            SelectedPatientVM = new SelectedPatientVM();
+            SelectedPatientVM = new SelectedPatientVM(Selected);
             this.DataContext = SelectedPatientVM;
             InitializeComponent();
         }

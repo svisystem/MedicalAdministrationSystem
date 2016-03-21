@@ -95,7 +95,9 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void ExaminationLoad()
         {
             await ViewModels.Utilities.Loading.Show();
-            //TODO
+            ExaminationVM examination = new ExaminationVM();
+            examination.ExaminationsLoad();
+            currentItem = examinationTBI;
             ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void LabLoad()

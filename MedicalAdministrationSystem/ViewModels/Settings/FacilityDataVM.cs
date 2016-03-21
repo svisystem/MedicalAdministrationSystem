@@ -21,7 +21,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
         private medicalEntities me { get; set; }
-        private bool workingConn { get; set; }
         private Configuration config { get; set; }
         private companydata cd { get; set; }
         protected internal FacilityDataVM()

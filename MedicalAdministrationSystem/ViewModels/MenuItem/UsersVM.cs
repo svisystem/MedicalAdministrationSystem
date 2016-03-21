@@ -19,7 +19,6 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         private StockVerticalMenuItem detailsModify { get; set; }
         private StockVerticalMenuItem surgeryTime { get; set; }
         private StockVerticalMenuItem userDelete { get; set; }
-        private bool workingConn { get; set; }
         protected internal bool fromPatient { get; set; } = false;
         public UsersVM()
         {
@@ -141,16 +140,6 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             LogoutVM logout = new LogoutVM();
             logout.OkMethod();
         }
-        private async void Check(StockVerticalMenuItem select, Action OK, Action No)
-        {
-            earlierItem = currentItem;
-            if (!currentItem.Equals(select))
-            {
-                await Utilities.Loading.Show();
-                currentItem = select;
-                new FormChecking(OK, No, true);
-            }
-        }
         private void RegistrateWhenLogin(object sender, EventArgs e)
         {
             Check((sender as Button).Parent as StockVerticalMenuItem, Question, Back);
@@ -172,11 +161,6 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             registration.button.Foreground = new SolidColorBrush(Colors.Black);
             Back();
-        }
-        private void Back()
-        {
-            currentItem = earlierItem;
-            currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
         protected internal async void RegistrationLoad()
         {

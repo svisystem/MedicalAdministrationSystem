@@ -21,7 +21,6 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
         private medicalEntities me { get; set; }
-        private bool workingConn { get; set; }
         private bool newform { get; set; }
         protected internal bool From { get; set; }
         private patientdata selected { get; set; }
@@ -41,10 +40,11 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        protected internal void ExecuteMethod()
+        protected internal async void ExecuteMethod()
         {
             if (!newform)
             {
+                await Utilities.Loading.Show();
                 dialog = new Dialog(false, "Módosítás megerősítése", OkMethod, Dummy, true);
                 dialog.content = new TextBlock("Biztosan megváltoztatja a páciens adatait?");
                 dialog.Start();
@@ -130,6 +130,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 PatientsVM PatientsVM = new PatientsVM();
                 PatientsVM.NewPatientLoad();
             }
+            Utilities.Loading.Hide();
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {

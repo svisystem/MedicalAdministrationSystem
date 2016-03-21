@@ -60,7 +60,7 @@ namespace MedicalAdministrationSystem.Views.Patients
         }
         private void select(object sender, RoutedEventArgs e)
         {
-            PatientListVM.Select();
+            PatientListVM.Select(Selected);
             Selected();
         }
     }

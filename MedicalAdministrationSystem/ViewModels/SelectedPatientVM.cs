@@ -1,15 +1,18 @@
 ﻿using MedicalAdministrationSystem.Models;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Patients;
+using System;
 
 namespace MedicalAdministrationSystem.ViewModels
 {
     public class SelectedPatientVM
     {
         public SelectedPatientM SelectedPatientM { get; set; }
-        protected internal SelectedPatientVM()
+        private Action Selected { get; set; }
+        protected internal SelectedPatientVM(Action Selected)
         {
             SelectedPatientM = new SelectedPatientM();
+            this.Selected = Selected;
         }
         protected internal void Loaded(int id, string name)
         {
@@ -17,14 +20,11 @@ namespace MedicalAdministrationSystem.ViewModels
             SelectedPatientM.Name = name;
             MenuItemChanger(true);
         }
-        protected internal void PatientDetailsModify()
+        protected internal async void PatientDetailsModify()
         {
             if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientDetails))
             {
-                new FormChecking(Ok, Dummy, true);
-            }
-            else if ((GlobalVM.StockLayout.actualContent.Content as PatientDetails).newView)
-            {
+                await Loading.Show();
                 new FormChecking(Ok, Dummy, true);
             }
         }
@@ -52,19 +52,26 @@ namespace MedicalAdministrationSystem.ViewModels
             mbe.ChangeEnable(GlobalVM.StockLayout.prescriptionTBI, visible);
             mbe.ChangeEnable(GlobalVM.StockLayout.billingTBI, visible);
         }
-        protected internal void Question()
+        protected internal async void Question()
         {
-            FormChecking fc = new FormChecking(OkMethod, Dummy, false);
-            fc.SpecialQuestion();
+            if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientList))
+            {
+                await Loading.Show();
+                FormChecking fc = new FormChecking(OkMethod, Dummy, false);
+                fc.SpecialQuestion();
+            }
+            else
+            {
+                Dispose();
+                Selected();
+            }
         }
         private void OkMethod()
         {
             Dispose();
-            if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientList))
-            {
-                MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-                mbe.LoadItem(GlobalVM.StockLayout.patientsTBI);
-            }
+            MenuButtonsEnabled mbe = new MenuButtonsEnabled();
+            mbe.LoadItem(GlobalVM.StockLayout.patientsTBI);
+            Selected();
         }
         private void Dummy() { }
     }

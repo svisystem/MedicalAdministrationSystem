@@ -37,7 +37,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 DialogBase.content.Content = value;
             }
         }
-        protected internal void Start()
+        protected internal async void Start()
         {
             if (important) DialogBase.icon.Source = new BitmapImage(new Uri("pack://application:,,,/MedicalAdministrationSystem;component/Icons/Warning.png"));
             else DialogBase.icon.Source = new BitmapImage(new Uri("pack://application:,,,/MedicalAdministrationSystem;component/Icons/Logo3.png"));
@@ -55,7 +55,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             
             DialogBase.yes.Focus();
             GlobalVM.MainWindow.Focusable = false;
-            GlobalVM.MainWindow.ShowMetroDialogAsync(DialogBase).GetAwaiter();
+            await GlobalVM.MainWindow.ShowMetroDialogAsync(DialogBase);
         }
         private async void Okmethod(object sender, EventArgs e)
         {

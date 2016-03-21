@@ -17,7 +17,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private BackgroundWorker Execute { get; set; }
         private BackgroundWorker NewPassThread { get; set; }
         private medicalEntities me { get; set; }
-        private bool workingConn { get; set; }
         private ObservableCollection<UserAdministrateMViewElements.UserRow> temp { get; set; }
         private NewPass newPass { get; set; }
         private Action Loaded { get; set; }

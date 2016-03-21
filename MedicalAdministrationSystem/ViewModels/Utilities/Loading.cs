@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
-    class Loading
+    static class Loading
     {
         private static MetroWindow metroWindow = GlobalVM.MainWindow;
         private static Views.Global.Loading loading = new Views.Global.Loading();

@@ -19,7 +19,6 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         private BackgroundWorker Execute { get; set; }
         private BackgroundWorker EraseBackground { get; set; }
         private medicalEntities me { get; set; }
-        private bool workingConn { get; set; }
         private Action Loaded { get; set; }
         protected internal PatientListVM(Action Loaded)
         {
@@ -280,9 +279,9 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             else Ok();
             fullRefresh = fullRefreshGiven;
         }
-        protected internal void Select()
+        protected internal void Select(Action Selected)
         {
-            SelectedPatient selectedPatient = new SelectedPatient();
+            SelectedPatient selectedPatient = new SelectedPatient(Selected);
             GlobalVM.StockLayout.headerContent.Content = selectedPatient;
             selectedPatient.Load(PatientListM.SelectedRow.Id, PatientListM.SelectedRow.Name);
         }

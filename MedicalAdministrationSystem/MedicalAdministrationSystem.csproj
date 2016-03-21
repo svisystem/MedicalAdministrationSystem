@@ -497,6 +497,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\Examination\" />
+    <Folder Include="ViewModels\Examination\" />
+    <Folder Include="Views\Examination\" />
     <Folder Include="Views\Schedule\" />
   </ItemGroup>
   <ItemGroup>

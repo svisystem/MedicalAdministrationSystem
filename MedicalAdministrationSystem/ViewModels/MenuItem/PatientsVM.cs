@@ -40,8 +40,8 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal void Selected()
         {
             if (GlobalVM.StockLayout.headerContent.Content == null)
-                patientDetails.button.IsEnabled = false;
-            else patientDetails.button.IsEnabled = true;
+                patientDetails.IsEnabledTrigger = false;
+            else patientDetails.IsEnabledTrigger = true;
         }
         protected internal void CheckUserData()
         {
@@ -77,21 +77,6 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         private void PatientDetailsView(object sender, EventArgs e)
         {
             Check((sender as Button).Parent as StockVerticalMenuItem, PatientDetailsLoad, Back);
-        }
-        private async void Check(StockVerticalMenuItem select, Action OK, Action No)
-        {
-            earlierItem = currentItem;
-            if (!currentItem.Equals(select))
-            {
-                await Utilities.Loading.Show();
-                currentItem = select;
-                new FormChecking(OK, No, true);
-            }
-        }
-        private void Back()
-        {
-            currentItem = earlierItem;
-            currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
         protected internal async void NewPatientLoad()
         {

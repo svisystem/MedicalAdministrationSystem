@@ -19,7 +19,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
         private medicalEntities me { get; set; }
-        private bool workingConn { get; set; }
         protected internal bool nonexist { get; set; }
         private userdata ud { get; set; }
         private bool fromPatient { get; set; } = false;
