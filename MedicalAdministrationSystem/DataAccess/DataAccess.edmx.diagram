@@ -4,24 +4,35 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="54d447c4f2f94aea9756d1b8019d95d8" Name="Diagram1">
-        <EntityTypeShape EntityType="medicalModel.accountdata" Width="1.5" PointX="0.75" PointY="20" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.belong_st" Width="1.5" PointX="8.25" PointY="17.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.companydata" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.doctorschedule" Width="1.5" PointX="5.25" PointY="20.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.evidencedata" Width="1.5" PointX="11.25" PointY="16.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.examinationdata" Width="1.5" PointX="8.25" PointY="13.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.examinationseachevidence_st" Width="1.5" PointX="13.5" PointY="15.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.gender_fx" Width="1.5" PointX="3.75" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.patientdata" Width="1.5" PointX="6" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.priviledges_fx" Width="1.5" PointX="1.5" PointY="25.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.scheduledata" Width="1.5" PointX="8.25" PointY="20.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.settlement_fx" Width="1.5" PointX="0.75" PointY="14.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.settlementzipcode_st" Width="1.5" PointX="3" PointY="10.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.status_fx" Width="1.5" PointX="6" PointY="23.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.treatmentdata" Width="1.5" PointX="6" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.userdata" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="medicalModel.zipcode_fx" Width="1.5" PointX="0.75" PointY="10.25" IsExpanded="true" />
+      <Diagram DiagramId="74c3e2796f364d718dc86a8b8fa2f073" Name="Diagram1">
+        <EntityTypeShape EntityType="medicalModel.accountdata" Width="1.5" PointX="0.75" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.belong_st" Width="1.5" PointX="8.25" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.companydata" Width="1.5" PointX="3" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.doctorschedule" Width="1.5" PointX="5.25" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.evidencedata" Width="1.5" PointX="11.25" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.evidencedata_st" Width="1.5" PointX="16.5" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.evidencedatadocuments" Width="1.5" PointX="14.25" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.examinationdata" Width="1.5" PointX="8.25" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.examinationdata_st" Width="1.5" PointX="13.5" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.examinationdatadocuments" Width="1.5" PointX="11.25" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.examinationseachevidence_st" Width="1.5" PointX="16.5" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.examinationseachimportedevidence" Width="1.5" PointX="13.5" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.gender_fx" Width="1.5" PointX="3.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.importedevidencedata" Width="1.5" PointX="8.25" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.importedevidencedata_st" Width="1.5" PointX="10.5" PointY="31.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.importedexaminationdata" Width="1.5" PointX="8.25" PointY="34.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.importedexaminationdata_st" Width="1.5" PointX="13.5" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.importedexaminationseachevidence_st" Width="1.5" PointX="13.5" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.importedexaminatioseachimportedevidence_st" Width="1.5" PointX="10.5" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.patientdata" Width="1.5" PointX="6" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.priviledges_fx" Width="1.5" PointX="1.5" PointY="34" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.scheduledata" Width="1.5" PointX="11.25" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.settlement_fx" Width="1.5" PointX="0.75" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.settlementzipcode_st" Width="1.5" PointX="3" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.status_fx" Width="1.5" PointX="9" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.treatmentdata" Width="1.5" PointX="6" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.userdata" Width="1.5" PointX="3" PointY="26.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="medicalModel.zipcode_fx" Width="1.5" PointX="0.75" PointY="18.875" IsExpanded="true" />
         <AssociationConnector Association="medicalModel.fk_UserData_AccountData1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_UserData_PriviledgeST1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_BelongST_DoctorData1" ManuallyRouted="false" />
@@ -29,15 +40,32 @@
         <AssociationConnector Association="medicalModel.fk_CompanyData_SettlementFX1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_CompanyData_ZipCodeFX1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_DoctorSchedule_DoctorData1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_EvidenceData_ST_evidencedata1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_EvidencedataData_DoctorData1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_EvidencedataData_PatientData1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_EvidencedataData_ScheduleData1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedExaminationsEachEvidence_ST_evidencedata1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_LabResultsEachExaminationST_ExaminationData1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_EvidenceData_ST_EvidenceDataDocuments1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedEvidenceData_ST_EvidenceDataDocuments1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_examinationdata_patientdata1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ExaminationData_ST_examinationdata1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_examinationdata_treatmentdata1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_examinationdata_userdata1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ExaminationsEachImportedEvidence_examinationdata1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_LabResultsEachExaminationST_LabResultsData1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ExaminationData_ST_Documents1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedExaminationData_ST_Documents1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ExaminationsEachImportedEvidence_ImportedEvidenceData1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_PatientData_Gender" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_UserData_Gender1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedEvidenceData_patientdata1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedEvidenceData_ST_ImportedEvidenceData1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedExaminationData_patientdata1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedExaminationData_ST_ImportedExaminationData1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1" ManuallyRouted="false" />
+        <AssociationConnector Association="medicalModel.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedExamina1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_PatientData_Settlement1" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_PatientData_Settlement2" ManuallyRouted="false" />
         <AssociationConnector Association="medicalModel.fk_PatientData_Settlement3" ManuallyRouted="false" />

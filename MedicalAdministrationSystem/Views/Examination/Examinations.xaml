@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="MedicalAdministrationSystem.Views.Examination.Examinations"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Examination">
+    <DockPanel LastChildFill="True">
+        <Grid>
+            <dxg:GridControl x:Name="grid"
+                    MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
+                    MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
+                    ItemsSource="{Binding PatientListM.PatientList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ShowBorder="False"
+                    SelectedItem="{Binding PatientListM.SelectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn Header="Vizsgálat neve" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding BirthName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="Vizsgálat időpontja" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:DateEditSettings MaskCulture="hu-HU" MaskType="DateTimeAdvancingCaret"
+                                    MaskUseAsDisplayFormat="True" AllowDefaultButton="False" Mask="F" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Header="Dokumentumok száma" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding BirthPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="Vizsgálat módosítása" MinWidth="120">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                                        Margin="-1">
+                                    <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="modify">
+                                        <Grid VerticalAlignment="Center" Margin="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ContentPresenter
+                                                    ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=EditGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                                    Margin="0,5,5,5" />
+                                            <TextBlock Text="Módosítás" Grid.Column="1" Foreground="#FF373A3D"
+                                                    VerticalAlignment="Center" Margin="0,5,5,5" />
+                                        </Grid>
+                                    </dxe:ButtonInfo>
+                                </dxe:ButtonEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Header="Vizsgálat törlése" MinWidth="100">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                                        Margin="-1">
+                                    <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="erase">
+                                        <Grid VerticalAlignment="Center" Margin="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ContentPresenter
+                                                    ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                                    Margin="0,5,5,5" />
+                                            <TextBlock Text="Törlés" Grid.Column="1" Foreground="#FF373A3D"
+                                                    VerticalAlignment="Center" Margin="0,5,5,5" />
+                                        </Grid>
+                                    </dxe:ButtonInfo>
+                                </dxe:ButtonEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView x:Name="view" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
+                            ShowGroupPanel="False" ShowIndicator="False" AllowScrollAnimation="True" AutoWidth="True"
+                            SearchPanelHorizontalAlignment="Right" BestFitMode="AllRows" AllowBestFit="True"
+                            BestFitArea="All" />
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+            <dxe:ButtonEdit Height="29" Margin="8,8,0,0" ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                    VerticalAlignment="Top" HorizontalAlignment="Left">
+                <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="Update">
+                    <Grid VerticalAlignment="Center" Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ContentPresenter
+                                ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=RefreshGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                Margin="0,5,5,5" />
+                        <TextBlock Text="Táblázat frissítése" Grid.Column="1" Foreground="#FF373A3D"
+                                VerticalAlignment="Center" Margin="0,5,5,5" />
+                    </Grid>
+                </dxe:ButtonInfo>
+            </dxe:ButtonEdit>
+        </Grid>
+    </DockPanel>
+</UserControl>

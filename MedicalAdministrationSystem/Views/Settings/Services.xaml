@@ -41,7 +41,7 @@
                     </dxe:ButtonEdit>
                     <Button Height="29" Content="Változtatások mentése" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Save" Margin="0,0,8,0"/>
                 </DockPanel>
-                <Separator DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Top"/>
+                <Separator DockPanel.Dock="Bottom" Margin="0"/>
                 <Grid DockPanel.Dock="Left">
                     <dxg:GridControl x:Name="grid" ItemsSource="{Binding ServicesM.Services, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SelectedItem="{Binding SelectedRow.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Row" ShowBorder="False">

@@ -166,13 +166,46 @@
     <Compile Include="DataAccess\evidencedata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\evidencedatadocuments.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\evidencedata_st.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\examinationdata.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\examinationdatadocuments.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\examinationdata_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\examinationseachevidence_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\examinationseachimportedevidence.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\gender_fx.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\importedevidencedata.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\importedevidencedata_st.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\importedexaminationdata.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\importedexaminationdata_st.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\importedexaminationseachevidence_st.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\importedexaminatioseachimportedevidence_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\patientdata.cs">
@@ -202,6 +235,7 @@
     <Compile Include="DataAccess\zipcode_fx.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Examination\ImportExaminationM.cs" />
     <Compile Include="Models\GlobalM.cs" />
     <Compile Include="Models\Patients\PatientDetailsMDataSet.cs" />
     <Compile Include="Models\Patients\PatientDetailsMViewElements.cs" />
@@ -222,6 +256,7 @@
     <Compile Include="Models\Users\PassChangeM.cs" />
     <Compile Include="Models\Users\RegistrationM.cs" />
     <Compile Include="Models\Users\SurgeryTimeM.cs" />
+    <Compile Include="ViewModels\Examination\ImportExaminationVM.cs" />
     <Compile Include="ViewModels\MenuItem\BillingVM.cs" />
     <Compile Include="ViewModels\MenuItem\EvidenceVM.cs" />
     <Compile Include="ViewModels\MenuItem\ExaminationVM.cs" />
@@ -265,6 +300,21 @@
     </Compile>
     <Compile Include="Views\Dialogs\TextBlock.xaml.cs">
       <DependentUpon>TextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Examination\Examinations.xaml.cs">
+      <DependentUpon>Examinations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Examination\ImportExamination.xaml.cs">
+      <DependentUpon>ImportExamination.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\File.xaml.cs">
+      <DependentUpon>File.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\Load.xaml.cs">
+      <DependentUpon>Load.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\New.xaml.cs">
+      <DependentUpon>New.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Global\Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
@@ -332,6 +382,26 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Dialogs\TextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Examination\Examinations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Examination\ImportExamination.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\File.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\Load.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\New.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -497,14 +567,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Examination\" />
-    <Folder Include="ViewModels\Examination\" />
-    <Folder Include="Views\Examination\" />
     <Folder Include="Views\Schedule\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Exit.png" />
     <Resource Include="Icons\Logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MahApps.Metro\MahApps.Metro.NET45.csproj">
+      <Project>{942d11c4-29f5-46c4-8c14-4b976d56c637}</Project>
+      <Name>MahApps.Metro.NET45</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataAccess\DataAccess.Context.tt">
@@ -517,12 +590,10 @@
       <DependentUpon>DataAccess.edmx</DependentUpon>
       <LastGenOutput>DataAccess.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\MahApps.Metro\MahApps.Metro.NET45.csproj">
-      <Project>{942d11c4-29f5-46c4-8c14-4b976d56c637}</Project>
-      <Name>MahApps.Metro.NET45</Name>
-    </ProjectReference>
+    <Resource Include="Icons\doc.png" />
+    <Resource Include="Icons\jpg.png" />
+    <Resource Include="Icons\pdf.png" />
+    <Resource Include="Icons\New.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

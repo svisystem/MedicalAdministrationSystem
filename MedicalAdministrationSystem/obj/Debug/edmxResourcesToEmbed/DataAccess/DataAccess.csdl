@@ -17,11 +17,12 @@
   </EntityType>
   <EntityType Name="belong_st">
     <Key>
-      <PropertyRef Name="IdBS" />
+      <PropertyRef Name="IdPD" />
+      <PropertyRef Name="IdUD" />
     </Key>
-    <Property Name="IdBS" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="IdPD" Type="Int32" Nullable="false" />
     <Property Name="IdUD" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
     <NavigationProperty Name="userdata" Relationship="Self.fk_BelongST_DoctorData1" FromRole="belong_st" ToRole="userdata" />
     <NavigationProperty Name="patientdata" Relationship="Self.fk_BelongST_PatientData1" FromRole="belong_st" ToRole="patientdata" />
   </EntityType>
@@ -63,11 +64,32 @@
     <Property Name="UserDataIdED" Type="Int32" Nullable="false" />
     <Property Name="ScheduleIdED" Type="Int32" />
     <Property Name="DateTimeED" Type="DateTime" Nullable="false" />
-    <Property Name="DataED" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="evidencedata_st" Relationship="Self.fk_EvidenceData_ST_evidencedata1" FromRole="evidencedata" ToRole="evidencedata_st" />
     <NavigationProperty Name="userdata" Relationship="Self.fk_EvidencedataData_DoctorData1" FromRole="evidencedata" ToRole="userdata" />
     <NavigationProperty Name="patientdata" Relationship="Self.fk_EvidencedataData_PatientData1" FromRole="evidencedata" ToRole="patientdata" />
     <NavigationProperty Name="scheduledata" Relationship="Self.fk_EvidencedataData_ScheduleData1" FromRole="evidencedata" ToRole="scheduledata" />
+    <NavigationProperty Name="importedexaminationseachevidence_st" Relationship="Self.fk_ImportedExaminationsEachEvidence_ST_evidencedata1" FromRole="evidencedata" ToRole="importedexaminationseachevidence_st" />
     <NavigationProperty Name="examinationseachevidence_st" Relationship="Self.fk_LabResultsEachExaminationST_ExaminationData1" FromRole="evidencedata" ToRole="examinationseachevidence_st" />
+  </EntityType>
+  <EntityType Name="evidencedata_st">
+    <Key>
+      <PropertyRef Name="IdED" />
+      <PropertyRef Name="IdEDD" />
+    </Key>
+    <Property Name="IdED" Type="Int32" Nullable="false" />
+    <Property Name="IdEDD" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
+    <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidenceData_ST_evidencedata1" FromRole="evidencedata_st" ToRole="evidencedata" />
+    <NavigationProperty Name="evidencedatadocuments" Relationship="Self.fk_EvidenceData_ST_EvidenceDataDocuments1" FromRole="evidencedata_st" ToRole="evidencedatadocuments" />
+  </EntityType>
+  <EntityType Name="evidencedatadocuments">
+    <Key>
+      <PropertyRef Name="IdEDD" />
+    </Key>
+    <Property Name="IdEDD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataEDD" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="evidencedata_st" Relationship="Self.fk_EvidenceData_ST_EvidenceDataDocuments1" FromRole="evidencedatadocuments" ToRole="evidencedata_st" />
+    <NavigationProperty Name="importedevidencedata_st" Relationship="Self.fk_ImportedEvidenceData_ST_EvidenceDataDocuments1" FromRole="evidencedatadocuments" ToRole="importedevidencedata_st" />
   </EntityType>
   <EntityType Name="examinationdata">
     <Key>
@@ -75,12 +97,35 @@
     </Key>
     <Property Name="IdEX" Type="Int32" Nullable="false" />
     <Property Name="PatientIdEX" Type="Int32" Nullable="false" />
+    <Property Name="DoctorIdEX" Type="Int32" Nullable="false" />
     <Property Name="DateTimeEX" Type="DateTime" Nullable="false" />
-    <Property Name="DataEX" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="TreatmentIdEX" Type="Int32" Nullable="false" />
     <NavigationProperty Name="patientdata" Relationship="Self.fk_examinationdata_patientdata1" FromRole="examinationdata" ToRole="patientdata" />
+    <NavigationProperty Name="examinationdata_st" Relationship="Self.fk_ExaminationData_ST_examinationdata1" FromRole="examinationdata" ToRole="examinationdata_st" />
     <NavigationProperty Name="treatmentdata" Relationship="Self.fk_examinationdata_treatmentdata1" FromRole="examinationdata" ToRole="treatmentdata" />
+    <NavigationProperty Name="userdata" Relationship="Self.fk_examinationdata_userdata1" FromRole="examinationdata" ToRole="userdata" />
+    <NavigationProperty Name="examinationseachimportedevidence" Relationship="Self.fk_ExaminationsEachImportedEvidence_examinationdata1" FromRole="examinationdata" ToRole="examinationseachimportedevidence" />
     <NavigationProperty Name="examinationseachevidence_st" Relationship="Self.fk_LabResultsEachExaminationST_LabResultsData1" FromRole="examinationdata" ToRole="examinationseachevidence_st" />
+  </EntityType>
+  <EntityType Name="examinationdata_st">
+    <Key>
+      <PropertyRef Name="IdEX" />
+      <PropertyRef Name="IdEXD" />
+    </Key>
+    <Property Name="IdEX" Type="Int32" Nullable="false" />
+    <Property Name="IdEXD" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
+    <NavigationProperty Name="examinationdata" Relationship="Self.fk_ExaminationData_ST_examinationdata1" FromRole="examinationdata_st" ToRole="examinationdata" />
+    <NavigationProperty Name="examinationdatadocuments" Relationship="Self.fk_ExaminationData_ST_Documents1" FromRole="examinationdata_st" ToRole="examinationdatadocuments" />
+  </EntityType>
+  <EntityType Name="examinationdatadocuments">
+    <Key>
+      <PropertyRef Name="IdEXD" />
+    </Key>
+    <Property Name="IdEXD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataEXD" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="examinationdata_st" Relationship="Self.fk_ExaminationData_ST_Documents1" FromRole="examinationdatadocuments" ToRole="examinationdata_st" />
+    <NavigationProperty Name="importedexaminationdata_st" Relationship="Self.fk_ImportedExaminationData_ST_Documents1" FromRole="examinationdatadocuments" ToRole="importedexaminationdata_st" />
   </EntityType>
   <EntityType Name="examinationseachevidence_st">
     <Key>
@@ -93,6 +138,17 @@
     <NavigationProperty Name="evidencedata" Relationship="Self.fk_LabResultsEachExaminationST_ExaminationData1" FromRole="examinationseachevidence_st" ToRole="evidencedata" />
     <NavigationProperty Name="examinationdata" Relationship="Self.fk_LabResultsEachExaminationST_LabResultsData1" FromRole="examinationseachevidence_st" ToRole="examinationdata" />
   </EntityType>
+  <EntityType Name="examinationseachimportedevidence">
+    <Key>
+      <PropertyRef Name="IdIED" />
+      <PropertyRef Name="IdEX" />
+    </Key>
+    <Property Name="IdIED" Type="Int32" Nullable="false" />
+    <Property Name="IdEX" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
+    <NavigationProperty Name="examinationdata" Relationship="Self.fk_ExaminationsEachImportedEvidence_examinationdata1" FromRole="examinationseachimportedevidence" ToRole="examinationdata" />
+    <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_ExaminationsEachImportedEvidence_ImportedEvidenceData1" FromRole="examinationseachimportedevidence" ToRole="importedevidencedata" />
+  </EntityType>
   <EntityType Name="gender_fx">
     <Key>
       <PropertyRef Name="IdG" />
@@ -101,6 +157,75 @@
     <Property Name="DataG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="patientdata" Relationship="Self.fk_PatientData_Gender" FromRole="gender_fx" ToRole="patientdata" />
     <NavigationProperty Name="userdata" Relationship="Self.fk_UserData_Gender1" FromRole="gender_fx" ToRole="userdata" />
+  </EntityType>
+  <EntityType Name="importedevidencedata">
+    <Key>
+      <PropertyRef Name="IdIED" />
+    </Key>
+    <Property Name="IdIED" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PatientIED" Type="Int32" Nullable="false" />
+    <Property Name="DateTimeIED" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="examinationseachimportedevidence" Relationship="Self.fk_ExaminationsEachImportedEvidence_ImportedEvidenceData1" FromRole="importedevidencedata" ToRole="examinationseachimportedevidence" />
+    <NavigationProperty Name="patientdata" Relationship="Self.fk_ImportedEvidenceData_patientdata1" FromRole="importedevidencedata" ToRole="patientdata" />
+    <NavigationProperty Name="importedevidencedata_st" Relationship="Self.fk_ImportedEvidenceData_ST_ImportedEvidenceData1" FromRole="importedevidencedata" ToRole="importedevidencedata_st" />
+    <NavigationProperty Name="importedexaminatioseachimportedevidence_st" Relationship="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1" FromRole="importedevidencedata" ToRole="importedexaminatioseachimportedevidence_st" />
+  </EntityType>
+  <EntityType Name="importedevidencedata_st">
+    <Key>
+      <PropertyRef Name="IdIED" />
+      <PropertyRef Name="IdEDD" />
+    </Key>
+    <Property Name="IdIED" Type="Int32" Nullable="false" />
+    <Property Name="IdEDD" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
+    <NavigationProperty Name="evidencedatadocuments" Relationship="Self.fk_ImportedEvidenceData_ST_EvidenceDataDocuments1" FromRole="importedevidencedata_st" ToRole="evidencedatadocuments" />
+    <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_ImportedEvidenceData_ST_ImportedEvidenceData1" FromRole="importedevidencedata_st" ToRole="importedevidencedata" />
+  </EntityType>
+  <EntityType Name="importedexaminationdata">
+    <Key>
+      <PropertyRef Name="IdIEX" />
+    </Key>
+    <Property Name="IdIEX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PatientIdIEX" Type="Int32" Nullable="false" />
+    <Property Name="DateTimeIEX" Type="DateTime" Nullable="false" />
+    <Property Name="NameIED" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="patientdata" Relationship="Self.fk_ImportedExaminationData_patientdata1" FromRole="importedexaminationdata" ToRole="patientdata" />
+    <NavigationProperty Name="importedexaminationdata_st" Relationship="Self.fk_ImportedExaminationData_ST_ImportedExaminationData1" FromRole="importedexaminationdata" ToRole="importedexaminationdata_st" />
+    <NavigationProperty Name="importedexaminationseachevidence_st" Relationship="Self.fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1" FromRole="importedexaminationdata" ToRole="importedexaminationseachevidence_st" />
+    <NavigationProperty Name="importedexaminatioseachimportedevidence_st" Relationship="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedExamina1" FromRole="importedexaminationdata" ToRole="importedexaminatioseachimportedevidence_st" />
+  </EntityType>
+  <EntityType Name="importedexaminationdata_st">
+    <Key>
+      <PropertyRef Name="IdIEX" />
+      <PropertyRef Name="IdEXD" />
+    </Key>
+    <Property Name="IdIEX" Type="Int32" Nullable="false" />
+    <Property Name="IdEXD" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
+    <NavigationProperty Name="examinationdatadocuments" Relationship="Self.fk_ImportedExaminationData_ST_Documents1" FromRole="importedexaminationdata_st" ToRole="examinationdatadocuments" />
+    <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_ImportedExaminationData_ST_ImportedExaminationData1" FromRole="importedexaminationdata_st" ToRole="importedexaminationdata" />
+  </EntityType>
+  <EntityType Name="importedexaminationseachevidence_st">
+    <Key>
+      <PropertyRef Name="IdED" />
+      <PropertyRef Name="IdIEX" />
+    </Key>
+    <Property Name="IdED" Type="Int32" Nullable="false" />
+    <Property Name="IdIEX" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
+    <NavigationProperty Name="evidencedata" Relationship="Self.fk_ImportedExaminationsEachEvidence_ST_evidencedata1" FromRole="importedexaminationseachevidence_st" ToRole="evidencedata" />
+    <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1" FromRole="importedexaminationseachevidence_st" ToRole="importedexaminationdata" />
+  </EntityType>
+  <EntityType Name="importedexaminatioseachimportedevidence_st">
+    <Key>
+      <PropertyRef Name="IdIED" />
+      <PropertyRef Name="IdIEX" />
+    </Key>
+    <Property Name="IdIED" Type="Int32" Nullable="false" />
+    <Property Name="IdIEX" Type="Int32" Nullable="false" />
+    <Property Name="Dummy" Type="Boolean" />
+    <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1" FromRole="importedexaminatioseachimportedevidence_st" ToRole="importedevidencedata" />
+    <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedExamina1" FromRole="importedexaminatioseachimportedevidence_st" ToRole="importedexaminationdata" />
   </EntityType>
   <EntityType Name="patientdata">
     <Key>
@@ -130,6 +255,8 @@
     <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_PatientData1" FromRole="patientdata" ToRole="evidencedata" />
     <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_patientdata1" FromRole="patientdata" ToRole="examinationdata" />
     <NavigationProperty Name="gender_fx" Relationship="Self.fk_PatientData_Gender" FromRole="patientdata" ToRole="gender_fx" />
+    <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_ImportedEvidenceData_patientdata1" FromRole="patientdata" ToRole="importedevidencedata" />
+    <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_ImportedExaminationData_patientdata1" FromRole="patientdata" ToRole="importedexaminationdata" />
     <NavigationProperty Name="settlement_fx" Relationship="Self.fk_PatientData_Settlement1" FromRole="patientdata" ToRole="settlement_fx" />
     <NavigationProperty Name="settlement_fx1" Relationship="Self.fk_PatientData_Settlement2" FromRole="patientdata" ToRole="settlement_fx" />
     <NavigationProperty Name="settlement_fx2" Relationship="Self.fk_PatientData_Settlement3" FromRole="patientdata" ToRole="settlement_fx" />
@@ -244,6 +371,7 @@
     <NavigationProperty Name="belong_st" Relationship="Self.fk_BelongST_DoctorData1" FromRole="userdata" ToRole="belong_st" />
     <NavigationProperty Name="doctorschedule" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="userdata" ToRole="doctorschedule" />
     <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_DoctorData1" FromRole="userdata" ToRole="evidencedata" />
+    <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_userdata1" FromRole="userdata" ToRole="examinationdata" />
     <NavigationProperty Name="gender_fx" Relationship="Self.fk_UserData_Gender1" FromRole="userdata" ToRole="gender_fx" />
     <NavigationProperty Name="scheduledata" Relationship="Self.fk_ScheduleData_DoctorData1" FromRole="userdata" ToRole="scheduledata" />
     <NavigationProperty Name="settlement_fx" Relationship="Self.fk_UserData_Settlement1" FromRole="userdata" ToRole="settlement_fx" />
@@ -346,6 +474,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_EvidenceData_ST_evidencedata1">
+    <End Role="evidencedata" Type="Self.evidencedata" Multiplicity="1" />
+    <End Role="evidencedata_st" Type="Self.evidencedata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="evidencedata">
+        <PropertyRef Name="IdED" />
+      </Principal>
+      <Dependent Role="evidencedata_st">
+        <PropertyRef Name="IdED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_EvidencedataData_DoctorData1">
     <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
     <End Role="evidencedata" Type="Self.evidencedata" Multiplicity="*" />
@@ -382,6 +522,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_ImportedExaminationsEachEvidence_ST_evidencedata1">
+    <End Role="evidencedata" Type="Self.evidencedata" Multiplicity="1" />
+    <End Role="importedexaminationseachevidence_st" Type="Self.importedexaminationseachevidence_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="evidencedata">
+        <PropertyRef Name="IdED" />
+      </Principal>
+      <Dependent Role="importedexaminationseachevidence_st">
+        <PropertyRef Name="IdED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_LabResultsEachExaminationST_ExaminationData1">
     <End Role="evidencedata" Type="Self.evidencedata" Multiplicity="1" />
     <End Role="examinationseachevidence_st" Type="Self.examinationseachevidence_st" Multiplicity="*" />
@@ -391,6 +543,30 @@
       </Principal>
       <Dependent Role="examinationseachevidence_st">
         <PropertyRef Name="IdED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_EvidenceData_ST_EvidenceDataDocuments1">
+    <End Role="evidencedatadocuments" Type="Self.evidencedatadocuments" Multiplicity="1" />
+    <End Role="evidencedata_st" Type="Self.evidencedata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="evidencedatadocuments">
+        <PropertyRef Name="IdEDD" />
+      </Principal>
+      <Dependent Role="evidencedata_st">
+        <PropertyRef Name="IdEDD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedEvidenceData_ST_EvidenceDataDocuments1">
+    <End Role="evidencedatadocuments" Type="Self.evidencedatadocuments" Multiplicity="1" />
+    <End Role="importedevidencedata_st" Type="Self.importedevidencedata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="evidencedatadocuments">
+        <PropertyRef Name="IdEDD" />
+      </Principal>
+      <Dependent Role="importedevidencedata_st">
+        <PropertyRef Name="IdEDD" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -406,6 +582,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_ExaminationData_ST_examinationdata1">
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="1" />
+    <End Role="examinationdata_st" Type="Self.examinationdata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="examinationdata">
+        <PropertyRef Name="IdEX" />
+      </Principal>
+      <Dependent Role="examinationdata_st">
+        <PropertyRef Name="IdEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_examinationdata_treatmentdata1">
     <End Role="treatmentdata" Type="Self.treatmentdata" Multiplicity="1" />
     <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
@@ -418,6 +606,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_examinationdata_userdata1">
+    <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="userdata">
+        <PropertyRef Name="IdUD" />
+      </Principal>
+      <Dependent Role="examinationdata">
+        <PropertyRef Name="DoctorIdEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ExaminationsEachImportedEvidence_examinationdata1">
+    <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="1" />
+    <End Role="examinationseachimportedevidence" Type="Self.examinationseachimportedevidence" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="examinationdata">
+        <PropertyRef Name="IdEX" />
+      </Principal>
+      <Dependent Role="examinationseachimportedevidence">
+        <PropertyRef Name="IdEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_LabResultsEachExaminationST_LabResultsData1">
     <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="1" />
     <End Role="examinationseachevidence_st" Type="Self.examinationseachevidence_st" Multiplicity="*" />
@@ -427,6 +639,42 @@
       </Principal>
       <Dependent Role="examinationseachevidence_st">
         <PropertyRef Name="IdEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ExaminationData_ST_Documents1">
+    <End Role="examinationdatadocuments" Type="Self.examinationdatadocuments" Multiplicity="1" />
+    <End Role="examinationdata_st" Type="Self.examinationdata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="examinationdatadocuments">
+        <PropertyRef Name="IdEXD" />
+      </Principal>
+      <Dependent Role="examinationdata_st">
+        <PropertyRef Name="IdEXD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedExaminationData_ST_Documents1">
+    <End Role="examinationdatadocuments" Type="Self.examinationdatadocuments" Multiplicity="1" />
+    <End Role="importedexaminationdata_st" Type="Self.importedexaminationdata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="examinationdatadocuments">
+        <PropertyRef Name="IdEXD" />
+      </Principal>
+      <Dependent Role="importedexaminationdata_st">
+        <PropertyRef Name="IdEXD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ExaminationsEachImportedEvidence_ImportedEvidenceData1">
+    <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="1" />
+    <End Role="examinationseachimportedevidence" Type="Self.examinationseachimportedevidence" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="importedevidencedata">
+        <PropertyRef Name="IdIED" />
+      </Principal>
+      <Dependent Role="examinationseachimportedevidence">
+        <PropertyRef Name="IdIED" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -451,6 +699,90 @@
       </Principal>
       <Dependent Role="userdata">
         <PropertyRef Name="GenderUD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedEvidenceData_patientdata1">
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
+    <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="patientdata">
+        <PropertyRef Name="IdPD" />
+      </Principal>
+      <Dependent Role="importedevidencedata">
+        <PropertyRef Name="IdIED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedEvidenceData_ST_ImportedEvidenceData1">
+    <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="1" />
+    <End Role="importedevidencedata_st" Type="Self.importedevidencedata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="importedevidencedata">
+        <PropertyRef Name="IdIED" />
+      </Principal>
+      <Dependent Role="importedevidencedata_st">
+        <PropertyRef Name="IdIED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1">
+    <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="1" />
+    <End Role="importedexaminatioseachimportedevidence_st" Type="Self.importedexaminatioseachimportedevidence_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="importedevidencedata">
+        <PropertyRef Name="IdIED" />
+      </Principal>
+      <Dependent Role="importedexaminatioseachimportedevidence_st">
+        <PropertyRef Name="IdIED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedExaminationData_patientdata1">
+    <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
+    <End Role="importedexaminationdata" Type="Self.importedexaminationdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="patientdata">
+        <PropertyRef Name="IdPD" />
+      </Principal>
+      <Dependent Role="importedexaminationdata">
+        <PropertyRef Name="PatientIdIEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedExaminationData_ST_ImportedExaminationData1">
+    <End Role="importedexaminationdata" Type="Self.importedexaminationdata" Multiplicity="1" />
+    <End Role="importedexaminationdata_st" Type="Self.importedexaminationdata_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="importedexaminationdata">
+        <PropertyRef Name="IdIEX" />
+      </Principal>
+      <Dependent Role="importedexaminationdata_st">
+        <PropertyRef Name="IdIEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1">
+    <End Role="importedexaminationdata" Type="Self.importedexaminationdata" Multiplicity="1" />
+    <End Role="importedexaminationseachevidence_st" Type="Self.importedexaminationseachevidence_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="importedexaminationdata">
+        <PropertyRef Name="IdIEX" />
+      </Principal>
+      <Dependent Role="importedexaminationseachevidence_st">
+        <PropertyRef Name="IdIEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedExamina1">
+    <End Role="importedexaminationdata" Type="Self.importedexaminationdata" Multiplicity="1" />
+    <End Role="importedexaminatioseachimportedevidence_st" Type="Self.importedexaminatioseachimportedevidence_st" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="importedexaminationdata">
+        <PropertyRef Name="IdIEX" />
+      </Principal>
+      <Dependent Role="importedexaminatioseachimportedevidence_st">
+        <PropertyRef Name="IdIEX" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -616,9 +948,20 @@
     <EntitySet Name="companydata" EntityType="Self.companydata" />
     <EntitySet Name="doctorschedule" EntityType="Self.doctorschedule" />
     <EntitySet Name="evidencedata" EntityType="Self.evidencedata" />
+    <EntitySet Name="evidencedata_st" EntityType="Self.evidencedata_st" />
+    <EntitySet Name="evidencedatadocuments" EntityType="Self.evidencedatadocuments" />
     <EntitySet Name="examinationdata" EntityType="Self.examinationdata" />
+    <EntitySet Name="examinationdata_st" EntityType="Self.examinationdata_st" />
+    <EntitySet Name="examinationdatadocuments" EntityType="Self.examinationdatadocuments" />
     <EntitySet Name="examinationseachevidence_st" EntityType="Self.examinationseachevidence_st" />
+    <EntitySet Name="examinationseachimportedevidence" EntityType="Self.examinationseachimportedevidence" />
     <EntitySet Name="gender_fx" EntityType="Self.gender_fx" />
+    <EntitySet Name="importedevidencedata" EntityType="Self.importedevidencedata" />
+    <EntitySet Name="importedevidencedata_st" EntityType="Self.importedevidencedata_st" />
+    <EntitySet Name="importedexaminationdata" EntityType="Self.importedexaminationdata" />
+    <EntitySet Name="importedexaminationdata_st" EntityType="Self.importedexaminationdata_st" />
+    <EntitySet Name="importedexaminationseachevidence_st" EntityType="Self.importedexaminationseachevidence_st" />
+    <EntitySet Name="importedexaminatioseachimportedevidence_st" EntityType="Self.importedexaminatioseachimportedevidence_st" />
     <EntitySet Name="patientdata" EntityType="Self.patientdata" />
     <EntitySet Name="priviledges_fx" EntityType="Self.priviledges_fx" />
     <EntitySet Name="scheduledata" EntityType="Self.scheduledata" />
@@ -656,6 +999,10 @@
       <End Role="userdata" EntitySet="userdata" />
       <End Role="doctorschedule" EntitySet="doctorschedule" />
     </AssociationSet>
+    <AssociationSet Name="fk_EvidenceData_ST_evidencedata1" Association="Self.fk_EvidenceData_ST_evidencedata1">
+      <End Role="evidencedata" EntitySet="evidencedata" />
+      <End Role="evidencedata_st" EntitySet="evidencedata_st" />
+    </AssociationSet>
     <AssociationSet Name="fk_EvidencedataData_DoctorData1" Association="Self.fk_EvidencedataData_DoctorData1">
       <End Role="userdata" EntitySet="userdata" />
       <End Role="evidencedata" EntitySet="evidencedata" />
@@ -668,21 +1015,57 @@
       <End Role="scheduledata" EntitySet="scheduledata" />
       <End Role="evidencedata" EntitySet="evidencedata" />
     </AssociationSet>
+    <AssociationSet Name="fk_ImportedExaminationsEachEvidence_ST_evidencedata1" Association="Self.fk_ImportedExaminationsEachEvidence_ST_evidencedata1">
+      <End Role="evidencedata" EntitySet="evidencedata" />
+      <End Role="importedexaminationseachevidence_st" EntitySet="importedexaminationseachevidence_st" />
+    </AssociationSet>
     <AssociationSet Name="fk_LabResultsEachExaminationST_ExaminationData1" Association="Self.fk_LabResultsEachExaminationST_ExaminationData1">
       <End Role="evidencedata" EntitySet="evidencedata" />
       <End Role="examinationseachevidence_st" EntitySet="examinationseachevidence_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_EvidenceData_ST_EvidenceDataDocuments1" Association="Self.fk_EvidenceData_ST_EvidenceDataDocuments1">
+      <End Role="evidencedatadocuments" EntitySet="evidencedatadocuments" />
+      <End Role="evidencedata_st" EntitySet="evidencedata_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedEvidenceData_ST_EvidenceDataDocuments1" Association="Self.fk_ImportedEvidenceData_ST_EvidenceDataDocuments1">
+      <End Role="evidencedatadocuments" EntitySet="evidencedatadocuments" />
+      <End Role="importedevidencedata_st" EntitySet="importedevidencedata_st" />
     </AssociationSet>
     <AssociationSet Name="fk_examinationdata_patientdata1" Association="Self.fk_examinationdata_patientdata1">
       <End Role="patientdata" EntitySet="patientdata" />
       <End Role="examinationdata" EntitySet="examinationdata" />
     </AssociationSet>
+    <AssociationSet Name="fk_ExaminationData_ST_examinationdata1" Association="Self.fk_ExaminationData_ST_examinationdata1">
+      <End Role="examinationdata" EntitySet="examinationdata" />
+      <End Role="examinationdata_st" EntitySet="examinationdata_st" />
+    </AssociationSet>
     <AssociationSet Name="fk_examinationdata_treatmentdata1" Association="Self.fk_examinationdata_treatmentdata1">
       <End Role="treatmentdata" EntitySet="treatmentdata" />
       <End Role="examinationdata" EntitySet="examinationdata" />
     </AssociationSet>
+    <AssociationSet Name="fk_examinationdata_userdata1" Association="Self.fk_examinationdata_userdata1">
+      <End Role="userdata" EntitySet="userdata" />
+      <End Role="examinationdata" EntitySet="examinationdata" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ExaminationsEachImportedEvidence_examinationdata1" Association="Self.fk_ExaminationsEachImportedEvidence_examinationdata1">
+      <End Role="examinationdata" EntitySet="examinationdata" />
+      <End Role="examinationseachimportedevidence" EntitySet="examinationseachimportedevidence" />
+    </AssociationSet>
     <AssociationSet Name="fk_LabResultsEachExaminationST_LabResultsData1" Association="Self.fk_LabResultsEachExaminationST_LabResultsData1">
       <End Role="examinationdata" EntitySet="examinationdata" />
       <End Role="examinationseachevidence_st" EntitySet="examinationseachevidence_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ExaminationData_ST_Documents1" Association="Self.fk_ExaminationData_ST_Documents1">
+      <End Role="examinationdatadocuments" EntitySet="examinationdatadocuments" />
+      <End Role="examinationdata_st" EntitySet="examinationdata_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedExaminationData_ST_Documents1" Association="Self.fk_ImportedExaminationData_ST_Documents1">
+      <End Role="examinationdatadocuments" EntitySet="examinationdatadocuments" />
+      <End Role="importedexaminationdata_st" EntitySet="importedexaminationdata_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ExaminationsEachImportedEvidence_ImportedEvidenceData1" Association="Self.fk_ExaminationsEachImportedEvidence_ImportedEvidenceData1">
+      <End Role="importedevidencedata" EntitySet="importedevidencedata" />
+      <End Role="examinationseachimportedevidence" EntitySet="examinationseachimportedevidence" />
     </AssociationSet>
     <AssociationSet Name="fk_PatientData_Gender" Association="Self.fk_PatientData_Gender">
       <End Role="gender_fx" EntitySet="gender_fx" />
@@ -691,6 +1074,34 @@
     <AssociationSet Name="fk_UserData_Gender1" Association="Self.fk_UserData_Gender1">
       <End Role="gender_fx" EntitySet="gender_fx" />
       <End Role="userdata" EntitySet="userdata" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedEvidenceData_patientdata1" Association="Self.fk_ImportedEvidenceData_patientdata1">
+      <End Role="patientdata" EntitySet="patientdata" />
+      <End Role="importedevidencedata" EntitySet="importedevidencedata" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedEvidenceData_ST_ImportedEvidenceData1" Association="Self.fk_ImportedEvidenceData_ST_ImportedEvidenceData1">
+      <End Role="importedevidencedata" EntitySet="importedevidencedata" />
+      <End Role="importedevidencedata_st" EntitySet="importedevidencedata_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1" Association="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1">
+      <End Role="importedevidencedata" EntitySet="importedevidencedata" />
+      <End Role="importedexaminatioseachimportedevidence_st" EntitySet="importedexaminatioseachimportedevidence_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedExaminationData_patientdata1" Association="Self.fk_ImportedExaminationData_patientdata1">
+      <End Role="patientdata" EntitySet="patientdata" />
+      <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedExaminationData_ST_ImportedExaminationData1" Association="Self.fk_ImportedExaminationData_ST_ImportedExaminationData1">
+      <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
+      <End Role="importedexaminationdata_st" EntitySet="importedexaminationdata_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1" Association="Self.fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1">
+      <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
+      <End Role="importedexaminationseachevidence_st" EntitySet="importedexaminationseachevidence_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedExamina1" Association="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedExamina1">
+      <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
+      <End Role="importedexaminatioseachimportedevidence_st" EntitySet="importedexaminatioseachimportedevidence_st" />
     </AssociationSet>
     <AssociationSet Name="fk_PatientData_Settlement1" Association="Self.fk_PatientData_Settlement1">
       <End Role="settlement_fx" EntitySet="settlement_fx" />

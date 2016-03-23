@@ -1,4 +1,5 @@
 ﻿using MedicalAdministrationSystem.ViewModels.Utilities;
+using MedicalAdministrationSystem.Views.Examination;
 using MedicalAdministrationSystem.Views.Global;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         private void ImportExaminationView(object sender, EventArgs e)
         {
-            Check((sender as Button).Parent as StockVerticalMenuItem, ImportExamiationLoad, Back);
+            Check((sender as Button).Parent as StockVerticalMenuItem, ImportExaminationLoad, Back);
         }
         private void NewExaminaionView(object sender, EventArgs e)
         {
@@ -75,27 +76,27 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ExaminationsLoad()
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate () { return new Registration(); }), examinations);
+            ViewLoad(new Func<UserControl>(delegate { return new Examinations(); }), examinations);
         }
-        protected internal async void ImportExamiationLoad()
+        protected internal async void ImportExaminationLoad()
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate () { return new Registration(); }), importExamination);
+            ViewLoad(new Func<UserControl>(delegate { return new ImportExamination(); }), importExamination);
         }
         protected internal async void NewExaminationLoad()
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate () { return new Registration(); }), newExamination);
+            //ViewLoad(new Func<UserControl>(delegate { return new Registration(); }), newExamination);
         }
         protected internal async void ViewLoad()
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate () { return new Registration(); }), view);
+            //ViewLoad(new Func<UserControl>(delegate { return new Registration(); }), view);
         }
         protected internal async void ExaminationPlanLoad()
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate () { return new Registration(); }), examinationPlan);
+            //ViewLoad(new Func<UserControl>(delegate { return new Registration(); }), examinationPlan);
         }
     }
 }

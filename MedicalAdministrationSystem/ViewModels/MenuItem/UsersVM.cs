@@ -165,22 +165,22 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void RegistrationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate () { return new Registration(); }), registration);
+            ViewLoad(new Func<UserControl>(delegate { return new Registration(); }), registration);
         }
         protected internal async void LoginLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate () { return new Login(); }), login);
+            ViewLoad(new Func<UserControl>(delegate { return new Login(); }), login);
         }
         protected internal async void PassChangeLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate () { return new PassChange(); }), passChange);
+            ViewLoad(new Func<UserControl>(delegate { return new PassChange(); }), passChange);
         }
         protected internal async void DetailsModifyLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate ()
+            ViewLoad(new Func<UserControl>(delegate
             {
                 if (!fromPatient) return new DetailsModify();
                 else return new DetailsModify(fromPatient);
@@ -189,7 +189,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void SurgeryTimeLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate () { return new SurgeryTime(); }), surgeryTime);
+            ViewLoad(new Func<UserControl>(delegate { return new SurgeryTime(); }), surgeryTime);
         }
     }
 }

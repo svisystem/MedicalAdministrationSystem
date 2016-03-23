@@ -17,17 +17,24 @@ namespace MedicalAdministrationSystem.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public examinationdata()
         {
+            this.examinationdata_st = new HashSet<examinationdata_st>();
+            this.examinationseachimportedevidence = new HashSet<examinationseachimportedevidence>();
             this.examinationseachevidence_st = new HashSet<examinationseachevidence_st>();
         }
     
         public int IdEX { get; set; }
         public int PatientIdEX { get; set; }
+        public int DoctorIdEX { get; set; }
         public System.DateTime DateTimeEX { get; set; }
-        public string DataEX { get; set; }
         public int TreatmentIdEX { get; set; }
     
         public virtual patientdata patientdata { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<examinationdata_st> examinationdata_st { get; set; }
         public virtual treatmentdata treatmentdata { get; set; }
+        public virtual userdata userdata { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<examinationseachimportedevidence> examinationseachimportedevidence { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<examinationseachevidence_st> examinationseachevidence_st { get; set; }
     }

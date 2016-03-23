@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="MedicalAdministrationSystem.Views.Fragments.Load"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments">
+    <DockPanel LastChildFill="True" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Button Margin="0,0,0,10" DockPanel.Dock="Top">
+                <DockPanel>
+                    <Image Height="64" DockPanel.Dock="Left"
+                            Source="pack://application:,,,/MedicalAdministrationSystem;component/Icons/doc.png"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,10" />
+                    <TextBlock Text="Új Word dokumetum" VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Margin="10,0,0,0" />
+                </DockPanel>
+            </Button>
+            <Button Margin="0,0,0,10" DockPanel.Dock="Top">
+                <DockPanel Width="183">
+                    <Image Height="64" DockPanel.Dock="Left"
+                            Source="pack://application:,,,/MedicalAdministrationSystem;component/Icons/pdf.png"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,10" />
+                    <TextBlock Text="Új PDF dokumetum" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" />
+                </DockPanel>
+            </Button>
+        <Button>
+            <DockPanel LastChildFill="True" Width="183">
+                <Image Height="64" DockPanel.Dock="Left"
+                        Source="pack://application:,,,/MedicalAdministrationSystem;component/Icons/jpg.png"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,10" />
+                <TextBlock Text="Új kép fájl" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" />
+            </DockPanel>
+        </Button>
+    </DockPanel>
+</UserControl>

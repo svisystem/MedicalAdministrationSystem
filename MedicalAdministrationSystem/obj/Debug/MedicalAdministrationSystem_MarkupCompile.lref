@@ -2,6 +2,11 @@
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\App.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Dialogs\NewPass.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Dialogs\TextBlock.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\Examinations.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ImportExamination.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\File.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\Load.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\New.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Global\Loading.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Patients\PatientDetails.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Patients\PatientList.xaml;;

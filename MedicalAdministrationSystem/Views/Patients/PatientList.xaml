@@ -1,52 +1,63 @@
 ﻿<UserControl x:Class="MedicalAdministrationSystem.Views.Patients.PatientList"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-    xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Patients">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Patients">
     <DockPanel LastChildFill="True">
-        <DockPanel DockPanel.Dock="Bottom" Height="40" Background="White">
+        <DockPanel DockPanel.Dock="Bottom" Height="40">
             <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
-            <Grid>
-                <Button Height="29" Content="Változtatások mentése" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Save"/>
-            </Grid>
+            <Button Height="29" Content="Változtatások mentése" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Click="Save" />
         </DockPanel>
         <Grid>
-            <dxg:GridControl x:Name="grid" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
-            MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
-            ItemsSource="{Binding PatientListM.PatientList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShowBorder="False"
-            SelectedItem="{Binding PatientListM.SelectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <dxg:GridControl x:Name="grid"
+                    MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
+                    MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
+                    ItemsSource="{Binding PatientListM.PatientList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ShowBorder="False"
+                    SelectedItem="{Binding PatientListM.SelectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <dxg:GridControl.Columns>
-                    <dxg:GridColumn Header="Páciens kiválasztása" MinWidth="120" AllowBestFit="True" BestFitArea="All" BestFitMode="AllRows">
+                    <dxg:GridColumn Header="Páciens kiválasztása" MinWidth="120">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Kiválasztás" Margin="-1" Click="select"/>
+                                <Button Content="Kiválasztás" Margin="-1" Click="select" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn Header="Páciens neve" MinWidth="120" AllowFocus="False" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AllowBestFit="True" BestFitArea="All" BestFitMode="AllRows"/>
-                    <dxg:GridColumn Header="Születési neve" MinWidth="120" AllowFocus="False" Binding="{Binding BirthName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AllowBestFit="True" BestFitArea="All" BestFitMode="AllRows"/>
-                    <dxg:GridColumn Header="Születési helye" MinWidth="120" AllowFocus="False" Binding="{Binding BirthPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <dxg:GridColumn Header="TAJ száma" MinWidth="120" AllowFocus="False" Binding="{Binding TajNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <dxg:GridColumn Header="Irányítószáma" MinWidth="120" AllowFocus="False" Binding="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <dxg:GridColumn Header="Település" MinWidth="120" AllowFocus="False" Binding="{Binding Settlement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <dxg:GridColumn Header="Lakcím" MinWidth="120" AllowFocus="False" Binding="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <dxg:GridColumn Header="Páciens neve" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="Születési neve" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding BirthName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <dxg:GridColumn Header="Születési helye" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding BirthPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="TAJ száma" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding TajNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="Irányítószáma" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="Település" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding Settlement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="Lakcím" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <dxg:GridColumn Header="Kiterjesztés" MinWidth="120">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:PopupBaseEdit Margin="-1" Text="Felhasználók" PopupMaxHeight="100" ShowBorder="False" IsTextEditable="False" HorizontalContentAlignment="Center">
+                                <dxe:PopupBaseEdit Margin="-1" Text="Felhasználók" PopupMaxHeight="100"
+                                        ShowBorder="False" IsTextEditable="False" HorizontalContentAlignment="Center">
                                     <dxe:PopupBaseEdit.PopupContentTemplate>
                                         <ControlTemplate>
-                                            <dxe:ListBoxEdit ShowBorder="False" ItemsSource="{Binding Path=RowData.Row.BelongUsers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0">
+                                            <dxe:ListBoxEdit ShowBorder="False"
+                                                    ItemsSource="{Binding Path=RowData.Row.BelongUsers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Margin="0">
                                                 <dxe:ListBoxEdit.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Horizontal">
-                                                            <dxe:CheckEdit x:Name="check" Margin="0,0,3,0" IsChecked="{Binding Belong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDown="check_MouseDown"/>
-                                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                                            <dxe:CheckEdit x:Name="check" Margin="0,0,3,0"
+                                                                    IsChecked="{Binding Belong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    MouseDown="check_MouseDown" />
+                                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </dxe:ListBoxEdit.ItemTemplate>
@@ -60,15 +71,19 @@
                     <dxg:GridColumn Header="Páciens törlése" MinWidth="120">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0" Margin="-1">
+                                <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                                        Margin="-1">
                                     <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="erase">
                                         <Grid VerticalAlignment="Center" Margin="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <ContentPresenter ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}" Margin="0,5,5,5"/>
-                                            <TextBlock Text="Törlés" Grid.Column="1" Foreground="#FF373A3D" VerticalAlignment="Center" Margin="0,5,5,5"/>
+                                            <ContentPresenter
+                                                    ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                                    Margin="0,5,5,5" />
+                                            <TextBlock Text="Törlés" Grid.Column="1" Foreground="#FF373A3D"
+                                                    VerticalAlignment="Center" Margin="0,5,5,5" />
                                         </Grid>
                                     </dxe:ButtonInfo>
                                 </dxe:ButtonEdit>
@@ -77,27 +92,34 @@
                     </dxg:GridColumn>
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.View>
-                    <dxg:TableView x:Name="view" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés" ShowGroupPanel="False"
-                        ShowIndicator="False" AllowScrollAnimation="True" AutoWidth="True" SearchPanelHorizontalAlignment="Right" BestFitMode="AllRows"/>
+                    <dxg:TableView x:Name="view" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
+                            ShowGroupPanel="False" ShowIndicator="False" AllowScrollAnimation="True" AutoWidth="True"
+                            SearchPanelHorizontalAlignment="Right" BestFitMode="AllRows" AllowBestFit="True"
+                            BestFitArea="All" />
                 </dxg:GridControl.View>
             </dxg:GridControl>
-            <dxe:ButtonEdit Height="29" Margin="8,8,0,0" ShowText="False" AllowDefaultButton="False" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <dxe:ButtonEdit Height="29" Margin="8,8,0,0" ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                    VerticalAlignment="Top" HorizontalAlignment="Left">
                 <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="Update">
                     <Grid VerticalAlignment="Center" Margin="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ContentPresenter ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=RefreshGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}" Margin="0,5,5,5"/>
-                        <TextBlock Text="Táblázat frissítése" Grid.Column="1" Foreground="#FF373A3D" VerticalAlignment="Center" Margin="0,5,5,5"/>
+                        <ContentPresenter
+                                ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=RefreshGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                Margin="0,5,5,5" />
+                        <TextBlock Text="Táblázat frissítése" Grid.Column="1" Foreground="#FF373A3D"
+                                VerticalAlignment="Center" Margin="0,5,5,5" />
                     </Grid>
                 </dxe:ButtonInfo>
             </dxe:ButtonEdit>
-            <dxe:ComboBoxEdit x:Name="selectedUser" HorizontalAlignment="Left" Margin="144,11,0,0" VerticalAlignment="Top" Width="150"
-                SelectedItem="{Binding PatientListM.SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ItemsSource="{Binding PatientListM.UserSelectionList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                DisplayMember="Name" IsTextEditable="False" PopupFooterButtons="None"
-                EditValueChanged="selectedUser_EditValueChanged"/>
+            <dxe:ComboBoxEdit x:Name="selectedUser" HorizontalAlignment="Left" Margin="144,11,0,0"
+                    VerticalAlignment="Top" Width="150"
+                    SelectedItem="{Binding PatientListM.SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding PatientListM.UserSelectionList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    DisplayMember="Name" IsTextEditable="False" PopupFooterButtons="None"
+                    EditValueChanged="selectedUser_EditValueChanged" />
         </Grid>
     </DockPanel>
 </UserControl>

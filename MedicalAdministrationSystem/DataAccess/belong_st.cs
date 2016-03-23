@@ -14,9 +14,9 @@ namespace MedicalAdministrationSystem.DataAccess
     
     public partial class belong_st
     {
-        public int IdBS { get; set; }
         public int IdPD { get; set; }
         public int IdUD { get; set; }
+        public Nullable<bool> Dummy { get; set; }
     
         public virtual userdata userdata { get; set; }
         public virtual patientdata patientdata { get; set; }

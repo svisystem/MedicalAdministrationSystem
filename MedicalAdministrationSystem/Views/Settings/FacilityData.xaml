@@ -41,7 +41,7 @@
     </utilities:ViewExtender.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel DockPanel.Dock="Top" Height="45" Background="White" LastChildFill="True">
-            <Separator DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <Separator DockPanel.Dock="Bottom" Margin="0" />
             <dxe:ButtonEdit DockPanel.Dock="Left" Height="29" Margin="8,0,0,0" ShowText="False" AllowDefaultButton="False" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Left">
                 <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="ButtonInfo_Click">
                     <Grid VerticalAlignment="Center" Margin="0">

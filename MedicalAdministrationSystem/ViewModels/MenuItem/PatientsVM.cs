@@ -81,17 +81,17 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void NewPatientLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate () { return new PatientDetails(true); }), newPatient);
+            ViewLoad(new Func<UserControl>(delegate { return new PatientDetails(true); }), newPatient);
         }
         protected internal async void PatientListLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate () { return new PatientList(Selected); }), patientList);
+            ViewLoad(new Func<UserControl>(delegate { return new PatientList(Selected); }), patientList);
         }
         protected internal async void PatientDetailsLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate () { return new PatientDetails(false); }), patientDetails);
+            ViewLoad(new Func<UserControl>(delegate { return new PatientDetails(false); }), patientDetails);
         }
     }
 }
