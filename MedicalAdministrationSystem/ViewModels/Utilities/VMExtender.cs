@@ -45,7 +45,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             earlierItem = currentItem;
             if (!currentItem.Equals(select))
             {
-                await Utilities.Loading.Show();
+                await Loading.Show();
                 currentItem = select;
                 new FormChecking(OK, No, true);
             }

@@ -1,35 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MedicalAdministrationSystem.Views.Fragments
 {
     public partial class File : UserControl
     {
-        public File()
+        private string Type { get; set; }
+        private Action<ContentControl, string> show { get; set; }
+        private Action<ContentControl, string> erase { get; set; }
+        public File(string Type, Action<ContentControl, string> Show, Action<ContentControl, string> Erase)
         {
+            this.Type = Type;
+            this.show = Show;
+            this.erase = Erase;
             InitializeComponent();
+            Icon();
         }
 
         private void Show(object sender, RoutedEventArgs e)
         {
-
+            show(this, Type);
         }
 
         private void Erase(object sender, RoutedEventArgs e)
         {
-
+            erase(this, Type);
+        }
+        private void Dispose()
+        {
+            //TODO
+        }
+        private void Icon()
+        {
+            icon.Source = new BitmapImage(new Uri("pack://application:,,,/MedicalAdministrationSystem;component/Icons/" + Type + ".png"));
         }
     }
 }

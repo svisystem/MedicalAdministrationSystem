@@ -12,7 +12,7 @@ namespace MedicalAdministrationSystem.ViewModels
         public static StockLayout StockLayout = new StockLayout();
         public static StockWindow MainWindow = new StockWindow();
         public static GlobalM GlobalM = new GlobalM();
-        public static void StartUp()
+        public async static void StartUp()
         {
             DevExpress.Xpf.Core.DXGridDataController.DisableThreadingProblemsDetection = true;
             MainWindow = new StockWindow();

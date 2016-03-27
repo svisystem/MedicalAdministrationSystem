@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments">
     <DockPanel LastChildFill="True" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Button Margin="0,0,0,10" DockPanel.Dock="Top">
+        <Button Margin="0,0,0,10" DockPanel.Dock="Top" Click="DOCClick">
                 <DockPanel>
                     <Image Height="64" DockPanel.Dock="Left"
                             Source="pack://application:,,,/MedicalAdministrationSystem;component/Icons/doc.png"
@@ -13,7 +13,7 @@
                         Margin="10,0,0,0" />
                 </DockPanel>
             </Button>
-            <Button Margin="0,0,0,10" DockPanel.Dock="Top">
+            <Button Margin="0,0,0,10" DockPanel.Dock="Top" Click="PDFClick">
                 <DockPanel Width="183">
                     <Image Height="64" DockPanel.Dock="Left"
                             Source="pack://application:,,,/MedicalAdministrationSystem;component/Icons/pdf.png"
@@ -21,7 +21,7 @@
                     <TextBlock Text="Új PDF dokumetum" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" />
                 </DockPanel>
             </Button>
-        <Button>
+        <Button Click="JPGClick">
             <DockPanel LastChildFill="True" Width="183">
                 <Image Height="64" DockPanel.Dock="Left"
                         Source="pack://application:,,,/MedicalAdministrationSystem;component/Icons/jpg.png"

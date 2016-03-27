@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpf.Core;
 using MedicalAdministrationSystem.ViewModels;
 using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,15 +11,27 @@ namespace MedicalAdministrationSystem
 {
     public partial class App : Application
     {
-        private async void Application_Startup(object sender, StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
             GlobalVM.StartUp();
-            await Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(() =>
             Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
                 {
                     ApplicationThemeHelper.UpdateApplicationThemeName();
                 }))
             , CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("hu-HU");
+
+            //// The following line provides localization for the application's user interface. 
+            //Thread.CurrentThread.CurrentUICulture = culture;
+
+            //// The following line provides localization for data formats. 
+            //Thread.CurrentThread.CurrentCulture = culture;
+
+            // Set this culture as the default culture for all threads in this application. 
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
     }
 }

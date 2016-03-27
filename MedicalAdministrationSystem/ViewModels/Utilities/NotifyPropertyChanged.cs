@@ -44,7 +44,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
 
         private bool _notifyingObjectIsChanged;
 
-        private readonly object _notifyingObjectIsChangedSyncRoot = new Object();
+        private readonly object _notifyingObjectIsChangedSyncRoot = new object();
         public void AcceptChanges()
         {
             this.IsChanged = false;

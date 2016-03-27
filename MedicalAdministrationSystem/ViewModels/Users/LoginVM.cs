@@ -3,12 +3,16 @@ using MedicalAdministrationSystem.Models.Users;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
 using MedicalAdministrationSystem.Views.Global;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels.Users
 {
@@ -25,49 +29,52 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         protected internal LoginVM()
         {
             LoginM = new LoginM();
-            Loading = new BackgroundWorker();
-            Loading.DoWork += new DoWorkEventHandler(LoadingModel);
-            Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
-            Loading.RunWorkerAsync();
+            Start();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        protected internal async void Start()
         {
-            try
+            await Task.Factory.StartNew(() =>
             {
-                using (me = new medicalEntities())
+                try
                 {
-                    me.Database.Connection.Open();
-                    LoginM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
-                    me.Database.Connection.Close();
-                    workingConn = true;
+                    using (me = new medicalEntities())
+                    {
+                        me.Database.Connection.Open();
+                        LoginM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
+                        me.Database.Connection.Close();
+                        workingConn = true;
+                    }
                 }
-            }
-            catch
-            {
-                workingConn = false;
-            }
-            finally
-            {
-                if (!workingConn)
+                catch
                 {
-                    config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    LoginM.ExistUsers = new List<string> { config.AppSettings.Settings["securityUserName"].Value };
+                    workingConn = false;
                 }
-            }
-        }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
-        {
-            LoginM.AcceptChanges();
-            if (!workingConn)
+                finally
+                {
+                    if (!workingConn)
+                    {
+                        config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                        LoginM.ExistUsers = new List<string> { config.AppSettings.Settings["securityUserName"].Value };
+                    }
+                }
+            }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
-                dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", Dummy);
-                dialog.content = new TextBlock("Adatbáziskapcsolat nélkül nem lehet megfelelően használni az alkalmazást\n" +
-                    "Első használat alkalmával be kell konfigurálni az adatbázis kapcsolatot\n" +
-                    "Kérjük jelezze a problémát a rendszergazdának");
-                dialog.Start();
-                (GlobalVM.StockLayout.verticalMenu.Children[0] as StockVerticalMenuItem).IsEnabledTrigger = false;
-            }
-            Utilities.Loading.Hide();
+                LoginM.AcceptChanges();
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
+                {
+                    if (!workingConn)
+                    {
+                        dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", Dummy);
+                        dialog.content = new TextBlock("Adatbáziskapcsolat nélkül nem lehet megfelelően használni az alkalmazást\n" +
+                            "Első használat alkalmával be kell konfigurálni az adatbázis kapcsolatot\n" +
+                            "Kérjük jelezze a problémát a rendszergazdának");
+                        dialog.Start();
+                        (GlobalVM.StockLayout.verticalMenu.Children[0] as StockVerticalMenuItem).IsEnabledTrigger = false;
+                    }
+                    Utilities.Loading.Hide();
+                }));
+                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            });
         }
         protected internal async void ExecuteMethod()
         {

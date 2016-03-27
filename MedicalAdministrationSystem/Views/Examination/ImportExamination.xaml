@@ -7,7 +7,7 @@
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Examination"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities" Width="1016.5">
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
     <utilities:ViewExtender.Resources>
         <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
             <Viewbox Stretch="None">
@@ -43,53 +43,84 @@
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Right"
                 Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}">
-            <Label Content="Importált dokumentumok:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10"
-                    HorizontalAlignment="Center" />
-            <dxe:ListBoxEdit ShowBorder="False" Padding="0,5" />
+            <Label Content="Dokumentumok:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="13,10,10,10"
+                    HorizontalAlignment="Left" />
+            <dxe:ListBoxEdit x:Name="listBox"
+                    SelectedItem="{Binding ImportExaminationM.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding ImportExaminationM.ExaminationList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ShowBorder="False" Padding="0,40,0,0" HorizontalContentAlignment="Center"
+                    ScrollViewer.CanContentScroll="False" IsTabStop="False">
+                <dxe:ListBoxEdit.ItemTemplate>
+                    <DataTemplate>
+                        <UserControl Content="{Binding Button, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,0,10,10" />
+                    </DataTemplate>
+                </dxe:ListBoxEdit.ItemTemplate>
+                <dxe:ListBoxEdit.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsSelected"
+                                Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </dxe:ListBoxEdit.ItemContainerStyle>
+            </dxe:ListBoxEdit>
         </Grid>
         <Separator DockPanel.Dock="Right" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         <DockPanel Height="40" LastChildFill="True" DockPanel.Dock="Top">
             <Separator DockPanel.Dock="Bottom" Margin="0" />
             <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Label Content="Vizsgálat megnevezése:" HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Margin="10,0" DockPanel.Dock="Left" />
-                    <dxe:ButtonEdit x:Name="examinationName" DockPanel.Dock="Left"
-                            EditValue="{Binding ConnectionM.HostName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="344" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Vizsgálat megnevezése:" HorizontalAlignment="Left"
+                            VerticalAlignment="Center" Margin="10,0" />
+                    <dxe:ButtonEdit Grid.Column="1" x:Name="examinationName"
+                            EditValue="{Binding ImportExaminationM.ExaminationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
                             ValidateOnEnterKeyPressed="False" NullText="Írja be a vizsgálat nevét" Margin="0,0,10,0"
-                            AllowNullInput="True" VerticalAlignment="Center" HorizontalContentAlignment="Stretch"
-                            MinWidth="200" HorizontalAlignment="Left">
+                            AllowNullInput="True" VerticalAlignment="Center" MinWidth="200" HorizontalAlignment="Left">
                         <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0"
                                 MarginCorrection="0" />
                     </dxe:ButtonEdit>
+                </Grid>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Label Content="Vizsgálat időpontja:" Margin="0,0,10,0" Height="22" VerticalAlignment="Center"
+                            HorizontalAlignment="Right" Width="104" />
+                    <dxe:DateEdit Margin="0,0,10,0" x:Name="examinationDate"
+                            EditValue="{Binding ImportExaminationM.ExaminationDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                            ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None"
+                            NullText="Vizsgálat időpontja..." Mask="D" MaskType="DateTimeAdvancingCaret"
+                            MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False"
+                            IsTextEditable="True" MaskIgnoreBlank="False" Spin="ExaminationTime_Spin"
+                            HorizontalAlignment="Right" Height="22" VerticalAlignment="Center" Width="220">
+                        <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                        <dxe:ButtonInfo GlyphKind="DropDown"
+                                Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                        <dxe:DateEdit.StyleSettings>
+                            <dxe:DateEditPickerStyleSettings />
+                        </dxe:DateEdit.StyleSettings>
+                    </dxe:DateEdit>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Label Content="Vizsgálat időpontja:" Margin="0,0,10,0" Height="22" VerticalAlignment="Center"
-                        DockPanel.Dock="Right" HorizontalAlignment="Right" Width="104" />
-                <dxe:DateEdit Margin="0,0,10,0" x:Name="ExaminationTime"
-                        EditValue="{Binding DetailsModifyMViewElements.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
-                        ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None"
-                        NullText="Vizsgálat időpontja..." Mask="D" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
-                        MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="True"
-                        MaskIgnoreBlank="False" Spin="ExaminationTime_Spin" HorizontalAlignment="Right" Height="22"
-                        VerticalAlignment="Center" Width="200">
-                    <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
-                    <dxe:ButtonInfo GlyphKind="DropDown"
-                            Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
-                    <dxe:DateEdit.StyleSettings>
-                        <dxe:DateEditPickerStyleSettings />
-                    </dxe:DateEdit.StyleSettings>
-                </dxe:DateEdit>
-            </StackPanel>
             </Grid>
         </DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Height="40">
             <Separator DockPanel.Dock="Top" Margin="0" />
-            <Button Height="29" Margin="0" Content="Mentés" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Button x:Name="Save" Height="29" Margin="0" Content="Változtatások mentése" VerticalAlignment="Center"
+                    HorizontalAlignment="Center" />
         </DockPanel>
-        <ContentControl x:Name="content" />
+        <ContentControl x:Name="content" IsTabStop="False" />
     </DockPanel>
 </utilities:ViewExtender>
-

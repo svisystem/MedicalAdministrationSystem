@@ -27,7 +27,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         protected internal string GetSenderName(object sender)
         {
-            return sender.GetType().GetProperty("Name").GetValue(sender as dynamic); ;
+            return sender.GetType().GetProperty("Name").GetValue(sender).ToString(); ;
         }
         protected internal void ButtonEditErase(object sender, RoutedEventArgs e)
         {

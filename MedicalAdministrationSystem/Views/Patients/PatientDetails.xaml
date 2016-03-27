@@ -144,7 +144,7 @@
                                     <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="settlement" AutoComplete="True" 
                                         ItemsSource="{Binding PatientDetailsMDataSet.ViewSettlementList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedItem="{Binding PatientDetailsMViewElements.SettlementSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        NullText="Települése..." InvalidValueBehavior="AllowLeaveEditor"
+                                        NullText="Települése..." InvalidValueBehavior="AllowLeaveEditor" 
                                         ValidateOnEnterKeyPressed="False" AllowDefaultButton="False" NullValueButtonPlacement="None">
                                         <dxe:ComboBoxEdit.Buttons>
                                             <dxe:ButtonInfo GlyphKind="Cancel" Click="settlementErase" ToolTip="Mező törlése"/>
