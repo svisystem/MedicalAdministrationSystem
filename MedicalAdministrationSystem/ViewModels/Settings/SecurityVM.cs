@@ -32,11 +32,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             SecurityM.RegSecurityPass = config.AppSettings.Settings["securityPassword"].Value;
             SecurityM.RegSecurityPassSalt = config.AppSettings.Settings["securityPasswordSalt"].Value;
         }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             SecurityM.AcceptChanges();
-            Utilities.Loading.Hide();
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
         }
         protected internal void ExecuteMethod()
         {

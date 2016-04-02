@@ -12,7 +12,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <dxb:ToolBarControl Grid.Row="0" AllowHide="False" AllowCustomizationMenu="False" ShowDragWidget="False"
-                AllowQuickCustomization="False" >
+                AllowQuickCustomization="False">
             <dxb:ToolBarControl.Items>
                 <dxb:BarButtonItem Name="bExport" Content="Exportálás"
                         LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_32x32.png"
@@ -42,7 +42,7 @@
                                 <dxe:ButtonEdit MinWidth="40" AllowDefaultButton="False"
                                         EditValue="{Binding ElementName=pdfViewer, Path=CurrentPageNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Label Content=" / " />
-                                <Label Content="{Binding ElementName=pdfViewer, Path=PageCount}"/>
+                                <Label Content="{Binding ElementName=pdfViewer, Path=PageCount}" />
                             </StackPanel>
                         </DataTemplate>
                     </dxb:BarStaticItem.ContentTemplate>
@@ -52,7 +52,8 @@
                         Description="A megnyitott PDF dokumentum megjelenítésének beállítása.">
                     <dxb:BarSubItem.Items>
                         <dxb:BarButtonItem Content="Egy oldal" CommandParameter="1" ItemClick="Layout" />
-                        <dxb:BarButtonItem Content="Egy oldal folytonos görgetéssel " CommandParameter="2" ItemClick="Layout" />
+                        <dxb:BarButtonItem Content="Egy oldal folytonos görgetéssel " CommandParameter="2"
+                                ItemClick="Layout" />
                         <dxb:BarButtonItem Content="Két oldal" CommandParameter="3" ItemClick="Layout" />
                         <dxb:BarButtonItem Content="Két oldal folytonos görgetéssel" CommandParameter="4"
                                 ItemClick="Layout" />
@@ -78,28 +79,18 @@
                         <dxb:BarButtonItem Content="400%" CommandParameter="4" ItemClick="SpecifiedZoom" />
                         <dxb:BarButtonItem Content="500%" CommandParameter="5" ItemClick="SpecifiedZoom" />
                         <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Content="Tényleges méret" ItemClick="ActualSize"/>
+                        <dxb:BarButtonItem Content="Tényleges méret" ItemClick="ActualSize" />
                         <dxb:BarButtonItem Content="Szélességhez igazítás" ItemClick="FitWidth" />
                         <dxb:BarButtonItem Content="Teljes lap megjelenítése" ItemClick="FullPage" />
                     </dxb:BarSubItem.Items>
                 </dxb:BarSubItem>
             </dxb:ToolBarControl.Items>
         </dxb:ToolBarControl>
-        <dxe:ButtonEdit DockPanel.Dock="Right" ShowText="False" AllowDefaultButton="False" BorderThickness="0"
-                Margin="-1,-1,8,-1" Height="26" Width="26" Padding="0" HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-            <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="Close">
-                <Grid VerticalAlignment="Center" Margin="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ContentPresenter
-                            ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
-                            VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Grid>
-            </dxe:ButtonInfo>
-        </dxe:ButtonEdit>
+        <Button DockPanel.Dock="Right" Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
+                VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close">
+            <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
+                    Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+        </Button>
         <dxpdf:PdfViewerControl x:Name="pdfViewer" Grid.Row="1" CommandBarStyle="None" MaxHeight="80000" Margin="-4"
                 ShowStartScreen="False" ZoomMode="FitToWidth" />
     </Grid>

@@ -18,7 +18,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             dialog.content = new TextBlock("Biztos benne hogy szeretne kijelentkezni az alkalmazásból?");
             dialog.Start();
         }
-        protected internal void OkMethod()
+        protected internal async void OkMethod()
         {
             GlobalVM.GlobalM.AccountName = null;
             GlobalVM.GlobalM.AccountID = null;
@@ -33,12 +33,12 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             MenuButtonsEnabled mbe = new MenuButtonsEnabled(pr);
             mbe.SingleChange(GlobalVM.StockLayout.usersTBI, Visibility.Visible);
             mbe.LoadFirst();
-            Loading.Hide();
+            await Loading.Hide();
         }
-        private void CancelMethod()
+        private async void CancelMethod()
         {
             cancel();
-            Loading.Hide();
+            await Loading.Hide();
         }
     }
 }

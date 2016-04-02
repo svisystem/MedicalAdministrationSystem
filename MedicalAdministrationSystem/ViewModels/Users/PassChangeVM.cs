@@ -63,9 +63,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 workingConn = false;
             }
         }
-        private void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
             if (workingConn)
             {
                 dialog = new Dialog(false, "Sikeres jelszómódosítás", Reload);
@@ -99,9 +99,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 workingConn = false;
             }
         }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
             if (workingConn) PassChangeM.AcceptChanges();
             else ConnectionMessage();
         }

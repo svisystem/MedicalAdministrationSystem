@@ -60,7 +60,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
                 LoginM.AcceptChanges();
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async delegate
                 {
                     if (!workingConn)
                     {
@@ -71,7 +71,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                         dialog.Start();
                         (GlobalVM.StockLayout.verticalMenu.Children[0] as StockVerticalMenuItem).IsEnabledTrigger = false;
                     }
-                    Utilities.Loading.Hide();
+                    await Utilities.Loading.Hide();
                 }));
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             });
@@ -152,13 +152,13 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else
             {
-                dialog = new Dialog(true, "Sikertelen belépés", Utilities.Loading.Hide);
+                dialog = new Dialog(true, "Sikertelen belépés", async delegate { await Utilities.Loading.Hide(); });
                 dialog.content = new TextBlock("Nem egyeznek meg a beírt adatok\n" +
                     "Kérjük ellenőrizze le őket");
                 dialog.Start();
             }
         }
-        private void SecurityEnter()
+        private async void SecurityEnter()
         {
             MenuButtonsEnabled mbe = new MenuButtonsEnabled();
             mbe.SingleChange(GlobalVM.StockLayout.usersTBI, Visibility.Collapsed);
@@ -166,7 +166,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             mbe.SingleChange(GlobalVM.StockLayout.logoutTBI, Visibility.Visible);
             GlobalVM.GlobalM.Secure = true;
             mbe.LoadItem(GlobalVM.StockLayout.settingsTBI);
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
         }
         private async void bgw1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -198,7 +198,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 }
                 else
                 {
-                    dialog = new Dialog(false, "Sikertelen belépés", Utilities.Loading.Hide);
+                    dialog = new Dialog(false, "Sikertelen belépés", async delegate { await Utilities.Loading.Hide(); });
                     dialog.content = new TextBlock("A beírt adatok megfelelőek\n" +
                         "Viszont amíg a rendszergazda nem hagyja jóvá regisztrációját nem tudja használni a programot\n" +
                         "Kérjük jelezze a rendszergazdának");
@@ -238,12 +238,12 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else ConnectionMessage();
         }
-        private void Load()
+        private async void Load()
         {
             GlobalVM.GlobalM.AccountName = LoginM.Username;
             MenuButtonsEnabled mbe = new MenuButtonsEnabled(pr);
             mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
         }
         protected internal bool VMDirty()
         {

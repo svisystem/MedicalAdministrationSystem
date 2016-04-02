@@ -8,7 +8,7 @@ namespace MedicalAdministrationSystem.Models.Examination
 {
     public class ImportExaminationM : NotifyPropertyChanged
     {
-        private ObservableCollection<ListElement> _ExaminationList = new ObservableCollection<ListElement>();
+        public ObservableCollection<ListElement> _ExaminationList = new ObservableCollection<ListElement>();
         private ListElement _Selected;
         private string _ExaminationName;
         private DateTime? _ExaminationDate;
@@ -70,7 +70,8 @@ namespace MedicalAdministrationSystem.Models.Examination
             private int _Id;
             private UserControl _Button;
             private Stream _File;
-            private string _Type;
+            private string _FileType;
+            private string _ButtonType;
 
             public int Id
             {
@@ -111,17 +112,30 @@ namespace MedicalAdministrationSystem.Models.Examination
                     OnPropertyChanged("File");
                 }
             }
-            public string Type
+            public string FileType
             {
                 get
                 {
-                    return _Type;
+                    return _FileType;
                 }
                 set
                 {
-                    if (_Type == value) return;
-                    _Type = value;
-                    OnPropertyChanged("Type");
+                    if (_FileType == value) return;
+                    _FileType = value;
+                    OnPropertyChanged("FileType");
+                }
+            }
+            public string ButtonType
+            {
+                get
+                {
+                    return _ButtonType;
+                }
+                set
+                {
+                    if (_ButtonType == value) return;
+                    _ButtonType = value;
+                    OnPropertyChanged("ButtonType");
                 }
             }
         }

@@ -52,9 +52,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 workingConn = false;
             }
         }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
             if (workingConn) RegistrationM.AcceptChanges();
             else ConnectionMessage();
         }
@@ -85,12 +85,12 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 workingConn = false;
             }
         }
-        private void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
             if (workingConn)
             {
-                Utilities.Loading.Hide();
+                await Utilities.Loading.Hide();
                 dialog = new Dialog(false, "Sikeres regisztráció", OkMethod, CancelMethod, true);
                 dialog.content = new TextBlock("Sikeres regisztrációt követően a hozzásférését a rendszergazdának jóvá kell hagynia\n" +
                     "Szeretne átváltani a Bejelentkezés képernyőre?");

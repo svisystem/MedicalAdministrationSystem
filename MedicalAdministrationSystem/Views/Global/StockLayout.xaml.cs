@@ -75,7 +75,7 @@ namespace MedicalAdministrationSystem.Views.Global
             PatientsVM patients = new PatientsVM();
             patients.PatientListLoad();
             currentItem = patientsTBI;
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void PatiensLoad(bool modifier)
         {
@@ -84,13 +84,13 @@ namespace MedicalAdministrationSystem.Views.Global
             if (modifier) patients.PatientDetailsLoad();
             else patients.PatientListLoad();
             currentItem = patientsTBI;
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void EvidenceLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             //TODO
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void ExaminationLoad()
         {
@@ -98,32 +98,32 @@ namespace MedicalAdministrationSystem.Views.Global
             ExaminationVM examination = new ExaminationVM();
             examination.ExaminationsLoad();
             currentItem = examinationTBI;
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void LabLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             //TODO
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void PrescriptionLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             //TODO
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void BillingLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             BillingVM billing = new BillingVM();
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void StatisticsLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             //TODO
             SelectedPatient();
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void UsersLoad()
         {
@@ -133,7 +133,7 @@ namespace MedicalAdministrationSystem.Views.Global
             else users.DetailsModifyLoad();
             currentItem = usersTBI;
             SelectedPatient();
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void UsersLoad(bool modifier)
         {
@@ -148,7 +148,7 @@ namespace MedicalAdministrationSystem.Views.Global
             }
             currentItem = usersTBI;
             SelectedPatient();
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void SettingsLoad()
         {
@@ -158,14 +158,14 @@ namespace MedicalAdministrationSystem.Views.Global
             else settings.UsersLoad();
             currentItem = settingsTBI;
             SelectedPatient();
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void HelpLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             //TODO
             SelectedPatient();
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void LogOutLoad()
         {
@@ -173,7 +173,7 @@ namespace MedicalAdministrationSystem.Views.Global
             LogoutVM logout = new LogoutVM();
             logout.Click(Back);
             currentItem = logoutTBI;
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
         private async void Check(TileBarItem select, Action OK, Action No)
         {

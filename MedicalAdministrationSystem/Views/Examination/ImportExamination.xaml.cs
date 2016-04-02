@@ -15,15 +15,16 @@ namespace MedicalAdministrationSystem.Views.Examination
         }
         private async void Start()
         {
-            //await Loading.Show();
+            await Loading.Show();
             importExaminationValid = new ImportExaminationValid();
             ImportExaminationVM = new ImportExaminationVM();
             this.DataContext = ImportExaminationVM;
             InitializeComponent();
-            ImportExaminationVM.content = content;
+            ImportExaminationVM.Start(ref content);
             validatorClass = importExaminationValid;
             button = Save;
             ConnectValidators();
+            await Loading.Hide();
         }
         private void ConnectValidators()
         {
@@ -54,7 +55,7 @@ namespace MedicalAdministrationSystem.Views.Examination
             }
             button.IsEnabled = (validatorClass as FormValidate).Validate(validatorClass);
         }
-        private void ExaminationTime_Spin(object sender, DevExpress.Xpf.Editors.SpinEventArgs e)
+        private void ExaminationTime_Spin(object sender, SpinEventArgs e)
         {
             e.Handled = true;
         }

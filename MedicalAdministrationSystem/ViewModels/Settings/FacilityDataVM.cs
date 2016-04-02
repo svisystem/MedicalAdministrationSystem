@@ -65,7 +65,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 workingConn = false;
             }
         }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
@@ -85,7 +85,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             }
             else ConnectionMessage();
 
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
         }
         private void RefreshModel(object sender, DoWorkEventArgs e)
         {
@@ -256,7 +256,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 }
                 else temp = "módosítottuk";
 
-                dialog = new Dialog(false, "Intézmény adatai", Utilities.Loading.Hide);
+                dialog = new Dialog(false, "Intézmény adatai", async delegate { await Utilities.Loading.Hide(); });
                 dialog.content = new TextBlock("Sikeresen " + temp + " az adatokat.");
                 dialog.Start();
                 
@@ -276,7 +276,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 fullRefresh = fullRefreshGiven;
             }
             else func = Refresh.RunWorkerAsync;
-            func2 = Utilities.Loading.Hide;
+            func2 = async delegate { await Utilities.Loading.Hide(); };
             if (VMDirty() && (fullRefreshGiven || (!fullRefreshGiven && !fullRefresh)))
             {
                 dialog = new Dialog(true, "El nem menetett változások lehetnek az adott oldalon", func, func2, true);

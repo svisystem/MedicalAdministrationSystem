@@ -38,15 +38,15 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             }
             else OkMethod();
         }
-        private void OkMethod()
+        private async void OkMethod()
         {
             OK();
-            Loading.Hide();
+            await Loading.Hide();
         }
-        private void CancelMethod()
+        private async void CancelMethod()
         {
             No();
-            Loading.Hide();
+            await Loading.Hide();
         }
     }
 }

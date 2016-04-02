@@ -540,6 +540,7 @@ D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\bin\Debug
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\bin\Debug\ja\DevExpress.Sparkline.v15.2.Core.resources.dll
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\bin\Debug\ru\DevExpress.Sparkline.v15.2.Core.resources.dll
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\MedicalAdministrationSystem.csprojResolveAssemblyReference.cache
+D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Fragments\PdfViewer.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Global\SelectedPatient.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Global\StockLayout.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Global\StockVerticalMenuItem.baml
@@ -586,7 +587,6 @@ D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Fragments\File.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Fragments\Load.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Fragments\New.baml
-D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Fragments\PdfViewer.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Fragments\WordEditor.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Global\Loading.baml
 D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\Views\Patients\PatientDetails.baml

@@ -294,6 +294,7 @@
     <Compile Include="ViewModels\Users\PassChangeVM.cs" />
     <Compile Include="ViewModels\Users\SurgeryTimeVM.cs" />
     <Compile Include="ViewModels\Utilities\Dialog.cs" />
+    <Compile Include="ViewModels\Utilities\DocumentServer.cs" />
     <Compile Include="ViewModels\Utilities\Loading.cs" />
     <Compile Include="ViewModels\Utilities\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModels\Utilities\FormChecking.cs" />
@@ -614,6 +615,7 @@
       <DependentUpon>DataAccess.edmx</DependentUpon>
       <LastGenOutput>DataAccess.cs</LastGenOutput>
     </Content>
+    <Resource Include="Icons\RowSpace_16x16.png" />
     <Resource Include="Icons\ZoomIn_32x32.png" />
     <Resource Include="Icons\ZoomOut_32x32.png" />
     <Resource Include="Icons\PDFLayout.png" />

@@ -100,11 +100,11 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
             Execute.RunWorkerAsync();
         }
-        private void UserDeleteCancel()
+        private async void UserDeleteCancel()
         {
             userDelete.button.Foreground = new SolidColorBrush(Colors.Black);
             Back();
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
         }
         private void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
@@ -124,9 +124,9 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
                 workingConn = false;
             }
         }
-        private void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
             if (workingConn)
             {
                 dialog = new Dialog(false, "Felhasználói fiók törlése", LogOut);

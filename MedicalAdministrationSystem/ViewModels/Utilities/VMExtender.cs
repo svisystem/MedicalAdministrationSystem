@@ -29,15 +29,15 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
 
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async delegate
                 {
                     GlobalVM.StockLayout.actualContent.Content = task.Result;
                     button.button_Click(button.button, new RoutedEventArgs(Button.ClickEvent));
+                    await Loading.Hide();
                 }));
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             });
             currentItem = button;
-            Loading.Hide();
         }
 
         protected internal async void Check(StockVerticalMenuItem select, Action OK, Action No)

@@ -46,13 +46,13 @@ namespace MedicalAdministrationSystem.Views.Settings
         {
             PriviledgesVM.ExecuteMethod();
         }
-        private void view_Loaded()
+        private async void view_Loaded()
         {
-            this.Dispatcher.BeginInvoke(new Action(delegate
-            {
-                view.BestFitColumns();
-            }), DispatcherPriority.Loaded);
-            Loading.Hide();
+            await this.Dispatcher.BeginInvoke(new Action(delegate
+             {
+                 view.BestFitColumns();
+             }), DispatcherPriority.Loaded);
+            await Loading.Hide();
         }
     }
 }

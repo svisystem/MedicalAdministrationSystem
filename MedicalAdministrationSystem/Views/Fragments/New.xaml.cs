@@ -8,9 +8,9 @@ namespace MedicalAdministrationSystem.Views.Fragments
 {
     public partial class New : UserControl
     {
-        private ContentControl content { get; set; }
+        private ContentControl content;
         private ObservableCollection<ImportExaminationM.ListElement> List { get; set; }
-        public New(ContentControl content, ObservableCollection<ImportExaminationM.ListElement> List)
+        public New(ref ContentControl content, ObservableCollection<ImportExaminationM.ListElement> List)
         {
             this.content = content;
             this.List = List;
@@ -19,7 +19,9 @@ namespace MedicalAdministrationSystem.Views.Fragments
 
         private void Add(object sender, RoutedEventArgs e)
         {
-            content.Content = new Load(content, List);
+            if (content.Content != null && content.Content.GetType() == typeof(WordEditor))
+                (content.Content as WordEditor).CloseQuestion(delegate { content.Content = new Load(ref content, List); });
+            else content.Content = new Load(ref content, List);
         }
 
         private void AddWithEnter(object sender, KeyEventArgs e)

@@ -42,13 +42,13 @@ namespace MedicalAdministrationSystem.Views.Patients
         {
             PatientListVM.Question(false);
         }
-        private void view_Loaded()
+        private async void view_Loaded()
         {
-            this.Dispatcher.BeginInvoke(new Action(delegate
-            {
-                view.BestFitColumns();
-            }), DispatcherPriority.Loaded);
-            Loading.Hide();
+            await this.Dispatcher.BeginInvoke(new Action(delegate
+             {
+                 view.BestFitColumns();
+             }), DispatcherPriority.Loaded);
+            await Loading.Hide();
         }
         private void check_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

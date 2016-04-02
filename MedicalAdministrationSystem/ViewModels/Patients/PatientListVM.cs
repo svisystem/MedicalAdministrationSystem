@@ -158,7 +158,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     }).ToList();
                 }
         }
-        private void LoadingListComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingListComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (temp != null)
             {
@@ -172,7 +172,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 PatientListM.PatientList = new ObservableCollection<PatientListM.Patient>(temp);
             }
 
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
             PatientListM.Erased.Clear();
             Loaded();
 
@@ -240,12 +240,12 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 workingConn = false;
             }
         }
-        private void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
                 PatientListM.Erased.Clear();
-                Utilities.Loading.Hide();
+                await Utilities.Loading.Hide();
                 foreach (object row in PatientListM.PatientList)
                     foreach (PatientListM.UserList user in (row as PatientListM.Patient).BelongUsers)
                         user.AcceptChanges();
@@ -268,7 +268,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 fullRefresh = fullRefreshGiven;
             }
             else Ok = RefreshTable.RunWorkerAsync;
-            No = Utilities.Loading.Hide;
+            No = async delegate { await Utilities.Loading.Hide(); };
             if (VMDirty() && (fullRefreshGiven || (!fullRefreshGiven && !fullRefresh)))
             {
                 dialog = new Dialog(true, "El nem menetett változások lehetnek az adott oldalon", Ok, No, true);

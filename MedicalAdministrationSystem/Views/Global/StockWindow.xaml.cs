@@ -17,7 +17,7 @@ namespace MedicalAdministrationSystem.Views.Global
             MenuButtonsEnabled mbe = new MenuButtonsEnabled();
             mbe.SingleChange(GlobalVM.StockLayout.usersTBI, Visibility.Visible);
             mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
-            ViewModels.Utilities.Loading.Hide();
+            await ViewModels.Utilities.Loading.Hide();
         }
     }
 }

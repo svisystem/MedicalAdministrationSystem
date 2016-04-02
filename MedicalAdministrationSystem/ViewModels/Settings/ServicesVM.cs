@@ -140,7 +140,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 ServicesM.AcceptChanges();
                 modified = false;
 
-                dialog = new Dialog(false, "Módosítások mentése", Utilities.Loading.Hide);
+                dialog = new Dialog(false, "Módosítások mentése", async delegate { await Utilities.Loading.Hide(); });
                 dialog.content = new TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
             }

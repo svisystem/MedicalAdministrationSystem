@@ -32,10 +32,10 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             ConnectionM.UserId = splitted[12];
             ConnectionM.Password = splitted[14];
         }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             ConnectionM.AcceptChanges();
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
         }
         protected internal void ExecuteMethod()
         {
@@ -70,9 +70,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 "A változtatások érvénybe lépéséhez most újraindítjuk az alkalmazást");
             dialog.Start();
         }
-        private void Reload()
+        private async void Reload()
         {
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
             Application.Restart();
             System.Windows.Application.Current.Shutdown();
         }

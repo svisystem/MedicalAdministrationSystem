@@ -21,7 +21,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 await metroWindow.ShowMetroDialogAsync(loading);
             }
         }
-        static async internal void Hide()
+        static async internal Task Hide()
         {
             if (counter > 0)
                 counter--;

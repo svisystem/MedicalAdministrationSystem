@@ -123,14 +123,14 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             }
             else ConnectionMessage();
         }
-        private void Reload()
+        private async void Reload()
         {
             if (newform)
             {
                 PatientsVM PatientsVM = new PatientsVM();
                 PatientsVM.NewPatientLoad();
             }
-            Utilities.Loading.Hide();
+            await Utilities.Loading.Hide();
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
@@ -153,7 +153,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 workingConn = false;
             }
         }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
@@ -221,7 +221,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                         PatientDetailsMViewElements.Notes = null;
                     }
                 }
-                Utilities.Loading.Hide();
+                await Utilities.Loading.Hide();
                 PatientDetailsMViewElements.AcceptChanges();
             }
             else ConnectionMessage();

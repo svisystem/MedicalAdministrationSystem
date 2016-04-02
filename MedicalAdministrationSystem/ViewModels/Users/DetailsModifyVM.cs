@@ -148,7 +148,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 workingConn = false;
             }
         }
-        private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
@@ -202,7 +202,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 }
             }
             else ConnectionMessage();
-            Loading.Hide();
+            await Loading.Hide();
         }
         private async void ZipCodeDoWork(object sender, DoWorkEventArgs e)
         {

@@ -152,7 +152,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     (row as UserAdministrateMViewElements.UserRow).AcceptChanges();
                 UsersMViewElements.AcceptChanges();
 
-                dialog = new Dialog(false, "Módosítások mentése", Utilities.Loading.Hide);
+                dialog = new Dialog(false, "Módosítások mentése", async delegate { await Utilities.Loading.Hide(); });
                 dialog.content = new TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
             }

@@ -9,8 +9,8 @@ namespace MedicalAdministrationSystem.Views.Fragments
     {
         private string Type { get; set; }
         private Action<ContentControl, string> show { get; set; }
-        private Action<ContentControl, string> erase { get; set; }
-        public File(string Type, Action<ContentControl, string> Show, Action<ContentControl, string> Erase)
+        private Action<ContentControl> erase { get; set; }
+        public File(string Type, Action<ContentControl, string> Show, Action<ContentControl> Erase)
         {
             this.Type = Type;
             this.show = Show;
@@ -18,19 +18,13 @@ namespace MedicalAdministrationSystem.Views.Fragments
             InitializeComponent();
             Icon();
         }
-
         private void Show(object sender, RoutedEventArgs e)
         {
             show(this, Type);
         }
-
         private void Erase(object sender, RoutedEventArgs e)
         {
-            erase(this, Type);
-        }
-        private void Dispose()
-        {
-            //TODO
+            erase(this);
         }
         private void Icon()
         {
