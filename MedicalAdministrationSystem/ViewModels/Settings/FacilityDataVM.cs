@@ -20,7 +20,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private BackgroundWorker Execute { get; set; }
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
-        private medicalEntities me { get; set; }
         private Configuration config { get; set; }
         private companydata cd { get; set; }
         protected internal FacilityDataVM()
@@ -233,8 +232,16 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
-                if (FacilityDataMDataSet.SelectedCompany.ID.Equals(0)) config.AppSettings.Settings["facilityId"].Value = newValue.ToString();
-                else config.AppSettings.Settings["facilityId"].Value = FacilityDataMDataSet.SelectedCompany.ID.ToString();
+                if (FacilityDataMDataSet.SelectedCompany.ID.Equals(0))
+                {
+                    config.AppSettings.Settings["facilityId"].Value = newValue.ToString();
+                    GlobalVM.GlobalM.CompanyId = newValue;
+                }
+                else
+                {
+                    config.AppSettings.Settings["facilityId"].Value = FacilityDataMDataSet.SelectedCompany.ID.ToString();
+                    GlobalVM.GlobalM.CompanyId = FacilityDataMDataSet.SelectedCompany.ID;
+                }
                 config.Save(ConfigurationSaveMode.Modified);
             }
             catch
@@ -259,7 +266,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 dialog = new Dialog(false, "Intézmény adatai", async delegate { await Utilities.Loading.Hide(); });
                 dialog.content = new TextBlock("Sikeresen " + temp + " az adatokat.");
                 dialog.Start();
-                
+
                 FacilityDataMViewElements.AcceptChanges();
             }
             else ConnectionMessage();

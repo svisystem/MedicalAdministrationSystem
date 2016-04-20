@@ -45,7 +45,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             GlobalVM.StockLayout.verticalMenu.Children.Add(surgeryTime);
             GlobalVM.StockLayout.verticalMenu.Children.Add(userDelete);
 
-            if (GlobalVM.GlobalM.AccountName == null)
+            if (GlobalVM.GlobalM.AccountID == null)
             {
                 registration.button.Click += RegistrationView;
                 login.button.Click += LoginView;
@@ -110,14 +110,11 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             try
             {
-                using (medicalEntities me = new medicalEntities())
-                {
-                    me.Database.Connection.Open();
-                    me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().DeletedAD = true;
-                    me.SaveChanges();
-                    me.Database.Connection.Close();
-                    workingConn = true;
-                }
+                me.Database.Connection.Open();
+                me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().DeletedAD = true;
+                me.SaveChanges();
+                me.Database.Connection.Close();
+                workingConn = true;
             }
             catch
             {

@@ -16,8 +16,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
         private BackgroundWorker EraseBackground { get; set; }
-        private medicalEntities me { get; set; }
-        private ObservableCollection<Priviledge> temp { get; set; }
         private bool modified { get; set; }
         private Action Loaded { get; set; }
         protected internal PriviledgesVM(Action Loaded)
@@ -233,7 +231,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         protected internal void NewLine()
         {
             PriviledgesM.Priviledges.Add(new Priviledge() { New = true, Enabled = true });
-            modified = true;
         }
         protected internal void PriviledgeEraseMethod()
         {
@@ -274,7 +271,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 }
             }
         }
-        private void EraseBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void EraseBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             modified = true;
             if (listtemp == 0) PriviledgesM.Priviledges.Remove(PriviledgeSelectedRow.Selected);
@@ -285,6 +282,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     "Valószinűleg az adatbázis függőségei miatt, kérjük ezeket előbb szüntesse meg");
                 dialog.Start();
             }
+            await Utilities.Loading.Hide();
         }
         private void Dummy() { }
     }

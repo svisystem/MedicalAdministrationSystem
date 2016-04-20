@@ -19,6 +19,14 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             }
             button.IsEnabled = (validatorClass as FormValidate).Validate(validatorClass);
         }
+        protected internal virtual void ForceBindingWithoutEnabledCheck(object sender, ValidationEventArgs e)
+        {
+            if (lastState == null || lastState.Value == null || !lastState.Value.Equals(e.Value))
+            {
+                lastState = e;
+                (sender as dynamic).EditValue = e.Value;
+            }
+        }
         protected internal void TextChanged(object sender, RoutedEventArgs e)
         {
             validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, false, null);

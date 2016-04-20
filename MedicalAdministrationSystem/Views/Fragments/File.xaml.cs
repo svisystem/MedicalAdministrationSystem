@@ -7,9 +7,9 @@ namespace MedicalAdministrationSystem.Views.Fragments
 {
     public partial class File : UserControl
     {
-        private string Type { get; set; }
-        private Action<ContentControl, string> show { get; set; }
-        private Action<ContentControl> erase { get; set; }
+        private string Type;
+        private Action<ContentControl, string> show;
+        private Action<ContentControl> erase;
         public File(string Type, Action<ContentControl, string> Show, Action<ContentControl> Erase)
         {
             this.Type = Type;

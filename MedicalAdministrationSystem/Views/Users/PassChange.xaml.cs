@@ -79,7 +79,7 @@ namespace MedicalAdministrationSystem.Views.Users
                 e.ErrorContent = "A jelszónak legalább 1 számot kell tartalmaznia";
             else if (PassChangeVM.CurrentPassCompare(e.Value.ToString()))
                 e.ErrorContent = "Az új jelszó nem egyezhet meg a régivel";
-            else if (e.Value.ToString() == GlobalVM.GlobalM.AccountName)
+            else if (PassChangeVM.UserNameCompare(e.Value.ToString()))
                 e.ErrorContent = "Az új jelszó nem egyezhet meg a felhasználónévvel";
             else
             {

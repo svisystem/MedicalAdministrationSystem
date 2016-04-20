@@ -27,6 +27,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public int DoctorIdEX { get; set; }
         public System.DateTime DateTimeEX { get; set; }
         public int TreatmentIdEX { get; set; }
+        public string CodeEX { get; set; }
     
         public virtual patientdata patientdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

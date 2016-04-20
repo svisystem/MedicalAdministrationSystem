@@ -40,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -89,8 +90,6 @@
     <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v15.2, Version=15.2.4.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraScheduler.v15.2.Core, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -245,7 +244,9 @@
     <Compile Include="DataAccess\zipcode_fx.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DocumentControlM.cs" />
     <Compile Include="Models\Examination\ImportExaminationM.cs" />
+    <Compile Include="Models\Examination\NewExaminationM.cs" />
     <Compile Include="Models\GlobalM.cs" />
     <Compile Include="Models\Patients\PatientDetailsMDataSet.cs" />
     <Compile Include="Models\Patients\PatientDetailsMViewElements.cs" />
@@ -266,7 +267,10 @@
     <Compile Include="Models\Users\PassChangeM.cs" />
     <Compile Include="Models\Users\RegistrationM.cs" />
     <Compile Include="Models\Users\SurgeryTimeM.cs" />
+    <Compile Include="ViewModels\DocumentControlVM.cs" />
     <Compile Include="ViewModels\Examination\ImportExaminationVM.cs" />
+    <Compile Include="ViewModels\Examination\NewExaminationVM.cs" />
+    <Compile Include="ViewModels\Fragments\WordEditorVM.cs" />
     <Compile Include="ViewModels\MenuItem\BillingVM.cs" />
     <Compile Include="ViewModels\MenuItem\EvidenceVM.cs" />
     <Compile Include="ViewModels\MenuItem\ExaminationVM.cs" />
@@ -293,8 +297,9 @@
     <Compile Include="ViewModels\Users\LoginVM.cs" />
     <Compile Include="ViewModels\Users\PassChangeVM.cs" />
     <Compile Include="ViewModels\Users\SurgeryTimeVM.cs" />
+    <Compile Include="ViewModels\Utilities\Codes.cs" />
     <Compile Include="ViewModels\Utilities\Dialog.cs" />
-    <Compile Include="ViewModels\Utilities\DocumentServer.cs" />
+    <Compile Include="ViewModels\Utilities\DocumentGenerator.cs" />
     <Compile Include="ViewModels\Utilities\Loading.cs" />
     <Compile Include="ViewModels\Utilities\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModels\Utilities\FormChecking.cs" />
@@ -318,6 +323,9 @@
     <Compile Include="Views\Examination\ImportExamination.xaml.cs">
       <DependentUpon>ImportExamination.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Examination\NewExamination.xaml.cs">
+      <DependentUpon>NewExamination.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Fragments\File.xaml.cs">
       <DependentUpon>File.xaml</DependentUpon>
     </Compile>
@@ -329,6 +337,9 @@
     </Compile>
     <Compile Include="Views\Fragments\PdfViewer.xaml.cs">
       <DependentUpon>PdfViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\PictureViewer.xaml.cs">
+      <DependentUpon>PictureViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Fragments\WordEditor.xaml.cs">
       <DependentUpon>WordEditor.xaml</DependentUpon>
@@ -410,6 +421,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Examination\NewExamination.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Fragments\File.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -423,6 +438,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Fragments\PdfViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\PictureViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -605,6 +624,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\RowSpace_16x16.png" />
+    <Resource Include="Icons\ZoomIn_32x32.png" />
+    <Resource Include="Icons\ZoomOut_32x32.png" />
+    <Resource Include="Icons\PDFLayout.png" />
+    <Resource Include="Icons\Zoom_32x32.png" />
+    <Resource Include="Icons\New.png" />
+    <Resource Include="Icons\doc.png" />
+    <Resource Include="Icons\jpg.png" />
+    <Resource Include="Icons\pdf.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="DataAccess\DataAccess.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataAccess.edmx</DependentUpon>
@@ -615,15 +645,6 @@
       <DependentUpon>DataAccess.edmx</DependentUpon>
       <LastGenOutput>DataAccess.cs</LastGenOutput>
     </Content>
-    <Resource Include="Icons\RowSpace_16x16.png" />
-    <Resource Include="Icons\ZoomIn_32x32.png" />
-    <Resource Include="Icons\ZoomOut_32x32.png" />
-    <Resource Include="Icons\PDFLayout.png" />
-    <Resource Include="Icons\Zoom_32x32.png" />
-    <Resource Include="Icons\New.png" />
-    <Resource Include="Icons\doc.png" />
-    <Resource Include="Icons\jpg.png" />
-    <Resource Include="Icons\pdf.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

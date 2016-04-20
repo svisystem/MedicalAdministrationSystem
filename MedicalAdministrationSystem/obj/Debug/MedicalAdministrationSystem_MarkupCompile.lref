@@ -7,6 +7,7 @@ FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Ex
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\File.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\Load.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\New.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\PictureViewer.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\WordEditor.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Global\Loading.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Patients\PatientDetails.xaml;;
@@ -22,4 +23,5 @@ FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Us
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Users\PassChange.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Users\Registration.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Global\DialogBase.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\NewExamination.xaml;;
 

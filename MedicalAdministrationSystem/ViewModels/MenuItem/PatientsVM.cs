@@ -1,4 +1,5 @@
-﻿using MedicalAdministrationSystem.ViewModels.Utilities;
+﻿using DevExpress.Xpf.Navigation;
+using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Global;
 using MedicalAdministrationSystem.Views.Patients;
 using System;
@@ -13,7 +14,17 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         private StockVerticalMenuItem newPatient { get; set; }
         private StockVerticalMenuItem patientList { get; set; }
         private StockVerticalMenuItem patientDetails { get; set; }
+        private TileBarItem GivenBack;
+        public PatientsVM(TileBarItem Back)
+        {
+            this.GivenBack = Back;
+            Start();
+        }
         public PatientsVM()
+        {
+            Start();
+        }
+        private void Start()
         {
             GlobalVM.StockLayout.verticalMenu.Children.Clear();
 
@@ -36,7 +47,6 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             Selected();
             CheckUserData();
         }
-
         protected internal void Selected()
         {
             if (GlobalVM.StockLayout.headerContent.Content == null)
@@ -45,21 +55,36 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         protected internal void CheckUserData()
         {
-            if (GlobalVM.GlobalM.UserID.Equals(0))
+            if (GlobalVM.GlobalM.UserID.Equals(null))
             {
-                dialog = new Dialog(true, "Felhasználó adatai", OkMethod);
+                dialog = new Dialog(true, "Felhasználó adatai", delegate
+                {
+                    MenuButtonsEnabled mbe = new MenuButtonsEnabled()
+                    {
+                        modifier = true
+                    };
+                    mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
+                });
                 dialog.content = new Views.Dialogs.TextBlock("Ön még nem töltötte ki a saját adatait\n" +
                     "A páciensek kezelése során szükségesek ezek az adatok\n" +
                     "Amíg ezeket nem tölti ki nincs lehetőség betegellátásra\n" +
                     "Most átirányítjuk az adatlapjára");
                 dialog.Start();
             }
-        }
-        private void OkMethod()
-        {
-            MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-            mbe.modifier = true;
-            mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
+            else if (GlobalVM.GlobalM.CompanyId.Equals(null))
+            {
+                dialog = new Dialog(true, "Intézmény adatai", delegate
+                {
+                    MenuButtonsEnabled mbe = new MenuButtonsEnabled();
+                    mbe.modifier = true;
+                    mbe.LoadItem(GivenBack);
+                });
+                dialog.content = new Views.Dialogs.TextBlock("Az alkalmazásban még nem lettek megadva az Intézmény adatai\n" +
+                    "A páciensek kezelése során szükségesek ezek az adatok\n" +
+                    "Amíg ezek az adatok nincsenek megadva nincs lehetőség betegellátásra\n" +
+                    "Amennyiben van jogosultsága hozzá, beállthatja ezeket az adatokat, ellenkező esetben kérjük jelezze a problémát a rendszergazdának");
+                dialog.Start();
+            }
         }
         private void CancelMethod()
         {

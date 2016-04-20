@@ -88,6 +88,8 @@
     </Key>
     <Property Name="IdEDD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="DataEDD" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="TypeEDD" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FileTypeEDD" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="evidencedata_st" Relationship="Self.fk_EvidenceData_ST_EvidenceDataDocuments1" FromRole="evidencedatadocuments" ToRole="evidencedata_st" />
     <NavigationProperty Name="importedevidencedata_st" Relationship="Self.fk_ImportedEvidenceData_ST_EvidenceDataDocuments1" FromRole="evidencedatadocuments" ToRole="importedevidencedata_st" />
   </EntityType>
@@ -95,13 +97,14 @@
     <Key>
       <PropertyRef Name="IdEX" />
     </Key>
-    <Property Name="IdEX" Type="Int32" Nullable="false" />
+    <Property Name="IdEX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="PatientIdEX" Type="Int32" Nullable="false" />
     <Property Name="DoctorIdEX" Type="Int32" Nullable="false" />
     <Property Name="DateTimeEX" Type="DateTime" Nullable="false" />
     <Property Name="TreatmentIdEX" Type="Int32" Nullable="false" />
+    <Property Name="CodeEX" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="patientdata" Relationship="Self.fk_examinationdata_patientdata1" FromRole="examinationdata" ToRole="patientdata" />
-    <NavigationProperty Name="examinationdata_st" Relationship="Self.fk_ExaminationData_ST_examinationdata1" FromRole="examinationdata" ToRole="examinationdata_st" />
+    <NavigationProperty Name="examinationdata_st" Relationship="Self.fk_examinationdata_st_examinationdata1" FromRole="examinationdata" ToRole="examinationdata_st" />
     <NavigationProperty Name="treatmentdata" Relationship="Self.fk_examinationdata_treatmentdata1" FromRole="examinationdata" ToRole="treatmentdata" />
     <NavigationProperty Name="userdata" Relationship="Self.fk_examinationdata_userdata1" FromRole="examinationdata" ToRole="userdata" />
     <NavigationProperty Name="examinationseachimportedevidence" Relationship="Self.fk_ExaminationsEachImportedEvidence_examinationdata1" FromRole="examinationdata" ToRole="examinationseachimportedevidence" />
@@ -115,7 +118,7 @@
     <Property Name="IdEX" Type="Int32" Nullable="false" />
     <Property Name="IdEXD" Type="Int32" Nullable="false" />
     <Property Name="Dummy" Type="Boolean" />
-    <NavigationProperty Name="examinationdata" Relationship="Self.fk_ExaminationData_ST_examinationdata1" FromRole="examinationdata_st" ToRole="examinationdata" />
+    <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_st_examinationdata1" FromRole="examinationdata_st" ToRole="examinationdata" />
     <NavigationProperty Name="examinationdatadocuments" Relationship="Self.fk_ExaminationData_ST_Documents1" FromRole="examinationdata_st" ToRole="examinationdatadocuments" />
   </EntityType>
   <EntityType Name="examinationdatadocuments">
@@ -124,6 +127,8 @@
     </Key>
     <Property Name="IdEXD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="DataEXD" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="TypeEXD" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FileTypeEXD" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="examinationdata_st" Relationship="Self.fk_ExaminationData_ST_Documents1" FromRole="examinationdatadocuments" ToRole="examinationdata_st" />
     <NavigationProperty Name="importedexaminationdata_st" Relationship="Self.fk_ImportedExaminationData_ST_Documents1" FromRole="examinationdatadocuments" ToRole="importedexaminationdata_st" />
   </EntityType>
@@ -164,10 +169,12 @@
     </Key>
     <Property Name="IdIED" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="PatientIED" Type="Int32" Nullable="false" />
+    <Property Name="UserDataIdIED" Type="Int32" Nullable="false" />
     <Property Name="DateTimeIED" Type="DateTime" Nullable="false" />
     <NavigationProperty Name="examinationseachimportedevidence" Relationship="Self.fk_ExaminationsEachImportedEvidence_ImportedEvidenceData1" FromRole="importedevidencedata" ToRole="examinationseachimportedevidence" />
-    <NavigationProperty Name="patientdata" Relationship="Self.fk_ImportedEvidenceData_patientdata1" FromRole="importedevidencedata" ToRole="patientdata" />
+    <NavigationProperty Name="patientdata" Relationship="Self.fk_importedevidencedata_patientdata1" FromRole="importedevidencedata" ToRole="patientdata" />
     <NavigationProperty Name="importedevidencedata_st" Relationship="Self.fk_ImportedEvidenceData_ST_ImportedEvidenceData1" FromRole="importedevidencedata" ToRole="importedevidencedata_st" />
+    <NavigationProperty Name="userdata" Relationship="Self.fk_importedevidencedata_userdata1" FromRole="importedevidencedata" ToRole="userdata" />
     <NavigationProperty Name="importedexaminatioseachimportedevidence_st" Relationship="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1" FromRole="importedevidencedata" ToRole="importedexaminatioseachimportedevidence_st" />
   </EntityType>
   <EntityType Name="importedevidencedata_st">
@@ -187,10 +194,13 @@
     </Key>
     <Property Name="IdIEX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="PatientIdIEX" Type="Int32" Nullable="false" />
+    <Property Name="DoctorIdIEX" Type="Int32" Nullable="false" />
     <Property Name="DateTimeIEX" Type="DateTime" Nullable="false" />
-    <Property Name="NameIED" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NameIEX" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CodeIEX" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="patientdata" Relationship="Self.fk_ImportedExaminationData_patientdata1" FromRole="importedexaminationdata" ToRole="patientdata" />
     <NavigationProperty Name="importedexaminationdata_st" Relationship="Self.fk_ImportedExaminationData_ST_ImportedExaminationData1" FromRole="importedexaminationdata" ToRole="importedexaminationdata_st" />
+    <NavigationProperty Name="userdata" Relationship="Self.fk_importedexaminationdata_userdata1" FromRole="importedexaminationdata" ToRole="userdata" />
     <NavigationProperty Name="importedexaminationseachevidence_st" Relationship="Self.fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1" FromRole="importedexaminationdata" ToRole="importedexaminationseachevidence_st" />
     <NavigationProperty Name="importedexaminatioseachimportedevidence_st" Relationship="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedExamina1" FromRole="importedexaminationdata" ToRole="importedexaminatioseachimportedevidence_st" />
   </EntityType>
@@ -255,7 +265,7 @@
     <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_PatientData1" FromRole="patientdata" ToRole="evidencedata" />
     <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_patientdata1" FromRole="patientdata" ToRole="examinationdata" />
     <NavigationProperty Name="gender_fx" Relationship="Self.fk_PatientData_Gender" FromRole="patientdata" ToRole="gender_fx" />
-    <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_ImportedEvidenceData_patientdata1" FromRole="patientdata" ToRole="importedevidencedata" />
+    <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_importedevidencedata_patientdata1" FromRole="patientdata" ToRole="importedevidencedata" />
     <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_ImportedExaminationData_patientdata1" FromRole="patientdata" ToRole="importedexaminationdata" />
     <NavigationProperty Name="settlement_fx" Relationship="Self.fk_PatientData_Settlement1" FromRole="patientdata" ToRole="settlement_fx" />
     <NavigationProperty Name="settlement_fx1" Relationship="Self.fk_PatientData_Settlement2" FromRole="patientdata" ToRole="settlement_fx" />
@@ -293,8 +303,8 @@
     <Property Name="PatientIdSD" Type="Int32" Nullable="false" />
     <Property Name="DoctorIdSD" Type="Int32" Nullable="false" />
     <Property Name="StartSD" Type="DateTime" Nullable="false" />
-    <Property Name="Finish" Type="DateTime" Nullable="false" />
-    <Property Name="Status" Type="Int32" />
+    <Property Name="FinishSD" Type="DateTime" Nullable="false" />
+    <Property Name="StatusSD" Type="Int32" />
     <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_ScheduleData1" FromRole="scheduledata" ToRole="evidencedata" />
     <NavigationProperty Name="patientdata" Relationship="Self.fk_ScheduleData_PatientData1" FromRole="scheduledata" ToRole="patientdata" />
     <NavigationProperty Name="userdata" Relationship="Self.fk_ScheduleData_DoctorData1" FromRole="scheduledata" ToRole="userdata" />
@@ -373,6 +383,8 @@
     <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_DoctorData1" FromRole="userdata" ToRole="evidencedata" />
     <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_userdata1" FromRole="userdata" ToRole="examinationdata" />
     <NavigationProperty Name="gender_fx" Relationship="Self.fk_UserData_Gender1" FromRole="userdata" ToRole="gender_fx" />
+    <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_importedevidencedata_userdata1" FromRole="userdata" ToRole="importedevidencedata" />
+    <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_importedexaminationdata_userdata1" FromRole="userdata" ToRole="importedexaminationdata" />
     <NavigationProperty Name="scheduledata" Relationship="Self.fk_ScheduleData_DoctorData1" FromRole="userdata" ToRole="scheduledata" />
     <NavigationProperty Name="settlement_fx" Relationship="Self.fk_UserData_Settlement1" FromRole="userdata" ToRole="settlement_fx" />
     <NavigationProperty Name="settlement_fx1" Relationship="Self.fk_UserData_Settlement2" FromRole="userdata" ToRole="settlement_fx" />
@@ -582,7 +594,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_ExaminationData_ST_examinationdata1">
+  <Association Name="fk_examinationdata_st_examinationdata1">
     <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="1" />
     <End Role="examinationdata_st" Type="Self.examinationdata_st" Multiplicity="*" />
     <ReferentialConstraint>
@@ -702,15 +714,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_ImportedEvidenceData_patientdata1">
+  <Association Name="fk_importedevidencedata_patientdata1">
     <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
-    <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="0..1" />
+    <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="patientdata">
         <PropertyRef Name="IdPD" />
       </Principal>
       <Dependent Role="importedevidencedata">
-        <PropertyRef Name="IdIED" />
+        <PropertyRef Name="PatientIED" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -723,6 +735,18 @@
       </Principal>
       <Dependent Role="importedevidencedata_st">
         <PropertyRef Name="IdIED" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_importedevidencedata_userdata1">
+    <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+    <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="userdata">
+        <PropertyRef Name="IdUD" />
+      </Principal>
+      <Dependent Role="importedevidencedata">
+        <PropertyRef Name="UserDataIdIED" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -759,6 +783,18 @@
       </Principal>
       <Dependent Role="importedexaminationdata_st">
         <PropertyRef Name="IdIEX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_importedexaminationdata_userdata1">
+    <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+    <End Role="importedexaminationdata" Type="Self.importedexaminationdata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="userdata">
+        <PropertyRef Name="IdUD" />
+      </Principal>
+      <Dependent Role="importedexaminationdata">
+        <PropertyRef Name="DoctorIdIEX" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -878,7 +914,7 @@
         <PropertyRef Name="IdS" />
       </Principal>
       <Dependent Role="scheduledata">
-        <PropertyRef Name="Status" />
+        <PropertyRef Name="StatusSD" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1035,7 +1071,7 @@
       <End Role="patientdata" EntitySet="patientdata" />
       <End Role="examinationdata" EntitySet="examinationdata" />
     </AssociationSet>
-    <AssociationSet Name="fk_ExaminationData_ST_examinationdata1" Association="Self.fk_ExaminationData_ST_examinationdata1">
+    <AssociationSet Name="fk_examinationdata_st_examinationdata1" Association="Self.fk_examinationdata_st_examinationdata1">
       <End Role="examinationdata" EntitySet="examinationdata" />
       <End Role="examinationdata_st" EntitySet="examinationdata_st" />
     </AssociationSet>
@@ -1075,13 +1111,17 @@
       <End Role="gender_fx" EntitySet="gender_fx" />
       <End Role="userdata" EntitySet="userdata" />
     </AssociationSet>
-    <AssociationSet Name="fk_ImportedEvidenceData_patientdata1" Association="Self.fk_ImportedEvidenceData_patientdata1">
+    <AssociationSet Name="fk_importedevidencedata_patientdata1" Association="Self.fk_importedevidencedata_patientdata1">
       <End Role="patientdata" EntitySet="patientdata" />
       <End Role="importedevidencedata" EntitySet="importedevidencedata" />
     </AssociationSet>
     <AssociationSet Name="fk_ImportedEvidenceData_ST_ImportedEvidenceData1" Association="Self.fk_ImportedEvidenceData_ST_ImportedEvidenceData1">
       <End Role="importedevidencedata" EntitySet="importedevidencedata" />
       <End Role="importedevidencedata_st" EntitySet="importedevidencedata_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_importedevidencedata_userdata1" Association="Self.fk_importedevidencedata_userdata1">
+      <End Role="userdata" EntitySet="userdata" />
+      <End Role="importedevidencedata" EntitySet="importedevidencedata" />
     </AssociationSet>
     <AssociationSet Name="fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1" Association="Self.fk_ImportedExaminatiosEachImportedEvidence_ST_ImportedEvidenc1">
       <End Role="importedevidencedata" EntitySet="importedevidencedata" />
@@ -1094,6 +1134,10 @@
     <AssociationSet Name="fk_ImportedExaminationData_ST_ImportedExaminationData1" Association="Self.fk_ImportedExaminationData_ST_ImportedExaminationData1">
       <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
       <End Role="importedexaminationdata_st" EntitySet="importedexaminationdata_st" />
+    </AssociationSet>
+    <AssociationSet Name="fk_importedexaminationdata_userdata1" Association="Self.fk_importedexaminationdata_userdata1">
+      <End Role="userdata" EntitySet="userdata" />
+      <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
     </AssociationSet>
     <AssociationSet Name="fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1" Association="Self.fk_ImportedExaminationsEachEvidence_ST_ImportedExaminationData1">
       <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />

@@ -21,6 +21,8 @@ namespace MedicalAdministrationSystem.DataAccess
             this.doctorschedule = new HashSet<doctorschedule>();
             this.evidencedata = new HashSet<evidencedata>();
             this.examinationdata = new HashSet<examinationdata>();
+            this.importedevidencedata = new HashSet<importedevidencedata>();
+            this.importedexaminationdata = new HashSet<importedexaminationdata>();
             this.scheduledata = new HashSet<scheduledata>();
         }
     
@@ -53,6 +55,10 @@ namespace MedicalAdministrationSystem.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<examinationdata> examinationdata { get; set; }
         public virtual gender_fx gender_fx { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<importedevidencedata> importedevidencedata { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<importedexaminationdata> importedexaminationdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<scheduledata> scheduledata { get; set; }
         public virtual settlement_fx settlement_fx { get; set; }

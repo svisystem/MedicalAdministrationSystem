@@ -1,19 +1,18 @@
 ﻿using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.Models.Examination
 {
     public class ImportExaminationM : NotifyPropertyChanged
     {
-        public ObservableCollection<ListElement> _ExaminationList = new ObservableCollection<ListElement>();
-        private ListElement _Selected;
+        private ObservableCollection<DocumentControlM.ListElement> _ExaminationList = new ObservableCollection<DocumentControlM.ListElement>();
         private string _ExaminationName;
+        private string _ExaminationCode;
+        private int _PatientId;
         private DateTime? _ExaminationDate;
 
-        public ObservableCollection<ListElement> ExaminationList
+        public ObservableCollection<DocumentControlM.ListElement> ExaminationList
         {
             get
             {
@@ -24,19 +23,6 @@ namespace MedicalAdministrationSystem.Models.Examination
                 if (_ExaminationList == value) return;
                 _ExaminationList = value;
                 OnPropertyChanged("ExaminationList");
-            }
-        }
-        public ListElement Selected
-        {
-            get
-            {
-                return _Selected;
-            }
-            set
-            {
-                if (_Selected == value) return;
-                _Selected = value;
-                OnPropertyChanged("Selected");
             }
         }
         public string ExaminationName
@@ -52,6 +38,33 @@ namespace MedicalAdministrationSystem.Models.Examination
                 OnPropertyChanged("ExaminationName");
             }
         }
+        public string ExaminationCode
+        {
+            get
+            {
+                return _ExaminationCode;
+            }
+            set
+            {
+                if (_ExaminationCode == value) return;
+                _ExaminationCode = value;
+                OnPropertyChanged("ExaminationCode");
+            }
+        }
+        
+        public int PatientId
+        {
+            get
+            {
+                return _PatientId;
+            }
+            set
+            {
+                if (_PatientId == value) return;
+                _PatientId = value;
+                OnPropertyChanged("PatientId");
+            }
+        }
         public DateTime? ExaminationDate
         {
             get
@@ -63,80 +76,6 @@ namespace MedicalAdministrationSystem.Models.Examination
                 if (_ExaminationDate == value) return;
                 _ExaminationDate = value;
                 OnPropertyChanged("ExaminationDate");
-            }
-        }
-        public class ListElement : NotifyPropertyChanged
-        {
-            private int _Id;
-            private UserControl _Button;
-            private Stream _File;
-            private string _FileType;
-            private string _ButtonType;
-
-            public int Id
-            {
-                get
-                {
-                    return _Id;
-                }
-                set
-                {
-                    if (_Id == value) return;
-                    _Id = value;
-                    OnPropertyChanged("Id");
-                }
-            }
-            public UserControl Button
-            {
-                get
-                {
-                    return _Button;
-                }
-                set
-                {
-                    if (_Button == value) return;
-                    _Button = value;
-                    OnPropertyChanged("Button");
-                }
-            }
-            public Stream File
-            {
-                get
-                {
-                    return _File;
-                }
-                set
-                {
-                    if (_File == value) return;
-                    _File = value;
-                    OnPropertyChanged("File");
-                }
-            }
-            public string FileType
-            {
-                get
-                {
-                    return _FileType;
-                }
-                set
-                {
-                    if (_FileType == value) return;
-                    _FileType = value;
-                    OnPropertyChanged("FileType");
-                }
-            }
-            public string ButtonType
-            {
-                get
-                {
-                    return _ButtonType;
-                }
-                set
-                {
-                    if (_ButtonType == value) return;
-                    _ButtonType = value;
-                    OnPropertyChanged("ButtonType");
-                }
             }
         }
     }

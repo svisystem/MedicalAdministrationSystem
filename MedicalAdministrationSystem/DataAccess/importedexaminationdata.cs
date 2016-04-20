@@ -24,12 +24,15 @@ namespace MedicalAdministrationSystem.DataAccess
     
         public int IdIEX { get; set; }
         public int PatientIdIEX { get; set; }
+        public int DoctorIdIEX { get; set; }
         public System.DateTime DateTimeIEX { get; set; }
-        public string NameIED { get; set; }
+        public string NameIEX { get; set; }
+        public string CodeIEX { get; set; }
     
         public virtual patientdata patientdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<importedexaminationdata_st> importedexaminationdata_st { get; set; }
+        public virtual userdata userdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<importedexaminationseachevidence_st> importedexaminationseachevidence_st { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

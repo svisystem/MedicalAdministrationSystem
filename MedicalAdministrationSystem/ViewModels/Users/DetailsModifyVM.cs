@@ -18,7 +18,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         private BackgroundWorker Execute { get; set; }
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
-        private medicalEntities me { get; set; }
         protected internal bool nonexist { get; set; }
         private userdata ud { get; set; }
         private bool fromPatient { get; set; } = false;
@@ -129,7 +128,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 {
                     me.Database.Connection.Open();
                     DetailsModifyMDataSet.UserID = (int)GlobalVM.GlobalM.AccountID;
-                    if (!GlobalVM.GlobalM.UserID.Equals(0))
+                    if (!GlobalVM.GlobalM.UserID.Equals(null))
                     {
                         ud = me.userdata.Where(b => b.IdUD == GlobalVM.GlobalM.UserID).Single();
                         nonexist = false;

@@ -13,7 +13,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         protected internal RegistrationM RegistrationM { get; set; }
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
-        private medicalEntities me { get; set; }
         protected internal RegistrationVM()
         {
             RegistrationM = new RegistrationM();

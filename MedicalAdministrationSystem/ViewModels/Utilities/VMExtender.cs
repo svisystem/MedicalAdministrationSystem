@@ -1,4 +1,5 @@
-﻿using MedicalAdministrationSystem.Views.Global;
+﻿using MedicalAdministrationSystem.DataAccess;
+using MedicalAdministrationSystem.Views.Global;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
     {
         protected internal StockVerticalMenuItem currentItem { get; set; }
         protected internal StockVerticalMenuItem earlierItem { get; set; }
+        protected internal medicalEntities me { get; set; }
         protected internal Dialog dialog { get; set; }
         protected internal bool workingConn { get; set; }
         protected internal void ConnectionMessage()
@@ -29,13 +31,13 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
 
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
+                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async delegate
                 {
                     GlobalVM.StockLayout.actualContent.Content = task.Result;
                     button.button_Click(button.button, new RoutedEventArgs(Button.ClickEvent));
                     await Loading.Hide();
                 }));
-                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             });
             currentItem = button;
         }

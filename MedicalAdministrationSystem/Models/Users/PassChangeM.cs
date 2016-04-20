@@ -10,6 +10,7 @@ namespace MedicalAdministrationSystem.Models.Users
         private string _ConfirmPassword;
         private string _RegPass;
         private string _RegPassSalt;
+        private string _UserName;
 
         public string CurrentPassword
         {
@@ -87,6 +88,19 @@ namespace MedicalAdministrationSystem.Models.Users
                 if (_RegPassSalt == value) return;
                 _RegPassSalt = value;
                 OnPropertyChanged("RegPassSalt");
+            }
+        }
+        public string UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set
+            {
+                if (_UserName == value) return;
+                _UserName = value;
+                OnPropertyChanged("UserName");
             }
         }
     }

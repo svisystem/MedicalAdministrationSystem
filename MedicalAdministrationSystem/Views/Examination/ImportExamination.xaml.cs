@@ -20,7 +20,7 @@ namespace MedicalAdministrationSystem.Views.Examination
             ImportExaminationVM = new ImportExaminationVM();
             this.DataContext = ImportExaminationVM;
             InitializeComponent();
-            ImportExaminationVM.Start(ref content);
+            ImportExaminationVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => importExaminationValid.Validate(importExaminationValid)), SetEnabledSave, SetReadOnlyFields);
             validatorClass = importExaminationValid;
             button = Save;
             ConnectValidators();
@@ -28,12 +28,24 @@ namespace MedicalAdministrationSystem.Views.Examination
         }
         private void ConnectValidators()
         {
-            examinationName.Validate += NonMaskedNotNullValidateForString;
+            examinationName.Validate += examinationName_Validate;
             examinationDate.Validate += examinationDate_Validate;
         }
         protected internal bool Dirty()
         {
             return ImportExaminationVM.VMDirty();
+        }
+        protected internal void examinationName_Validate(object sender, ValidationEventArgs e)
+        {
+            validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, false, null);
+            if (string.IsNullOrEmpty(e.Value as string))
+                e.SetError("A mező kitöltése kötelező", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+            else
+            {
+                e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
+                validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, true, null);
+            }
+            ForceBindingWithoutEnabledCheck(sender, e);
         }
         private void examinationDate_Validate(object sender, ValidationEventArgs e)
         {
@@ -53,11 +65,23 @@ namespace MedicalAdministrationSystem.Views.Examination
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
                 importExaminationValid.examinationDate = true;
             }
-            button.IsEnabled = (validatorClass as FormValidate).Validate(validatorClass);
         }
         private void ExaminationTime_Spin(object sender, SpinEventArgs e)
         {
             e.Handled = true;
+        }
+        private void SetEnabledSave(bool enabled)
+        {
+            button.IsEnabled = enabled;
+        }
+        private void SetReadOnlyFields(bool enabled)
+        {
+            examinationName.IsReadOnly = enabled;
+            examinationDate.IsReadOnly = enabled;
+        }
+        private void save(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ImportExaminationVM.ExecuteMethod();
         }
         private class ImportExaminationValid : FormValidate
         {

@@ -66,12 +66,27 @@ namespace MedicalAdministrationSystem.Models.Settings
         }
         public class UserRow : NotifyPropertyChanged
         {
+            private int _Id;
             private DateTime _RegistrationDate;
             private string _UserName;
             private string _Priviledge;
             private bool _Verified;
             private bool _PassModified;
             private bool _Enabled;
+
+            public int Id
+            {
+                get
+                {
+                    return _Id;
+                }
+                set
+                {
+                    if (_Id == value) return;
+                    _Id = value;
+                    OnPropertyChanged("Id");
+                }
+            }
             public DateTime RegistrationDate
             {
                 get

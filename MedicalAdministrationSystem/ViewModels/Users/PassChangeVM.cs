@@ -13,7 +13,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         protected internal PassChangeM PassChangeM { get; set; }
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
-        private medicalEntities me { get; set; }
         private PasswordManager PasswordManager { get; set; }
         protected internal PassChangeVM()
         {
@@ -90,6 +89,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     me.Database.Connection.Open();
                     PassChangeM.RegPass = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PasswordAD).Single();
                     PassChangeM.RegPassSalt = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PassSaltAD).Single();
+                    PassChangeM.UserName = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.UserNameAD).Single();
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
@@ -108,6 +108,10 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         protected internal bool CurrentPassCompare(string value)
         {
             return PassChangeM.CurrentPassword.Equals(value);
+        }
+        protected internal bool UserNameCompare(string value)
+        {
+            return PassChangeM.UserName.Equals(value);
         }
         protected internal bool PasswordMatch()
         {

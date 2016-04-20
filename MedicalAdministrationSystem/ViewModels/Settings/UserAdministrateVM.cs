@@ -16,7 +16,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
         private BackgroundWorker NewPassThread { get; set; }
-        private medicalEntities me { get; set; }
         private ObservableCollection<UserAdministrateMViewElements.UserRow> temp { get; set; }
         private NewPass newPass { get; set; }
         private Action Loaded { get; set; }
@@ -59,6 +58,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 {
                     UsersMViewElements.Users.Add(new UserAdministrateMViewElements.UserRow
                     {
+                        Id = UsersMViewElements.UserDatas[i].IdAD,
                         RegistrationDate = UsersMViewElements.UserDatas[i].RegistrateTimeAD,
                         UserName = UsersMViewElements.UserDatas[i].UserNameAD,
                         Priviledge = UsersMDataSet.PriviledgesList.Where(a => a.IdP == UsersMViewElements.UserDatas[i].PriviledgesIdAD).Select(a => a.NameP).Single(),
@@ -82,7 +82,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         private void FindMyself()
         {
-            UsersMViewElements.Users.Where(m => m.UserName == GlobalVM.GlobalM.AccountName).Single().Enabled = false;
+            UsersMViewElements.Users.Where(m => m.Id == GlobalVM.GlobalM.AccountID).Single().Enabled = false;
         }
         protected internal async void ExecuteMethod()
         {
@@ -200,7 +200,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         private void Erase()
         {
-            UsersMViewElements.Erased.Add(UsersMViewElements.UserDatas.Where(a => a.UserNameAD == UsersMDataSet.SelectedRow.UserName).Select(a => a.IdAD).Single());
+            UsersMViewElements.Erased.Add(UsersMViewElements.UserDatas.Where(a => a.IdAD == UsersMDataSet.SelectedRow.Id).Select(a => a.IdAD).Single());
             UsersMViewElements.UserDatas.Remove(UsersMViewElements.UserDatas.Where(b => b.IdAD == UsersMViewElements.Erased.Last()).Single());
             UsersMViewElements.Users.Remove(UsersMViewElements.Users.Where(b => b.UserName == UsersMDataSet.SelectedRow.UserName).Single());
             Loaded();

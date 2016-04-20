@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="MedicalAdministrationSystem.Views.Fragments.PictureViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments" Loaded="UserControl_Loaded">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <DockPanel>
+                <dxb:ToolBarControl DockPanel.Dock="Top" AllowHide="False" AllowCustomizationMenu="False"
+                        ShowDragWidget="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                    <dxb:ToolBarControl.Items>
+                        <dxb:BarButtonItem x:Name="bExport" Content="Kép exportálása"
+                                LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_32x32.png"
+                                ItemClick="bExport_ItemClick" />
+                        <dxb:BarButtonItem x:Name="bPrint" Content="Nyomtatás"
+                                LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Print_32x32.png"
+                                ItemClick="bPrint_ItemClick" />
+                        <dxb:BarButtonItem x:Name="bDefaultView" Content="Nézet alaphelyzetbe állítása"
+                                LargeGlyph="{dx:DXImageOffice2013 Image=Image_32x32.png}" ItemClick="defaultView" />
+                    </dxb:ToolBarControl.Items>
+                </dxb:ToolBarControl>
+                <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            </DockPanel>
+            <Button Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    BorderBrush="{x:Null}" BorderThickness="0" Click="Close" Grid.Row="0">
+                <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
+                        Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+            </Button>
+        </Grid>
+        <DockPanel x:Name="innerdock" SizeChanged="innerdock_SizeChanged" VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            <Viewbox Grid.Row="1" x:Name="viewBox" ScrollViewer.VerticalScrollBarVisibility="Disabled" Stretch="None"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid x:Name="grid">
+                    <Grid x:Name="transformGrid" MouseLeftButtonDown="mainImage_MouseLeftButtonDown"
+                            MouseLeftButtonUp="mainImage_MouseLeftButtonUp" MouseMove="mainImage_MouseMove"
+                            MouseWheel="clipBorder_MouseWheel" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform x:Name="imageScaleTransform" />
+                                <TranslateTransform x:Name="imageTranslateTransform" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                    </Grid>
+                </Grid>
+            </Viewbox>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

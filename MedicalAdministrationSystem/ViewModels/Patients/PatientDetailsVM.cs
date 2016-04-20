@@ -20,7 +20,6 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         private BackgroundWorker Execute { get; set; }
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
-        private medicalEntities me { get; set; }
         private bool newform { get; set; }
         protected internal bool From { get; set; }
         private patientdata selected { get; set; }
@@ -92,7 +91,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                         me.SaveChanges();
                         int id = me.patientdata.Where(a => a.NamePD == selected.NamePD).Select(a => a.IdPD).Single();
                         belong_st bt = new belong_st();
-                        bt.IdUD = GlobalVM.GlobalM.UserID;
+                        bt.IdUD = (int)GlobalVM.GlobalM.UserID;
                         bt.IdPD = id;
                         me.belong_st.Add(bt);
                     }

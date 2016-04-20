@@ -18,7 +18,6 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         private BackgroundWorker RefreshTable { get; set; }
         private BackgroundWorker Execute { get; set; }
         private BackgroundWorker EraseBackground { get; set; }
-        private medicalEntities me { get; set; }
         private Action Loaded { get; set; }
         protected internal PatientListVM(Action Loaded)
         {
@@ -79,7 +78,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 }
                 else
                 {
-                    PatientListM.SelectedUser = new PatientListM.UserList { Id = GlobalVM.GlobalM.UserID };
+                    PatientListM.SelectedUser = new PatientListM.UserList { Id = (int)GlobalVM.GlobalM.UserID };
                 }
             }
             else ConnectionMessage();

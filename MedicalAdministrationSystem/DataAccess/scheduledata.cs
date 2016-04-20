@@ -24,8 +24,8 @@ namespace MedicalAdministrationSystem.DataAccess
         public int PatientIdSD { get; set; }
         public int DoctorIdSD { get; set; }
         public System.DateTime StartSD { get; set; }
-        public System.DateTime Finish { get; set; }
-        public Nullable<int> Status { get; set; }
+        public System.DateTime FinishSD { get; set; }
+        public Nullable<int> StatusSD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<evidencedata> evidencedata { get; set; }

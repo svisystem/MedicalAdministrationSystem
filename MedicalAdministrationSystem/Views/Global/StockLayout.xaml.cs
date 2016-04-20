@@ -72,7 +72,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void PatiensLoad()
         {
             await ViewModels.Utilities.Loading.Show();
-            PatientsVM patients = new PatientsVM();
+            PatientsVM patients = new PatientsVM(earlierItem);
             patients.PatientListLoad();
             currentItem = patientsTBI;
             await ViewModels.Utilities.Loading.Hide();
@@ -80,7 +80,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void PatiensLoad(bool modifier)
         {
             await ViewModels.Utilities.Loading.Show();
-            PatientsVM patients = new PatientsVM();
+            PatientsVM patients = new PatientsVM(earlierItem);
             if (modifier) patients.PatientDetailsLoad();
             else patients.PatientListLoad();
             currentItem = patientsTBI;
@@ -129,7 +129,7 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             UsersVM users = new UsersVM();
-            if (GlobalVM.GlobalM.AccountName == null) users.LoginLoad();
+            if (GlobalVM.GlobalM.AccountID == null) users.LoginLoad();
             else users.DetailsModifyLoad();
             currentItem = usersTBI;
             SelectedPatient();
@@ -143,7 +143,7 @@ namespace MedicalAdministrationSystem.Views.Global
             if (!modifier) users.RegistrationLoad();
             else
             {
-                if (GlobalVM.GlobalM.AccountName == null) users.LoginLoad();
+                if (GlobalVM.GlobalM.AccountID == null) users.LoginLoad();
                 else users.DetailsModifyLoad();
             }
             currentItem = usersTBI;

@@ -24,7 +24,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         private BackgroundWorker bgw1 { get; set; }
         private BackgroundWorker bgw2 { get; set; }
         private BackgroundWorker offlinebgw { get; set; }
-        private medicalEntities me { get; set; }
         private Configuration config { get; set; }
         protected internal LoginVM()
         {
@@ -44,6 +43,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                         me.Database.Connection.Close();
                         workingConn = true;
                     }
+                    config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    if (config.AppSettings.Settings["facilityId"].Value != "") GlobalVM.GlobalM.CompanyId = Convert.ToInt32(config.AppSettings.Settings["facilityId"].Value);
                 }
                 catch
                 {
@@ -113,7 +114,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                         }
                         catch
                         {
-                            GlobalVM.GlobalM.UserID = 0;
+                            GlobalVM.GlobalM.UserID = null;
                         }
 
                         LoginM.RegPass = await me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PasswordAD).SingleAsync();
@@ -232,18 +233,12 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             if (workingConn)
             {
-                dialog = new Dialog(false, "Sikeres belépés", Load);
+                dialog = new Dialog(false, "Sikeres belépés", async delegate { await Utilities.Loading.Hide(); });
                 dialog.content = new TextBlock("Üdvözöljük felhasználóink között");
                 dialog.Start();
+                new MenuButtonsEnabled(pr).LoadItem(GlobalVM.StockLayout.usersTBI);
             }
             else ConnectionMessage();
-        }
-        private async void Load()
-        {
-            GlobalVM.GlobalM.AccountName = LoginM.Username;
-            MenuButtonsEnabled mbe = new MenuButtonsEnabled(pr);
-            mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
-            await Utilities.Loading.Hide();
         }
         protected internal bool VMDirty()
         {

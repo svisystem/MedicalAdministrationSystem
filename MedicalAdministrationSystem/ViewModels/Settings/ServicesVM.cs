@@ -16,7 +16,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
         private BackgroundWorker EraseBackground { get; set; }
-        private medicalEntities me { get; set; }
         private ObservableCollection<ServicesM.Service> temp { get; set; }
         private bool modified { get; set; }
         private Action Loaded { get; set; }

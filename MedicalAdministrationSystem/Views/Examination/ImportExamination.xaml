@@ -5,7 +5,6 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Examination"
         xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
     <utilities:ViewExtender.Resources>
@@ -46,7 +45,6 @@
             <Label Content="Dokumentumok:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="13,10,10,10"
                     HorizontalAlignment="Left" />
             <dxe:ListBoxEdit x:Name="listBox"
-                    SelectedItem="{Binding ImportExaminationM.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ItemsSource="{Binding ImportExaminationM.ExaminationList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ShowBorder="False" Padding="0,40,0,0" HorizontalContentAlignment="Center"
                     ScrollViewer.CanContentScroll="False" IsTabStop="False">
@@ -81,7 +79,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="145" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Vizsgálat megnevezése:" HorizontalAlignment="Left"
@@ -104,7 +102,7 @@
                             ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None"
                             NullText="Vizsgálat időpontja..." Mask="D" MaskType="DateTimeAdvancingCaret"
                             MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False"
-                            IsTextEditable="True" MaskIgnoreBlank="False" Spin="ExaminationTime_Spin"
+                            IsTextEditable="False" MaskIgnoreBlank="False" Spin="ExaminationTime_Spin"
                             HorizontalAlignment="Right" Height="22" VerticalAlignment="Center" Width="220">
                         <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                         <dxe:ButtonInfo GlyphKind="DropDown"
@@ -117,9 +115,23 @@
             </Grid>
         </DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Height="40">
-            <Separator DockPanel.Dock="Top" Margin="0" />
-            <Button x:Name="Save" Height="29" Margin="0" Content="Változtatások mentése" VerticalAlignment="Center"
-                    HorizontalAlignment="Center" />
+            <Grid>
+                <Separator DockPanel.Dock="Top" Margin="0" />
+                <Grid HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Vizsgálat Azonosítója:" Grid.Column="0" VerticalAlignment="Center"
+                            HorizontalAlignment="Left" Margin="10,0" />
+                    <dxe:ButtonEdit
+                            EditValue="{Binding ImportExaminationM.ExaminationCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Column="1" VerticalAlignment="Center" AllowDefaultButton="False" IsReadOnly="True"
+                            IsTabStop="False" IsTextEditable="False" />
+                </Grid>
+                <Button x:Name="Save" Height="29" Margin="0" Content="Vizsgálat mentése" VerticalAlignment="Center"
+                        HorizontalAlignment="Center" IsEnabled="False" Click="save" />
+            </Grid>
         </DockPanel>
         <ContentControl x:Name="content" IsTabStop="False" />
     </DockPanel>

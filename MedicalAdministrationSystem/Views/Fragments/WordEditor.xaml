@@ -8,7 +8,7 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-        x:Class="MedicalAdministrationSystem.Views.Fragments.WordEditor" MinHeight="500" MaxWidth="2000">
+        x:Class="MedicalAdministrationSystem.Views.Fragments.WordEditor">
     <UserControl.Resources>
         <dxre:RichEditUICommand x:Key="commands"/>
         <dxre:RichEditStringIdConverter x:Key="stringIdConverter" />
@@ -82,11 +82,11 @@
             </dxr:RibbonControl>
             <dxre:RichEditControl x:Name="wordEditor" BarManager="{Binding ElementName=barManager1, Mode=OneTime}"
                     Ribbon="{Binding ElementName=ribbonControl1, Mode=OneTime}"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="-1,-19,-1,-1"/>
+                    ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="-1,-19,-1,-1" ShowCaretInReadOnly="False"
+                    BorderBrush="#FFF93434" PopupMenuShowing="wordEditor_PopupMenuShowing" />
         </DockPanel>
         <dxb:BarManager.Items>
-            <dxb:BarButtonItem x:Name="biFileNew"
-                    Command="{Binding FileNew, Mode=OneTime, Source={StaticResource commands}}"
+            <dxb:BarButtonItem x:Name="biFileNew" Content="Új dokumentum" ItemClick="New"
                     LargeGlyph="{dx:DXImageOffice2013 Image=New_32x32.png}"
                     Glyph="{dx:DXImageOffice2013 Image=New_16x16.png}" />
             <dxb:BarButtonItem x:Name="biFileOpen" ItemClick="Load" Content="Megnyitás"
@@ -113,8 +113,7 @@
                     Command="{Binding FileSaveAs, Mode=OneTime, Source={StaticResource commands}}" Content="Exportálás"
                     LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_32x32.png"
                     Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_16x16.png" />
-            <dxb:BarButtonItem x:Name="biFilePrint"
-                    Command="{Binding FilePrint, Mode=OneTime, Source={StaticResource commands}}"
+            <dxb:BarButtonItem x:Name="biFilePrint" ItemClick="biFilePrint_ItemClick" Content="Nyomtatás"
                     LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Print_32x32.png"
                     Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Print_16x16.png" />
             <dxb:BarButtonItem x:Name="biEditUndo"

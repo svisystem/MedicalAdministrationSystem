@@ -86,12 +86,12 @@
                 </dxb:BarSubItem>
             </dxb:ToolBarControl.Items>
         </dxb:ToolBarControl>
-        <Button DockPanel.Dock="Right" Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
+        <Button Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
                 VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close">
             <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
                     Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
         </Button>
         <dxpdf:PdfViewerControl x:Name="pdfViewer" Grid.Row="1" CommandBarStyle="None" MaxHeight="80000" Margin="-4"
-                ShowStartScreen="False" ZoomMode="FitToWidth" />
+                ShowStartScreen="False" ZoomMode="FitToWidth" DetachStreamOnLoadComplete="False" />
     </Grid>
 </UserControl>

@@ -24,6 +24,7 @@ namespace MedicalAdministrationSystem.DataAccess
     
         public int IdIED { get; set; }
         public int PatientIED { get; set; }
+        public int UserDataIdIED { get; set; }
         public System.DateTime DateTimeIED { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -31,6 +32,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public virtual patientdata patientdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<importedevidencedata_st> importedevidencedata_st { get; set; }
+        public virtual userdata userdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<importedexaminatioseachimportedevidence_st> importedexaminatioseachimportedevidence_st { get; set; }
     }

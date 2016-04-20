@@ -23,6 +23,8 @@ namespace MedicalAdministrationSystem.DataAccess
     
         public int IdEXD { get; set; }
         public byte[] DataEXD { get; set; }
+        public string TypeEXD { get; set; }
+        public string FileTypeEXD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<examinationdata_st> examinationdata_st { get; set; }

@@ -20,9 +20,9 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         protected internal async void OkMethod()
         {
-            GlobalVM.GlobalM.AccountName = null;
             GlobalVM.GlobalM.AccountID = null;
-            GlobalVM.GlobalM.UserID = 0;
+            GlobalVM.GlobalM.UserID = null;
+            GlobalVM.GlobalM.CompanyId = null;
             priviledges_fx pr = new priviledges_fx();
             foreach (PropertyInfo value in pr.GetType().GetProperties())
             {

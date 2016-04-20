@@ -77,6 +77,8 @@
         <MappingFragment StoreEntitySet="evidencedatadocuments">
           <ScalarProperty Name="IdEDD" ColumnName="IdEDD" />
           <ScalarProperty Name="DataEDD" ColumnName="DataEDD" />
+          <ScalarProperty Name="TypeEDD" ColumnName="TypeEDD" />
+          <ScalarProperty Name="FileTypeEDD" ColumnName="FileTypeEDD" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -88,6 +90,7 @@
           <ScalarProperty Name="DoctorIdEX" ColumnName="DoctorIdEX" />
           <ScalarProperty Name="DateTimeEX" ColumnName="DateTimeEX" />
           <ScalarProperty Name="TreatmentIdEX" ColumnName="TreatmentIdEX" />
+          <ScalarProperty Name="CodeEX" ColumnName="CodeEX" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -105,6 +108,8 @@
         <MappingFragment StoreEntitySet="examinationdatadocuments">
           <ScalarProperty Name="IdEXD" ColumnName="IdEXD" />
           <ScalarProperty Name="DataEXD" ColumnName="DataEXD" />
+          <ScalarProperty Name="TypeEXD" ColumnName="TypeEXD" />
+          <ScalarProperty Name="FileTypeEXD" ColumnName="FileTypeEXD" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -139,6 +144,7 @@
         <MappingFragment StoreEntitySet="importedevidencedata">
           <ScalarProperty Name="IdIED" ColumnName="IdIED" />
           <ScalarProperty Name="PatientIED" ColumnName="PatientIED" />
+          <ScalarProperty Name="UserDataIdIED" ColumnName="UserDataIdIED" />
           <ScalarProperty Name="DateTimeIED" ColumnName="DateTimeIED" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -157,8 +163,10 @@
         <MappingFragment StoreEntitySet="importedexaminationdata">
           <ScalarProperty Name="IdIEX" ColumnName="IdIEX" />
           <ScalarProperty Name="PatientIdIEX" ColumnName="PatientIdIEX" />
+          <ScalarProperty Name="DoctorIdIEX" ColumnName="DoctorIdIEX" />
           <ScalarProperty Name="DateTimeIEX" ColumnName="DateTimeIEX" />
-          <ScalarProperty Name="NameIED" ColumnName="NameIED" />
+          <ScalarProperty Name="NameIEX" ColumnName="NameIEX" />
+          <ScalarProperty Name="CodeIEX" ColumnName="CodeIEX" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -243,8 +251,8 @@
           <ScalarProperty Name="PatientIdSD" ColumnName="PatientIdSD" />
           <ScalarProperty Name="DoctorIdSD" ColumnName="DoctorIdSD" />
           <ScalarProperty Name="StartSD" ColumnName="StartSD" />
-          <ScalarProperty Name="Finish" ColumnName="Finish" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="FinishSD" ColumnName="FinishSD" />
+          <ScalarProperty Name="StatusSD" ColumnName="StatusSD" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
