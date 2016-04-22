@@ -3,10 +3,7 @@ using MedicalAdministrationSystem.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
@@ -14,6 +11,8 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
     {
         private List<Item> menuItems { get; set; }
         protected internal bool? modifier = null;
+        protected internal bool? imported = null;
+        protected internal int? ID = null;
 
         public MenuButtonsEnabled(priviledges_fx priviledges)
         {
@@ -77,11 +76,11 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         {
             return item.IsEnabled;
         }
-        protected internal void LoadItem(TileBarItem item)
+        protected internal async void LoadItem(TileBarItem item)
         {
             if (Visible(item) && Enabled(item))
             {
-                Loading.Show();
+                await Loading.Show();
                 GlobalVM.StockLayout.ManualChange(item);
                 switch (item.Name)
                 {
@@ -93,7 +92,8 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                         else GlobalVM.StockLayout.PatiensLoad();
                         break;
                     case "examinationTBI":
-                        GlobalVM.StockLayout.ExaminationLoad();
+                        if (modifier == null) GlobalVM.StockLayout.ExaminationLoad();
+                        else GlobalVM.StockLayout.ExaminationLoad((bool)modifier, (bool)imported, (int)ID);
                         break;
                     case "labTBI":
                         GlobalVM.StockLayout.LabLoad();
@@ -124,7 +124,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                         GlobalVM.StockLayout.LogOutLoad();
                         break;
                 }
-                Loading.Hide();
+                await Loading.Hide();
             }
         }
         private class Item
