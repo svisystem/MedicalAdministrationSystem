@@ -181,7 +181,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             if (!FacilityDataMDataSet.SelectedCompany.ID.Equals(0))
                 text = "Biztosan megváltoztatja a kiválasztott intézmény adatait";
             else text = "Valóban elmenti a megadott adatokat új intézményként";
-            dialog = new Dialog(false, "Intézmény adatok mentése", OkMethod, Dummy, true);
+            dialog = new Dialog(false, "Intézmény adatok mentése", OkMethod, delegate { }, true);
             dialog.content = new TextBlock(text + " és alkalmazza jelenlegi intézmény adatokkén?");
             dialog.Start();
         }
@@ -351,6 +351,5 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             return FacilityDataMViewElements.IsChanged;
         }
-        private void Dummy() { }
     }
 }

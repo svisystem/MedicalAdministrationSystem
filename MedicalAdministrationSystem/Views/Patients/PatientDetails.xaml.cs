@@ -180,7 +180,7 @@ namespace MedicalAdministrationSystem.Views.Patients
                 billingSettlement.EditValue != null ||
                 billingAddress.EditValue != null)
             {
-                Dialog dialog = new Dialog(true, "Adatok módosítása", PatientDetailsVM.Copy, Dummy, true);
+                Dialog dialog = new Dialog(true, "Adatok módosítása", PatientDetailsVM.Copy, delegate { }, true);
                 dialog.content = new Dialogs.TextBlock("Biztosan felülírja a számlázási adatokat?\n" +
                     "A korábbi adatok elvesznek");
                 dialog.Start();
@@ -199,7 +199,6 @@ namespace MedicalAdministrationSystem.Views.Patients
         {
             if (e.Key == Key.Enter) ModifyExecute(this, new RoutedEventArgs());
         }
-        private void Dummy() { }
         private class PatientDetailsValid : FormValidate
         {
             public bool userName { get; set; }

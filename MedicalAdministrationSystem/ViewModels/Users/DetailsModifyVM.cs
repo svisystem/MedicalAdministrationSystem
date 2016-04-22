@@ -47,7 +47,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             if (!nonexist)
             {
-                dialog = new Dialog(false, "Módosítás megerősítése", OkMethod, Dummy, true);
+                dialog = new Dialog(false, "Módosítás megerősítése", OkMethod, delegate { }, true);
                 dialog.content = new TextBlock("Biztosan megváltoztatja jelenlegi adatait?");
                 dialog.Start();
             }
@@ -110,7 +110,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 if (nonexist) temp = "rögzítettük";
                 else temp = "módosítottuk";
 
-                dialog = new Dialog(false, "Felhasználói adatok", Dummy);
+                dialog = new Dialog(false, "Felhasználói adatok", delegate { });
                 dialog.content = new TextBlock("Sikeresen " + temp + " adatait.");
                 dialog.Start();
 
@@ -194,7 +194,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
 
                 if (nonexist && !fromPatient)
                 {
-                    dialog = new Dialog(true, "Felhasználói adatok", Dummy);
+                    dialog = new Dialog(true, "Felhasználói adatok", delegate { });
                     dialog.content = new TextBlock("Még nem töltötte ki a felhasználói adatait\n" +
                         "Kérjük töltse ki a megfelelő adatokat");
                     dialog.Start();
@@ -262,6 +262,5 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             return DetailsModifyMViewElements.IsChanged;
         }
-        private void Dummy() { }
     }
 }

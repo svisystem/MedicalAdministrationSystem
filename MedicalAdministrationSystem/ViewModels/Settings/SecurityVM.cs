@@ -40,11 +40,10 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void ExecuteMethod()
         {
-            dialog = new Dialog(true, "Módosítás megerősítése", OkMethod, CanelMethod, true);
+            dialog = new Dialog(true, "Módosítás megerősítése", OkMethod, delegate { }, true);
             dialog.content = new TextBlock("Biztosan megváltoztatja a biztonsági profil beállításait?");
             dialog.Start();
         }
-        private void CanelMethod() { }
 
         private async void OkMethod()
         {

@@ -32,7 +32,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         protected internal async void Refresh()
         {
             await Utilities.Loading.Show();
-            new FormChecking(Loading.RunWorkerAsync, Dummy, true);
+            new FormChecking(Loading.RunWorkerAsync, delegate { }, true);
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
@@ -165,7 +165,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void NewPassMethod()
         {
-            dialog = new Dialog(false, "Jelszó megváltoztatása", OkMethod, Dummy, false);
+            dialog = new Dialog(false, "Jelszó megváltoztatása", OkMethod, delegate { }, false);
             newPass = new NewPass(dialog.YesButton(), UsersMDataSet.SelectedRow.UserName);
             dialog.content = newPass;
             dialog.Start();
@@ -193,7 +193,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void UserEraseMethod()
         {
-            dialog = new Dialog(true, "Felhasználó törlése", Erase, Dummy, true);
+            dialog = new Dialog(true, "Felhasználó törlése", Erase, delegate { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott felhasználói fiókot?\n" +
               "A felhasználói fiók törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();
@@ -205,6 +205,5 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             UsersMViewElements.Users.Remove(UsersMViewElements.Users.Where(b => b.UserName == UsersMDataSet.SelectedRow.UserName).Single());
             Loaded();
         }
-        private void Dummy() { }
     }
 }

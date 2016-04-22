@@ -44,7 +44,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             if (!newform)
             {
                 await Utilities.Loading.Show();
-                dialog = new Dialog(false, "Módosítás megerősítése", OkMethod, Dummy, true);
+                dialog = new Dialog(false, "Módosítás megerősítése", OkMethod, delegate { }, true);
                 dialog.content = new TextBlock("Biztosan megváltoztatja a páciens adatait?");
                 dialog.Start();
             }
@@ -296,6 +296,5 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             return PatientDetailsMViewElements.IsChanged;
         }
-        private void Dummy() { }
     }
 }

@@ -2,10 +2,6 @@
 using MedicalAdministrationSystem.Views.Examination;
 using MedicalAdministrationSystem.Views.Global;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.ViewModels.MenuItem
@@ -50,8 +46,12 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             edit.button.Click += EditView;
             examinationPlan.button.Click += ExaminationPlanView;
 
-            view.button.IsEnabled = false;
-            edit.button.IsEnabled = false;
+            view.IsEnabledTrigger = false;
+            edit.IsEnabledTrigger = false;
+        }
+        protected internal void SetBack()
+        {
+            if (earlierItem == view || earlierItem == edit) earlierItem.IsEnabledTrigger = false;
         }
         private void ExaminationsView(object sender, EventArgs e)
         {
@@ -67,11 +67,11 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         private void ViewView(object sender, EventArgs e)
         {
-            Check((sender as Button).Parent as StockVerticalMenuItem, ViewLoad, Back);
+            Check((sender as Button).Parent as StockVerticalMenuItem, delegate { ViewLoad(false, 0); }, Back);
         }
         private void EditView(object sender, EventArgs e)
         {
-            Check((sender as Button).Parent as StockVerticalMenuItem, EditLoad, Back);
+            Check((sender as Button).Parent as StockVerticalMenuItem, delegate { EditLoad(false, 0); }, Back);
         }
         private void ExaminationPlanView(object sender, EventArgs e)
         {
@@ -80,32 +80,50 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ExaminationsLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate { return new Examinations(); }), examinations);
+            ViewLoad(new Func<UserControl>(delegate
+            {
+                SetBack();
+                return new Examinations();
+            }), examinations);
         }
         protected internal async void NewExaminationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate { return new NewExamination(); }), newExamination);
+            ViewLoad(new Func<UserControl>(delegate
+            {
+                SetBack();
+                return new NewExamination();
+            }), newExamination);
         }
         protected internal async void ImportExaminationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate { return new ImportExamination(); }), importExamination);
+            ViewLoad(new Func<UserControl>(delegate
+            {
+                SetBack();
+                return new ImportExamination();
+            }), importExamination);
         }
-        protected internal async void ViewLoad()
+        protected internal async void ViewLoad(bool imported, int ID)
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate { return new Registration(); }), view);
+            view.IsEnabledTrigger = true;
+            ViewLoad(new Func<UserControl>(delegate { return new ExaminationView(imported, ID); }), view);
         }
-        protected internal async void EditLoad()
+        protected internal async void EditLoad(bool imported, int ID)
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate { return new Registration(); }), view);
+            edit.IsEnabledTrigger = true;
+            ViewLoad(new Func<UserControl>(delegate { return new ExaminationEdit(imported, ID); }), edit);
         }
         protected internal async void ExaminationPlanLoad()
         {
             await Utilities.Loading.Show();
-            //ViewLoad(new Func<UserControl>(delegate { return new Registration(); }), examinationPlan);
+            ViewLoad(new Func<UserControl>(delegate
+            {
+                SetBack();
+                return new ExaminationPlan();
+            }), examinationPlan);
         }
     }
 }

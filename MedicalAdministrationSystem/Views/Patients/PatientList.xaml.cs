@@ -15,13 +15,13 @@ namespace MedicalAdministrationSystem.Views.Patients
         protected internal Action Selected { get; set; }
         public PatientList(Action Selected)
         {
-            Start(Selected);
+            this.Selected = Selected;
+            Start();
         }
-        private async void Start(Action Selected)
+        private async void Start()
         {
             await Loading.Show();
             PatientListVM = new PatientListVM(view_Loaded);
-            this.Selected = Selected;
             this.DataContext = PatientListVM;
             InitializeComponent();
             if (!GlobalVM.GlobalM.AllSee) selectedUser.Visibility = Visibility.Hidden;

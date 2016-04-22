@@ -65,7 +65,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 {
                     if (!workingConn)
                     {
-                        dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", Dummy);
+                        dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", delegate { });
                         dialog.content = new TextBlock("Adatbáziskapcsolat nélkül nem lehet megfelelően használni az alkalmazást\n" +
                             "Első használat alkalmával be kell konfigurálni az adatbázis kapcsolatot\n" +
                             "Kérjük jelezze a problémát a rendszergazdának");
@@ -89,7 +89,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else
             {
-                dialog = new Dialog(true, "Nincs ilyen felhasználó", Dummy);
+                dialog = new Dialog(true, "Nincs ilyen felhasználó", delegate { });
                 dialog.content = new TextBlock("Kérjük ellenőrizze a beírt adatokat");
                 dialog.Start();
             }
@@ -244,6 +244,5 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             return LoginM.IsChanged;
         }
-        private void Dummy() { }
     }
 }

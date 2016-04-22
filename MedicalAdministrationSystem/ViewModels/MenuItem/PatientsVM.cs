@@ -3,7 +3,6 @@ using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Global;
 using MedicalAdministrationSystem.Views.Patients;
 using System;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -47,7 +46,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             Selected();
             CheckUserData();
         }
-        protected internal void Selected()
+        private void Selected()
         {
             if (GlobalVM.StockLayout.headerContent.Content == null)
                 patientDetails.IsEnabledTrigger = false;

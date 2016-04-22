@@ -201,7 +201,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 {
                     foreach (int patient in PatientListM.Erased)
                         try
-                        {
+                        { //TODO
                             me.belong_st.RemoveRange(me.belong_st.Where(a => a.IdPD == patient));
                             me.examinationseachevidence_st.RemoveRange(me.examinationseachevidence_st.Where
                                 (b => me.examinationdata.Where(a => a.PatientIdEX == patient).Select(a => a.IdEX).ToList().Any(c => c == b.IdEX)));
@@ -231,7 +231,6 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                         }
                 me.SaveChanges();
                 me.Database.Connection.Close();
-                PatientListM.Erased.Clear();
                 workingConn = true;
             }
             catch
@@ -249,7 +248,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     foreach (PatientListM.UserList user in (row as PatientListM.Patient).BelongUsers)
                         user.AcceptChanges();
 
-                dialog = new Dialog(false, "Módosítások mentése", Dummy);
+                dialog = new Dialog(false, "Módosítások mentése", delegate { });
                 dialog.content = new TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
             }
@@ -286,7 +285,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         }
         protected internal void PatientEraseMethod()
         {
-            dialog = new Dialog(true, "Páciens törlése", Erase, Dummy, true);
+            dialog = new Dialog(true, "Páciens törlése", Erase, delegate { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott páciens összes adatát?\n" +
                 "A páciens törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();
@@ -302,6 +301,5 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             if (PatientListM.PatientList.Any(p => p.IsChanged)) return true;
             return PatientListM.PatientList.Any(p => p.BelongUsers.Any(b => b.IsChanged));
         }
-        private void Dummy() { }
     }
 }

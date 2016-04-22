@@ -49,7 +49,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         {
             this.IsChanged = false;
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
         protected void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             var handler = this.PropertyChanged;

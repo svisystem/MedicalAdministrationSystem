@@ -7,20 +7,25 @@
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Examination">
     <DockPanel LastChildFill="True">
+        <DockPanel DockPanel.Dock="Bottom" Height="40">
+            <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <Button Height="29" Content="Változtatások mentése" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Click="Save" />
+        </DockPanel>
         <Grid>
             <dxg:GridControl x:Name="grid"
                     MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
                     MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
-                    ItemsSource="{Binding PatientListM.PatientList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding ExaminationsM.Examinations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ShowBorder="False"
-                    SelectedItem="{Binding PatientListM.SelectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    SelectedItem="{Binding ExaminationsM.SelectedExamination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <dxg:GridControl.Columns>
-                    <dxg:GridColumn Header="Vizsgálat tallózása" MinWidth="120">
+                    <dxg:GridColumn Header="Vizsgálat tallózása" MinWidth="110">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
                                         Margin="-1">
-                                    <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="modify">
+                                    <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="select">
                                         <Grid VerticalAlignment="Center" Margin="0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -38,33 +43,33 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <dxg:GridColumn Header="Importált vizsgálat" MinWidth="110" AllowFocus="False"
-                            Binding="{Binding LabP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ReadOnly="True"
+                            Binding="{Binding Imported, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ReadOnly="True"
                             AllowEditing="False">
                         <dxg:GridColumn.EditSettings>
                             <dxe:CheckEditSettings IsEnabled="False" />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn Header="Vizsgálat neve" MinWidth="120" AllowFocus="False"
-                            Binding="{Binding BirthName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <dxg:GridColumn Header="Vizsgálat azonosítója" MinWidth="120" AllowFocus="False"
-                            Binding="{Binding BirthName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <dxg:GridColumn Header="Vizsgálat időpontja" MinWidth="120" AllowFocus="False"
-                            Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Binding="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn x:Name="dateTime"  Header="Vizsgálat időpontja" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <dxg:GridColumn.EditSettings>
                             <dxe:DateEditSettings MaskCulture="hu-HU" MaskType="DateTimeAdvancingCaret"
                                     MaskUseAsDisplayFormat="True" AllowDefaultButton="False" Mask="F" />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn Header="Vizsgálatot végző neve" MinWidth="120" AllowFocus="False"
-                            Binding="{Binding BirthName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Binding="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <dxg:GridColumn Header="Dokumentumok száma" MinWidth="120" AllowFocus="False"
-                            Binding="{Binding BirthPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Binding="{Binding DocumentCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <dxg:GridColumn Header="Vizsgálat megtekintése" MinWidth="120">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
                                         Margin="-1">
-                                    <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="modify">
+                                    <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="view">
                                         <Grid VerticalAlignment="Center" Margin="0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -127,7 +132,7 @@
                     </dxg:GridColumn>
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.View>
-                    <dxg:TableView x:Name="view" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
+                    <dxg:TableView x:Name="viewer" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
                             ShowGroupPanel="False" ShowIndicator="False" AllowScrollAnimation="True" AutoWidth="True"
                             SearchPanelHorizontalAlignment="Right" BestFitMode="AllRows" AllowBestFit="True"
                             BestFitArea="All" />

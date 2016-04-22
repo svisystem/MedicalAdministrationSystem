@@ -31,7 +31,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         protected internal async void Refresh()
         {
             await Utilities.Loading.Show();
-            new FormChecking(Loading.RunWorkerAsync, Dummy, true);
+            new FormChecking(Loading.RunWorkerAsync,  delegate { }, true);
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
@@ -234,7 +234,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void PriviledgeEraseMethod()
         {
-            dialog = new Dialog(true, "Jogosultsági profil törlése", Erase, Dummy, true);
+            dialog = new Dialog(true, "Jogosultsági profil törlése", Erase, delegate { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott jogosultsági profilt?\n" +
                 "A jogosultsági profil törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();
@@ -284,6 +284,5 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             }
             await Utilities.Loading.Hide();
         }
-        private void Dummy() { }
     }
 }

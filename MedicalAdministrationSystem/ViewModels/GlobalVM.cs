@@ -27,7 +27,7 @@ namespace MedicalAdministrationSystem.ViewModels
         {
             if (GlobalM.AccountID != null)
             {
-                Dialog dialog = new Dialog(true, "Kilépés", Dummy);
+                Dialog dialog = new Dialog(true, "Kilépés", delegate { });
                 dialog.content = new TextBlock("Ameddig be van jelentkezve az alkalmazásba nem javasolt bezárni azt\n\n" +
                     "Az alkalmazásból való kilépéshez előbb jelentkezzen ki");
                 dialog.Start();
@@ -35,6 +35,5 @@ namespace MedicalAdministrationSystem.ViewModels
             }
             else Application.Current.Shutdown();
         }
-        private static void Dummy() { }
     }
 }

@@ -39,13 +39,10 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void ExecuteMethod()
         {
-            dialog = new Dialog(true, "Módosítás megerősítése", OkMethod, CanelMethod, true);
+            dialog = new Dialog(true, "Módosítás megerősítése", OkMethod, delegate { }, true);
             dialog.content = new TextBlock("Biztosan megváltoztatja a jelenlegi adatbázis beállításokat?");
             dialog.Start();
         }
-
-        private void CanelMethod() { }
-
         private async void OkMethod()
         {
             await Utilities.Loading.Show();

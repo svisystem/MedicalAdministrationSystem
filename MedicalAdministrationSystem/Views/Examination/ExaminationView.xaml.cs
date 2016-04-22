@@ -1,42 +1,27 @@
 ﻿using DevExpress.Xpf.Editors;
-using MedicalAdministrationSystem.Models.Examination;
 using MedicalAdministrationSystem.ViewModels.Examination;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MedicalAdministrationSystem.Views.Examination
 {
-    public partial class NewExamination : ViewExtender
+    public partial class ExaminationView : ViewExtender
     {
-        protected internal NewExaminationVM NewExaminationVM { get; set; }
-        private NewExaminationValid newExaminationValid { get; set; }
-        public NewExamination()
+        protected internal ExaminationViewVM ExaminationViewVM { get; set; }
+        private ExaminationViewValid examinationViewValid { get; set; }
+        public ExaminationView(bool imported, int ID)
         {
-            Start();
+            Start(imported, ID);
         }
-        private async void Start()
+        private async void Start(bool imported, int ID)
         {
             await Loading.Show();
-            newExaminationValid = new NewExaminationValid();
-            NewExaminationVM = new NewExaminationVM();
-            this.DataContext = NewExaminationVM;
+            examinationViewValid = new ExaminationViewValid();
+            ExaminationViewVM = new ExaminationViewVM(imported, ID, delegate
+            { ExaminationViewVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => examinationViewValid.Validate(examinationViewValid)), delegate { }, delegate { }); });
+            this.DataContext = ExaminationViewVM;
             InitializeComponent();
-            NewExaminationVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => newExaminationValid.Validate(newExaminationValid)), SetEnabledSave, SetReadOnlyFields);
-            validatorClass = newExaminationValid;
-            button = Save;
+            validatorClass = examinationViewValid;
             ConnectValidators();
         }
         private void ConnectValidators()
@@ -46,29 +31,25 @@ namespace MedicalAdministrationSystem.Views.Examination
         }
         protected internal bool Dirty()
         {
-            return NewExaminationVM.VMDirty();
+            return ExaminationViewVM.VMDirty();
         }
         protected internal void examinationName_Validate(object sender, ValidationEventArgs e)
         {
-            newExaminationValid.examinationName = false;
+            validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, false, null);
             if (string.IsNullOrEmpty(e.Value as string))
                 e.SetError("A mező kitöltése kötelező", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
-            else if (!NewExaminationVM.ExaminationCheck(e.Value as string))
-                e.SetError("A mező tartalma nem megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else
             {
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                newExaminationValid.examinationName = true;
+                validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, true, null);
             }
-            ForceBindingWithoutEnabledCheck(sender, e);
         }
         private void examinationDate_Validate(object sender, ValidationEventArgs e)
         {
-            newExaminationValid.examinationDate = false;
+            examinationViewValid.examinationDate = false;
             if (e.Value == null)
             {
                 e.SetError("A mező kitöltése kötelező", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
-                (sender as DateEdit).EditValue = e.Value;
             }
             else if (e.Value as DateTime? < new DateTime(1900, 1, 1))
                 e.SetError("A mező tartalma a megadott értékeken kívülre mutat", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
@@ -78,26 +59,14 @@ namespace MedicalAdministrationSystem.Views.Examination
             {
                 (sender as DateEdit).EditValue = e.Value;
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                newExaminationValid.examinationDate = true;
+                examinationViewValid.examinationDate = true;
             }
         }
         private void Spin(object sender, SpinEventArgs e)
         {
             e.Handled = true;
         }
-        private void SetEnabledSave(bool enabled)
-        {
-            button.IsEnabled = enabled;
-        }
-        private void SetReadOnlyFields(bool enabled)
-        {
-            examinationName.IsReadOnly = enabled;
-        }
-        private void save(object sender, RoutedEventArgs e)
-        {
-            NewExaminationVM.ExecuteMethod();
-        }
-        private class NewExaminationValid : FormValidate
+        private class ExaminationViewValid : FormValidate
         {
             public bool examinationName { get; set; }
             public bool examinationDate { get; set; }

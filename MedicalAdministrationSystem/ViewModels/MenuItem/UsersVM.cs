@@ -126,16 +126,11 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             await Utilities.Loading.Hide();
             if (workingConn)
             {
-                dialog = new Dialog(false, "Felhasználói fiók törlése", LogOut);
+                dialog = new Dialog(false, "Felhasználói fiók törlése", new LogoutVM().OkMethod);
                 dialog.content = new Views.Dialogs.TextBlock("Sikeresen törölte felhasználói fiókját");
                 dialog.Start();
             }
             else ConnectionMessage();
-        }
-        private void LogOut()
-        {
-            LogoutVM logout = new LogoutVM();
-            logout.OkMethod();
         }
         private void RegistrateWhenLogin(object sender, EventArgs e)
         {
@@ -143,16 +138,11 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         private void Question()
         {
-            dialog = new Dialog(false, "Bejelentkezett felhasználó nem regisztrálhat újra", OkMethod, CancelMethod, true);
+            dialog = new Dialog(false, "Bejelentkezett felhasználó nem regisztrálhat újra", new LogoutVM().OkMethod, CancelMethod, true);
             dialog.content = new Views.Dialogs.TextBlock("Amennyiben több felhasználó hasznája az alkalmazást ugyanazon a gépen," +
                 " a regisztrációhoz előbb ki kell jelentkeznie az aktuális felhasználónak\n" +
                 "Szeretne most kijelentkezni az alkalmazásból?");
             dialog.Start();
-        }
-        private void OkMethod()
-        {
-            LogoutVM logout = new LogoutVM();
-            logout.OkMethod();
         }
         private void CancelMethod()
         {

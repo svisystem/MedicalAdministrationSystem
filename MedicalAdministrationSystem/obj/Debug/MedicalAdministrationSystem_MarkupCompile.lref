@@ -1,9 +1,13 @@
-﻿
+﻿D:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\obj\Debug\GeneratedInternalTypeHelper.g.cs
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\App.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Dialogs\NewPass.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Dialogs\TextBlock.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ExaminationEdit.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ExaminationPlan.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\Examinations.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ExaminationView.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ImportExamination.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\NewExamination.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\File.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\Load.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\New.xaml;;
@@ -23,5 +27,4 @@ FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Us
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Users\PassChange.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Users\Registration.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Global\DialogBase.xaml;;
-FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\NewExamination.xaml;;
 

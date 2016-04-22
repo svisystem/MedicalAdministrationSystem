@@ -100,6 +100,15 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = examinationTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
+        protected async internal void ExaminationLoad(bool modifier, bool imported, int ID)
+        {
+            await ViewModels.Utilities.Loading.Show();
+            ExaminationVM examination = new ExaminationVM();
+            if (modifier) examination.ViewLoad(imported, ID);
+            else examination.EditLoad(imported, ID);
+            currentItem = examinationTBI;
+            await ViewModels.Utilities.Loading.Hide();
+        }
         protected async internal void LabLoad()
         {
             await ViewModels.Utilities.Loading.Show();

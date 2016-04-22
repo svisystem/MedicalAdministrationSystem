@@ -154,9 +154,8 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         protected internal async void Refresh()
         {
             await Utilities.Loading.Show();
-            new FormChecking(Loading.RunWorkerAsync, Dummy, true);
+            new FormChecking(Loading.RunWorkerAsync, delegate { }, true);
         }
-        private void Dummy() { }
         protected internal void NewLine()
         {
             ServicesM.Services.Add(new ServicesM.Service() { New = true });
@@ -164,7 +163,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void ServiceEraseMethod()
         {
-            dialog = new Dialog(true, "Szolgáltatás törlése", Erase, Dummy, true);
+            dialog = new Dialog(true, "Szolgáltatás törlése", Erase, delegate { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott szolgáltatást?\n" +
                 "A szolgáltatás törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();

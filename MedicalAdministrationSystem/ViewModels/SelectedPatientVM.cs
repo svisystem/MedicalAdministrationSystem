@@ -25,7 +25,7 @@ namespace MedicalAdministrationSystem.ViewModels
             if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientDetails))
             {
                 await Loading.Show();
-                new FormChecking(Ok, Dummy, true);
+                new FormChecking(Ok, delegate { }, true);
             }
         }
         private void Ok()
@@ -57,7 +57,7 @@ namespace MedicalAdministrationSystem.ViewModels
             if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientList))
             {
                 await Loading.Show();
-                FormChecking fc = new FormChecking(OkMethod, Dummy, false);
+                FormChecking fc = new FormChecking(OkMethod, delegate { }, false);
                 fc.SpecialQuestion();
             }
             else
@@ -69,10 +69,8 @@ namespace MedicalAdministrationSystem.ViewModels
         private void OkMethod()
         {
             Dispose();
-            MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-            mbe.LoadItem(GlobalVM.StockLayout.patientsTBI);
+            new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.patientsTBI);
             Selected();
         }
-        private void Dummy() { }
     }
 }
