@@ -3,11 +3,8 @@ using MedicalAdministrationSystem.Models.Examination;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
 using MedicalAdministrationSystem.Views.Global;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MedicalAdministrationSystem.ViewModels.Examination
 {
@@ -146,7 +143,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     row.AcceptChanges();
                 ExaminationsM.AcceptChanges();
 
-                dialog = new Dialog(false, "Módosítások mentése", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(false, "Módosítások mentése", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
             }
@@ -155,29 +152,28 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         protected internal async void View()
         {
             await Utilities.Loading.Show();
-            new FormChecking(delegate { OkMethod(true); }, delegate { }, true);
+            new FormChecking(() => OkMethod(true), () => { }, true);
         }
         protected internal async void Edit()
         {
             await Utilities.Loading.Show();
-            new FormChecking(delegate { OkMethod(false); }, delegate { }, true);
+            new FormChecking(() => OkMethod(false), () => { }, true);
         }
         private void OkMethod(bool which)
         {
-            MenuButtonsEnabled mbe = new MenuButtonsEnabled()
+            new MenuButtonsEnabled()
             {
                 modifier = which,
                 ID = ExaminationsM.SelectedExamination.Id,
                 imported = ExaminationsM.SelectedExamination.Imported
-            };
-            mbe.LoadItem(GlobalVM.StockLayout.examinationTBI);
+            }.LoadItem(GlobalVM.StockLayout.examinationTBI);
         }
         protected internal async void Question()
         {
             await Utilities.Loading.Show();
             if (VMDirty())
             {
-                dialog = new Dialog(true, "El nem menetett változások lehetnek az adott oldalon", Loading.RunWorkerAsync, async delegate { await Utilities.Loading.Hide(); }, true);
+                dialog = new Dialog(true, "El nem menetett változások lehetnek az adott oldalon", Loading.RunWorkerAsync, async () => await Utilities.Loading.Hide(), true);
                 dialog.content = new TextBlock("Amennyiben mentés nélkül frissíti a táblázatot, az Ön által végrehajtott változtatások nem kerülnek mentésre\n" +
                     "Biztosan frissíti a táblázatot?");
                 dialog.Start();
@@ -186,7 +182,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         }
         protected internal void ExaminationEraseMethod()
         {
-            dialog = new Dialog(true, "Vizsgálat törlése", Erase, delegate { }, true);
+            dialog = new Dialog(true, "Vizsgálat törlése", Erase, () => { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott vizsgálatot a hozzátartozó összes adattal együtt?\n" +
                 "A művelet csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();

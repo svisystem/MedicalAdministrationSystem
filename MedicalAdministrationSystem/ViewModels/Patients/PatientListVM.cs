@@ -248,7 +248,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     foreach (PatientListM.UserList user in (row as PatientListM.Patient).BelongUsers)
                         user.AcceptChanges();
 
-                dialog = new Dialog(false, "Módosítások mentése", delegate { });
+                dialog = new Dialog(false, "Módosítások mentése", () => { });
                 dialog.content = new TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
             }
@@ -266,7 +266,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 fullRefresh = fullRefreshGiven;
             }
             else Ok = RefreshTable.RunWorkerAsync;
-            No = async delegate { await Utilities.Loading.Hide(); };
+            No = async () => await Utilities.Loading.Hide();
             if (VMDirty() && (fullRefreshGiven || (!fullRefreshGiven && !fullRefresh)))
             {
                 dialog = new Dialog(true, "El nem menetett változások lehetnek az adott oldalon", Ok, No, true);
@@ -285,7 +285,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         }
         protected internal void PatientEraseMethod()
         {
-            dialog = new Dialog(true, "Páciens törlése", Erase, delegate { }, true);
+            dialog = new Dialog(true, "Páciens törlése", Erase, () => { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott páciens összes adatát?\n" +
                 "A páciens törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();

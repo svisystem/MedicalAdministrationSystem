@@ -34,9 +34,9 @@ namespace MedicalAdministrationSystem.Views.Examination
             NewExaminationVM = new NewExaminationVM();
             this.DataContext = NewExaminationVM;
             InitializeComponent();
+            button = Save;
             NewExaminationVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => newExaminationValid.Validate(newExaminationValid)), SetEnabledSave, SetReadOnlyFields);
             validatorClass = newExaminationValid;
-            button = Save;
             ConnectValidators();
         }
         private void ConnectValidators()

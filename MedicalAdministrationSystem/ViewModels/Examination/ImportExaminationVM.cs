@@ -1,12 +1,9 @@
 ﻿using MedicalAdministrationSystem.DataAccess;
-using MedicalAdministrationSystem.Models;
 using MedicalAdministrationSystem.Models.Examination;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Global;
 using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.ViewModels.Examination
@@ -25,12 +22,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             ImportExaminationM = new ImportExaminationM();
             ImportExaminationM.PatientId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).SelectedPatientVM.SelectedPatientM.Id;
             ImportExaminationM.ExaminationCode = await new Codes().Generate((int)GlobalVM.GlobalM.UserID, ImportExaminationM.PatientId);
-            await Task.Run(() =>
-             {
-                 foreach (object row in ImportExaminationM.ExaminationList)
-                     (row as DocumentControlM.ListElement).AcceptChanges();
-                 ImportExaminationM.AcceptChanges();
-             });
+            ImportExaminationM.AcceptChanges();
         }
         protected internal void ParameterPassingAfterLoad(ref ContentControl content, Func<bool> Validate, Action<bool> SetEnabledSave, Action<bool> SetReadOnlyFields)
         {
@@ -39,12 +31,11 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 Validate = Validate,
                 SetEnabledSave = SetEnabledSave,
                 SetReadOnlyFields = SetReadOnlyFields,
-                GetName = new Func<string>(() => { return ImportExaminationM.ExaminationName; }),
-                GetCode = new Func<string>(() => { return ImportExaminationM.ExaminationCode; }),
-                ReadOnly = false,
+                GetName = new Func<string>(() => ImportExaminationM.ExaminationName),
+                GetCode = new Func<string>(() => ImportExaminationM.ExaminationCode),
                 Type = true
             };
-            DocumentControlVM.Start(ImportExaminationM.PatientId);
+            DocumentControlVM.New(ImportExaminationM.PatientId);
         }
         protected internal async void ExecuteMethod()
         {
@@ -106,7 +97,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             if (workingConn)
             {
-                dialog = new Dialog(false, "Módosítások mentése", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(false, "Módosítások mentése", async () => await Utilities.Loading.Hide());
                 dialog.content = new Views.Dialogs.TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
                 new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.examinationTBI);
@@ -116,8 +107,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         protected internal bool VMDirty()
         {
             if (ImportExaminationM.IsChanged) return true;
-            if (ImportExaminationM.ExaminationList.Any(i => i.IsChanged)) return true;
-            return false;
+            return DocumentControlVM.VMDirty();
         }
     }
 }

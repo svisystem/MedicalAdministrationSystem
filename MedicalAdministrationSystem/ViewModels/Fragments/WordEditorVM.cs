@@ -15,11 +15,7 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
 {
     public class WordEditorVM : VMExtender
     {
-        private int PatientId;
-        public WordEditorVM(int PatientId)
-        {
-            this.PatientId = PatientId;
-        }
+        protected internal int PatientId;
         protected internal async Task ExaminationPage(RichEditControl editor, string ExaminationName, string ExaminationCode)
         {
             await Loading.Show();
@@ -61,7 +57,7 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
                 }
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async delegate
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
                 {
                     using (MemoryStream ms = new MemoryStream(task.Result.ToArray()))
                         editor.LoadDocument(ms, DocumentFormat.OpenXml);
@@ -74,7 +70,7 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
         {
             if (modified)
             {
-                Dialog dialog = new Dialog(false, "El nem menetett változások lehetnek az adott oldalon", action, delegate { }, true);
+                Dialog dialog = new Dialog(false, "El nem menetett változások lehetnek az adott oldalon", action, () => { }, true);
                 dialog.content = new Views.Dialogs.TextBlock("Amennyiben elnavigál erről az oldalról, az azon végrehajtott változások nem lesznek elmentve\n\n" +
                     "Biztosan elnavigál erről az oldalról?");
                 dialog.Start();
@@ -85,7 +81,7 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
         {
             if (element.File != null)
             {
-                Dialog dialog = new Dialog(false, "El nem menetett változások lehetnek az adott oldalon", action, delegate { }, true);
+                Dialog dialog = new Dialog(false, "El nem menetett változások lehetnek az adott oldalon", action, () => { }, true);
                 dialog.content = new Views.Dialogs.TextBlock("Amennyiben felülrja a mostani dokumentumot, úgy az elveszik\n\n" +
                     "Biztosan betölti az új dokumentumot?");
                 dialog.Start();

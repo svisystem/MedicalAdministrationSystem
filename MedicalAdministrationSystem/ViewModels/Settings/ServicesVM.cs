@@ -139,7 +139,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 ServicesM.AcceptChanges();
                 modified = false;
 
-                dialog = new Dialog(false, "Módosítások mentése", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(false, "Módosítások mentése", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
             }
@@ -154,7 +154,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         protected internal async void Refresh()
         {
             await Utilities.Loading.Show();
-            new FormChecking(Loading.RunWorkerAsync, delegate { }, true);
+            new FormChecking(Loading.RunWorkerAsync, () => { }, true);
         }
         protected internal void NewLine()
         {
@@ -163,7 +163,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void ServiceEraseMethod()
         {
-            dialog = new Dialog(true, "Szolgáltatás törlése", Erase, delegate { }, true);
+            dialog = new Dialog(true, "Szolgáltatás törlése", Erase, () => { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott szolgáltatást?\n" +
                 "A szolgáltatás törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();

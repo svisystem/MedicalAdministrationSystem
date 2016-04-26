@@ -8,23 +8,24 @@ namespace MedicalAdministrationSystem.Views.Fragments
     public partial class File : UserControl
     {
         private string Type;
-        private Action<ContentControl, string> show;
-        private Action<ContentControl> erase;
-        public File(string Type, Action<ContentControl, string> Show, Action<ContentControl> Erase)
+        private Action<ContentControl, string> Show;
+        private Action<ContentControl> Erase;
+        public File(bool ReadOnly, string Type, Action<ContentControl, string> Show, Action<ContentControl> Erase)
         {
             this.Type = Type;
-            this.show = Show;
-            this.erase = Erase;
+            this.Show = Show;
+            this.Erase = Erase;
             InitializeComponent();
+            if (ReadOnly) erase.Visibility = Visibility.Collapsed;
             Icon();
         }
-        private void Show(object sender, RoutedEventArgs e)
+        private void ShowClick(object sender, RoutedEventArgs e)
         {
-            show(this, Type);
+            Show(this, Type);
         }
-        private void Erase(object sender, RoutedEventArgs e)
+        private void EraseClick(object sender, RoutedEventArgs e)
         {
-            erase(this);
+            Erase(this);
         }
         private void Icon()
         {

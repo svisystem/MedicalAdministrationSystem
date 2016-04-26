@@ -15,10 +15,8 @@ namespace MedicalAdministrationSystem
         {
             GlobalVM.StartUp();
             Task.Factory.StartNew(() =>
-            Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
-                {
-                    ApplicationThemeHelper.UpdateApplicationThemeName();
-                }))
+            Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                    ApplicationThemeHelper.UpdateApplicationThemeName()))
             , CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 
             CultureInfo culture = CultureInfo.CreateSpecificCulture("hu-HU");

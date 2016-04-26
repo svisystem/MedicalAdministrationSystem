@@ -17,10 +17,10 @@ namespace MedicalAdministrationSystem.Views.Examination
         {
             await Loading.Show();
             examinationViewValid = new ExaminationViewValid();
-            ExaminationViewVM = new ExaminationViewVM(imported, ID, delegate
-            { ExaminationViewVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => examinationViewValid.Validate(examinationViewValid)), delegate { }, delegate { }); });
+            ExaminationViewVM = new ExaminationViewVM(imported, ID);
             this.DataContext = ExaminationViewVM;
             InitializeComponent();
+            ExaminationViewVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => examinationViewValid.Validate(examinationViewValid)), delegate { }, delegate { });
             validatorClass = examinationViewValid;
             ConnectValidators();
         }

@@ -61,11 +61,11 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
                 LoginM.AcceptChanges();
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async delegate
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
                 {
                     if (!workingConn)
                     {
-                        dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", delegate { });
+                        dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", () => { });
                         dialog.content = new TextBlock("Adatbáziskapcsolat nélkül nem lehet megfelelően használni az alkalmazást\n" +
                             "Első használat alkalmával be kell konfigurálni az adatbázis kapcsolatot\n" +
                             "Kérjük jelezze a problémát a rendszergazdának");
@@ -89,7 +89,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else
             {
-                dialog = new Dialog(true, "Nincs ilyen felhasználó", delegate { });
+                dialog = new Dialog(true, "Nincs ilyen felhasználó", () => { });
                 dialog.content = new TextBlock("Kérjük ellenőrizze a beírt adatokat");
                 dialog.Start();
             }
@@ -153,7 +153,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else
             {
-                dialog = new Dialog(true, "Sikertelen belépés", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(true, "Sikertelen belépés", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("Nem egyeznek meg a beírt adatok\n" +
                     "Kérjük ellenőrizze le őket");
                 dialog.Start();
@@ -199,7 +199,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 }
                 else
                 {
-                    dialog = new Dialog(false, "Sikertelen belépés", async delegate { await Utilities.Loading.Hide(); });
+                    dialog = new Dialog(false, "Sikertelen belépés", async () => await Utilities.Loading.Hide());
                     dialog.content = new TextBlock("A beírt adatok megfelelőek\n" +
                         "Viszont amíg a rendszergazda nem hagyja jóvá regisztrációját nem tudja használni a programot\n" +
                         "Kérjük jelezze a rendszergazdának");
@@ -233,7 +233,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             if (workingConn)
             {
-                dialog = new Dialog(false, "Sikeres belépés", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(false, "Sikeres belépés", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("Üdvözöljük felhasználóink között");
                 dialog.Start();
                 new MenuButtonsEnabled(pr).LoadItem(GlobalVM.StockLayout.usersTBI);

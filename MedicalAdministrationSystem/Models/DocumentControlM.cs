@@ -1,4 +1,5 @@
 ﻿using MedicalAdministrationSystem.ViewModels.Utilities;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Controls;
@@ -10,6 +11,7 @@ namespace MedicalAdministrationSystem.Models
         public ObservableCollection<ListElement> _List;
         private ListElement _Selected;
         private int _PatientId;
+        private List<int> _Erased = new List<int>();
 
         public ObservableCollection<ListElement> List
         {
@@ -48,6 +50,19 @@ namespace MedicalAdministrationSystem.Models
                 if (_PatientId == value) return;
                 _PatientId = value;
                 OnPropertyChanged("PatientId");
+            }
+        }
+        public List<int> Erased
+        {
+            get
+            {
+                return _Erased;
+            }
+            set
+            {
+                if (_Erased == value) return;
+                _Erased = value;
+                OnPropertyChanged("Erased");
             }
         }
         public class ListElement : NotifyPropertyChanged

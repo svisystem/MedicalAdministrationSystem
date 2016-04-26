@@ -15,34 +15,50 @@ namespace MedicalAdministrationSystem.Views.Fragments
     public partial class WordEditor : UserControl
     {
         private DocumentControlM.ListElement element;
-        protected internal WordEditorVM WordEditorVM { get; set; }
+        protected internal WordEditorVM WordEditorVM = new WordEditorVM();
         private string name;
         private string Code;
         private Action close;
         private bool Type;
         private bool ReadOnly;
-        public WordEditor(DocumentControlM.ListElement element, int PatientId, string name, string Code, Action close, bool Type, bool ReadOnly)
+        private Action Change;
+        public WordEditor(DocumentControlM.ListElement element, int PatientId, string name, string Code, Action close, bool Type, Action Change)
         {
-            WordEditorVM = new WordEditorVM(PatientId);
+            ReadOnly = false;
+            WordEditorVM.PatientId = PatientId;
             this.element = element;
             this.DataContext = this;
             this.name = name;
             this.Code = Code;
             this.close = close;
             this.Type = Type;
-            this.ReadOnly = ReadOnly;
-            InitializeComponent();
-            wordEditor.Options.HorizontalRuler.Visibility = RichEditRulerVisibility.Hidden;
-            wordEditor.Options.VerticalRuler.Visibility = RichEditRulerVisibility.Hidden;
+            this.Change = Change;
+            Start();
+        }
+        public WordEditor(DocumentControlM.ListElement element, Action close, bool Type)
+        {
+            ReadOnly = true;
+            this.element = element;
+            this.DataContext = this;
+            this.close = close;
+            this.Type = Type;
             Start();
         }
         private void Start()
         {
+            InitializeComponent();
+            wordEditor.Options.HorizontalRuler.Visibility = RichEditRulerVisibility.Hidden;
+            wordEditor.Options.VerticalRuler.Visibility = RichEditRulerVisibility.Hidden;
+            if (ReadOnly)
+            {
+                biFileNew.IsEnabled = false;
+                biFileOpen.IsEnabled = false;
+                biFileSave.IsEnabled = false;
+            }
             if (element.File != null)
             {
                 wordEditor.LoadDocument(new MemoryStream((element.File as MemoryStream).ToArray()), WordEditorVM.DocFormat(element.FileType));
-                wordEditor.Options.Authentication.UserName = "User1";
-                if (ReadOnly) wordEditor.Document.Protect("admin1");
+                if (!ReadOnly) wordEditor.Options.Authentication.UserName = "User1";
             }
             else wordEditor.Document.Protect("admin");
             wordEditor.Modified = false;
@@ -54,15 +70,16 @@ namespace MedicalAdministrationSystem.Views.Fragments
         }
         private void New(object sender, ItemClickEventArgs e)
         {
-            WordEditorVM.NewDataQuestion(async delegate
+            WordEditorVM.NewDataQuestion(async () =>
             {
                 await WordEditorVM.ExaminationPage(wordEditor, name, Code);
                 wordEditor.Options.Authentication.UserName = "User1";
+                SaveMethod();
             }, element);
         }
         private void Load(object sender, ItemClickEventArgs e)
         {
-            WordEditorVM.NewDataQuestion(delegate
+            WordEditorVM.NewDataQuestion(() =>
             {
                 wordEditor.LoadDocument();
                 wordEditor.Document.Protect("admin");
@@ -84,6 +101,7 @@ namespace MedicalAdministrationSystem.Views.Fragments
                 element.File = ms;
             }
             wordEditor.Modified = false;
+            Change();
         }
 
         private void biFilePrint_ItemClick(object sender, ItemClickEventArgs e)

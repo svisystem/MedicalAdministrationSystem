@@ -67,11 +67,11 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         private void ViewView(object sender, EventArgs e)
         {
-            Check((sender as Button).Parent as StockVerticalMenuItem, delegate { ViewLoad(false, 0); }, Back);
+            Check((sender as Button).Parent as StockVerticalMenuItem, () => ViewLoad(false, 0), Back);
         }
         private void EditView(object sender, EventArgs e)
         {
-            Check((sender as Button).Parent as StockVerticalMenuItem, delegate { EditLoad(false, 0); }, Back);
+            Check((sender as Button).Parent as StockVerticalMenuItem, () => EditLoad(false, 0), Back);
         }
         private void ExaminationPlanView(object sender, EventArgs e)
         {
@@ -80,7 +80,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ExaminationsLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate
+            ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new Examinations();
@@ -89,7 +89,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void NewExaminationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate
+            ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new NewExamination();
@@ -98,7 +98,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ImportExaminationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate
+            ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new ImportExamination();
@@ -108,18 +108,18 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             await Utilities.Loading.Show();
             view.IsEnabledTrigger = true;
-            ViewLoad(new Func<UserControl>(delegate { return new ExaminationView(imported, ID); }), view);
+            ViewLoad(new Func<UserControl>(() => new ExaminationView(imported, ID)), view);
         }
         protected internal async void EditLoad(bool imported, int ID)
         {
             await Utilities.Loading.Show();
             edit.IsEnabledTrigger = true;
-            ViewLoad(new Func<UserControl>(delegate { return new ExaminationEdit(imported, ID); }), edit);
+            ViewLoad(new Func<UserControl>(() => new ExaminationEdit(imported, ID)), edit);
         }
         protected internal async void ExaminationPlanLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate
+            ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new ExaminationPlan();

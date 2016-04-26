@@ -61,27 +61,11 @@
                                 <dxe:CheckEditSettings />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Header="Felhasználó törlése" MinWidth="120">
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
-                                            Margin="-1">
-                                        <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="Erase">
-                                            <Grid VerticalAlignment="Center" Margin="0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <ContentPresenter
-                                                        ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
-                                                        Margin="0,5,5,5" />
-                                                <TextBlock Text="Törlés" Grid.Column="1" Foreground="#FF373A3D"
-                                                        VerticalAlignment="Center" Margin="0,5,5,5" />
-                                            </Grid>
-                                        </dxe:ButtonInfo>
-                                    </dxe:ButtonEdit>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn Header="Törölt felhasználó" MinWidth="110"
+                                Binding="{Binding Deleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:CheckEditSettings/>
+                            </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                     </dxg:GridControl.Columns>
                 </dxg:GridControl>

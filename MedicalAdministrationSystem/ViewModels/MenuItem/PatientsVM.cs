@@ -56,14 +56,12 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             if (GlobalVM.GlobalM.UserID.Equals(null))
             {
-                dialog = new Dialog(true, "Felhasználó adatai", delegate
-                {
-                    MenuButtonsEnabled mbe = new MenuButtonsEnabled()
+                dialog = new Dialog(true, "Felhasználó adatai", () =>
+                    new MenuButtonsEnabled()
                     {
                         modifier = true
-                    };
-                    mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
-                });
+                    }.LoadItem(GlobalVM.StockLayout.usersTBI)
+                );
                 dialog.content = new Views.Dialogs.TextBlock("Ön még nem töltötte ki a saját adatait\n" +
                     "A páciensek kezelése során szükségesek ezek az adatok\n" +
                     "Amíg ezeket nem tölti ki nincs lehetőség betegellátásra\n" +
@@ -72,12 +70,12 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             }
             else if (GlobalVM.GlobalM.CompanyId.Equals(null))
             {
-                dialog = new Dialog(true, "Intézmény adatai", delegate
-                {
-                    MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-                    mbe.modifier = true;
-                    mbe.LoadItem(GivenBack);
-                });
+                dialog = new Dialog(true, "Intézmény adatai", () =>
+                    new MenuButtonsEnabled()
+                    {
+                        modifier = true
+                    }.LoadItem(GivenBack)
+                );
                 dialog.content = new Views.Dialogs.TextBlock("Az alkalmazásban még nem lettek megadva az Intézmény adatai\n" +
                     "A páciensek kezelése során szükségesek ezek az adatok\n" +
                     "Amíg ezek az adatok nincsenek megadva nincs lehetőség betegellátásra\n" +
@@ -105,17 +103,17 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void NewPatientLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate { return new PatientDetails(true); }), newPatient);
+            ViewLoad(new Func<UserControl>(() => new PatientDetails(true)), newPatient);
         }
         protected internal async void PatientListLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate { return new PatientList(Selected); }), patientList);
+            ViewLoad(new Func<UserControl>(() => new PatientList(Selected)), patientList);
         }
         protected internal async void PatientDetailsLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(delegate { return new PatientDetails(false); }), patientDetails);
+            ViewLoad(new Func<UserControl>(() => new PatientDetails(false)), patientDetails);
         }
     }
 }

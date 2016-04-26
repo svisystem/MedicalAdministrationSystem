@@ -1,14 +1,16 @@
-﻿using DevExpress.XtraRichEdit;
-using MedicalAdministrationSystem.Models;
+﻿using MedicalAdministrationSystem.Models;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Fragments;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels
 {
@@ -22,33 +24,71 @@ namespace MedicalAdministrationSystem.ViewModels
         protected internal Action<bool> SetReadOnlyFields;
         protected internal Func<string> GetName;
         protected internal Func<string> GetCode;
-        protected internal bool ReadOnly;
+        private string State;
         protected internal bool Type; //true = examination, false = evidence
         protected internal DocumentControlVM(ref ContentControl content, ObservableCollection<DocumentControlM.ListElement> List)
         {
             local = content;
             DocumentControlM.List = List;
         }
-        protected internal void Start(int PatientId)
+        protected internal void New(int PatientId)
         {
             DocumentControlM.PatientId = PatientId;
-
-            if (!ReadOnly)
-                DocumentControlM.List.Add(new DocumentControlM.ListElement()
-                {
-                    Button = new New(NewAdd)
-                });
-            else
-            {
-                foreach (DocumentControlM.ListElement item in DocumentControlM.List)
-                {
-                    item.Button = new Views.Fragments.File(item.ButtonType, BeforeShow, Erase);
-                }
-            }
+            State = "New";
+            Add(State);
+            CollectionChange();
+            Loaded();
+        }
+        protected internal void Edit(int PatientId)
+        {
+            DocumentControlM.PatientId = PatientId;
+            State = "Edit";
+            Add("New");
+            CollectionChange();
+            Loaded();
+        }
+        protected internal void ReadOnly()
+        {
+            State = "ReadOnly";
+            CollectionChange();
+            Loaded();
+        }
+        protected internal void Loaded()
+        {
             foreach (DocumentControlM.ListElement row in DocumentControlM.List)
                 row.AcceptChanges();
             DocumentControlM.AcceptChanges();
-            DocumentControlM.List.CollectionChanged += CollectionChangedMethod;
+            SetEnabledSave(VMDirty());
+        }
+        protected internal async void Add(string type, string fileType = null, int? dbId = null, MemoryStream ms = null)
+        {
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+             {
+                 if (type == "New")
+                     DocumentControlM.List.Add(new DocumentControlM.ListElement()
+                     {
+                         Button = new New(NewAdd)
+                     });
+                 else
+                     DocumentControlM.List.Insert(Counter(), new DocumentControlM.ListElement()
+                     {
+                         DBId = dbId,
+                         File = ms,
+                         ButtonType = type,
+                         FileType = fileType,
+                         Button = new Views.Fragments.File((State == "ReadOnly"), type, BeforeShow, Erase)
+                     });
+                 Loaded();
+             }));
+        }
+        private int Counter()
+        {
+            if (State != "ReadOnly") return DocumentControlM.List.Count > 0 ? DocumentControlM.List.Count - 1 : 0;
+            return DocumentControlM.List.Count;
+        }
+        protected internal List<int> Erased()
+        {
+            return DocumentControlM.Erased;
         }
         private void NewAdd()
         {
@@ -57,7 +97,7 @@ namespace MedicalAdministrationSystem.ViewModels
                 if (local.Content != null)
                 {
                     if (local.Content.GetType() == typeof(WordEditor))
-                        (local.Content as WordEditor).WordEditorVM.CloseQuestion(delegate
+                        (local.Content as WordEditor).WordEditorVM.CloseQuestion(() =>
                         {
                             local.Content = new Load(DOCClick, PDFClick, JPGClick);
                             DocumentControlM.Selected = null;
@@ -78,7 +118,7 @@ namespace MedicalAdministrationSystem.ViewModels
             }
             else
             {
-                Dialog dialog = new Dialog(false, "Hiányzó adatok", delegate { });
+                Dialog dialog = new Dialog(false, "Hiányzó adatok", () => { });
                 dialog.content = new Views.Dialogs.TextBlock("Először töltse ki a vizsgálathoz szükséges adatokat");
                 dialog.Start();
             }
@@ -87,7 +127,7 @@ namespace MedicalAdministrationSystem.ViewModels
         {
             DocumentControlM.List.Insert(DocumentControlM.List.Count - 1, new DocumentControlM.ListElement()
             {
-                Button = new Views.Fragments.File("doc", BeforeShow, Erase),
+                Button = new Views.Fragments.File((State == "ReadOnly"), "doc", BeforeShow, Erase),
                 ButtonType = "doc"
             });
             BeforeShow(DocumentControlM.List[DocumentControlM.List.Count - 2].Button, "doc");
@@ -108,7 +148,7 @@ namespace MedicalAdministrationSystem.ViewModels
                     ofd.OpenFile().CopyTo(ms);
                     DocumentControlM.List.Insert(DocumentControlM.List.Count - 1, new DocumentControlM.ListElement()
                     {
-                        Button = new Views.Fragments.File("pdf", BeforeShow, Erase),
+                        Button = new Views.Fragments.File((State == "ReadOnly"), "pdf", BeforeShow, Erase),
                         File = ms,
                         ButtonType = "pdf"
                     });
@@ -135,7 +175,7 @@ namespace MedicalAdministrationSystem.ViewModels
                     ofd.OpenFile().CopyTo(ms);
                     DocumentControlM.List.Insert(DocumentControlM.List.Count - 1, new DocumentControlM.ListElement()
                     {
-                        Button = new Views.Fragments.File("jpg", BeforeShow, Erase),
+                        Button = new Views.Fragments.File((State == "ReadOnly"), "jpg", BeforeShow, Erase),
                         File = ms,
                         ButtonType = "jpg"
                     });
@@ -146,7 +186,7 @@ namespace MedicalAdministrationSystem.ViewModels
         protected internal void BeforeShow(ContentControl current, string from)
         {
             if (local.Content != null && local.Content.GetType() == typeof(WordEditor))
-                (local.Content as WordEditor).WordEditorVM.CloseQuestion(delegate { Show(current, from); }, (local.Content as WordEditor).wordEditor.Modified);
+                (local.Content as WordEditor).WordEditorVM.CloseQuestion(() => Show(current, from), (local.Content as WordEditor).wordEditor.Modified);
             else Show(current, from);
         }
         private async void Show(ContentControl current, string from)
@@ -167,14 +207,19 @@ namespace MedicalAdministrationSystem.ViewModels
                 {
                     await Loading.Show();
                     local.Content = null;
-                    local.Content = new WordEditor(
+                    if (State == "ReadOnly")
+                        local.Content = new WordEditor(
+                            DocumentControlM.List.Where(l => l.Button == current).Single(),
+                            Close,
+                            Type);
+                    else local.Content = new WordEditor(
                         DocumentControlM.List.Where(l => l.Button == current).Single(),
                         DocumentControlM.PatientId,
                         GetName(),
                         GetCode(),
                         Close,
                         Type,
-                        ReadOnly);
+                        () => SetEnabledSave(VMDirty()));
                     DocumentControlM.Selected = DocumentControlM.List.Where(l => l.Button == current).Single();
                 }
             }
@@ -204,11 +249,7 @@ namespace MedicalAdministrationSystem.ViewModels
 
         protected internal void Erase(ContentControl current)
         {
-            Action func = delegate
-            {
-                Ok(current);
-            };
-            Dialog dialog = new Dialog(true, "Dokumentum törlése", func, delegate { }, true);
+            Dialog dialog = new Dialog(true, "Dokumentum törlése", () => Ok(current), () => { }, true);
             dialog.content = new Views.Dialogs.TextBlock("Biztosan eltávolítja a kiválasztott dokumentumot?\n" +
                 "A dokumentum törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();
@@ -220,26 +261,36 @@ namespace MedicalAdministrationSystem.ViewModels
                 local.Content = null;
                 DocumentControlM.Selected = null;
             }
-            DocumentControlM.List.RemoveAt(DocumentControlM.List.Where(l => l.Button == current).Select(l => l.Id).Single() - 1);
+            if (DocumentControlM.List.Where(l => l.Button == current).Single().DBId != null)
+                DocumentControlM.Erased.Add((int)DocumentControlM.List.Where(l => l.Button == current).Single().DBId);
+            DocumentControlM.List.RemoveAt(DocumentControlM.List.Where(l => l.Button == current).Single().Id - 1);
         }
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
+            CollectionChange();
+        }
+        private void CollectionChange()
+        {
             DocumentControlM.List.CollectionChanged -= CollectionChangedMethod;
             for (int i = 1; i < DocumentControlM.List.Count; i++)
-            {
                 DocumentControlM.List[i - 1].Id = i;
-            }
-            if (ReadOnly)
-            {
-                SetReadOnlyFields(false);
-            }
-            else if (!ReadOnly && DocumentControlM.List.Count > 1)
+            SetEnabledSave(VMDirty());
+            if ((State != "ReadOnly") && DocumentControlM.List.Count > 1)
             {
                 SetEnabledSave(true);
                 SetReadOnlyFields(true);
             }
-            else SetEnabledSave(false);
+            else
+            {
+                SetEnabledSave(false);
+                SetReadOnlyFields(false);
+            }
             DocumentControlM.List.CollectionChanged += CollectionChangedMethod;
+        }
+        protected internal bool VMDirty()
+        {
+            if (DocumentControlM.List.Any(i => i.IsChanged)) return true;
+            return false;
         }
     }
 }

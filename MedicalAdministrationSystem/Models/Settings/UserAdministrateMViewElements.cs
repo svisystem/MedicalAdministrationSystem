@@ -10,7 +10,6 @@ namespace MedicalAdministrationSystem.Models.Settings
     {
         private List<accountdata> _UserDatas;
         private ObservableCollection<UserRow> _Users = new ObservableCollection<UserRow>();
-        private ObservableCollection<int> _Erased = new ObservableCollection<int>();
         private List<string> _Priviledges;
         public ObservableCollection<UserRow> Users
         {
@@ -38,19 +37,6 @@ namespace MedicalAdministrationSystem.Models.Settings
                 OnPropertyChanged("UserDatas");
             }
         }
-        public ObservableCollection<int> Erased
-        {
-            get
-            {
-                return _Erased;
-            }
-            set
-            {
-                if (_Erased == value) return;
-                _Erased = value;
-                OnPropertyChanged("Erased");
-            }
-        }
         public List<string> Priviledges
         {
             get
@@ -73,6 +59,7 @@ namespace MedicalAdministrationSystem.Models.Settings
             private bool _Verified;
             private bool _PassModified;
             private bool _Enabled;
+            private bool _Deleted;
 
             public int Id
             {
@@ -163,6 +150,19 @@ namespace MedicalAdministrationSystem.Models.Settings
                     if (_Enabled == value) return;
                     _Enabled = value;
                     OnPropertyChanged("Enabled");
+                }
+            }
+            public bool Deleted
+            {
+                get
+                {
+                    return _Deleted;
+                }
+                set
+                {
+                    if (_Deleted == value) return;
+                    _Deleted = value;
+                    OnPropertyChanged("Deleted");
                 }
             }
         }

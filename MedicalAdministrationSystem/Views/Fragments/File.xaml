@@ -6,12 +6,12 @@
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments">
     <StackPanel Orientation="Vertical">
-        <Button Grid.Row="0" HorizontalContentAlignment="Stretch" Padding="-2" Click="Show" Width="90" Height="90"
+        <Button Grid.Row="0" HorizontalContentAlignment="Stretch" Padding="-2" Click="ShowClick" Width="90" Height="90"
                 Focusable="False">
             <Image x:Name="icon" Width="64" Height="64" />
         </Button>
-        <Button Grid.Row="1" Margin="0,-1,0,0" BorderBrush="{x:Null}" BorderThickness="0" Visibility="Visible"
-                Click="Erase" Focusable="False">
+        <Button Grid.Row="1" Margin="0,-1,0,0" BorderBrush="{x:Null}" BorderThickness="0" Visibility="Visible" x:Name="erase"
+                Click="EraseClick" Focusable="False">
             <Grid DockPanel.Dock="Bottom" VerticalAlignment="Center" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

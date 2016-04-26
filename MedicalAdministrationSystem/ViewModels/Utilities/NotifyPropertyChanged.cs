@@ -49,13 +49,12 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         {
             this.IsChanged = false;
         }
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = null;
         protected void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null)
+            if (this.PropertyChanged != null)
             {
-                handler(this, e);
+                this.PropertyChanged(this, e);
             }
         }
         protected void OnPropertyChanged(string propertyName)

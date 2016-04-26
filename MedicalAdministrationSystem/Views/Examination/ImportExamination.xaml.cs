@@ -20,9 +20,9 @@ namespace MedicalAdministrationSystem.Views.Examination
             ImportExaminationVM = new ImportExaminationVM();
             this.DataContext = ImportExaminationVM;
             InitializeComponent();
+            button = Save;
             ImportExaminationVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => importExaminationValid.Validate(importExaminationValid)), SetEnabledSave, SetReadOnlyFields);
             validatorClass = importExaminationValid;
-            button = Save;
             ConnectValidators();
             await Loading.Hide();
         }
@@ -78,6 +78,9 @@ namespace MedicalAdministrationSystem.Views.Examination
         {
             examinationName.IsReadOnly = enabled;
             examinationDate.IsReadOnly = enabled;
+            examinationNameClear.IsEnabled = !enabled;
+            examinationDateClear.IsEnabled = !enabled;
+
         }
         private void save(object sender, System.Windows.RoutedEventArgs e)
         {

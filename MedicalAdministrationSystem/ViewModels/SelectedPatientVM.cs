@@ -25,7 +25,7 @@ namespace MedicalAdministrationSystem.ViewModels
             if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientDetails))
             {
                 await Loading.Show();
-                new FormChecking(Ok, delegate { }, true);
+                new FormChecking(Ok, () => { }, true);
             }
         }
         private void Ok()
@@ -57,7 +57,7 @@ namespace MedicalAdministrationSystem.ViewModels
             if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientList))
             {
                 await Loading.Show();
-                FormChecking fc = new FormChecking(OkMethod, delegate { }, false);
+                FormChecking fc = new FormChecking(OkMethod, () => { }, false);
                 fc.SpecialQuestion();
             }
             else

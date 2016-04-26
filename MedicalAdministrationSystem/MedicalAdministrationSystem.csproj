@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MedicalAdministrationSystem</RootNamespace>
     <AssemblyName>MedicalAdministrationSystem</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -41,6 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,6 +51,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -245,6 +247,8 @@
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DocumentControlM.cs" />
+    <Compile Include="Models\Examination\ExaminationEditM.cs" />
+    <Compile Include="Models\Examination\ExaminationPlanM.cs" />
     <Compile Include="Models\Examination\ExaminationsM.cs" />
     <Compile Include="Models\Examination\ExaminationViewM.cs" />
     <Compile Include="Models\Examination\ImportExaminationM.cs" />
@@ -270,6 +274,8 @@
     <Compile Include="Models\Users\RegistrationM.cs" />
     <Compile Include="Models\Users\SurgeryTimeM.cs" />
     <Compile Include="ViewModels\DocumentControlVM.cs" />
+    <Compile Include="ViewModels\Examination\ExaminationEditVM.cs" />
+    <Compile Include="ViewModels\Examination\ExaminationPlanVM.cs" />
     <Compile Include="ViewModels\Examination\ExaminationsVM.cs" />
     <Compile Include="ViewModels\Examination\ExaminationViewVM.cs" />
     <Compile Include="ViewModels\Examination\ImportExaminationVM.cs" />

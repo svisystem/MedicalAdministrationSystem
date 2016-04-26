@@ -32,7 +32,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         protected internal async void Refresh()
         {
             await Utilities.Loading.Show();
-            new FormChecking(Loading.RunWorkerAsync, delegate { }, true);
+            new FormChecking(Loading.RunWorkerAsync, () => { }, true);
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
@@ -40,7 +40,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             {
                 me = new medicalEntities();
                 me.Database.Connection.Open();
-                UsersMViewElements.UserDatas = me.accountdata.Where(a => a.DeletedAD == false).ToList();
+                UsersMViewElements.UserDatas = me.accountdata.ToList();
 
                 UsersMDataSet.PriviledgesList = me.priviledges_fx.ToList();
                 me.Database.Connection.Close();
@@ -54,18 +54,17 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             UsersMViewElements.Users.Clear();
             for (int i = 0; i < UsersMViewElements.UserDatas.Count; i++)
             {
-                if (!UsersMViewElements.UserDatas[i].DeletedAD)
+                UsersMViewElements.Users.Add(new UserAdministrateMViewElements.UserRow
                 {
-                    UsersMViewElements.Users.Add(new UserAdministrateMViewElements.UserRow
-                    {
-                        Id = UsersMViewElements.UserDatas[i].IdAD,
-                        RegistrationDate = UsersMViewElements.UserDatas[i].RegistrateTimeAD,
-                        UserName = UsersMViewElements.UserDatas[i].UserNameAD,
-                        Priviledge = UsersMDataSet.PriviledgesList.Where(a => a.IdP == UsersMViewElements.UserDatas[i].PriviledgesIdAD).Select(a => a.NameP).Single(),
-                        Verified = UsersMViewElements.UserDatas[i].VerifiedByAdminAD,
-                        PassModified = false,
-                        Enabled = true });
-                }
+                    Id = UsersMViewElements.UserDatas[i].IdAD,
+                    RegistrationDate = UsersMViewElements.UserDatas[i].RegistrateTimeAD,
+                    UserName = UsersMViewElements.UserDatas[i].UserNameAD,
+                    Priviledge = UsersMDataSet.PriviledgesList.Where(a => a.IdP == UsersMViewElements.UserDatas[i].PriviledgesIdAD).Select(a => a.NameP).Single(),
+                    Verified = UsersMViewElements.UserDatas[i].VerifiedByAdminAD,
+                    PassModified = false,
+                    Enabled = true,
+                    Deleted = UsersMViewElements.UserDatas[i].DeletedAD
+                });
             }
         }
         private void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
@@ -98,15 +97,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             {
                 me = new medicalEntities();
                 me.Database.Connection.Open();
-                if (UsersMViewElements.Erased.Count != 0)
-                {
-                    foreach (int user in UsersMViewElements.Erased)
-                        try
-                        {
-                            me.accountdata.Where(a => a.IdAD == user).Single().DeletedAD = true;
-                        }
-                        catch { }
-                }
                 for (int i = 0; i < UsersMViewElements.UserDatas.Count; i++)
                 {
                     int temp = UsersMViewElements.UserDatas[i].IdAD;
@@ -131,6 +121,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             ac.VerifiedByAdminAD = UsersMViewElements.Users[i].Verified;
                             me.SaveChanges();
                         }
+                        if (!UsersMViewElements.Users[i].Deleted.Equals(ac.DeletedAD))
+                        {
+                            ac.DeletedAD = UsersMViewElements.Users[i].Deleted;
+                            me.SaveChanges();
+                        }
                     }
                     catch { }
                 }
@@ -147,12 +142,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             if (workingConn)
             {
-                UsersMViewElements.Erased.Clear();
                 foreach (object row in UsersMViewElements.Users)
                     (row as UserAdministrateMViewElements.UserRow).AcceptChanges();
                 UsersMViewElements.AcceptChanges();
 
-                dialog = new Dialog(false, "Módosítások mentése", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(false, "Módosítások mentése", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
             }
@@ -160,12 +154,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal bool VMDirty()
         {
-            if (UsersMViewElements.Erased.Count != 0) return true;
             return UsersMViewElements.Users.Any(u => u.IsChanged);
         }
         protected internal void NewPassMethod()
         {
-            dialog = new Dialog(false, "Jelszó megváltoztatása", OkMethod, delegate { }, false);
+            dialog = new Dialog(false, "Jelszó megváltoztatása", OkMethod, () => { }, false);
             newPass = new NewPass(dialog.YesButton(), UsersMDataSet.SelectedRow.UserName);
             dialog.content = newPass;
             dialog.Start();
@@ -190,20 +183,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             UsersMViewElements.UserDatas.Where(b => b.UserNameAD == UsersMDataSet.SelectedRow.UserName).Single().PasswordAD = pwm.GenerateHashWithSalt(newPass.NewPassVM.Pass(),
                 UsersMViewElements.UserDatas.Where(b => b.UserNameAD == UsersMDataSet.SelectedRow.UserName).Select(b => b.PassSaltAD).Single());
             UsersMViewElements.Users.Where(b => b.UserName == UsersMDataSet.SelectedRow.UserName).Single().PassModified = true;
-        }
-        protected internal void UserEraseMethod()
-        {
-            dialog = new Dialog(true, "Felhasználó törlése", Erase, delegate { }, true);
-            dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott felhasználói fiókot?\n" +
-              "A felhasználói fiók törlése csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
-            dialog.Start();
-        }
-        private void Erase()
-        {
-            UsersMViewElements.Erased.Add(UsersMViewElements.UserDatas.Where(a => a.IdAD == UsersMDataSet.SelectedRow.Id).Select(a => a.IdAD).Single());
-            UsersMViewElements.UserDatas.Remove(UsersMViewElements.UserDatas.Where(b => b.IdAD == UsersMViewElements.Erased.Last()).Single());
-            UsersMViewElements.Users.Remove(UsersMViewElements.Users.Where(b => b.UserName == UsersMDataSet.SelectedRow.UserName).Single());
-            Loaded();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         protected internal void ExecuteMethod()
         {
-            dialog = new Dialog(true, "Módosítás megerősítése", OkMethod, delegate { }, true);
+            dialog = new Dialog(true, "Módosítás megerősítése", OkMethod, () => { }, true);
             dialog.content = new TextBlock("Biztosan megváltoztatja a biztonsági profil beállításait?");
             dialog.Start();
         }

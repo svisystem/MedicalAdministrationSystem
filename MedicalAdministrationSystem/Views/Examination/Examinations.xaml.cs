@@ -62,7 +62,7 @@ namespace MedicalAdministrationSystem.Views.Examination
         }
         private async void view_Loaded()
         {
-            await this.Dispatcher.BeginInvoke(new Action(delegate
+            await this.Dispatcher.BeginInvoke(new Action(() =>
             {
                 viewer.BestFitColumns();
                 grid.SortBy(grid.Columns[4], DevExpress.Data.ColumnSortOrder.Descending);

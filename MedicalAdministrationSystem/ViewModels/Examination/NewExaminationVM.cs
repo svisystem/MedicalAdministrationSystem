@@ -6,7 +6,6 @@ using MedicalAdministrationSystem.Views.Global;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.ViewModels.Examination
@@ -24,19 +23,13 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         private async void Start()
         {
             NewExaminationM = new NewExaminationM();
+            NewExaminationM.PatientId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).SelectedPatientVM.SelectedPatientM.Id;
+            NewExaminationM.ExaminationCode = await new Codes().Generate((int)GlobalVM.GlobalM.UserID, NewExaminationM.PatientId);
+            NewExaminationM.ExaminationDate = DateTime.Now;
             Loading = new BackgroundWorker();
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
-            NewExaminationM.PatientId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).SelectedPatientVM.SelectedPatientM.Id;
-            NewExaminationM.ExaminationCode = await new Codes().Generate((int)GlobalVM.GlobalM.UserID, NewExaminationM.PatientId);
-            NewExaminationM.ExaminationDate = DateTime.Now;
-            await Task.Run(() =>
-            {
-                foreach (object row in NewExaminationM.ExaminationList)
-                    (row as DocumentControlM.ListElement).AcceptChanges();
-                NewExaminationM.AcceptChanges();
-            });
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
@@ -58,7 +51,13 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         }
         private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (!workingConn) ConnectionMessage();
+            if (workingConn)
+            {
+                foreach (object row in NewExaminationM.ExaminationList)
+                    (row as DocumentControlM.ListElement).AcceptChanges();
+                NewExaminationM.AcceptChanges();
+            }
+            else ConnectionMessage();
             await Utilities.Loading.Hide();
         }
         protected internal void ParameterPassingAfterLoad(ref ContentControl content, Func<bool> Validate, Action<bool> SetEnabledSave, Action<bool> SetReadOnlyFields)
@@ -68,12 +67,11 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 Validate = Validate,
                 SetEnabledSave = SetEnabledSave,
                 SetReadOnlyFields = SetReadOnlyFields,
-                GetName = new Func<string>(() => { return NewExaminationM.SelectedTreat; }),
-                GetCode = new Func<string>(() => { return NewExaminationM.ExaminationCode; }),
-                ReadOnly = false,
+                GetName = new Func<string>(() => NewExaminationM.SelectedTreat),
+                GetCode = new Func<string>(() => NewExaminationM.ExaminationCode),
                 Type = true
             };
-            DocumentControlVM.Start(NewExaminationM.PatientId);
+            DocumentControlVM.New(NewExaminationM.PatientId);
         }
         protected internal async void ExecuteMethod()
         {
@@ -135,7 +133,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             if (workingConn)
             {
-                dialog = new Dialog(false, "Módosítások mentése", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(false, "Módosítások mentése", async () => await Utilities.Loading.Hide());
                 dialog.content = new Views.Dialogs.TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
                 new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.examinationTBI);

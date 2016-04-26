@@ -1,5 +1,4 @@
 ﻿using MedicalAdministrationSystem.DataAccess;
-using MedicalAdministrationSystem.Models;
 using MedicalAdministrationSystem.Models.Examination;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Global;
@@ -16,10 +15,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         public ExaminationViewM ExaminationViewM { get; set; }
         private DocumentControlVM DocumentControlVM { get; set; }
         private BackgroundWorker Loading { get; set; }
-        private Action ParameterPassingFromView { get; set; }
-        protected internal ExaminationViewVM(bool imported, int ID, Action ParameterPassingFromView)
+        protected internal ExaminationViewVM(bool imported, int ID)
         {
-            this.ParameterPassingFromView = ParameterPassingFromView;
             Start(imported, ID);
         }
         private void Start(bool imported, int ID)
@@ -31,7 +28,6 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Loading = new BackgroundWorker();
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
-            Loading.RunWorkerAsync();
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
@@ -43,16 +39,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
 
                     if (ExaminationViewM.Imported)
                     {
-                        foreach (DocumentControlM.ListElement item in me.examinationdatadocuments.Where(ex => me.importedexaminationdata_st.Where
-                        (iex => iex.IdIEX == ExaminationViewM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList()
-                            .Select(ex => new DocumentControlM.ListElement
-                            {
-                                DBId = ex.IdEXD,
-                                File = new MemoryStream(ex.DataEXD),
-                                ButtonType = ex.TypeEXD,
-                                FileType = ex.FileTypeEXD
-                            }))
-                            ExaminationViewM.ExaminationList.Add(item);
+                        me.examinationdatadocuments.Where(ex => me.importedexaminationdata_st.Where
+                        (iex => iex.IdIEX == ExaminationViewM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList().ForEach
+                        (p => DocumentControlVM.Add(p.TypeEXD, p.FileTypeEXD, p.IdEXD, new MemoryStream(p.DataEXD)));
 
                         ExaminationViewM.ExaminationCode = me.importedexaminationdata.Where(iex => iex.IdIEX == ExaminationViewM.Id).Single().CodeIEX;
                         ExaminationViewM.ExaminationName = me.importedexaminationdata.Where(iex => iex.IdIEX == ExaminationViewM.Id).Single().NameIEX;
@@ -61,16 +50,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
 
                     else
                     {
-                        foreach (DocumentControlM.ListElement item in me.examinationdatadocuments.Where(ex => me.examinationdata_st.Where
-                        (iex => iex.IdEX == ExaminationViewM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList()
-                            .Select(ex => new DocumentControlM.ListElement
-                            {
-                                DBId = ex.IdEXD,
-                                File = new MemoryStream(ex.DataEXD),
-                                ButtonType = ex.TypeEXD,
-                                FileType = ex.FileTypeEXD
-                            }))
-                            ExaminationViewM.ExaminationList.Add(item);
+                        me.examinationdatadocuments.Where(ex => me.examinationdata_st.Where
+                        (iex => iex.IdEX == ExaminationViewM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList().ForEach
+                        (p => DocumentControlVM.Add(p.TypeEXD, p.FileTypeEXD, p.IdEXD, new MemoryStream(p.DataEXD)));
 
                         ExaminationViewM.ExaminationCode = me.examinationdata.Where(iex => iex.IdEX == ExaminationViewM.Id).Single().CodeEX;
                         ExaminationViewM.ExaminationName = me.treatmentdata.Where(t => t.IdTD == me.examinationdata.
@@ -88,7 +70,10 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         }
         private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (workingConn) ParameterPassingFromView();
+            if (workingConn)
+            {
+                ExaminationViewM.AcceptChanges();
+            }
             else ConnectionMessage();
             await Utilities.Loading.Hide();
         }
@@ -99,18 +84,15 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 Validate = Validate,
                 SetEnabledSave = SetEnabledSave,
                 SetReadOnlyFields = SetReadOnlyFields,
-                GetName = new Func<string>(() => { return ExaminationViewM.ExaminationName; }),
-                GetCode = new Func<string>(() => { return ExaminationViewM.ExaminationCode; }),
-                ReadOnly = true,
                 Type = true
             };
-            DocumentControlVM.Start(ExaminationViewM.PatientId);
+            DocumentControlVM.ReadOnly();
+            Loading.RunWorkerAsync();
         }
         protected internal bool VMDirty()
         {
             if (ExaminationViewM.IsChanged) return true;
-            if (ExaminationViewM.ExaminationList.Any(i => i.IsChanged)) return true;
-            return false;
+            return DocumentControlVM.VMDirty();
         }
     }
 }

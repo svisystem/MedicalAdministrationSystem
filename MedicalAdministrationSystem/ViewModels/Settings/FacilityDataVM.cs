@@ -181,7 +181,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             if (!FacilityDataMDataSet.SelectedCompany.ID.Equals(0))
                 text = "Biztosan megváltoztatja a kiválasztott intézmény adatait";
             else text = "Valóban elmenti a megadott adatokat új intézményként";
-            dialog = new Dialog(false, "Intézmény adatok mentése", OkMethod, delegate { }, true);
+            dialog = new Dialog(false, "Intézmény adatok mentése", OkMethod, () => { }, true);
             dialog.content = new TextBlock(text + " és alkalmazza jelenlegi intézmény adatokkén?");
             dialog.Start();
         }
@@ -263,7 +263,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 }
                 else temp = "módosítottuk";
 
-                dialog = new Dialog(false, "Intézmény adatai", async delegate { await Utilities.Loading.Hide(); });
+                dialog = new Dialog(false, "Intézmény adatai", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("Sikeresen " + temp + " az adatokat.");
                 dialog.Start();
 
@@ -283,7 +283,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 fullRefresh = fullRefreshGiven;
             }
             else func = Refresh.RunWorkerAsync;
-            func2 = async delegate { await Utilities.Loading.Hide(); };
+            func2 = async () => await Utilities.Loading.Hide();
             if (VMDirty() && (fullRefreshGiven || (!fullRefreshGiven && !fullRefresh)))
             {
                 dialog = new Dialog(true, "El nem menetett változások lehetnek az adott oldalon", func, func2, true);

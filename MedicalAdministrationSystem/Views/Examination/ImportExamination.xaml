@@ -89,7 +89,7 @@
                             AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
                             ValidateOnEnterKeyPressed="False" NullText="Írja be a vizsgálat nevét" Margin="0,0,10,0"
                             AllowNullInput="True" VerticalAlignment="Center" MinWidth="200" HorizontalAlignment="Left">
-                        <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0"
+                        <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" x:Name="examinationNameClear"
                                 MarginCorrection="0" />
                     </dxe:ButtonEdit>
                 </Grid>
@@ -104,7 +104,8 @@
                             MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False"
                             IsTextEditable="False" MaskIgnoreBlank="False" Spin="ExaminationTime_Spin"
                             HorizontalAlignment="Right" Height="22" VerticalAlignment="Center" Width="220">
-                        <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                        <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése"
+                                x:Name="examinationDateClear" />
                         <dxe:ButtonInfo GlyphKind="DropDown"
                                 Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
                         <dxe:DateEdit.StyleSettings>

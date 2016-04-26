@@ -38,10 +38,8 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async delegate
-                {
-                    await Loading.Hide();
-                }));
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
+                    await Loading.Hide()));
                 return task.Result;
             });
         }

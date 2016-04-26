@@ -26,13 +26,10 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         protected internal async void ViewLoad(Func<UserControl> method, StockVerticalMenuItem button)
         {
             await Task.Factory.StartNew(() =>
-            {
-                return method();
-
-            }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
+                method(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async delegate
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
                 {
                     GlobalVM.StockLayout.actualContent.Content = task.Result;
                     button.button_Click(button.button, new RoutedEventArgs(Button.ClickEvent));

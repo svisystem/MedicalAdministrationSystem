@@ -11,7 +11,7 @@
         <Separator DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
         <TextBlock DockPanel.Dock="Left" Padding="8,0" VerticalAlignment="Center">
             Kiválasztott páciens:</TextBlock>
-        <dxe:TextEdit DockPanel.Dock="Left" Height="26" VerticalAlignment="Center" Width="150" Margin="0,0,8,0"
+        <dxe:TextEdit DockPanel.Dock="Left" VerticalAlignment="Center" Width="150" Margin="0,0,8,0"
                 IsReadOnly="True"
                 Text="{Binding SelectedPatientM.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
         <Button DockPanel.Dock="Left" Height="29" Content="Adatok módosítása" Click="Modify" VerticalAlignment="Center"
