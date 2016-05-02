@@ -62,10 +62,6 @@ namespace MedicalAdministrationSystem.Views.Examination
                 examinationViewValid.examinationDate = true;
             }
         }
-        private void Spin(object sender, SpinEventArgs e)
-        {
-            e.Handled = true;
-        }
         private class ExaminationViewValid : FormValidate
         {
             public bool examinationName { get; set; }

@@ -116,6 +116,9 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             else e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
             ForceBinding(sender, e);
         }
-        
+        protected internal void Spin(object sender, SpinEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

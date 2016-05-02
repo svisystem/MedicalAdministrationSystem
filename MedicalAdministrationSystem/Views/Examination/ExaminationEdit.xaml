@@ -1,7 +1,7 @@
 ﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Examination.ExaminationEdit"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Examination"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -124,7 +124,7 @@
                             Grid.Column="1" VerticalAlignment="Center" AllowDefaultButton="False" IsReadOnly="True"
                             IsTabStop="False" IsTextEditable="False" />
                 </Grid>
-            <Button x:Name="Save" Height="29" Margin="0" Content="Változtatások mentése" VerticalAlignment="Center"
+                <Button x:Name="Save" Height="29" Margin="0" Content="Változtatások mentése" VerticalAlignment="Center"
                         HorizontalAlignment="Center" IsEnabled="False" Click="save" />
             </Grid>
         </DockPanel>

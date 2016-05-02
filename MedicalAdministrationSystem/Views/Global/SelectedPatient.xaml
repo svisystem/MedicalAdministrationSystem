@@ -6,18 +6,82 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys">
-    <DockPanel Height="40" Background="White" LastChildFill="True">
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="comboBoxTemplate">
+            <dxg:GridControl
+                    DataSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).ItemsSource, RelativeSource={RelativeSource Self}}"
+                    SelectedItem="{Binding SelectedPatientM.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    MaxHeight="500" ShowBorder="False">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn Header="Importált vizsgálat" Width="110" AllowFocus="False"
+                            Binding="{Binding Imported, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ReadOnly="True" AllowEditing="False" FixedWidth="True" MinWidth="110">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:CheckEditSettings IsEnabled="False" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Header="Vizsgálat neve" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <dxg:GridColumn Header="Vizsgálat azonosítója" MinWidth="120" AllowFocus="False"
+                            Binding="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"
+                            FixedWidth="True" />
+                    <dxg:GridColumn x:Name="dateTime" Header="Vizsgálat időpontja" Width="200" AllowFocus="False"
+                            Binding="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FixedWidth="True"
+                            MinWidth="200">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:DateEditSettings MaskCulture="hu-HU" MaskType="DateTimeAdvancingCaret"
+                                    MaskUseAsDisplayFormat="True" AllowDefaultButton="False" Mask="F" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn AllowFocus="False" Width="20" FixedWidth="True" MinWidth="19">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button BorderThickness="0" Click="EraseItem" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" Padding="0" Width="22" Height="22" Focusable="False"
+                                        Margin="-1">
+                                    <ContentPresenter
+                                            ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" />
+                                </Button>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView x:Name="viewer" ShowGroupPanel="False" ShowIndicator="False"
+                            AllowScrollAnimation="True" AutoWidth="True" BestFitMode="AllRows" AllowBestFit="True"
+                            BestFitArea="All" AllowGrouping="False" />
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <DockPanel Height="40" Background="White" LastChildFill="True" VerticalAlignment="Center">
         <Separator DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
         <TextBlock DockPanel.Dock="Left" Padding="8,0" VerticalAlignment="Center">
             Kiválasztott páciens:</TextBlock>
-        <dxe:TextEdit DockPanel.Dock="Left" VerticalAlignment="Center" Width="150" Margin="0,0,8,0"
-                IsReadOnly="True"
+        <dxe:TextEdit DockPanel.Dock="Left" VerticalAlignment="Center" Width="150" Margin="0,0,8,0" IsReadOnly="True"
                 Text="{Binding SelectedPatientM.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
         <Button DockPanel.Dock="Left" Height="29" Content="Adatok módosítása" Click="Modify" VerticalAlignment="Center"
                 Margin="0,0,8,0" HorizontalAlignment="Left" />
-        <Button DockPanel.Dock="Right" Margin="0,0,7,0" Padding="0"
-                HorizontalAlignment="Right" VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close">
+        <Grid>
+            <dxe:ComboBoxEdit VerticalAlignment="Center" Width="180" x:Name="associatedExaminations"
+                    ItemsSource="{Binding SelectedPatientM.List, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    PopupContentTemplate="{StaticResource comboBoxTemplate}" AllowDefaultButton="False"
+                    IsTextEditable="False" IsReadOnly="True" Margin="0,0,8,0">
+                <dxe:ComboBoxEdit.Buttons>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="EraseAll" ToolTip="Mező törlése" />
+                    <dxe:ButtonInfo GlyphKind="DropDown"
+                            Command="{Binding Path=(dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                </dxe:ComboBoxEdit.Buttons>
+            </dxe:ComboBoxEdit>
+            <TextBlock VerticalAlignment="Center" Margin="1,0,0,0" Foreground="#FF373A3D" HorizontalAlignment="Left"
+                    IsHitTestVisible="False" Background="White" Padding="4,2,0,0" Height="20" Width="148">
+                <Italic>Kijelölt vizsgálatok</Italic></TextBlock>
+        </Grid>
+        <Button DockPanel.Dock="Right" Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
+                VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close">
             <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
                     Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
         </Button>

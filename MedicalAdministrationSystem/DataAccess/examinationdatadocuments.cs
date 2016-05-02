@@ -17,8 +17,8 @@ namespace MedicalAdministrationSystem.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public examinationdatadocuments()
         {
-            this.examinationdata_st = new HashSet<examinationdata_st>();
-            this.importedexaminationdata_st = new HashSet<importedexaminationdata_st>();
+            this.examinationdatadocuments_st = new HashSet<examinationdatadocuments_st>();
+            this.importedexaminationdatadocuments_st = new HashSet<importedexaminationdatadocuments_st>();
         }
     
         public int IdEXD { get; set; }
@@ -27,8 +27,8 @@ namespace MedicalAdministrationSystem.DataAccess
         public string FileTypeEXD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<examinationdata_st> examinationdata_st { get; set; }
+        public virtual ICollection<examinationdatadocuments_st> examinationdatadocuments_st { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<importedexaminationdata_st> importedexaminationdata_st { get; set; }
+        public virtual ICollection<importedexaminationdatadocuments_st> importedexaminationdatadocuments_st { get; set; }
     }
 }

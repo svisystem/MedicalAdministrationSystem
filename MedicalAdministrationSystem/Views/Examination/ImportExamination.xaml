@@ -102,7 +102,7 @@
                             ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None"
                             NullText="Vizsgálat időpontja..." Mask="D" MaskType="DateTimeAdvancingCaret"
                             MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False"
-                            IsTextEditable="False" MaskIgnoreBlank="False" Spin="ExaminationTime_Spin"
+                            IsTextEditable="False" MaskIgnoreBlank="False" Spin="Spin"
                             HorizontalAlignment="Right" Height="22" VerticalAlignment="Center" Width="220">
                         <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése"
                                 x:Name="examinationDateClear" />

@@ -1,0 +1,123 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Evidence.ViewEvidence"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Evidence"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
+        xmlns:Fragments="clr-namespace:MedicalAdministrationSystem.Views.Fragments">
+    <utilities:ViewExtender.Resources>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}"
+                        Value="User1">
+                    <Setter Property="ContentTemplate"
+                            Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </utilities:ViewExtender.Resources>
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Right"
+                Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}">
+            <Label Content="Dokumentumok:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="13,10,10,10"
+                    HorizontalAlignment="Left" />
+            <dxe:ListBoxEdit x:Name="listBox"
+                    ItemsSource="{Binding ViewEvidenceM.EvidenceList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ShowBorder="False" Padding="0,40,0,0" HorizontalContentAlignment="Center"
+                    ScrollViewer.CanContentScroll="False" IsTabStop="False">
+                <dxe:ListBoxEdit.ItemTemplate>
+                    <DataTemplate>
+                        <UserControl Content="{Binding Button, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,0,10,10" />
+                    </DataTemplate>
+                </dxe:ListBoxEdit.ItemTemplate>
+                <dxe:ListBoxEdit.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsSelected"
+                                Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </dxe:ListBoxEdit.ItemContainerStyle>
+            </dxe:ListBoxEdit>
+        </Grid>
+        <Separator DockPanel.Dock="Right" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+        <DockPanel Height="40" LastChildFill="True" DockPanel.Dock="Top">
+            <Separator DockPanel.Dock="Bottom" Margin="0" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="344" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,10,0">
+                    <Grid Margin="10,0,0,0">
+                        <Fragments:EmptyComboBoxEdit x:Name="associatedExaination" />
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Label Content="Státusz időpontja:" Margin="0,0,10,0" Height="22" VerticalAlignment="Center"
+                            HorizontalAlignment="Right" Width="104" />
+                    <dxe:DateEdit Margin="0,0,10,0" x:Name="date"
+                            EditValue="{Binding ViewEvidenceM.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                            ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None"
+                            NullText="Státusz időpontja..." Mask="D" MaskType="DateTimeAdvancingCaret"
+                            MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False"
+                            IsTextEditable="False" MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Right"
+                            Height="22" VerticalAlignment="Center" Width="200" IsReadOnly="True">
+                        <dxe:DateEdit.StyleSettings>
+                            <dxe:DateEditPickerStyleSettings />
+                        </dxe:DateEdit.StyleSettings>
+                    </dxe:DateEdit>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Bottom" Height="40">
+            <Grid>
+                <Separator DockPanel.Dock="Top" Margin="0" />
+                <Grid HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Státusz Azonosítója:" Grid.Column="0" VerticalAlignment="Center"
+                            HorizontalAlignment="Left" Margin="10,0" />
+                    <dxe:ButtonEdit
+                            EditValue="{Binding ViewEvidenceM.Code, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Column="1" VerticalAlignment="Center" AllowDefaultButton="False" IsReadOnly="True"
+                            IsTabStop="False" IsTextEditable="False" />
+                </Grid>
+            </Grid>
+        </DockPanel>
+        <ContentControl x:Name="content" IsTabStop="False" />
+    </DockPanel>
+</utilities:ViewExtender>

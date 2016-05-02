@@ -30,20 +30,20 @@ namespace MedicalAdministrationSystem.DataAccess
         public virtual DbSet<companydata> companydata { get; set; }
         public virtual DbSet<doctorschedule> doctorschedule { get; set; }
         public virtual DbSet<evidencedata> evidencedata { get; set; }
-        public virtual DbSet<evidencedata_st> evidencedata_st { get; set; }
         public virtual DbSet<evidencedatadocuments> evidencedatadocuments { get; set; }
+        public virtual DbSet<evidencedatadocuments_st> evidencedatadocuments_st { get; set; }
         public virtual DbSet<examinationdata> examinationdata { get; set; }
-        public virtual DbSet<examinationdata_st> examinationdata_st { get; set; }
         public virtual DbSet<examinationdatadocuments> examinationdatadocuments { get; set; }
-        public virtual DbSet<examinationseachevidence_st> examinationseachevidence_st { get; set; }
-        public virtual DbSet<examinationseachimportedevidence> examinationseachimportedevidence { get; set; }
+        public virtual DbSet<examinationdatadocuments_st> examinationdatadocuments_st { get; set; }
+        public virtual DbSet<examinationeachevidence_st> examinationeachevidence_st { get; set; }
+        public virtual DbSet<examinationeachimportedevidence_st> examinationeachimportedevidence_st { get; set; }
         public virtual DbSet<gender_fx> gender_fx { get; set; }
         public virtual DbSet<importedevidencedata> importedevidencedata { get; set; }
-        public virtual DbSet<importedevidencedata_st> importedevidencedata_st { get; set; }
+        public virtual DbSet<importedevidencedatadocuments_st> importedevidencedatadocuments_st { get; set; }
         public virtual DbSet<importedexaminationdata> importedexaminationdata { get; set; }
-        public virtual DbSet<importedexaminationdata_st> importedexaminationdata_st { get; set; }
-        public virtual DbSet<importedexaminationseachevidence_st> importedexaminationseachevidence_st { get; set; }
-        public virtual DbSet<importedexaminatioseachimportedevidence_st> importedexaminatioseachimportedevidence_st { get; set; }
+        public virtual DbSet<importedexaminationdatadocuments_st> importedexaminationdatadocuments_st { get; set; }
+        public virtual DbSet<importedexaminationeachevidence_st> importedexaminationeachevidence_st { get; set; }
+        public virtual DbSet<importedexaminationeachimportedevidence_st> importedexaminationeachimportedevidence_st { get; set; }
         public virtual DbSet<patientdata> patientdata { get; set; }
         public virtual DbSet<priviledges_fx> priviledges_fx { get; set; }
         public virtual DbSet<scheduledata> scheduledata { get; set; }

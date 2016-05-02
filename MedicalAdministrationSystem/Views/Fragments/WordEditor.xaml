@@ -10,7 +10,7 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         x:Class="MedicalAdministrationSystem.Views.Fragments.WordEditor">
     <UserControl.Resources>
-        <dxre:RichEditUICommand x:Key="commands"/>
+        <dxre:RichEditUICommand x:Key="commands" />
         <dxre:RichEditStringIdConverter x:Key="stringIdConverter" />
         <dxre:DefaultBarItemDataTemplates x:Key="defaultBarItemTemplates" />
     </UserControl.Resources>
@@ -83,7 +83,8 @@
             <dxre:RichEditControl x:Name="wordEditor" BarManager="{Binding ElementName=barManager1, Mode=OneTime}"
                     Ribbon="{Binding ElementName=ribbonControl1, Mode=OneTime}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="-1,-19,-1,-1" ShowCaretInReadOnly="False"
-                    BorderBrush="#FFF93434" PopupMenuShowing="wordEditor_PopupMenuShowing" />
+                    PopupMenuShowing="wordEditor_PopupMenuShowing" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    HorizontalContentAlignment="Stretch" AutoSizeMode="Both" />
         </DockPanel>
         <dxb:BarManager.Items>
             <dxb:BarButtonItem x:Name="biFileNew" Content="Új dokumentum" ItemClick="New"
@@ -92,8 +93,7 @@
             <dxb:BarButtonItem x:Name="biFileOpen" ItemClick="Load" Content="Megnyitás"
                     LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/OpenDoc_32x32.png"
                     Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/OpenDoc_16x16.png" />
-            <dxb:BarButtonItem x:Name="biFileSave"
-                    Content="Mentés" ItemClick="Save"
+            <dxb:BarButtonItem x:Name="biFileSave" Content="Mentés" ItemClick="Save"
                     LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Save_32x32.png"
                     Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Save_16x16.png">
                 <dxb:BarButtonItem.Style>
@@ -108,7 +108,7 @@
                         </Style.Triggers>
                     </Style>
                 </dxb:BarButtonItem.Style>
-            </dxb:BarButtonItem>           
+            </dxb:BarButtonItem>
             <dxb:BarButtonItem x:Name="biFileSaveAs"
                     Command="{Binding FileSaveAs, Mode=OneTime, Source={StaticResource commands}}" Content="Exportálás"
                     LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_32x32.png"

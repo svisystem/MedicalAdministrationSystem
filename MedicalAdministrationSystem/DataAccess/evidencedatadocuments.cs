@@ -17,8 +17,8 @@ namespace MedicalAdministrationSystem.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public evidencedatadocuments()
         {
-            this.evidencedata_st = new HashSet<evidencedata_st>();
-            this.importedevidencedata_st = new HashSet<importedevidencedata_st>();
+            this.evidencedatadocuments_st = new HashSet<evidencedatadocuments_st>();
+            this.importedevidencedatadocuments_st = new HashSet<importedevidencedatadocuments_st>();
         }
     
         public int IdEDD { get; set; }
@@ -27,8 +27,8 @@ namespace MedicalAdministrationSystem.DataAccess
         public string FileTypeEDD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<evidencedata_st> evidencedata_st { get; set; }
+        public virtual ICollection<evidencedatadocuments_st> evidencedatadocuments_st { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<importedevidencedata_st> importedevidencedata_st { get; set; }
+        public virtual ICollection<importedevidencedatadocuments_st> importedevidencedatadocuments_st { get; set; }
     }
 }

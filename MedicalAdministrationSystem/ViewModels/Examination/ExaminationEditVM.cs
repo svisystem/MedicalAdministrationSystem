@@ -40,7 +40,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     me.Database.Connection.Open();
                     if (ExaminationEditM.Imported)
                     {
-                        me.examinationdatadocuments.Where(ex => me.importedexaminationdata_st.Where
+                        me.examinationdatadocuments.Where(ex => me.importedexaminationdatadocuments_st.Where
                         (iex => iex.IdIEX == ExaminationEditM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList().ForEach
                         (p => DocumentControlVM.Add(p.TypeEXD, p.FileTypeEXD, p.IdEXD, new MemoryStream(p.DataEXD)));
 
@@ -51,7 +51,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
 
                     else
                     {
-                        me.examinationdatadocuments.Where(ex => me.examinationdata_st.Where
+                        me.examinationdatadocuments.Where(ex => me.examinationdatadocuments_st.Where
                         (iex => iex.IdEX == ExaminationEditM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList().ForEach
                         (p => DocumentControlVM.Add(p.TypeEXD, p.FileTypeEXD, p.IdEXD, new MemoryStream(p.DataEXD)));
 
@@ -135,7 +135,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
 
                         if (ExaminationEditM.Imported)
                         {
-                            me.importedexaminationdata_st.Add(new importedexaminationdata_st()
+                            me.importedexaminationdatadocuments_st.Add(new importedexaminationdatadocuments_st()
                             {
                                 IdIEX = ExaminationEditM.Id,
                                 IdEXD = ide
@@ -144,7 +144,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                         }
                         else
                         {
-                            me.examinationdata_st.Add(new examinationdata_st()
+                            me.examinationdatadocuments_st.Add(new examinationdatadocuments_st()
                             {
                                 IdEX = ExaminationEditM.Id,
                                 IdEXD = ide
@@ -158,11 +158,11 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 foreach (int id in DocumentControlVM.Erased())
                 {
                     if (ExaminationEditM.Imported)
-                        me.importedexaminationdata_st.Remove
-                            (me.importedexaminationdata_st.Where(ex => ex.IdEXD == id).Single());
+                        me.importedexaminationdatadocuments_st.Remove
+                            (me.importedexaminationdatadocuments_st.Where(ex => ex.IdEXD == id).Single());
 
-                    else me.examinationdata_st.Remove
-                            (me.examinationdata_st.Where(ex => ex.IdEXD == id).Single());
+                    else me.examinationdatadocuments_st.Remove
+                            (me.examinationdatadocuments_st.Where(ex => ex.IdEXD == id).Single());
 
                     me.examinationdatadocuments.Remove
                         (me.examinationdatadocuments.Where(ex => ex.IdEXD == id).Single());

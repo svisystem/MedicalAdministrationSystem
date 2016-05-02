@@ -77,7 +77,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     me.SaveChanges();
 
                     int ide = ed.IdEXD;
-                    me.importedexaminationdata_st.Add(new importedexaminationdata_st()
+                    me.importedexaminationdatadocuments_st.Add(new importedexaminationdatadocuments_st()
                     {
                         IdIEX = id,
                         IdEXD = ide

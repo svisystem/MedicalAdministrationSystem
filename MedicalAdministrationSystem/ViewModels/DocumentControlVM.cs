@@ -58,7 +58,7 @@ namespace MedicalAdministrationSystem.ViewModels
             foreach (DocumentControlM.ListElement row in DocumentControlM.List)
                 row.AcceptChanges();
             DocumentControlM.AcceptChanges();
-            SetEnabledSave(VMDirty());
+            Buttons();
         }
         protected internal async void Add(string type, string fileType = null, int? dbId = null, MemoryStream ms = null)
         {
@@ -78,6 +78,7 @@ namespace MedicalAdministrationSystem.ViewModels
                          FileType = fileType,
                          Button = new Views.Fragments.File((State == "ReadOnly"), type, BeforeShow, Erase)
                      });
+                 CollectionChange();
                  Loaded();
              }));
         }
@@ -131,6 +132,8 @@ namespace MedicalAdministrationSystem.ViewModels
                 ButtonType = "doc"
             });
             BeforeShow(DocumentControlM.List[DocumentControlM.List.Count - 2].Button, "doc");
+            DocumentControlM.List[DocumentControlM.List.Count - 2].AcceptChanges();
+            SetEnabledSave(false);
         }
 
         private void PDFClick()
@@ -215,11 +218,11 @@ namespace MedicalAdministrationSystem.ViewModels
                     else local.Content = new WordEditor(
                         DocumentControlM.List.Where(l => l.Button == current).Single(),
                         DocumentControlM.PatientId,
-                        GetName(),
+                        Type ? GetName() : null,
                         GetCode(),
                         Close,
                         Type,
-                        () => SetEnabledSave(VMDirty()));
+                        Buttons);
                     DocumentControlM.Selected = DocumentControlM.List.Where(l => l.Button == current).Single();
                 }
             }
@@ -272,20 +275,40 @@ namespace MedicalAdministrationSystem.ViewModels
         private void CollectionChange()
         {
             DocumentControlM.List.CollectionChanged -= CollectionChangedMethod;
-            for (int i = 1; i < DocumentControlM.List.Count; i++)
-                DocumentControlM.List[i - 1].Id = i;
-            SetEnabledSave(VMDirty());
-            if ((State != "ReadOnly") && DocumentControlM.List.Count > 1)
+            for (int i = 0; i < DocumentControlM.List.Count; i++)
+                DocumentControlM.List[i].Id = i + 1;
+            Buttons();
+            DocumentControlM.List.CollectionChanged += CollectionChangedMethod;
+        }
+        private void Buttons()
+        {
+            if (State == "ReadOnly")
             {
-                SetEnabledSave(true);
+                SetEnabledSave(false);
                 SetReadOnlyFields(true);
             }
             else
             {
-                SetEnabledSave(false);
-                SetReadOnlyFields(false);
+                if (DocumentControlM.List.Count > 1)
+                {
+                    SetEnabledSave(true);
+                    SetReadOnlyFields(true);
+                }
+
+                else
+                {
+                    if (State == "New")
+                    {
+                        SetEnabledSave(false);
+                        SetReadOnlyFields(false);
+                    }
+                    else
+                    {
+                        SetEnabledSave(false);
+                        SetReadOnlyFields(true);
+                    }
+                }
             }
-            DocumentControlM.List.CollectionChanged += CollectionChangedMethod;
         }
         protected internal bool VMDirty()
         {

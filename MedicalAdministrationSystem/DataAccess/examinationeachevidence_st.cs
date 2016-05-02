@@ -12,13 +12,13 @@ namespace MedicalAdministrationSystem.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class importedexaminationdata_st
+    public partial class examinationeachevidence_st
     {
-        public int IdIEX { get; set; }
-        public int IdEXD { get; set; }
+        public int IdEX { get; set; }
+        public int IdED { get; set; }
         public Nullable<bool> Dummy { get; set; }
     
-        public virtual examinationdatadocuments examinationdatadocuments { get; set; }
-        public virtual importedexaminationdata importedexaminationdata { get; set; }
+        public virtual evidencedata evidencedata { get; set; }
+        public virtual examinationdata examinationdata { get; set; }
     }
 }

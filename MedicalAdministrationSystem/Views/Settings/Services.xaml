@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
     xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Settings">
@@ -45,7 +44,7 @@
                 <Separator DockPanel.Dock="Bottom" Margin="0"/>
                 <Grid DockPanel.Dock="Left">
                     <dxg:GridControl x:Name="grid" ItemsSource="{Binding ServicesM.Services, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedItem="{Binding SelectedRow.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Row" ShowBorder="False">
+                            SelectedItem="{Binding ServicesM.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Row" ShowBorder="False">
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn Header="Szolgáltatás neve" MinWidth="150" Binding="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AllowFocus="False"/>
                             <dxg:GridColumn Header="Áfa tartalma" MinWidth="80" Binding="{Binding Path=RowData.Row.Vat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AllowFocus="False">
@@ -100,20 +99,21 @@
             <DockPanel Grid.Column="2" LastChildFill="True" MinWidth="150">
                 <Label DockPanel.Dock="Top" Content="Szolgáltatás neve:" Margin="10,10,0,0" VerticalAlignment="Top" Padding="0"/>
                 <dxe:ButtonEdit DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10,10,10,0" NullValueButtonPlacement="EditBox" AllowDefaultButton="False"
-                    Text="{Binding SelectedRow.Selected.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        Text="{Binding ServicesM.Selected.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label DockPanel.Dock="Top" Content="Szolgáltatás áfa tartalma:" Margin="10,10,0,0" VerticalAlignment="Top" Padding="0"/>
                 <dxe:ButtonEdit x:Name="vat"  DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10,10,10,0" NullValueButtonPlacement="None" AllowDefaultButton="False"
-                    Text="{Binding SelectedRow.Selected.Vat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Mask="P0" MaskType="Numeric" MaskCulture="hu-HU" MaskUseAsDisplayFormat="True">
+                        Text="{Binding ServicesM.Selected.Vat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Mask="P0" MaskType="Numeric" MaskCulture="hu-HU" MaskUseAsDisplayFormat="True">
                     <dxe:ButtonInfo GlyphKind="Cancel" Click="vatErase"/>
                 </dxe:ButtonEdit>
                 <Label DockPanel.Dock="Top" Content="Szolgáltatás ára:" Margin="10,10,0,0" VerticalAlignment="Top" Padding="0"/>
                 <dxe:ButtonEdit x:Name="price"  DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10,10,10,0" NullValueButtonPlacement="None" AllowDefaultButton="False"
-                    Text="{Binding SelectedRow.Selected.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Mask="c0" MaskType="Numeric" MaskCulture="hu-HU" MaskUseAsDisplayFormat="True">
+                        Text="{Binding ServicesM.Selected.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Mask="c0" MaskType="Numeric" MaskCulture="hu-HU" MaskUseAsDisplayFormat="True">
                     <dxe:ButtonInfo GlyphKind="Cancel" Click="priceErase"/>
                 </dxe:ButtonEdit>
                 <Label DockPanel.Dock="Top" Content="Szolgáltatás leírása:" Margin="10,10,0,10" VerticalAlignment="Top" Padding="0"/>
                 <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
-                <dxe:TextEdit DockPanel.Dock="Top" Margin="0" Text="{Binding SelectedRow.Selected.Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <dxe:TextEdit DockPanel.Dock="Top" Margin="0"
+                        Text="{Binding ServicesM.Selected.Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                     TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" ShowBorder="False" AcceptsReturn="True"/>
             </DockPanel>
         </Grid>

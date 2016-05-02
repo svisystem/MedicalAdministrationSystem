@@ -2,12 +2,19 @@
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\App.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Dialogs\NewPass.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Dialogs\TextBlock.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Evidence\EditEvidence.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Evidence\Evidences.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Evidence\ImportEvidence.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Evidence\NewEvidence.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Evidence\ViewEvidence.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ExaminationEdit.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ExaminationPlan.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\Examinations.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ExaminationView.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\ImportExamination.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Examination\NewExamination.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\EmptyComboBoxEdit.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\EmptyComboBoxEditForGrid.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\File.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\Load.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fragments\New.xaml;;
@@ -16,6 +23,7 @@ FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Fr
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Global\Loading.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Patients\PatientDetails.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Patients\PatientList.xaml;;
+FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Global\SelectedPatient.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Settings\Connection.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Settings\FacilityData.xaml;;
 FD:\Projects\VS\MedicalAdministrationSystem\MedicalAdministrationSystem\Views\Settings\Priviledges.xaml;;

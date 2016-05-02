@@ -41,7 +41,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -180,7 +181,7 @@
     <Compile Include="DataAccess\evidencedatadocuments.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\evidencedata_st.cs">
+    <Compile Include="DataAccess\evidencedatadocuments_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\examinationdata.cs">
@@ -189,13 +190,13 @@
     <Compile Include="DataAccess\examinationdatadocuments.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\examinationdata_st.cs">
+    <Compile Include="DataAccess\examinationdatadocuments_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\examinationseachevidence_st.cs">
+    <Compile Include="DataAccess\examinationeachevidence_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\examinationseachimportedevidence.cs">
+    <Compile Include="DataAccess\examinationeachimportedevidence_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\gender_fx.cs">
@@ -204,19 +205,19 @@
     <Compile Include="DataAccess\importedevidencedata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\importedevidencedata_st.cs">
+    <Compile Include="DataAccess\importedevidencedatadocuments_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\importedexaminationdata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\importedexaminationdata_st.cs">
+    <Compile Include="DataAccess\importedexaminationdatadocuments_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\importedexaminationseachevidence_st.cs">
+    <Compile Include="DataAccess\importedexaminationeachevidence_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\importedexaminatioseachimportedevidence_st.cs">
+    <Compile Include="DataAccess\importedexaminationeachimportedevidence_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\patientdata.cs">
@@ -247,12 +248,18 @@
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DocumentControlM.cs" />
+    <Compile Include="Models\Evidence\EditEvidenceM.cs" />
+    <Compile Include="Models\Evidence\EvidencesM.cs" />
+    <Compile Include="Models\Evidence\ImportEvidenceM.cs" />
+    <Compile Include="Models\Evidence\NewEvidenceM.cs" />
+    <Compile Include="Models\Evidence\ViewEvidenceM.cs" />
     <Compile Include="Models\Examination\ExaminationEditM.cs" />
     <Compile Include="Models\Examination\ExaminationPlanM.cs" />
     <Compile Include="Models\Examination\ExaminationsM.cs" />
     <Compile Include="Models\Examination\ExaminationViewM.cs" />
     <Compile Include="Models\Examination\ImportExaminationM.cs" />
     <Compile Include="Models\Examination\NewExaminationM.cs" />
+    <Compile Include="Models\Fragments\EmptyComboBoxEditM.cs" />
     <Compile Include="Models\GlobalM.cs" />
     <Compile Include="Models\Patients\PatientDetailsMDataSet.cs" />
     <Compile Include="Models\Patients\PatientDetailsMViewElements.cs" />
@@ -274,12 +281,18 @@
     <Compile Include="Models\Users\RegistrationM.cs" />
     <Compile Include="Models\Users\SurgeryTimeM.cs" />
     <Compile Include="ViewModels\DocumentControlVM.cs" />
+    <Compile Include="ViewModels\Evidence\EditEvidenceVM.cs" />
+    <Compile Include="ViewModels\Evidence\EvidencesVM.cs" />
+    <Compile Include="ViewModels\Evidence\ImportEvidenceVM.cs" />
+    <Compile Include="ViewModels\Evidence\NewEvidenceVM.cs" />
+    <Compile Include="ViewModels\Evidence\ViewEvidenceVM.cs" />
     <Compile Include="ViewModels\Examination\ExaminationEditVM.cs" />
     <Compile Include="ViewModels\Examination\ExaminationPlanVM.cs" />
     <Compile Include="ViewModels\Examination\ExaminationsVM.cs" />
     <Compile Include="ViewModels\Examination\ExaminationViewVM.cs" />
     <Compile Include="ViewModels\Examination\ImportExaminationVM.cs" />
     <Compile Include="ViewModels\Examination\NewExaminationVM.cs" />
+    <Compile Include="ViewModels\Fragments\EmptyComboBoxEditVM.cs" />
     <Compile Include="ViewModels\Fragments\WordEditorVM.cs" />
     <Compile Include="ViewModels\MenuItem\BillingVM.cs" />
     <Compile Include="ViewModels\MenuItem\EvidenceVM.cs" />
@@ -310,6 +323,7 @@
     <Compile Include="ViewModels\Utilities\Codes.cs" />
     <Compile Include="ViewModels\Utilities\Dialog.cs" />
     <Compile Include="ViewModels\Utilities\DocumentGenerator.cs" />
+    <Compile Include="ViewModels\Utilities\EmptyComboBoxEdit.cs" />
     <Compile Include="ViewModels\Utilities\Loading.cs" />
     <Compile Include="ViewModels\Utilities\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModels\Utilities\FormChecking.cs" />
@@ -326,6 +340,21 @@
     </Compile>
     <Compile Include="Views\Dialogs\TextBlock.xaml.cs">
       <DependentUpon>TextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Evidence\EditEvidence.xaml.cs">
+      <DependentUpon>EditEvidence.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Evidence\Evidences.xaml.cs">
+      <DependentUpon>Evidences.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Evidence\ImportEvidence.xaml.cs">
+      <DependentUpon>ImportEvidence.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Evidence\NewEvidence.xaml.cs">
+      <DependentUpon>NewEvidence.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Evidence\ViewEvidence.xaml.cs">
+      <DependentUpon>ViewEvidence.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Examination\ExaminationEdit.xaml.cs">
       <DependentUpon>ExaminationEdit.xaml</DependentUpon>
@@ -344,6 +373,12 @@
     </Compile>
     <Compile Include="Views\Examination\NewExamination.xaml.cs">
       <DependentUpon>NewExamination.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\EmptyComboBoxEdit.xaml.cs">
+      <DependentUpon>EmptyComboBoxEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\EmptyComboBoxEditForGrid.xaml.cs">
+      <DependentUpon>EmptyComboBoxEditForGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Fragments\File.xaml.cs">
       <DependentUpon>File.xaml</DependentUpon>
@@ -432,6 +467,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Evidence\EditEvidence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Evidence\Evidences.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Evidence\ImportEvidence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Evidence\NewEvidence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Evidence\ViewEvidence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Examination\ExaminationEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -453,6 +508,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Examination\NewExamination.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\EmptyComboBoxEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\EmptyComboBoxEditForGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -645,7 +708,6 @@
     <Folder Include="Views\Schedule\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Exit.png" />
     <Resource Include="Icons\Logout.png" />
   </ItemGroup>
   <ItemGroup>

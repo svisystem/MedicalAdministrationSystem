@@ -60,15 +60,7 @@
           <ScalarProperty Name="UserDataIdED" ColumnName="UserDataIdED" />
           <ScalarProperty Name="ScheduleIdED" ColumnName="ScheduleIdED" />
           <ScalarProperty Name="DateTimeED" ColumnName="DateTimeED" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="evidencedata_st">
-      <EntityTypeMapping TypeName="medicalModel.evidencedata_st">
-        <MappingFragment StoreEntitySet="evidencedata_st">
-          <ScalarProperty Name="IdED" ColumnName="IdED" />
-          <ScalarProperty Name="IdEDD" ColumnName="IdEDD" />
-          <ScalarProperty Name="Dummy" ColumnName="Dummy" />
+          <ScalarProperty Name="CodeED" ColumnName="CodeED" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -79,6 +71,15 @@
           <ScalarProperty Name="DataEDD" ColumnName="DataEDD" />
           <ScalarProperty Name="TypeEDD" ColumnName="TypeEDD" />
           <ScalarProperty Name="FileTypeEDD" ColumnName="FileTypeEDD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="evidencedatadocuments_st">
+      <EntityTypeMapping TypeName="medicalModel.evidencedatadocuments_st">
+        <MappingFragment StoreEntitySet="evidencedatadocuments_st">
+          <ScalarProperty Name="IdED" ColumnName="IdED" />
+          <ScalarProperty Name="IdEDD" ColumnName="IdEDD" />
+          <ScalarProperty Name="Dummy" ColumnName="Dummy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -94,15 +95,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="examinationdata_st">
-      <EntityTypeMapping TypeName="medicalModel.examinationdata_st">
-        <MappingFragment StoreEntitySet="examinationdata_st">
-          <ScalarProperty Name="IdEX" ColumnName="IdEX" />
-          <ScalarProperty Name="IdEXD" ColumnName="IdEXD" />
-          <ScalarProperty Name="Dummy" ColumnName="Dummy" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="examinationdatadocuments">
       <EntityTypeMapping TypeName="medicalModel.examinationdatadocuments">
         <MappingFragment StoreEntitySet="examinationdatadocuments">
@@ -113,20 +105,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="examinationseachevidence_st">
-      <EntityTypeMapping TypeName="medicalModel.examinationseachevidence_st">
-        <MappingFragment StoreEntitySet="examinationseachevidence_st">
-          <ScalarProperty Name="IdED" ColumnName="IdED" />
+    <EntitySetMapping Name="examinationdatadocuments_st">
+      <EntityTypeMapping TypeName="medicalModel.examinationdatadocuments_st">
+        <MappingFragment StoreEntitySet="examinationdatadocuments_st">
           <ScalarProperty Name="IdEX" ColumnName="IdEX" />
+          <ScalarProperty Name="IdEXD" ColumnName="IdEXD" />
           <ScalarProperty Name="Dummy" ColumnName="Dummy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="examinationseachimportedevidence">
-      <EntityTypeMapping TypeName="medicalModel.examinationseachimportedevidence">
-        <MappingFragment StoreEntitySet="examinationseachimportedevidence">
-          <ScalarProperty Name="IdIED" ColumnName="IdIED" />
+    <EntitySetMapping Name="examinationeachevidence_st">
+      <EntityTypeMapping TypeName="medicalModel.examinationeachevidence_st">
+        <MappingFragment StoreEntitySet="examinationeachevidence_st">
           <ScalarProperty Name="IdEX" ColumnName="IdEX" />
+          <ScalarProperty Name="IdED" ColumnName="IdED" />
+          <ScalarProperty Name="Dummy" ColumnName="Dummy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="examinationeachimportedevidence_st">
+      <EntityTypeMapping TypeName="medicalModel.examinationeachimportedevidence_st">
+        <MappingFragment StoreEntitySet="examinationeachimportedevidence_st">
+          <ScalarProperty Name="IdEX" ColumnName="IdEX" />
+          <ScalarProperty Name="IdIED" ColumnName="IdIED" />
           <ScalarProperty Name="Dummy" ColumnName="Dummy" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -146,12 +147,13 @@
           <ScalarProperty Name="PatientIED" ColumnName="PatientIED" />
           <ScalarProperty Name="UserDataIdIED" ColumnName="UserDataIdIED" />
           <ScalarProperty Name="DateTimeIED" ColumnName="DateTimeIED" />
+          <ScalarProperty Name="CodeIED" ColumnName="CodeIED" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="importedevidencedata_st">
-      <EntityTypeMapping TypeName="medicalModel.importedevidencedata_st">
-        <MappingFragment StoreEntitySet="importedevidencedata_st">
+    <EntitySetMapping Name="importedevidencedatadocuments_st">
+      <EntityTypeMapping TypeName="medicalModel.importedevidencedatadocuments_st">
+        <MappingFragment StoreEntitySet="importedevidencedatadocuments_st">
           <ScalarProperty Name="IdIED" ColumnName="IdIED" />
           <ScalarProperty Name="IdEDD" ColumnName="IdEDD" />
           <ScalarProperty Name="Dummy" ColumnName="Dummy" />
@@ -170,29 +172,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="importedexaminationdata_st">
-      <EntityTypeMapping TypeName="medicalModel.importedexaminationdata_st">
-        <MappingFragment StoreEntitySet="importedexaminationdata_st">
+    <EntitySetMapping Name="importedexaminationdatadocuments_st">
+      <EntityTypeMapping TypeName="medicalModel.importedexaminationdatadocuments_st">
+        <MappingFragment StoreEntitySet="importedexaminationdatadocuments_st">
           <ScalarProperty Name="IdIEX" ColumnName="IdIEX" />
           <ScalarProperty Name="IdEXD" ColumnName="IdEXD" />
           <ScalarProperty Name="Dummy" ColumnName="Dummy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="importedexaminationseachevidence_st">
-      <EntityTypeMapping TypeName="medicalModel.importedexaminationseachevidence_st">
-        <MappingFragment StoreEntitySet="importedexaminationseachevidence_st">
-          <ScalarProperty Name="IdED" ColumnName="IdED" />
+    <EntitySetMapping Name="importedexaminationeachevidence_st">
+      <EntityTypeMapping TypeName="medicalModel.importedexaminationeachevidence_st">
+        <MappingFragment StoreEntitySet="importedexaminationeachevidence_st">
           <ScalarProperty Name="IdIEX" ColumnName="IdIEX" />
+          <ScalarProperty Name="IdED" ColumnName="IdED" />
           <ScalarProperty Name="Dummy" ColumnName="Dummy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="importedexaminatioseachimportedevidence_st">
-      <EntityTypeMapping TypeName="medicalModel.importedexaminatioseachimportedevidence_st">
-        <MappingFragment StoreEntitySet="importedexaminatioseachimportedevidence_st">
-          <ScalarProperty Name="IdIED" ColumnName="IdIED" />
+    <EntitySetMapping Name="importedexaminationeachimportedevidence_st">
+      <EntityTypeMapping TypeName="medicalModel.importedexaminationeachimportedevidence_st">
+        <MappingFragment StoreEntitySet="importedexaminationeachimportedevidence_st">
           <ScalarProperty Name="IdIEX" ColumnName="IdIEX" />
+          <ScalarProperty Name="IdIED" ColumnName="IdIED" />
           <ScalarProperty Name="Dummy" ColumnName="Dummy" />
         </MappingFragment>
       </EntityTypeMapping>

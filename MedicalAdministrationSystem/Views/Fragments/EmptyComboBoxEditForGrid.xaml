@@ -1,0 +1,89 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Fragments.EmptyComboBoxEditForGrid"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
+        x:Name="emptyComboBoxEditForGrid">
+    <utilities:ViewExtender.Resources>
+        <ControlTemplate x:Key="comboBoxTemplate">
+            <DockPanel>
+                <DockPanel Height="40" DockPanel.Dock="Bottom">
+                    <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                            Margin="0" />
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal"
+                            Margin="0">
+                        <Button Margin="0,0,10,0" VerticalAlignment="Center" Padding="5,0,0,0"
+                                HorizontalContentAlignment="Center" x:Name="import" IsEnabled="{Binding RelativeSource=
+                                {RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, 
+                                Path=ImportEnable}" Click="Import"
+                                ToolTip="A kiválasztott vizsgálatok hozzárendelése az aktuális státuszhoz">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{dx:DXImageGrayscale Image=NavigateNext_32x32.png}" Width="16"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Text="Importálás" Grid.Column="1" Foreground="#FF373A3D"
+                                        VerticalAlignment="Center" Margin="5,5,5,5" />
+                            </StackPanel>
+                        </Button>
+                        <Button VerticalAlignment="Center" Padding="5,0,0,0" x:Name="export" IsEnabled="{Binding RelativeSource=
+                                {RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, 
+                                Path=ExportEnable}" HorizontalContentAlignment="Center"
+                                ToolTip="A státuszhoz rendelt vizsgálatok kimentése" Click="Export">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{dx:DXImageGrayscale Image=Previous_32x32.png}" Width="16"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Text="Exportálás" Grid.Column="1" Foreground="#FF373A3D"
+                                        VerticalAlignment="Center" Margin="5,5,5,5" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+                <dxg:GridControl
+                        DataSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).ItemsSource, RelativeSource={RelativeSource Self}}"
+                        MaxHeight="500" ShowBorder="False" Loaded="GridControl_Loaded">
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn Header="Importált vizsgálat" Width="110" AllowFocus="False"
+                                Binding="{Binding Imported, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ReadOnly="True" AllowEditing="False" FixedWidth="True" MinWidth="110">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:CheckEditSettings IsEnabled="False" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Vizsgálat neve" MinWidth="120" AllowFocus="False"
+                                Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <dxg:GridColumn Header="Vizsgálat azonosítója" MinWidth="120" AllowFocus="False"
+                                Binding="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"
+                                FixedWidth="True" />
+                        <dxg:GridColumn x:Name="dateTime" Header="Vizsgálat időpontja" Width="200" AllowFocus="False"
+                                Binding="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                FixedWidth="True" MinWidth="200">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:DateEditSettings MaskCulture="hu-HU" MaskType="DateTimeAdvancingCaret"
+                                        MaskUseAsDisplayFormat="True" AllowDefaultButton="False" Mask="F" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="viewer" ShowGroupPanel="False" ShowIndicator="False"
+                                AllowScrollAnimation="True" AutoWidth="True" BestFitMode="AllRows" AllowBestFit="True"
+                                BestFitArea="All" AllowGrouping="False" />
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </DockPanel>
+        </ControlTemplate>
+    </utilities:ViewExtender.Resources>
+    <Grid>
+        <utilities:EmptyComboBoxEdit x:Name="associatedExaminations"
+                ItemsSource="{Binding EmptyComboBoxEditM.List, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                PopupContentTemplate="{StaticResource comboBoxTemplate}"
+                AllowDefaultButton="True" IsTextEditable="False" IsReadOnly="True" ShowBorder="False" Margin="-1" />
+        <TextBlock Margin="0,0,15,0" Foreground="#FF373A3D" IsHitTestVisible="False" Background="White"
+                Padding="4,2,3,0" Text="{Binding RelativeSource=
+                                {RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, 
+                                Path=Count}" FlowDirection="RightToLeft" />
+    </Grid>
+</utilities:ViewExtender>

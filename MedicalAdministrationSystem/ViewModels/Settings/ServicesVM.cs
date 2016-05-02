@@ -12,18 +12,15 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
     public class ServicesVM : VMExtender
     {
         public ServicesM ServicesM { get; set; }
-        public ServicesM.SelectedRow SelectedRow { get; set; }
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
         private BackgroundWorker EraseBackground { get; set; }
-        private ObservableCollection<ServicesM.Service> temp { get; set; }
         private bool modified { get; set; }
         private Action Loaded { get; set; }
         protected internal ServicesVM(Action Loaded)
         {
             this.Loaded = Loaded;
             ServicesM = new ServicesM();
-            SelectedRow = new ServicesM.SelectedRow();
             Loading = new BackgroundWorker();
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
@@ -31,13 +28,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
-            temp = new ObservableCollection<ServicesM.Service>();
             try
             {
                 me = new medicalEntities();
                 me.Database.Connection.Open();
+                ServicesM.Services.Clear();
                 foreach (treatmentdata row in me.treatmentdata.Where(a => a.DeletedTD == false).ToList())
-                    temp.Add(new ServicesM.Service
+                    ServicesM.Services.Add(new ServicesM.Service
                     {
                         ID = row.IdTD,
                         Name = row.NameTD,
@@ -58,7 +55,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             if (workingConn)
             {
-                ServicesM.Services = temp;
                 foreach (object row in ServicesM.Services)
                     (row as ServicesM.Service).AcceptChanges();
                 ServicesM.AcceptChanges();
@@ -85,13 +81,12 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     foreach (int service in ServicesM.Erased)
                         try
                         {
-                            me.treatmentdata.Remove(me.treatmentdata.Where(a => a.IdTD == service).Single());
+                            me.treatmentdata.Where(a => a.IdTD == service).Single().DeletedTD = true;
                             me.SaveChanges();
                         }
                         catch { }
                 for (int i = 0; i < ServicesM.Services.Count; i++)
                 {
-                    int temp = ServicesM.Services[i].ID;
                     try
                     {
                         treatmentdata tr = new treatmentdata();
@@ -103,9 +98,12 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             tr.DetailsTD = ServicesM.Services[i].Details;
                             me.treatmentdata.Add(tr);
                             me.SaveChanges();
+                            ServicesM.Services[i].ID = tr.IdTD;
+                            ServicesM.Services[i].New = false;
                         }
                         else
                         {
+                            int temp = ServicesM.Services[i].ID;
                             tr = me.treatmentdata.Where(a => a.IdTD == temp).Single();
                             if (!ServicesM.Services[i].Name.Equals(tr.NameTD))
                                 tr.NameTD = ServicesM.Services[i].Name;
@@ -178,11 +176,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private void EraseBackgroundDoWork(object sender, DoWorkEventArgs e)
         {
             modified = true;
-            if (!SelectedRow.Selected.New) ServicesM.Erased.Add(SelectedRow.Selected.ID);
+            if (!ServicesM.Selected.New) ServicesM.Erased.Add(ServicesM.Selected.ID);
         }
         private void EraseBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            ServicesM.Services.Remove(SelectedRow.Selected);
+            ServicesM.Services.Remove(ServicesM.Selected);
         }
     }
 }

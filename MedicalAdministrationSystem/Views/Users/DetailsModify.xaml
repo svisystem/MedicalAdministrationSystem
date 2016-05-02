@@ -164,7 +164,7 @@
                                     ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None"
                                     NullText="Szültési dátuma..." Mask="D" MaskType="DateTimeAdvancingCaret"
                                     MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False"
-                                    IsTextEditable="True" MaskIgnoreBlank="False" Spin="birthDate_Spin">
+                                    IsTextEditable="True" MaskIgnoreBlank="False" Spin="Spin">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />

@@ -81,10 +81,6 @@ namespace MedicalAdministrationSystem.Views.Examination
                 newExaminationValid.examinationDate = true;
             }
         }
-        private void Spin(object sender, SpinEventArgs e)
-        {
-            e.Handled = true;
-        }
         private void SetEnabledSave(bool enabled)
         {
             button.IsEnabled = enabled;

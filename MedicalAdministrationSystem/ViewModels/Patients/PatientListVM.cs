@@ -203,7 +203,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                         try
                         { //TODO
                             me.belong_st.RemoveRange(me.belong_st.Where(a => a.IdPD == patient));
-                            me.examinationseachevidence_st.RemoveRange(me.examinationseachevidence_st.Where
+                            me.examinationeachevidence_st.RemoveRange(me.examinationeachevidence_st.Where
                                 (b => me.examinationdata.Where(a => a.PatientIdEX == patient).Select(a => a.IdEX).ToList().Any(c => c == b.IdEX)));
                             me.examinationdata.RemoveRange(me.examinationdata.Where(a => a.PatientIdEX == patient));
                             me.evidencedata.RemoveRange(me.evidencedata.Where(a => a.PatientIdED == patient));

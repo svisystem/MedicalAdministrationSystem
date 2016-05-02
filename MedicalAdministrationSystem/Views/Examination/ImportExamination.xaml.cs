@@ -66,10 +66,6 @@ namespace MedicalAdministrationSystem.Views.Examination
                 importExaminationValid.examinationDate = true;
             }
         }
-        private void ExaminationTime_Spin(object sender, SpinEventArgs e)
-        {
-            e.Handled = true;
-        }
         private void SetEnabledSave(bool enabled)
         {
             button.IsEnabled = enabled;

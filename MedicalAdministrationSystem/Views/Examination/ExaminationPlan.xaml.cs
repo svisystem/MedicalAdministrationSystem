@@ -1,28 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MedicalAdministrationSystem.ViewModels.Examination;
+using MedicalAdministrationSystem.ViewModels.Utilities;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.Views.Examination
 {
-    /// <summary>
-    /// Interaction logic for ExaminationPlan.xaml
-    /// </summary>
     public partial class ExaminationPlan : UserControl
     {
+        protected internal ExaminationPlanVM ExaminationPlanVM { get; set; }
         public ExaminationPlan()
         {
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
+            ExaminationPlanVM = new ExaminationPlanVM(view_Loaded);
+            this.DataContext = ExaminationPlanVM;
             InitializeComponent();
+            word.Content = ExaminationPlanVM.WordEditor;
+        }
+        private void Update(object sender, RoutedEventArgs e)
+        {
+            //ExaminationPlanVM.Refresh();
+        }
+        protected internal bool Dirty()
+        {
+            return ExaminationPlanVM.VMDirty();
+        }
+        private async void view_Loaded()
+        {
+            await this.Dispatcher.BeginInvoke(new Action(() =>
+                 view.BestFitColumns()), DispatcherPriority.Loaded);
+            await Loading.Hide();
+        }
+        private void Print(object sender, RoutedEventArgs e)
+        {
+            ExaminationPlanVM.Print();
+        }
+        private void Add(object sender, RoutedEventArgs e)
+        {
+            ExaminationPlanVM.Add();
         }
     }
 }

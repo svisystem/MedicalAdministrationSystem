@@ -100,10 +100,6 @@ namespace MedicalAdministrationSystem.Views.Patients
             }
             button.IsEnabled = (validatorClass as FormValidate).Validate(validatorClass);
         }
-        private void birthDate_Spin(object sender, SpinEventArgs e)
-        {
-            e.Handled = true;
-        }
         private void zipCode_Validate(object sender, ValidationEventArgs e)
         {
             validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, false, null);

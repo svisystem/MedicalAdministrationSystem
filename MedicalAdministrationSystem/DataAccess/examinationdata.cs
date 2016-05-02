@@ -17,9 +17,9 @@ namespace MedicalAdministrationSystem.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public examinationdata()
         {
-            this.examinationdata_st = new HashSet<examinationdata_st>();
-            this.examinationseachimportedevidence = new HashSet<examinationseachimportedevidence>();
-            this.examinationseachevidence_st = new HashSet<examinationseachevidence_st>();
+            this.examinationdatadocuments_st = new HashSet<examinationdatadocuments_st>();
+            this.examinationeachevidence_st = new HashSet<examinationeachevidence_st>();
+            this.examinationeachimportedevidence_st = new HashSet<examinationeachimportedevidence_st>();
         }
     
         public int IdEX { get; set; }
@@ -30,13 +30,13 @@ namespace MedicalAdministrationSystem.DataAccess
         public string CodeEX { get; set; }
     
         public virtual patientdata patientdata { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<examinationdata_st> examinationdata_st { get; set; }
         public virtual treatmentdata treatmentdata { get; set; }
         public virtual userdata userdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<examinationseachimportedevidence> examinationseachimportedevidence { get; set; }
+        public virtual ICollection<examinationdatadocuments_st> examinationdatadocuments_st { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<examinationseachevidence_st> examinationseachevidence_st { get; set; }
+        public virtual ICollection<examinationeachevidence_st> examinationeachevidence_st { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<examinationeachimportedevidence_st> examinationeachimportedevidence_st { get; set; }
     }
 }

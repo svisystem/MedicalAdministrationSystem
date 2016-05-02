@@ -1,5 +1,4 @@
 ﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Settings.FacilityData"
-        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -60,12 +59,12 @@
                     </Grid>
                 </dxe:ButtonInfo>
             </dxe:ButtonEdit>
-            <dxe:ComboBoxEdit DockPanel.Dock="Right" x:Name="selectedCompany" Margin="0,0,6,0"
+            <dxe:ComboBoxEdit DockPanel.Dock="Right" x:Name="selectedCompany" Margin="0,0,8,0"
                     VerticalAlignment="Center" Width="250"
                     SelectedItem="{Binding FacilityDataMDataSet.SelectedCompany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ItemsSource="{Binding FacilityDataMDataSet.Companies, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     IsTextEditable="False" PopupFooterButtons="None" EditValueChanged="selectedCompany_EditValueChanged"
-                    ApplyItemTemplateToSelectedItem="True" Padding="3,0,0,0" Spin="selectedCompany_Spin">
+                    ApplyItemTemplateToSelectedItem="True" Spin="Spin" Padding="3,0,0,0">
                 <dxe:ComboBoxEdit.ItemTemplate>
                     <DataTemplate>
                         <TextBlock x:Name="tbTitle" Text="{Binding Name}" VerticalAlignment="Center" />

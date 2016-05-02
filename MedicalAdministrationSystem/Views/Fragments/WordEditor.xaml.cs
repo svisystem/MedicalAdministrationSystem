@@ -19,9 +19,10 @@ namespace MedicalAdministrationSystem.Views.Fragments
         private string name;
         private string Code;
         private Action close;
-        private bool Type;
+        private bool? Type = null;
         private bool ReadOnly;
         private Action Change;
+        private bool? from = null;
         public WordEditor(DocumentControlM.ListElement element, int PatientId, string name, string Code, Action close, bool Type, Action Change)
         {
             ReadOnly = false;
@@ -44,6 +45,28 @@ namespace MedicalAdministrationSystem.Views.Fragments
             this.Type = Type;
             Start();
         }
+        public WordEditor(bool from)
+        {
+            this.from = from;
+            ReadOnly = true;
+            this.DataContext = this;
+            Start();
+            exit.IsVisible = false;
+            grpHomeFont.IsVisible = false;
+            grpHomeParagraph.IsVisible = false;
+        }
+        protected internal void ExaminationPlanStart()
+        {
+            wordEditor.LoadDocument(new MemoryStream(new DocumentGenerator().ExaminationPlanTemplate().ToArray()), DocumentFormat.OpenXml);
+        }
+        protected internal void ExaminationPlanItem(string name, string details = null, string price = null)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                wordEditor.SaveDocument(ms, DocumentFormat.OpenXml);
+                wordEditor.LoadDocument(new MemoryStream(new DocumentGenerator().ExaminationPlan(ms, name, details != null ? details : null, price != null ? price : null).ToArray()), DocumentFormat.OpenXml);
+            }
+        }
         private void Start()
         {
             InitializeComponent();
@@ -51,13 +74,13 @@ namespace MedicalAdministrationSystem.Views.Fragments
             wordEditor.Options.VerticalRuler.Visibility = RichEditRulerVisibility.Hidden;
             if (ReadOnly)
             {
-                biFileNew.IsEnabled = false;
+                if (from != null && !(bool)from) biFileNew.IsEnabled = false;
                 biFileOpen.IsEnabled = false;
                 biFileSave.IsEnabled = false;
             }
-            if (element.File != null)
+            if (element != null && element.File != null)
             {
-                wordEditor.LoadDocument(new MemoryStream((element.File as MemoryStream).ToArray()), WordEditorVM.DocFormat(element.FileType));
+                wordEditor.LoadDocument(new MemoryStream(element.File.ToArray()), WordEditorVM.DocFormat(element.FileType));
                 if (!ReadOnly) wordEditor.Options.Authentication.UserName = "User1";
             }
             else wordEditor.Document.Protect("admin");
@@ -70,12 +93,12 @@ namespace MedicalAdministrationSystem.Views.Fragments
         }
         private void New(object sender, ItemClickEventArgs e)
         {
-            WordEditorVM.NewDataQuestion(async () =>
-            {
-                await WordEditorVM.ExaminationPage(wordEditor, name, Code);
-                wordEditor.Options.Authentication.UserName = "User1";
-                SaveMethod();
-            }, element);
+            if (from != null && (bool)from) ExaminationPlanStart();
+            else WordEditorVM.NewDataQuestion(async () =>
+                {
+                    await WordEditorVM.TemplatePage(wordEditor, name, Code, SaveMethod, (bool)Type);
+                    wordEditor.Options.Authentication.UserName = "User1";
+                }, element);
         }
         private void Load(object sender, ItemClickEventArgs e)
         {
@@ -87,7 +110,6 @@ namespace MedicalAdministrationSystem.Views.Fragments
                 SaveMethod();
             }, element);
         }
-
         private void Save(object sender, ItemClickEventArgs e)
         {
             WordEditorVM.NewDataQuestion(SaveMethod, element);
@@ -105,6 +127,10 @@ namespace MedicalAdministrationSystem.Views.Fragments
         }
 
         private void biFilePrint_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Print();
+        }
+        protected internal void Print()
         {
             new DocumentGenerator().WordPrint(wordEditor.RtfText);
         }

@@ -24,13 +24,13 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             Check(sender as TileBarItem, PatiensLoad, Back);
         }
-        private void evidenceTBIClick(object sender, EventArgs e)
-        {
-            Check(sender as TileBarItem, EvidenceLoad, Back);
-        }
         private void examinationTBIClick(object sender, EventArgs e)
         {
             Check(sender as TileBarItem, ExaminationLoad, Back);
+        }
+        private void evidenceTBIClick(object sender, EventArgs e)
+        {
+            Check(sender as TileBarItem, EvidenceLoad, Back);
         }
         private void labTBIClick(object sender, EventArgs e)
         {
@@ -86,12 +86,6 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = patientsTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void EvidenceLoad()
-        {
-            await ViewModels.Utilities.Loading.Show();
-            //TODO
-            await ViewModels.Utilities.Loading.Hide();
-        }
         protected async internal void ExaminationLoad()
         {
             await ViewModels.Utilities.Loading.Show();
@@ -107,6 +101,23 @@ namespace MedicalAdministrationSystem.Views.Global
             if (modifier) examination.ViewLoad(imported, ID);
             else examination.EditLoad(imported, ID);
             currentItem = examinationTBI;
+            await ViewModels.Utilities.Loading.Hide();
+        }
+        protected async internal void EvidenceLoad()
+        {
+            await ViewModels.Utilities.Loading.Show();
+            EvidenceVM evidence = new EvidenceVM();
+            evidence.EvidencesLoad();
+            currentItem = evidenceTBI;
+            await ViewModels.Utilities.Loading.Hide();
+        }
+        protected async internal void EvidenceLoad(bool modifier, bool imported, int ID)
+        {
+            await ViewModels.Utilities.Loading.Show();
+            EvidenceVM evidence = new EvidenceVM();
+            if (modifier) evidence.ViewEvidenceLoad(imported, ID);
+            else evidence.EditEvidenceLoad(imported, ID);
+            currentItem = evidenceTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void LabLoad()

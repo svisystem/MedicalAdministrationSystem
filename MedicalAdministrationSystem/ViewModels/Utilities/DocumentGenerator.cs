@@ -17,7 +17,101 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             reds = new RichEditDocumentServer();
             dpc = new DocumentPreviewControl();
         }
-        protected internal MemoryStream Examination(string companyName,
+        protected internal MemoryStream ExaminationPlanTemplate()
+        {
+            Document doc = reds.Document;
+            doc.Sections[0].Page.PaperKind = System.Drawing.Printing.PaperKind.A4;
+            doc.DefaultCharacterProperties.FontSize = 12;
+            doc.Unit = DevExpress.Office.DocumentUnit.Centimeter;
+            doc.Sections[0].Margins.Bottom = 2;
+            doc.Sections[0].Margins.Top = 2;
+            doc.Sections[0].Margins.Left = 2;
+            doc.Sections[0].Margins.Right = 2;
+            doc.Sections[0].Margins.FooterOffset = 0.8F;
+
+            doc.Unit = DevExpress.Office.DocumentUnit.Point;
+
+            Section firstSection = doc.Sections[0];
+            SubDocument subdoc = firstSection.BeginUpdateHeader(HeaderFooterType.Primary);
+            DocumentRange textRange = subdoc.AppendText("Kezelési Terv");
+            CharacterProperties cp1 = subdoc.BeginUpdateCharacters(textRange);
+            cp1.Bold = true;
+            cp1.Italic = true;
+            cp1.FontSize = 18;
+            subdoc.EndUpdateCharacters(cp1);
+            subdoc.Paragraphs[0].Alignment = ParagraphAlignment.Center;
+            subdoc.Paragraphs[0].LineSpacingType = ParagraphLineSpacing.Sesquialteral;
+            doc.Sections[0].EndUpdateHeader(subdoc);
+
+            doc.Protect("admin");
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                reds.SaveDocument(ms, DocumentFormat.OpenXml);
+                return ms;
+            }
+        }
+        protected internal MemoryStream ExaminationPlan(MemoryStream doc, string name, string details = null, string price = null)
+        {
+            reds.LoadDocument(new MemoryStream(doc.ToArray()), DocumentFormat.OpenXml);
+            reds.Document.Unit = DevExpress.Office.DocumentUnit.Point;
+            Table table = reds.Document.Tables.Create(reds.Document.Range.End,
+                details == null ? (price == null ? 1 : 2) : (price == null ? 2 : 3), 1);
+            table.TableLayout = TableLayoutType.Fixed;
+            table.PreferredWidth = 5000;
+            table.PreferredWidthType = WidthType.FiftiethsOfPercent;
+            table.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
+            table.Borders.InsideHorizontalBorder.LineColor = Color.Transparent;
+            table.Borders.Left.LineColor = Color.Transparent;
+            table.Borders.Right.LineColor = Color.Transparent;
+            table.Borders.Bottom.LineColor = Color.Transparent;
+            table.TableCellSpacing = 2;
+
+            table[details == null ? (price == null ? 0 : 1) : (price == null ? 1 : 2), 0].BottomPadding = 5;
+            DocumentRange range1 = reds.Document.InsertText(table[0, 0].Range.Start, name);
+            CharacterProperties cp2 = reds.Document.BeginUpdateCharacters(range1);
+            cp2.Bold = true;
+            cp2.FontSize = 16;
+            reds.Document.EndUpdateCharacters(cp2);
+
+            if (details != null)
+            {
+                Table table2 = reds.Document.Tables.Create(table[1, 0].Range.Start, 1, 1);
+                table2.TableLayout = TableLayoutType.Fixed;
+                table2.PreferredWidth = 5000;
+                table2.PreferredWidthType = WidthType.FiftiethsOfPercent;
+                table2.Borders.Left.LineColor = Color.Transparent;
+                table2.Borders.Right.LineColor = Color.Transparent;
+                table2.Borders.Bottom.LineColor = Color.Transparent;
+                table2.Borders.Top.LineColor = Color.Transparent;
+                reds.Document.InsertText(table2[0, 0].Range.Start, details);
+
+                ParagraphProperties props = reds.Document.BeginUpdateParagraphs(table2.Rows[0].Cells[0].Range);
+                props.Alignment = ParagraphAlignment.Justify;
+                reds.Document.EndUpdateParagraphs(props);
+            }
+
+            if (price != null)
+            {
+                DocumentRange range2 = reds.Document.InsertText(table[details == null ? 1 : 2, 0].Range.Start, "Összeg: " + price + " HUF");
+                CharacterProperties cp3 = reds.Document.BeginUpdateCharacters(range2);
+                cp3.Italic = true;
+
+                ParagraphProperties props = reds.Document.BeginUpdateParagraphs(table[details == null ? 1 : 2, 0].Range);
+                props.Alignment = ParagraphAlignment.Right;
+                reds.Document.EndUpdateParagraphs(props);
+            }
+
+            reds.Document.Protect("admin");
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                reds.SaveDocument(ms, DocumentFormat.OpenXml);
+                return ms;
+            }
+        }
+        protected internal MemoryStream Template(bool Type,
+            string companyName,
             string companyZip,
             string companySettlement,
             string companyAddress,
@@ -45,9 +139,12 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
 
             doc.Unit = DevExpress.Office.DocumentUnit.Point;
 
-            Section firstSection = doc.Sections[0];
-            SubDocument subdoc = firstSection.BeginUpdateHeader(HeaderFooterType.Primary);
-            DocumentRange textRange = subdoc.AppendText("Vizsgálati Lap");
+            SubDocument subdoc = doc.Sections[0].BeginUpdateHeader(HeaderFooterType.Primary);
+            DocumentRange textRange;
+            if (Type)
+                textRange = subdoc.AppendText("Vizsgálati Lap");
+            else
+                textRange = subdoc.AppendText("Státusz");
             CharacterProperties cp1 = subdoc.BeginUpdateCharacters(textRange);
             cp1.Bold = true;
             cp1.Italic = true;
@@ -57,8 +154,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             subdoc.Paragraphs[0].LineSpacingType = ParagraphLineSpacing.Sesquialteral;
             doc.Sections[0].EndUpdateHeader(subdoc);
 
-            Section section = doc.Sections[0];
-            SubDocument subdoc2 = firstSection.BeginUpdateFooter(HeaderFooterType.Primary);
+            SubDocument subdoc2 = doc.Sections[0].BeginUpdateFooter(HeaderFooterType.Primary);
             Table table2 = subdoc2.Tables.Create(subdoc2.Range.Start, 1, 2);
             table2.TableLayout = TableLayoutType.Fixed;
             table2.PreferredWidth = 5000;
@@ -131,21 +227,23 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             doc.EndUpdateCharacters(cp5);
             doc.Paragraphs[11].SpacingBefore = 6;
 
-            DocumentRange range5 = doc.AppendText("  Vizsgálat: ");
-            CharacterProperties cp6 = doc.BeginUpdateCharacters(range5);
-            cp6.Bold = true;
-            cp6.FontSize = 16;
-            doc.Paragraphs[15].SpacingBefore = 6;
-            doc.Paragraphs[15].LineSpacingType = ParagraphLineSpacing.Sesquialteral;
+            if (Type)
+            {
+                DocumentRange range5 = doc.AppendText("  Vizsgálat: ");
+                CharacterProperties cp6 = doc.BeginUpdateCharacters(range5);
+                cp6.Bold = true;
+                cp6.FontSize = 16;
+                doc.Paragraphs[15].SpacingBefore = 6;
+                doc.Paragraphs[15].LineSpacingType = ParagraphLineSpacing.Sesquialteral;
 
-            DocumentRange range6 = doc.AppendText(examination);
-            CharacterProperties cp7 = doc.BeginUpdateCharacters(range6);
-            cp7.Bold = false;
-            cp7.FontSize = 12;
-
+                DocumentRange range6 = doc.AppendText(examination);
+                CharacterProperties cp7 = doc.BeginUpdateCharacters(range6);
+                cp7.Bold = false;
+                cp7.FontSize = 12;
+            }
             doc.Paragraphs.Append();
-            doc.Paragraphs[16].SpacingBefore = 0;
-            doc.Paragraphs[16].LineSpacingType = ParagraphLineSpacing.Single;
+            doc.Paragraphs[Type ? 16 : 15].SpacingBefore = 0;
+            doc.Paragraphs[Type ? 16 : 15].LineSpacingType = ParagraphLineSpacing.Single;
             doc.AppendText("          ");
 
             RangePermissionCollection rpc = doc.BeginUpdateRangePermissions();

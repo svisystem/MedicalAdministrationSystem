@@ -12,6 +12,7 @@ namespace MedicalAdministrationSystem.ViewModels
         public static StockLayout StockLayout = new StockLayout();
         public static StockWindow MainWindow = new StockWindow();
         public static GlobalM GlobalM = new GlobalM();
+        private static bool ShutDownDialog = false;
         public static void StartUp()
         {
             DevExpress.Xpf.Core.DXGridDataController.DisableThreadingProblemsDetection = true;
@@ -27,10 +28,14 @@ namespace MedicalAdministrationSystem.ViewModels
         {
             if (GlobalM.AccountID != null)
             {
-                Dialog dialog = new Dialog(true, "Kilépés", () => { });
-                dialog.content = new TextBlock("Ameddig be van jelentkezve az alkalmazásba nem javasolt bezárni azt\n\n" +
-                    "Az alkalmazásból való kilépéshez előbb jelentkezzen ki");
-                dialog.Start();
+                if (!ShutDownDialog)
+                {
+                    ShutDownDialog = true;
+                    Dialog dialog = new Dialog(true, "Kilépés", () => ShutDownDialog = false);
+                    dialog.content = new TextBlock("Ameddig be van jelentkezve az alkalmazásba nem javasolt bezárni azt\n\n" +
+                        "Az alkalmazásból való kilépéshez előbb jelentkezzen ki");
+                    dialog.Start();
+                }
                 e.Cancel = true;
             }
             else Application.Current.Shutdown();

@@ -39,7 +39,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
 
                     if (ExaminationViewM.Imported)
                     {
-                        me.examinationdatadocuments.Where(ex => me.importedexaminationdata_st.Where
+                        me.examinationdatadocuments.Where(ex => me.importedexaminationdatadocuments_st.Where
                         (iex => iex.IdIEX == ExaminationViewM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList().ForEach
                         (p => DocumentControlVM.Add(p.TypeEXD, p.FileTypeEXD, p.IdEXD, new MemoryStream(p.DataEXD)));
 
@@ -50,7 +50,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
 
                     else
                     {
-                        me.examinationdatadocuments.Where(ex => me.examinationdata_st.Where
+                        me.examinationdatadocuments.Where(ex => me.examinationdatadocuments_st.Where
                         (iex => iex.IdEX == ExaminationViewM.Id).Select(iex => iex.IdEXD).ToList().Any(c => c == ex.IdEXD)).ToList().ForEach
                         (p => DocumentControlVM.Add(p.TypeEXD, p.FileTypeEXD, p.IdEXD, new MemoryStream(p.DataEXD)));
 

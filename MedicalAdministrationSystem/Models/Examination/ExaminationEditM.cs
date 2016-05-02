@@ -1,6 +1,5 @@
 ﻿using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace MedicalAdministrationSystem.Models.Examination

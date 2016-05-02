@@ -23,7 +23,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         private async void Start()
         {
             NewExaminationM = new NewExaminationM();
-            NewExaminationM.PatientId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).SelectedPatientVM.SelectedPatientM.Id;
+            NewExaminationM.PatientId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).SelectedPatientVM.Id();
             NewExaminationM.ExaminationCode = await new Codes().Generate((int)GlobalVM.GlobalM.UserID, NewExaminationM.PatientId);
             NewExaminationM.ExaminationDate = DateTime.Now;
             Loading = new BackgroundWorker();
@@ -113,7 +113,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     me.SaveChanges();
 
                     int ide = edd.IdEXD;
-                    me.examinationdata_st.Add(new examinationdata_st()
+                    me.examinationdatadocuments_st.Add(new examinationdatadocuments_st()
                     {
                         IdEX = id,
                         IdEXD = ide
@@ -147,8 +147,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         protected internal bool VMDirty()
         {
             if (NewExaminationM.IsChanged) return true;
-            if (NewExaminationM.ExaminationList.Any(i => i.IsChanged)) return true;
-            return false;
+            return NewExaminationM.ExaminationList.Any(i => i.IsChanged);
         }
     }
 }

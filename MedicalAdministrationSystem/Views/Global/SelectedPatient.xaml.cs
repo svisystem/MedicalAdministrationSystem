@@ -10,7 +10,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected internal SelectedPatientVM SelectedPatientVM { get; set; }
         public SelectedPatient(Action Selected)
         {
-            SelectedPatientVM = new SelectedPatientVM(Selected);
+            SelectedPatientVM = new SelectedPatientVM(Selected, () => associatedExaminations.Focus());
             this.DataContext = SelectedPatientVM;
             InitializeComponent();
         }
@@ -33,6 +33,14 @@ namespace MedicalAdministrationSystem.Views.Global
         protected internal void Dispose()
         {
             SelectedPatientVM.Dispose();
+        }
+        private void EraseItem(object sender, RoutedEventArgs e)
+        {
+            SelectedPatientVM.EraseItem();
+        }
+        private void EraseAll(object sender, RoutedEventArgs e)
+        {
+            SelectedPatientVM.EraseAll();
         }
     }
 }

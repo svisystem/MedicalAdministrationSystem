@@ -236,7 +236,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             await Task.Run(() =>
             {
-                int id = PatientDetailsMDataSet.FullSettlementList.Where(c => c.DataS == what).Select(c => c.IdS).Single();
+                int id = PatientDetailsMDataSet.FullSettlementList.Where(c => c.DataS == settle).Select(c => c.IdS).Single();
                 List<int> temp = (PatientDetailsMDataSet.SettlementZipSwitch.Where(a => a.IdS == id).Select(a => a.IdZC)).ToList();
                 List<int> temp2 = PatientDetailsMDataSet.FullZipCodeList.Where(b => temp.Any(a => a == b.IdZC)).Select(b => b.DataZC).ToList();
                 if (From) PatientDetailsMDataSet.ViewZipCodeList = temp2;
@@ -248,7 +248,6 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             await Task.Run(() =>
             {
-                int zip = Convert.ToInt32(what);
                 int id = PatientDetailsMDataSet.FullZipCodeList.Where(c => c.DataZC == zip).Select(c => c.IdZC).Single();
                 List<int> temp = (PatientDetailsMDataSet.SettlementZipSwitch.Where(a => a.IdZC == id).Select(a => a.IdS)).ToList();
                 List<string> temp2 = PatientDetailsMDataSet.FullSettlementList.Where(b => temp.Any(a => a == b.IdS)).Select(b => b.DataS).ToList();
@@ -256,7 +255,8 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 else PatientDetailsMDataSet.ViewBillingSettlementList = temp2;
             });
         }
-        string what;
+        string settle;
+        int zip;
         protected internal void ItemSourceSearcher(string who, string what)
         {
             if (who == "zipCode")
@@ -267,7 +267,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     PatientDetailsMDataSet.ViewSettlementList = null;
                 else
                 {
-                    this.what = what;
+                    this.zip = Convert.ToInt32(what);
                     if (!SettlementSearch.IsBusy) SettlementSearch.RunWorkerAsync();
                 }
             }
@@ -278,7 +278,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     PatientDetailsMDataSet.ViewZipCodeList = null;
                 else
                 {
-                    this.what = what;
+                    this.settle = what;
                     if (!SettlementSearch.IsBusy) ZipCodeSearch.RunWorkerAsync();
                 }
         }

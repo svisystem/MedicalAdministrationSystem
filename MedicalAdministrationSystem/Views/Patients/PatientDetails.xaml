@@ -6,7 +6,6 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-    xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Patients"
     xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
     <utilities:ViewExtender.Resources>
         <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
@@ -96,7 +95,7 @@
                             <dxe:DateEdit Margin="0,0,1,0" x:Name="birthDate" EditValue="{Binding PatientDetailsMViewElements.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
                                 NullValueButtonPlacement="None" NullText="Szültési dátuma..." Mask="D" MaskType="DateTimeAdvancingCaret"
-                                MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowWeekNumbers="True" ShowClearButton="False" Spin="birthDate_Spin">
+                                MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowWeekNumbers="True" ShowClearButton="False" Spin="Spin">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése"/>
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"/>

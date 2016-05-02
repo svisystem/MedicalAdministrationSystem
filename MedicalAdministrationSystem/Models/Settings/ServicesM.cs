@@ -8,6 +8,7 @@ namespace MedicalAdministrationSystem.Models.Settings
     {
         private ObservableCollection<Service> _Services = new ObservableCollection<Service>();
         private List<int> _Erased = new List<int>();
+        private Service _Selected;
         public ObservableCollection<Service> Services
         {
             get
@@ -34,23 +35,20 @@ namespace MedicalAdministrationSystem.Models.Settings
                 OnPropertyChanged("Erased");
             }
         }
-        public class SelectedRow : NotifyPropertyChanged
+        public Service Selected
         {
-            private Service _Selected;
-            public Service Selected
+            get
             {
-                get
-                {
-                    return _Selected;
-                }
-                set
-                {
-                    if (_Selected == value) return;
-                    _Selected = value;
-                    OnPropertyChanged("Selected");
-                }
+                return _Selected;
+            }
+            set
+            {
+                if (_Selected == value) return;
+                _Selected = value;
+                OnPropertyChanged("Selected");
             }
         }
+    
         public class Service : NotifyPropertyChanged
         {
             private int _ID;

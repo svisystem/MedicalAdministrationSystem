@@ -111,10 +111,6 @@ namespace MedicalAdministrationSystem.Views.Settings
         {
             return FacilityDataVM.VMDirty();
         }
-        private void selectedCompany_Spin(object sender, SpinEventArgs e)
-        {
-            e.Handled = true;
-        }
         private void selectedCompany_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
             FacilityDataVM.Question(false);

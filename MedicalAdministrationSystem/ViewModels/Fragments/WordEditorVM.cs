@@ -16,7 +16,7 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
     public class WordEditorVM : VMExtender
     {
         protected internal int PatientId;
-        protected internal async Task ExaminationPage(RichEditControl editor, string ExaminationName, string ExaminationCode)
+        protected internal async Task TemplatePage(RichEditControl editor, string ExaminationName, string ExaminationCode, Action Save, bool Type)
         {
             await Loading.Show();
             await Task.Factory.StartNew(() =>
@@ -29,7 +29,8 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
                     companydata cd = me.companydata.Where(a => a.IdCD == GlobalVM.GlobalM.CompanyId).Single();
                     userdata ud = me.userdata.Where(a => a.IdUD == GlobalVM.GlobalM.UserID).Single();
                     patientdata pd = me.patientdata.Where(a => a.IdPD == PatientId).Single();
-                    return new DocumentGenerator().Examination(
+                    return new DocumentGenerator().Template(
+                        Type,
                         cd.NameCD,
                         me.zipcode_fx.Where(a => a.IdZC == cd.ZipCodeCD).Select(a => a.DataZC).Single().ToString(),
                         me.settlement_fx.Where(a => a.IdS == cd.SettlementCD).Select(a => a.DataS).Single(),
@@ -61,6 +62,7 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
                 {
                     using (MemoryStream ms = new MemoryStream(task.Result.ToArray()))
                         editor.LoadDocument(ms, DocumentFormat.OpenXml);
+                    Save();
                     await Loading.Hide();
                 }));
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());

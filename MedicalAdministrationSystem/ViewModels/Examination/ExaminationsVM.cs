@@ -1,4 +1,5 @@
 ﻿using MedicalAdministrationSystem.DataAccess;
+using MedicalAdministrationSystem.Models;
 using MedicalAdministrationSystem.Models.Examination;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
@@ -12,12 +13,12 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
     {
         public ExaminationsM ExaminationsM { get; set; }
         private BackgroundWorker Loading { get; set; }
-        private BackgroundWorker Execute { get; set; }
-        private BackgroundWorker EraseBackground { get; set; }
         private System.Action Loaded { get; set; }
+        private SelectedPatient SelectedPatient { get; set; }
         protected internal ExaminationsVM(System.Action Loaded)
         {
             this.Loaded = Loaded;
+            SelectedPatient = GlobalVM.StockLayout.headerContent.Content as SelectedPatient;
             ExaminationsM = new ExaminationsM();
             ExaminationsM.PatientId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).SelectedPatientVM.SelectedPatientM.Id;
             Loading = new BackgroundWorker();
@@ -34,34 +35,66 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 me = new medicalEntities();
                 me.Database.Connection.Open();
 
-                if (me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId).Count() != 0)
-                    foreach (ExaminationsM.Examination item in me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId)
+                if (SelectedPatient.SelectedPatientVM.Count() == 0)
+                {
+                    if (me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId).Count() != 0)
+                        foreach (ExaminationsM.Examination item in me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId)
+                            .Select(ex => new ExaminationsM.Examination
+                            {
+                                Id = ex.IdEX,
+                                Imported = false,
+                                Name = me.treatmentdata.Where(t => t.IdTD == ex.TreatmentIdEX).FirstOrDefault().NameTD,
+                                Code = ex.CodeEX,
+                                DateTime = ex.DateTimeEX,
+                                DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
+                                DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
+                            }).ToList())
+                            ExaminationsM.Examinations.Add(item);
+
+                    if (me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId).Count() != 0)
+                        foreach (ExaminationsM.Examination item in me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId)
                         .Select(ex => new ExaminationsM.Examination
                         {
-                            Id = ex.IdEX,
-                            Imported = false,
-                            Name = me.treatmentdata.Where(t => t.IdTD == ex.IdEX).FirstOrDefault().NameTD,
-                            Code = ex.CodeEX,
-                            DateTime = ex.DateTimeEX,
-                            DoctorName = me.userdata.Where(u => u.IdUD == GlobalVM.GlobalM.UserID).FirstOrDefault().NameUD,
-                            DocumentCount = me.examinationdata_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
+                            Id = ex.IdIEX,
+                            Imported = true,
+                            Name = ex.NameIEX,
+                            Code = ex.CodeIEX,
+                            DateTime = ex.DateTimeIEX,
+                            DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdIEX).FirstOrDefault().NameUD,
+                            DocumentCount = me.importedexaminationdatadocuments_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
                         }).ToList())
-                        ExaminationsM.Examinations.Add(item);
-
-                if (me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId).Count() != 0)
-                    foreach (ExaminationsM.Examination item in me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId)
-                    .Select(ex => new ExaminationsM.Examination
+                            ExaminationsM.Examinations.Add(item);
+                }
+                else
+                {
+                    foreach (SelectedPatientM.ExaminationItem item in SelectedPatient.SelectedPatientVM.SelectedPatientM.List)
                     {
-                        Id = ex.IdIEX,
-                        Imported = true,
-                        Name = ex.NameIEX,
-                        Code = ex.CodeIEX,
-                        DateTime = ex.DateTimeIEX,
-                        DoctorName = me.userdata.Where(u => u.IdUD == GlobalVM.GlobalM.UserID).FirstOrDefault().NameUD,
-                        DocumentCount = me.importedexaminationdata_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
-                    }).ToList())
-                        ExaminationsM.Examinations.Add(item);
+                        if (item.Imported)
+                            ExaminationsM.Examinations.Add(me.importedexaminationdata.Where(ex => ex.IdIEX == item.Id)
+                            .Select(ex => new ExaminationsM.Examination
+                            {
+                                Id = ex.IdIEX,
+                                Imported = true,
+                                Name = ex.NameIEX,
+                                Code = ex.CodeIEX,
+                                DateTime = ex.DateTimeIEX,
+                                DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdIEX).FirstOrDefault().NameUD,
+                                DocumentCount = me.importedexaminationdatadocuments_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
+                            }).Single());
+                        else ExaminationsM.Examinations.Add(me.examinationdata.Where(ex => ex.IdEX == item.Id)
+                            .Select(ex => new ExaminationsM.Examination
+                            {
+                                Id = ex.IdEX,
+                                Imported = false,
+                                Name = me.treatmentdata.Where(t => t.IdTD == ex.TreatmentIdEX).FirstOrDefault().NameTD,
+                                Code = ex.CodeEX,
+                                DateTime = ex.DateTimeEX,
+                                DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
+                                DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
+                            }).Single());
 
+                    }
+                }
                 me.Database.Connection.Close();
                 workingConn = true;
             }
@@ -101,11 +134,11 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     if (item.Imported)
                     {
                         me.examinationdatadocuments.RemoveRange
-                            (me.examinationdatadocuments.Where(ex => me.importedexaminationdata_st.Where
+                            (me.examinationdatadocuments.Where(ex => me.importedexaminationdatadocuments_st.Where
                             (ied => ied.IdIEX == item.Id).Select(ied => ied.IdEXD).ToList().Any(c => c == ex.IdEXD)));
 
-                        me.importedexaminationdata_st.RemoveRange
-                            (me.importedexaminationdata_st.Where(ex => ex.IdIEX == item.Id));
+                        me.importedexaminationdatadocuments_st.RemoveRange
+                            (me.importedexaminationdatadocuments_st.Where(ex => ex.IdIEX == item.Id));
 
                         me.importedexaminationdata.Remove
                             (me.importedexaminationdata.Where(ex => ex.IdIEX == item.Id).Single());
@@ -114,11 +147,11 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     else if (!item.Imported)
                     {
                         me.examinationdatadocuments.RemoveRange
-                            (me.examinationdatadocuments.Where(ex => me.examinationdata_st.Where
+                            (me.examinationdatadocuments.Where(ex => me.examinationdatadocuments_st.Where
                             (ied => ied.IdEX == item.Id).Select(ied => ied.IdEXD).ToList().Any(c => c == ex.IdEXD)));
 
-                        me.examinationdata_st.RemoveRange
-                            (me.examinationdata_st.Where(ex => ex.IdEX == item.Id));
+                        me.examinationdatadocuments_st.RemoveRange
+                            (me.examinationdatadocuments_st.Where(ex => ex.IdEX == item.Id));
 
                         me.examinationdata.Remove
                             (me.examinationdata.Where(ex => ex.IdEX == item.Id).Single());
@@ -182,24 +215,78 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         }
         protected internal void ExaminationEraseMethod()
         {
-            dialog = new Dialog(true, "Vizsgálat törlése", Erase, () => { }, true);
+            dialog = new Dialog(true, "Vizsgálat törlése", async () =>
+            {
+                await Utilities.Loading.Show();
+                BackgroundWorker Erase = new BackgroundWorker();
+                Erase.DoWork += new DoWorkEventHandler(EraseDoWork);
+                Erase.RunWorkerCompleted += new RunWorkerCompletedEventHandler(EraseComplete);
+                Erase.RunWorkerAsync();
+            }, () => { }, true);
             dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott vizsgálatot a hozzátartozó összes adattal együtt?\n" +
                 "A művelet csak a \"Változtatások mentése\" gombra kattintva lesz véglegesítve");
             dialog.Start();
         }
-        private void Erase()
+        private bool eraseable;
+        private void EraseDoWork(object sender, DoWorkEventArgs e)
         {
-            ExaminationsM.Erased.Add(new ExaminationsM.ErasedItem
+            try
             {
-                Id = ExaminationsM.SelectedExamination.Id,
-                Imported = ExaminationsM.SelectedExamination.Imported
-            });
-            ExaminationsM.Examinations.Remove(ExaminationsM.Examinations.Where(e => e == ExaminationsM.SelectedExamination).Single());
+                me = new medicalEntities();
+                me.Database.Connection.Open();
+                eraseable = false;
+
+                if (ExaminationsM.SelectedExamination.Imported)
+                    eraseable = !me.importedexaminationeachevidence_st.Any(ieee => ieee.IdIEX == ExaminationsM.SelectedExamination.Id) ||
+                        !me.importedexaminationeachimportedevidence_st.Any(ieee => ieee.IdIEX == ExaminationsM.SelectedExamination.Id);
+                else eraseable = !me.examinationeachevidence_st.Any(ieee => ieee.IdEX == ExaminationsM.SelectedExamination.Id) ||
+                        !me.examinationeachimportedevidence_st.Any(ieee => ieee.IdEX == ExaminationsM.SelectedExamination.Id);
+
+                me.Database.Connection.Close();
+                workingConn = true;
+            }
+            catch
+            {
+                workingConn = false;
+            }
+        }
+        private async void EraseComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (workingConn)
+            {
+                if (eraseable)
+                {
+                    ExaminationsM.Erased.Add(new ExaminationsM.ErasedItem
+                    {
+                        Id = ExaminationsM.SelectedExamination.Id,
+                        Imported = ExaminationsM.SelectedExamination.Imported
+                    });
+                    ExaminationsM.Examinations.Remove(ExaminationsM.Examinations.Where(ex => ex == ExaminationsM.SelectedExamination).Single());
+                    await Utilities.Loading.Hide();
+                }
+                else
+                {
+                    dialog = new Dialog(true, "Nem lehet törölni a vizsgálatot", async () => await Utilities.Loading.Hide());
+                    dialog.content = new TextBlock("Az adatbázis függőségei miatt nem lehet törölni a kívánt vizsgálatot\n" +
+                        "Ehhez előbb ki kell törölni minden \"Státusz\"ban az erre a vizsglatra mutató hivatkozást");
+                    dialog.Start();
+                }
+            }
+            else ConnectionMessage();
         }
         protected internal bool VMDirty()
         {
             if (ExaminationsM.Erased.Count != 0) return true;
             return ExaminationsM.Examinations.Any(p => p.IsChanged);
+        }
+        protected internal void Select()
+        {
+            SelectedPatient.SelectedPatientVM.Add(
+                ExaminationsM.SelectedExamination.Imported,
+                ExaminationsM.SelectedExamination.Id,
+                ExaminationsM.SelectedExamination.Name,
+                ExaminationsM.SelectedExamination.Code,
+                ExaminationsM.SelectedExamination.DateTime);
         }
     }
 }

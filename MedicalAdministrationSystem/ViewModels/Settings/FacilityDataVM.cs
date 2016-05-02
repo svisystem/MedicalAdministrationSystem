@@ -298,7 +298,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             await Task.Run(() =>
             {
-                int id = FacilityDataMDataSet.FullSettlementList.Where(c => c.DataS == what).Select(c => c.IdS).Single();
+                int id = FacilityDataMDataSet.FullSettlementList.Where(c => c.DataS == settle).Select(c => c.IdS).Single();
                 List<int> temp = (FacilityDataMDataSet.SettlementZipSwitch.Where(a => a.IdS == id).Select(a => a.IdZC)).ToList();
                 FacilityDataMDataSet.ViewZipCodeList = FacilityDataMDataSet.FullZipCodeList.Where(b => temp.Any(a => a == b.IdZC)).Select(b => b.DataZC).ToList();
             });
@@ -307,13 +307,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             await Task.Run(() =>
             {
-                int zip = Convert.ToInt32(what);
                 int id = FacilityDataMDataSet.FullZipCodeList.Where(c => c.DataZC == zip).Select(c => c.IdZC).Single();
                 List<int> temp = (FacilityDataMDataSet.SettlementZipSwitch.Where(a => a.IdZC == id).Select(a => a.IdS)).ToList();
                 FacilityDataMDataSet.ViewSettlementList = FacilityDataMDataSet.FullSettlementList.Where(b => temp.Any(a => a == b.IdS)).Select(b => b.DataS).ToList();
             });
         }
-        string what;
+        string settle;
+        int zip;
         protected internal void ItemSourceSearcher(string who, string what)
         {
             if (who == "zipCode")
@@ -324,7 +324,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     FacilityDataMDataSet.ViewSettlementList = null;
                 else
                 {
-                    this.what = what;
+                    this.zip = Convert.ToInt32(what);
                     if (!SettlementSearch.IsBusy) SettlementSearch.RunWorkerAsync();
                 }
             }
@@ -335,7 +335,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     FacilityDataMDataSet.ViewZipCodeList = null;
                 else
                 {
-                    this.what = what;
+                    this.settle = what;
                     if (!SettlementSearch.IsBusy) ZipCodeSearch.RunWorkerAsync();
                 }
         }

@@ -99,7 +99,8 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                         GlobalVM.StockLayout.LabLoad();
                         break;
                     case "evidenceTBI":
-                        GlobalVM.StockLayout.EvidenceLoad();
+                        if (modifier == null) GlobalVM.StockLayout.EvidenceLoad();
+                        else GlobalVM.StockLayout.EvidenceLoad((bool)modifier, (bool)imported, (int)ID);
                         break;
                     case "prescriptionTBI":
                         GlobalVM.StockLayout.PrescriptionLoad();
