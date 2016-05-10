@@ -27,8 +27,8 @@ namespace MedicalAdministrationSystem.DataAccess
     
         public virtual DbSet<accountdata> accountdata { get; set; }
         public virtual DbSet<belong_st> belong_st { get; set; }
+        public virtual DbSet<billing> billing { get; set; }
         public virtual DbSet<companydata> companydata { get; set; }
-        public virtual DbSet<doctorschedule> doctorschedule { get; set; }
         public virtual DbSet<evidencedata> evidencedata { get; set; }
         public virtual DbSet<evidencedatadocuments> evidencedatadocuments { get; set; }
         public virtual DbSet<evidencedatadocuments_st> evidencedatadocuments_st { get; set; }
@@ -37,6 +37,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public virtual DbSet<examinationdatadocuments_st> examinationdatadocuments_st { get; set; }
         public virtual DbSet<examinationeachevidence_st> examinationeachevidence_st { get; set; }
         public virtual DbSet<examinationeachimportedevidence_st> examinationeachimportedevidence_st { get; set; }
+        public virtual DbSet<exceptedschedule> exceptedschedule { get; set; }
         public virtual DbSet<gender_fx> gender_fx { get; set; }
         public virtual DbSet<importedevidencedata> importedevidencedata { get; set; }
         public virtual DbSet<importedevidencedatadocuments_st> importedevidencedatadocuments_st { get; set; }
@@ -52,6 +53,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public virtual DbSet<status_fx> status_fx { get; set; }
         public virtual DbSet<treatmentdata> treatmentdata { get; set; }
         public virtual DbSet<userdata> userdata { get; set; }
+        public virtual DbSet<usersschedule> usersschedule { get; set; }
         public virtual DbSet<zipcode_fx> zipcode_fx { get; set; }
     }
 }

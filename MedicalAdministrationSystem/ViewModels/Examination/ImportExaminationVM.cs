@@ -58,7 +58,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     DoctorIdIEX = (int)GlobalVM.GlobalM.UserID,
                     DateTimeIEX = (DateTime)ImportExaminationM.ExaminationDate,
                     NameIEX = ImportExaminationM.ExaminationName,
-                    CodeIEX = ImportExaminationM.ExaminationCode
+                    CodeIEX = ImportExaminationM.ExaminationCode,
+                    CompanyIdIEX = (int)GlobalVM.GlobalM.CompanyId
                 };
                 me.importedexaminationdata.Add(ied);
                 me.SaveChanges();

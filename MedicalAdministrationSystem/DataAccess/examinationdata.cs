@@ -28,7 +28,9 @@ namespace MedicalAdministrationSystem.DataAccess
         public System.DateTime DateTimeEX { get; set; }
         public int TreatmentIdEX { get; set; }
         public string CodeEX { get; set; }
+        public int CompanyIdEX { get; set; }
     
+        public virtual companydata companydata { get; set; }
         public virtual patientdata patientdata { get; set; }
         public virtual treatmentdata treatmentdata { get; set; }
         public virtual userdata userdata { get; set; }

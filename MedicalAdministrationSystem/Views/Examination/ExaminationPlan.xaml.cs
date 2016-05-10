@@ -24,7 +24,7 @@ namespace MedicalAdministrationSystem.Views.Examination
         }
         private void Update(object sender, RoutedEventArgs e)
         {
-            //ExaminationPlanVM.Refresh();
+            ExaminationPlanVM.Refresh();
         }
         protected internal bool Dirty()
         {

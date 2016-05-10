@@ -20,7 +20,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             this.Loaded = Loaded;
             SelectedPatient = GlobalVM.StockLayout.headerContent.Content as SelectedPatient;
             ExaminationsM = new ExaminationsM();
-            ExaminationsM.PatientId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).SelectedPatientVM.SelectedPatientM.Id;
+            ExaminationsM.PatientId = SelectedPatient.SelectedPatientVM.SelectedPatientM.Id;
             Loading = new BackgroundWorker();
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);

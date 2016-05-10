@@ -1,0 +1,93 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Fragments.ExceptedTime"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <utilities:ViewExtender.Resources>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}"
+                        Value="User1">
+                    <Setter Property="ContentTemplate"
+                            Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Image x:Key="plus" Source="{dx:DXImageGrayscale Image=Add_32x32.png}" Width="32" Height="32"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+        <Image x:Key="minus" Source="{dx:DXImageGrayscale Image=Remove_32x32.png}" Width="32" Height="32"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+    </utilities:ViewExtender.Resources>
+    <DockPanel>
+        <Separator DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+        <Button x:Name="image" DockPanel.Dock="Left" Width="50" Padding="0" Margin="10,0" Height="50" VerticalAlignment="Center"
+                HorizontalAlignment="Left" Focusable="False" Click="Include" />
+        <Button DockPanel.Dock="Right" Width="22" Padding="0" Margin="0,-1,-1,0" Height="22" VerticalAlignment="Top"
+                HorizontalAlignment="Right" Click="DeleteClick">
+            <ContentPresenter
+                    ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Height="18" Width="18" />
+        </Button>
+        <DockPanel DockPanel.Dock="Top" Margin="0,10,0,5">
+            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0">
+                                Kezdete:</TextBlock>
+            <dxe:DateEdit x:Name="startDate" DockPanel.Dock="Left"
+                    EditValue="{Binding Data.StartDateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                    NullValueButtonPlacement="None" NullText="Kezdő időpont" Mask="f" MaskType="DateTimeAdvancingCaret"
+                    MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                    MaskIgnoreBlank="False" Spin="Spin" Height="22"
+                    VerticalAlignment="Center" Margin="0,0,10,0">
+                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                <dxe:ButtonInfo GlyphKind="DropDown"
+                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                <dxe:DateEdit.StyleSettings>
+                    <dxe:DateEditPickerStyleSettings />
+                </dxe:DateEdit.StyleSettings>
+            </dxe:DateEdit>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,5,0,10">
+            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Width="45" Margin="0,0,10,0">
+                                Vége:</TextBlock>
+            <dxe:DateEdit x:Name="finishDate" DockPanel.Dock="Left"
+                    EditValue="{Binding Data.FinishDateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                    NullValueButtonPlacement="None" NullText="Vége időpont" Mask="f" MaskType="DateTimeAdvancingCaret"
+                    MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                    MaskIgnoreBlank="False" Spin="Spin" Height="22"
+                    VerticalAlignment="Center" Margin="0,0,10,0">
+                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                <dxe:ButtonInfo GlyphKind="DropDown"
+                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                <dxe:DateEdit.StyleSettings>
+                    <dxe:DateEditPickerStyleSettings />
+                </dxe:DateEdit.StyleSettings>
+            </dxe:DateEdit>
+        </DockPanel>
+    </DockPanel>
+</utilities:ViewExtender>

@@ -1,0 +1,276 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Billing.CreateBill"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Billing"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <utilities:ViewExtender.Resources>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}"
+                        Value="User1">
+                    <Setter Property="ContentTemplate"
+                            Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </utilities:ViewExtender.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="2">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="Számla Sorszáma:" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                        Margin="10,0" />
+                <dxe:ButtonEdit EditValue="{Binding CreateBillM.Code, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Column="1" VerticalAlignment="Center" AllowDefaultButton="False" IsReadOnly="True"
+                        IsTabStop="False" IsTextEditable="False" />
+            </Grid>
+            <DockPanel>
+                <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+                <dxe:TextEdit Mask="c0" MaskType="Numeric" MaskUseAsDisplayFormat="True" MaskCulture="hu-HU"
+                        VerticalAlignment="Center" FontSize="21.333" ShowBorder="False" Margin="0,0,12,0"
+                        DockPanel.Dock="Right"
+                        EditValue="{Binding CreateBillM.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsReadOnly="True" Focusable="False" Cursor="Arrow" />
+                <TextBlock VerticalAlignment="Center" Margin="12,0" FontSize="16" DockPanel.Dock="Right"
+                        HorizontalAlignment="Right">Összesen:</TextBlock>
+                <Button Height="29" Content="Számla elkészítése" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Click="Create" x:Name="create" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type utilities:ViewExtender}}, Path=createBillValid.Create}" />
+            </DockPanel>
+        </Grid>
+        <DockPanel Grid.Row="0" LastChildFill="True">
+            <Separator DockPanel.Dock="Bottom" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                    VerticalAlignment="Bottom" />
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="person" Padding="10,0" BorderThickness="0" BorderBrush="{x:Null}" Margin="-1,-1,0,-1"
+                        Click="Click" Focusable="False">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0">
+                                Magánszemély részére:</TextBlock>
+                        <dxe:CheckEdit VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0"
+                                IsHitTestVisible="False" EditValue="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                AncestorType={x:Type utilities:ViewExtender}}, Path=createBillValid.PersonEnable}" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="company" Padding="10,0" BorderThickness="0" BorderBrush="{x:Null}" Margin="-1,-1,10,-1"
+                        Click="Click" Focusable="False">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0">
+                                Cég részére:</TextBlock>
+                        <dxe:CheckEdit VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0"
+                                IsHitTestVisible="False" EditValue="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                AncestorType={x:Type utilities:ViewExtender}}, Path=createBillValid.CompanyEnable}" />
+                    </StackPanel>
+                </Button>
+                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0">
+                        Cég kiválasztása:</TextBlock>
+                <dxe:ComboBoxEdit x:Name="companyChooser" VerticalAlignment="Center" Width="250" AutoComplete="True"
+                        ItemsSource="{Binding CreateBillM.CompaniesView, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding CreateBillM.SelectedCompany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        NullText=" Válasszon jogosultságot" InvalidValueBehavior="AllowLeaveEditor"
+                        ValidateOnEnterKeyPressed="False" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type utilities:ViewExtender}}, Path=createBillValid.CompanyEnable}"
+                        NullValueButtonPlacement="EditBox" AllowDefaultButton="True" />
+            </StackPanel>
+        </DockPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" MinWidth="376" MaxWidth="504" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="6*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="45" VerticalAlignment="Top"
+                        Panel.ZIndex="1">
+                    <TextBlock VerticalAlignment="Center" Margin="12,0,0,0" FontSize="16">Szolgáltatások</TextBlock>
+                </StackPanel>
+                <dxg:GridControl x:Name="servicesGrid"
+                        ItemsSource="{Binding CreateBillM.Services, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ShowBorder="False"
+                        SelectedItem="{Binding CreateBillM.SelectedService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn Header="Szolgáltatás neve" MinWidth="150"
+                                Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False" />
+                        <dxg:GridColumn Header="Áfa tartalma" MinWidth="80"
+                                Binding="{Binding Vat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False" FixedWidth="True" Width="80">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="P0" MaskType="Numeric" MaskCulture="hu-HU"
+                                        MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Ára" MinWidth="80"
+                                Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="c0" MaskType="Numeric" MaskCulture="hu-HU"
+                                        MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Szolgáltatás hozzáadása" MinWidth="137">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                                            Margin="-1" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                        AncestorType={x:Type utilities:ViewExtender}}, Path=createBillValid.AddValid}">
+                                        <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="Add">
+                                            <Grid VerticalAlignment="Center" Margin="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <ContentPresenter ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=PlusGlyph, 
+                                                    IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                                        Margin="0,5,5,5" />
+                                                <TextBlock Text="Hozzáad" Grid.Column="1" Foreground="#FF373A3D"
+                                                        VerticalAlignment="Center" Margin="0,5,5,5" />
+                                            </Grid>
+                                        </dxe:ButtonInfo>
+                                    </dxe:ButtonEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="servicesView" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
+                                ShowGroupPanel="False" ShowIndicator="False" AllowScrollAnimation="True"
+                                AutoWidth="True" BestFitMode="AllRows" AllowBestFit="True" BestFitArea="All"
+                                SearchPanelHorizontalAlignment="Right" />
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </Grid>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Grid.Column="1" Margin="0" />
+            <Grid Grid.Column="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="45" VerticalAlignment="Top"
+                        Panel.ZIndex="1">
+                    <TextBlock VerticalAlignment="Center" Margin="12,0,0,0" FontSize="16">Számlázandó tételek</TextBlock>
+                </StackPanel>
+                <dxg:GridControl x:Name="billingGrid"
+                        ItemsSource="{Binding CreateBillM.PrintList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ShowBorder="False"
+                        SelectedItem="{Binding CreateBillM.SelectedPrintItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn Header="Szolgáltatás neve" MinWidth="150"
+                                Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False" />
+                        <dxg:GridColumn Header="Mennyiség" MinWidth="80">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:ButtonEdit AllowDefaultButton="False" BorderThickness="0" Margin="-1"
+                                            EditValue="{Binding Path=RowData.Row.Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsReadOnly="True">
+                                        <dxe:ButtonInfo GlyphKind="Plus" Click="Increase" />
+                                        <dxe:ButtonInfo Click="Decrease" GlyphKind="Minus" />
+                                    </dxe:ButtonEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Egység ár" MinWidth="80"
+                                Binding="{Binding QuantityPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="c0" MaskType="Numeric" MaskCulture="hu-HU"
+                                        MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Nettó ár" MinWidth="80"
+                                Binding="{Binding PriceWithoutVat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="c0" MaskType="Numeric" MaskCulture="hu-HU"
+                                        MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Áfa tartalma" MinWidth="80"
+                                Binding="{Binding Vat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False" FixedWidth="True" Width="80">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="P0" MaskType="Numeric" MaskCulture="hu-HU"
+                                        MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Áfa értéke" MinWidth="80"
+                                Binding="{Binding VatPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="c0" MaskType="Numeric" MaskCulture="hu-HU"
+                                        MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Bruttó ár" MinWidth="80"
+                                Binding="{Binding PriceWithVat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowFocus="False">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="c0" MaskType="Numeric" MaskCulture="hu-HU"
+                                        MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Tétel törlése" MinWidth="120">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                                            Margin="-1">
+                                        <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="Erase">
+                                            <Grid VerticalAlignment="Center" Margin="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <ContentPresenter ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, 
+                                                    IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                                        Margin="0,5,5,5" />
+                                                <TextBlock Text="Törlés" Grid.Column="1" Foreground="#FF373A3D"
+                                                        VerticalAlignment="Center" Margin="0,5,5,5" />
+                                            </Grid>
+                                        </dxe:ButtonInfo>
+                                    </dxe:ButtonEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="billingView" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
+                                ShowGroupPanel="False" ShowIndicator="False" AllowScrollAnimation="True"
+                                AutoWidth="True" SearchPanelHorizontalAlignment="Right" BestFitMode="AllRows"
+                                AllowBestFit="True" BestFitArea="All" />
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</utilities:ViewExtender>

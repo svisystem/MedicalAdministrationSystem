@@ -27,7 +27,9 @@ namespace MedicalAdministrationSystem.DataAccess
         public int UserDataIdIED { get; set; }
         public System.DateTime DateTimeIED { get; set; }
         public string CodeIED { get; set; }
+        public int CompanyIdIED { get; set; }
     
+        public virtual companydata companydata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<examinationeachimportedevidence_st> examinationeachimportedevidence_st { get; set; }
         public virtual patientdata patientdata { get; set; }

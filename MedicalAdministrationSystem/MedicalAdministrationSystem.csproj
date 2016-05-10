@@ -154,6 +154,9 @@
     <Compile Include="DataAccess\belong_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\billing.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\companydata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
@@ -171,9 +174,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataAccess.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\doctorschedule.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\evidencedata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
@@ -197,6 +197,9 @@
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\examinationeachimportedevidence_st.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\exceptedschedule.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\gender_fx.cs">
@@ -244,9 +247,16 @@
     <Compile Include="DataAccess\userdata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\usersschedule.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\zipcode_fx.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Billing\BillsM.cs" />
+    <Compile Include="Models\Billing\CompanyDataM.cs" />
+    <Compile Include="Models\Billing\CreateBillM.cs" />
+    <Compile Include="Models\Billing\ViewBillM.cs" />
     <Compile Include="Models\DocumentControlM.cs" />
     <Compile Include="Models\Evidence\EditEvidenceM.cs" />
     <Compile Include="Models\Evidence\EvidencesM.cs" />
@@ -280,6 +290,10 @@
     <Compile Include="Models\Users\PassChangeM.cs" />
     <Compile Include="Models\Users\RegistrationM.cs" />
     <Compile Include="Models\Users\SurgeryTimeM.cs" />
+    <Compile Include="ViewModels\Billing\BillsVM.cs" />
+    <Compile Include="ViewModels\Billing\CompanyDataVM.cs" />
+    <Compile Include="ViewModels\Billing\CreateBillVM.cs" />
+    <Compile Include="ViewModels\Billing\ViewBillVM.cs" />
     <Compile Include="ViewModels\DocumentControlVM.cs" />
     <Compile Include="ViewModels\Evidence\EditEvidenceVM.cs" />
     <Compile Include="ViewModels\Evidence\EvidencesVM.cs" />
@@ -335,6 +349,18 @@
     <Compile Include="ViewModels\Utilities\Localizer.cs" />
     <Compile Include="ViewModels\Utilities\PasswordManager.cs" />
     <Compile Include="ViewModels\Utilities\ViewExtender.cs" />
+    <Compile Include="Views\Billing\Bills.xaml.cs">
+      <DependentUpon>Bills.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Billing\CompanyData.xaml.cs">
+      <DependentUpon>CompanyData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Billing\CreateBill.xaml.cs">
+      <DependentUpon>CreateBill.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Billing\ViewBill.xaml.cs">
+      <DependentUpon>ViewBill.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\NewPass.xaml.cs">
       <DependentUpon>NewPass.xaml</DependentUpon>
     </Compile>
@@ -380,6 +406,9 @@
     <Compile Include="Views\Fragments\EmptyComboBoxEditForGrid.xaml.cs">
       <DependentUpon>EmptyComboBoxEditForGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Fragments\ExceptedTime.xaml.cs">
+      <DependentUpon>ExceptedTime.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Fragments\File.xaml.cs">
       <DependentUpon>File.xaml</DependentUpon>
     </Compile>
@@ -388,6 +417,9 @@
     </Compile>
     <Compile Include="Views\Fragments\New.xaml.cs">
       <DependentUpon>New.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\NewButton.xaml.cs">
+      <DependentUpon>NewButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Fragments\PdfViewer.xaml.cs">
       <DependentUpon>PdfViewer.xaml</DependentUpon>
@@ -459,6 +491,22 @@
     <Compile Include="Views\Global\DialogBase.xaml.cs">
       <DependentUpon>DialogBase.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Billing\Bills.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Billing\CompanyData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Billing\CreateBill.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Billing\ViewBill.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\NewPass.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -519,6 +567,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Fragments\ExceptedTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Fragments\File.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -528,6 +580,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Fragments\New.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\NewButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

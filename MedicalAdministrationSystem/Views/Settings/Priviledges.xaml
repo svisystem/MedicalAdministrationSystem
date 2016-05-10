@@ -16,8 +16,11 @@
                 <TextBlock TextWrapping="Wrap" Margin="10">
                     - a <Italic>"Laboreredmények"</Italic>, illetve a <Italic>"Receptírás"</Italic> mezők nem változtathatóak</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="10">
-                    - amennyiben a <Italic>"Vizsgálatok, kezelések"</Italic>, a <Italic>"Státusz"</Italic>, a <Italic>"Receptek"</Italic>, illetve a <Italic>"Számlázás"</Italic>
+                    - amennyiben a <Italic>"Vizsgálatok, kezelések"</Italic>, a <Italic>"Státusz"</Italic>, illetve a <Italic>"Receptek"</Italic>
                     menüpontok közül legalább egyet szeretne engedélyezni, úgy a <Italic>"Páciensek"</Italic> menüpontot is engedélyezze a megfelelő működés érdekében</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="10">
+                    - abban az esetben, ha a <Italic>"Számlázás"</Italic> engedélyezve van anélkül, hogy a <Italic>"Páciensek"</Italic> menüpont engedélyezve lenne, 
+                    úgy nincs lehetőség számla kiállítására, csak a meglévőek megtekintésére, illetve a Cégadatok megtekintésére, módosítására az adott menüpont alatt</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="10">
                     - a <Italic>"Beállítások"</Italic> menüpontot csak olyan jogosultsági csoportnak engedélyezze akik felelősség- teljesen tudják kezelni az így szerzett lehetőségeket</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="10">

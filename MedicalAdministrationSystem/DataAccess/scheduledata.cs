@@ -23,8 +23,8 @@ namespace MedicalAdministrationSystem.DataAccess
         public int IdSD { get; set; }
         public int PatientIdSD { get; set; }
         public int DoctorIdSD { get; set; }
-        public System.DateTime StartSD { get; set; }
-        public System.DateTime FinishSD { get; set; }
+        public System.TimeSpan StartSD { get; set; }
+        public System.TimeSpan FinishSD { get; set; }
         public Nullable<int> StatusSD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

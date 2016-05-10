@@ -28,7 +28,9 @@ namespace MedicalAdministrationSystem.DataAccess
         public Nullable<int> ScheduleIdED { get; set; }
         public System.DateTime DateTimeED { get; set; }
         public string CodeED { get; set; }
+        public int CompanyIdED { get; set; }
     
+        public virtual companydata companydata { get; set; }
         public virtual userdata userdata { get; set; }
         public virtual patientdata patientdata { get; set; }
         public virtual scheduledata scheduledata { get; set; }

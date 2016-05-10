@@ -26,6 +26,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 }
                 else item.Tile.Visibility = Visibility.Collapsed;
             }
+            GlobalVM.StockLayout.billingTBI.IsEnabled = !GlobalVM.StockLayout.patientsTBI.IsVisible;
         }
         public MenuButtonsEnabled()
         {
@@ -106,7 +107,8 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                         GlobalVM.StockLayout.PrescriptionLoad();
                         break;
                     case "billingTBI":
-                        GlobalVM.StockLayout.BillingLoad();
+                        if (ID != null) GlobalVM.StockLayout.BillingLoad((int)ID);
+                        else GlobalVM.StockLayout.BillingLoad();
                         break;
                     case "statisticsTBI":
                         GlobalVM.StockLayout.StatisticsLoad();

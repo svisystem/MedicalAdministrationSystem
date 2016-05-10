@@ -60,6 +60,11 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             }
             else ConnectionMessage();
         }
+        protected internal async void Refresh()
+        {
+            await Utilities.Loading.Show();
+            Loading.RunWorkerAsync();
+        }
         protected internal void Print()
         {
             WordEditor.Print();

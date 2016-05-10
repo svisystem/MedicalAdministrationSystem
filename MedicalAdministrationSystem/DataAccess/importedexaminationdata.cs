@@ -28,7 +28,9 @@ namespace MedicalAdministrationSystem.DataAccess
         public System.DateTime DateTimeIEX { get; set; }
         public string NameIEX { get; set; }
         public string CodeIEX { get; set; }
+        public int CompanyIdIEX { get; set; }
     
+        public virtual companydata companydata { get; set; }
         public virtual patientdata patientdata { get; set; }
         public virtual userdata userdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

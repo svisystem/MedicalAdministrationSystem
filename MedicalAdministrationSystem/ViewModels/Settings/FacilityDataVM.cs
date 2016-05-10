@@ -77,9 +77,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 });
                 FacilityDataMDataSet.Companies = temp;
                 FacilityDataMViewElements.AcceptChanges();
-                config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                if (config.AppSettings.Settings["facilityId"].Value != "")
-                    FacilityDataMDataSet.SelectedCompany = FacilityDataMDataSet.Companies.Where(a => a.ID == Convert.ToInt32(config.AppSettings.Settings["facilityId"].Value)).Single();
+                
+                if (GlobalVM.GlobalM.CompanyId != null)
+                    FacilityDataMDataSet.SelectedCompany = FacilityDataMDataSet.Companies.Where(a => a.ID == Convert.ToInt32(GlobalVM.GlobalM.CompanyId)).Single();
                 else FacilityDataMDataSet.SelectedCompany = FacilityDataMDataSet.Companies.Where(a => a.ID == 0).Single();
             }
             else ConnectionMessage();
@@ -232,6 +232,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
+                config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 if (FacilityDataMDataSet.SelectedCompany.ID.Equals(0))
                 {
                     config.AppSettings.Settings["facilityId"].Value = newValue.ToString();
@@ -336,7 +337,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 else
                 {
                     this.settle = what;
-                    if (!SettlementSearch.IsBusy) ZipCodeSearch.RunWorkerAsync();
+                    if (!ZipCodeSearch.IsBusy) ZipCodeSearch.RunWorkerAsync();
                 }
         }
         protected internal bool ListChecker(string selected, Type type)

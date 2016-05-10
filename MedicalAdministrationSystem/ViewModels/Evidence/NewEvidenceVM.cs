@@ -75,7 +75,8 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                     UserDataIdED = (int)GlobalVM.GlobalM.UserID,
                     CodeED = NewEvidenceM.Code,
                     //Schedule
-                    DateTimeED = (DateTime)NewEvidenceM.Date
+                    DateTimeED = (DateTime)NewEvidenceM.Date,
+                    CompanyIdED = (int)GlobalVM.GlobalM.CompanyId
                 };
 
                 me.evidencedata.Add(ed);

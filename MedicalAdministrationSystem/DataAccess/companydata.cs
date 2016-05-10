@@ -14,6 +14,17 @@ namespace MedicalAdministrationSystem.DataAccess
     
     public partial class companydata
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public companydata()
+        {
+            this.billing = new HashSet<billing>();
+            this.billing1 = new HashSet<billing>();
+            this.evidencedata = new HashSet<evidencedata>();
+            this.examinationdata = new HashSet<examinationdata>();
+            this.importedevidencedata = new HashSet<importedevidencedata>();
+            this.importedexaminationdata = new HashSet<importedexaminationdata>();
+        }
+    
         public int IdCD { get; set; }
         public string NameCD { get; set; }
         public int ZipCodeCD { get; set; }
@@ -26,7 +37,19 @@ namespace MedicalAdministrationSystem.DataAccess
         public string EmailCD { get; set; }
         public string WebPageCD { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<billing> billing { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<billing> billing1 { get; set; }
         public virtual settlement_fx settlement_fx { get; set; }
         public virtual zipcode_fx zipcode_fx { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<evidencedata> evidencedata { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<examinationdata> examinationdata { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<importedevidencedata> importedevidencedata { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<importedexaminationdata> importedexaminationdata { get; set; }
     }
 }

@@ -73,7 +73,8 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                     PatientIED = ImportEvidenceM.PatientId,
                     UserDataIdIED = (int)GlobalVM.GlobalM.UserID,
                     CodeIED = ImportEvidenceM.Code,
-                    DateTimeIED = (DateTime)ImportEvidenceM.Date
+                    DateTimeIED = (DateTime)ImportEvidenceM.Date,
+                    CompanyIdIED = (int)GlobalVM.GlobalM.CompanyId
                 };
 
                 me.importedevidencedata.Add(ied);

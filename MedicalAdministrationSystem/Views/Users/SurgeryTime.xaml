@@ -1,10 +1,436 @@
-﻿<UserControl x:Class="MedicalAdministrationSystem.Views.Users.SurgeryTime"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
-
-</UserControl>
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Users.SurgeryTime"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities" Loaded="ViewLoaded">
+    <utilities:ViewExtender.Resources>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}"
+                        Value="User1">
+                    <Setter Property="ContentTemplate"
+                            Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </utilities:ViewExtender.Resources>
+    <DockPanel LastChildFill="True">
+        <DockPanel DockPanel.Dock="Bottom" Height="40">
+            <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <Button Height="29" Content="Változtatások mentése" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Click="save" x:Name="create"/>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Right">
+            <Separator DockPanel.Dock="Left" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <Label Content="Kivételek:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="13,10,10,10"
+                    HorizontalAlignment="Left" />
+            <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <dxe:ListBoxEdit x:Name="listBox"
+                    ItemsSource="{Binding SurgeryTimeM.ExceptionsButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ShowBorder="False" HorizontalContentAlignment="Center" ScrollViewer.CanContentScroll="False"
+                    IsTabStop="False" VerticalContentAlignment="Top" Padding="0"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <dxe:ListBoxEdit.ItemTemplate>
+                    <DataTemplate>
+                        <UserControl Content="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                HorizontalAlignment="Left" Width="446" />
+                    </DataTemplate>
+                </dxe:ListBoxEdit.ItemTemplate>
+                <dxe:ListBoxEdit.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsSelected"
+                                Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </dxe:ListBoxEdit.ItemContainerStyle>
+            </dxe:ListBoxEdit>
+        </DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <dxlc:LayoutGroup Header="Rendelési idő" View="GroupBox" Orientation="Vertical" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Margin="30">
+                <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,15,0">
+                            <Grid Margin="0,1,0,16">
+                                <Button Click="ChangeDayEnabler" x:Name="mon" Opacity="0" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
+                                            IsHitTestVisible="False">
+                                            Hétfő:</TextBlock>
+                                    <dxe:CheckEdit x:Name="monCheck" VerticalAlignment="Center"
+                                            HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
+                                            DockPanel.Dock="Right"
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}" 
+                                            EditValue="{Binding SurgeryTimeM.Monday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+                            </Grid>
+                            <Grid Margin="0,1,0,16">
+                                <Button Click="ChangeDayEnabler" x:Name="tue" Opacity="0" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
+                                            IsHitTestVisible="False">
+                                            Kedd:</TextBlock>
+                                    <dxe:CheckEdit x:Name="tueCheck" VerticalAlignment="Center"
+                                            HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
+                                            DockPanel.Dock="Right"
+                                            EditValue="{Binding SurgeryTimeM.Tuesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}" />
+                                </DockPanel>
+                            </Grid>
+                            <Grid Margin="0,1,0,16">
+                                <Button Click="ChangeDayEnabler" x:Name="wed" Opacity="0" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
+                                            IsHitTestVisible="False">
+                                            Szerda:</TextBlock>
+                                    <dxe:CheckEdit x:Name="wedCheck" VerticalAlignment="Center"
+                                            HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
+                                            DockPanel.Dock="Right"
+                                            EditValue="{Binding SurgeryTimeM.Wednesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}" />
+                                </DockPanel>
+                            </Grid>
+                            <Grid Margin="0,1,0,16">
+                                <Button Click="ChangeDayEnabler" x:Name="thu" Opacity="0" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
+                                            IsHitTestVisible="False">
+                                            Csütörtök:</TextBlock>
+                                    <dxe:CheckEdit x:Name="thuCheck" VerticalAlignment="Center"
+                                            HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
+                                            DockPanel.Dock="Right"
+                                            EditValue="{Binding SurgeryTimeM.Thursday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}" />
+                                </DockPanel>
+                            </Grid>
+                            <Grid Margin="0,1,0,16">
+                                <Button Click="ChangeDayEnabler" x:Name="fri" Opacity="0" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
+                                            IsHitTestVisible="False">
+                                            Péntek:</TextBlock>
+                                    <dxe:CheckEdit x:Name="friCheck" VerticalAlignment="Center"
+                                            HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
+                                            DockPanel.Dock="Right"
+                                            EditValue="{Binding SurgeryTimeM.Friday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}" />
+                                </DockPanel>
+                            </Grid>
+                            <Grid Margin="0,1,0,16">
+                                <Button Click="ChangeDayEnabler" x:Name="sat" Opacity="0" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
+                                            IsHitTestVisible="False">
+                                            Szombat:</TextBlock>
+                                    <dxe:CheckEdit x:Name="satCheck" VerticalAlignment="Center"
+                                            HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
+                                            DockPanel.Dock="Right"
+                                            EditValue="{Binding SurgeryTimeM.Saturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}" />
+                                </DockPanel>
+                            </Grid>
+                            <Grid Margin="0,1,0,1">
+                                <Button Click="ChangeDayEnabler" x:Name="sun" Opacity="0" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
+                                            IsHitTestVisible="False">
+                                            Vasárnap:</TextBlock>
+                                    <dxe:CheckEdit x:Name="sunCheck" VerticalAlignment="Center"
+                                            HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
+                                            DockPanel.Dock="Right"
+                                            EditValue="{Binding SurgeryTimeM.Sunday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}" />
+                                </DockPanel>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,0,15,0">
+                            <dxe:DateEdit x:Name="monStartTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.StartMonday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Kezdete"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="tueStartTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.StartTuesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Kezdete"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="wedStartTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.StartWednesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Kezdete"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="thuStartTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.StartThursday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Kezdete"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="friStartTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.StartFriday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Kezdete"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="satStartTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.StartSaturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Kezdete"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="sunStartTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.StartSunday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Kezdete"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <dxe:DateEdit x:Name="monFinishTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.FinishMonday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Vége"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="tueFinishTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.FinishTuesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Vége"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="wedFinishTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.FinishWednesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Vége"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="thuFinishTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.FinishThursday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Vége"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="friFinishTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.FinishFriday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Vége"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="satFinishTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.FinishSaturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Vége"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                            <dxe:DateEdit x:Name="sunFinishTime" DockPanel.Dock="Left"
+                                    EditValue="{Binding SurgeryTimeM.FinishSunday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                                    ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None" NullText="Vége"
+                                    Mask="t" MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU"
+                                    MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
+                                    MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
+                                    VerticalAlignment="Center" Width="105"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}">
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="DropDown"
+                                        Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
+                                <dxe:DateEdit.StyleSettings>
+                                    <dxe:DateEditPickerStyleSettings />
+                                </dxe:DateEdit.StyleSettings>
+                            </dxe:DateEdit>
+                        </StackPanel>
+                    </Grid>
+                </dxlc:LayoutControl>
+            </dxlc:LayoutGroup>
+        </ScrollViewer>
+    </DockPanel>
+</utilities:ViewExtender>

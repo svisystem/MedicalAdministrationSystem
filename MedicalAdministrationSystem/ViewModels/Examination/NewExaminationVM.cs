@@ -94,7 +94,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     DoctorIdEX = (int)GlobalVM.GlobalM.UserID,
                     DateTimeEX = (DateTime)NewExaminationM.ExaminationDate,
                     TreatmentIdEX = me.treatmentdata.Where(t => t.NameTD == NewExaminationM.SelectedTreat).Single().IdTD,
-                    CodeEX = NewExaminationM.ExaminationCode
+                    CodeEX = NewExaminationM.ExaminationCode,
+                    CompanyIdEX = (int)GlobalVM.GlobalM.CompanyId
                 };
                 me.examinationdata.Add(ed);
                 me.SaveChanges();

@@ -12,14 +12,20 @@ namespace MedicalAdministrationSystem.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class doctorschedule
+    public partial class billing
     {
-        public int IdDS { get; set; }
-        public int UserDataIdDS { get; set; }
-        public System.DateTime DateDS { get; set; }
-        public System.TimeSpan StartTimeDS { get; set; }
-        public System.TimeSpan FinishTimeDS { get; set; }
+        public int IdB { get; set; }
+        public int PatientIdB { get; set; }
+        public int UserIdB { get; set; }
+        public int CompanyIdFromB { get; set; }
+        public Nullable<int> CompanyIdToB { get; set; }
+        public string CodeB { get; set; }
+        public System.DateTime DateTimeB { get; set; }
+        public byte[] BillB { get; set; }
     
+        public virtual companydata companydata { get; set; }
+        public virtual companydata companydata1 { get; set; }
+        public virtual patientdata patientdata { get; set; }
         public virtual userdata userdata { get; set; }
     }
 }

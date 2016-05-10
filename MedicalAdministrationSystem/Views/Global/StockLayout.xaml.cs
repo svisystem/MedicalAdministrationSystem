@@ -136,6 +136,16 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             BillingVM billing = new BillingVM();
+            billing.BillsLoad();
+            currentItem = billingTBI;
+            await ViewModels.Utilities.Loading.Hide();
+        }
+        protected async internal void BillingLoad(int ID)
+        {
+            await ViewModels.Utilities.Loading.Show();
+            BillingVM billing = new BillingVM();
+            billing.ViewBillLoad(ID);
+            currentItem = billingTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void StatisticsLoad()

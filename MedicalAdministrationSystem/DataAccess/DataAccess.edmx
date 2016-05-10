@@ -27,6 +27,19 @@
           <Property Name="IdUD" Type="int" Nullable="false" />
           <Property Name="Dummy" Type="bool" />
         </EntityType>
+        <EntityType Name="billing">
+          <Key>
+            <PropertyRef Name="IdB" />
+          </Key>
+          <Property Name="IdB" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientIdB" Type="int" Nullable="false" />
+          <Property Name="UserIdB" Type="int" Nullable="false" />
+          <Property Name="CompanyIdFromB" Type="int" Nullable="false" />
+          <Property Name="CompanyIdToB" Type="int" />
+          <Property Name="CodeB" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="DateTimeB" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="BillB" Type="longblob" Nullable="false" />
+        </EntityType>
         <EntityType Name="companydata">
           <Key>
             <PropertyRef Name="IdCD" />
@@ -43,16 +56,6 @@
           <Property Name="EmailCD" Type="varchar" MaxLength="200" />
           <Property Name="WebPageCD" Type="varchar" MaxLength="200" />
         </EntityType>
-        <EntityType Name="doctorschedule">
-          <Key>
-            <PropertyRef Name="IdDS" />
-          </Key>
-          <Property Name="IdDS" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserDataIdDS" Type="int" Nullable="false" />
-          <Property Name="DateDS" Type="date" Nullable="false" />
-          <Property Name="StartTimeDS" Type="time" Precision="0" Nullable="false" />
-          <Property Name="FinishTimeDS" Type="time" Precision="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="evidencedata">
           <Key>
             <PropertyRef Name="IdED" />
@@ -63,6 +66,7 @@
           <Property Name="ScheduleIdED" Type="int" />
           <Property Name="DateTimeED" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CodeED" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="CompanyIdED" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="evidencedatadocuments">
           <Key>
@@ -92,6 +96,7 @@
           <Property Name="DateTimeEX" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="TreatmentIdEX" Type="int" Nullable="false" />
           <Property Name="CodeEX" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="CompanyIdEX" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="examinationdatadocuments">
           <Key>
@@ -129,6 +134,16 @@
           <Property Name="IdIED" Type="int" Nullable="false" />
           <Property Name="Dummy" Type="bool" />
         </EntityType>
+        <EntityType Name="exceptedschedule">
+          <Key>
+            <PropertyRef Name="IdES" />
+          </Key>
+          <Property Name="IdES" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IncludedES" Type="bool" Nullable="false" />
+          <Property Name="UserDataIdES" Type="int" Nullable="false" />
+          <Property Name="StartDateES" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="FinishDateED" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="gender_fx">
           <Key>
             <PropertyRef Name="IdG" />
@@ -145,6 +160,7 @@
           <Property Name="UserDataIdIED" Type="int" Nullable="false" />
           <Property Name="DateTimeIED" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CodeIED" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="CompanyIdIED" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="importedevidencedatadocuments_st">
           <Key>
@@ -165,6 +181,7 @@
           <Property Name="DateTimeIEX" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="NameIEX" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="CodeIEX" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="CompanyIdIEX" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="importedexaminationdatadocuments_st">
           <Key>
@@ -245,8 +262,8 @@
           <Property Name="IdSD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientIdSD" Type="int" Nullable="false" />
           <Property Name="DoctorIdSD" Type="int" Nullable="false" />
-          <Property Name="StartSD" Type="datetime" Precision="0" Nullable="false" />
-          <Property Name="FinishSD" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="StartSD" Type="time" Precision="0" Nullable="false" />
+          <Property Name="FinishSD" Type="time" Precision="0" Nullable="false" />
           <Property Name="StatusSD" Type="int" />
         </EntityType>
         <EntityType Name="settlement_fx">
@@ -306,6 +323,16 @@
           <Property Name="JobPhoneUD" Type="varchar" MaxLength="19" />
           <Property Name="EmailUD" Type="varchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="usersschedule">
+          <Key>
+            <PropertyRef Name="IdUS" />
+          </Key>
+          <Property Name="IdUS" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserDataIdUS" Type="int" Nullable="false" />
+          <Property Name="DayOfWeekUS" Type="int" Nullable="false" />
+          <Property Name="StartTimeUS" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="FinishTimeUS" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="zipcode_fx">
           <Key>
             <PropertyRef Name="IdZC" />
@@ -337,6 +364,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_billing_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="CompanyIdFromB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_billing_companydata2">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="0..1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="CompanyIdToB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_billing_patientdata1">
+          <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="patientdata">
+              <PropertyRef Name="IdPD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="PatientIdB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_billing_userdata1">
+          <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userdata">
+              <PropertyRef Name="IdUD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="UserIdB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_CompanyData_SettlementFX1">
           <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="1" />
           <End Role="companydata" Type="Self.companydata" Multiplicity="*" />
@@ -363,13 +438,25 @@
         </Association>
         <Association Name="fk_DoctorSchedule_DoctorData1">
           <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
-          <End Role="doctorschedule" Type="Self.doctorschedule" Multiplicity="*" />
+          <End Role="usersschedule" Type="Self.usersschedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="userdata">
               <PropertyRef Name="IdUD" />
             </Principal>
-            <Dependent Role="doctorschedule">
-              <PropertyRef Name="UserDataIdDS" />
+            <Dependent Role="usersschedule">
+              <PropertyRef Name="UserDataIdUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_evidencedata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="evidencedata" Type="Self.evidencedata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="evidencedata">
+              <PropertyRef Name="CompanyIdED" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -430,6 +517,18 @@
             </Principal>
             <Dependent Role="evidencedatadocuments_st">
               <PropertyRef Name="IdEDD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examinationdata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="examinationdata">
+              <PropertyRef Name="CompanyIdEX" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -541,6 +640,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_exceptedschedule_userdata1">
+          <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+          <End Role="exceptedschedule" Type="Self.exceptedschedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userdata">
+              <PropertyRef Name="IdUD" />
+            </Principal>
+            <Dependent Role="exceptedschedule">
+              <PropertyRef Name="UserDataIdES" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_importedevidencedata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="importedevidencedata">
+              <PropertyRef Name="CompanyIdIED" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_importedevidencedata_patientdata1">
           <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
           <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="*" />
@@ -586,6 +709,18 @@
             </Principal>
             <Dependent Role="importedevidencedatadocuments_st">
               <PropertyRef Name="IdIED" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_importedexaminationdata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="importedexaminationdata" Type="Self.importedexaminationdata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="importedexaminationdata">
+              <PropertyRef Name="CompanyIdIEX" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -892,8 +1027,8 @@
         <EntityContainer Name="medicalModelStoreContainer">
           <EntitySet Name="accountdata" EntityType="Self.accountdata" Schema="medical" store:Type="Tables" />
           <EntitySet Name="belong_st" EntityType="Self.belong_st" Schema="medical" store:Type="Tables" />
+          <EntitySet Name="billing" EntityType="Self.billing" Schema="medical" store:Type="Tables" />
           <EntitySet Name="companydata" EntityType="Self.companydata" Schema="medical" store:Type="Tables" />
-          <EntitySet Name="doctorschedule" EntityType="Self.doctorschedule" Schema="medical" store:Type="Tables" />
           <EntitySet Name="evidencedata" EntityType="Self.evidencedata" Schema="medical" store:Type="Tables" />
           <EntitySet Name="evidencedatadocuments" EntityType="Self.evidencedatadocuments" Schema="medical" store:Type="Tables" />
           <EntitySet Name="evidencedatadocuments_st" EntityType="Self.evidencedatadocuments_st" Schema="medical" store:Type="Tables" />
@@ -902,6 +1037,7 @@
           <EntitySet Name="examinationdatadocuments_st" EntityType="Self.examinationdatadocuments_st" Schema="medical" store:Type="Tables" />
           <EntitySet Name="examinationeachevidence_st" EntityType="Self.examinationeachevidence_st" Schema="medical" store:Type="Tables" />
           <EntitySet Name="examinationeachimportedevidence_st" EntityType="Self.examinationeachimportedevidence_st" Schema="medical" store:Type="Tables" />
+          <EntitySet Name="exceptedschedule" EntityType="Self.exceptedschedule" Schema="medical" store:Type="Tables" />
           <EntitySet Name="gender_fx" EntityType="Self.gender_fx" Schema="medical" store:Type="Tables" />
           <EntitySet Name="importedevidencedata" EntityType="Self.importedevidencedata" Schema="medical" store:Type="Tables" />
           <EntitySet Name="importedevidencedatadocuments_st" EntityType="Self.importedevidencedatadocuments_st" Schema="medical" store:Type="Tables" />
@@ -917,6 +1053,7 @@
           <EntitySet Name="status_fx" EntityType="Self.status_fx" Schema="medical" store:Type="Tables" />
           <EntitySet Name="treatmentdata" EntityType="Self.treatmentdata" Schema="medical" store:Type="Tables" />
           <EntitySet Name="userdata" EntityType="Self.userdata" Schema="medical" store:Type="Tables" />
+          <EntitySet Name="usersschedule" EntityType="Self.usersschedule" Schema="medical" store:Type="Tables" />
           <EntitySet Name="zipcode_fx" EntityType="Self.zipcode_fx" Schema="medical" store:Type="Tables" />
           <AssociationSet Name="fk_BelongST_DoctorData1" Association="Self.fk_BelongST_DoctorData1">
             <End Role="userdata" EntitySet="userdata" />
@@ -925,6 +1062,22 @@
           <AssociationSet Name="fk_BelongST_PatientData1" Association="Self.fk_BelongST_PatientData1">
             <End Role="patientdata" EntitySet="patientdata" />
             <End Role="belong_st" EntitySet="belong_st" />
+          </AssociationSet>
+          <AssociationSet Name="fk_billing_companydata1" Association="Self.fk_billing_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="billing" EntitySet="billing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_billing_companydata2" Association="Self.fk_billing_companydata2">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="billing" EntitySet="billing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_billing_patientdata1" Association="Self.fk_billing_patientdata1">
+            <End Role="patientdata" EntitySet="patientdata" />
+            <End Role="billing" EntitySet="billing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_billing_userdata1" Association="Self.fk_billing_userdata1">
+            <End Role="userdata" EntitySet="userdata" />
+            <End Role="billing" EntitySet="billing" />
           </AssociationSet>
           <AssociationSet Name="fk_CompanyData_SettlementFX1" Association="Self.fk_CompanyData_SettlementFX1">
             <End Role="settlement_fx" EntitySet="settlement_fx" />
@@ -936,7 +1089,11 @@
           </AssociationSet>
           <AssociationSet Name="fk_DoctorSchedule_DoctorData1" Association="Self.fk_DoctorSchedule_DoctorData1">
             <End Role="userdata" EntitySet="userdata" />
-            <End Role="doctorschedule" EntitySet="doctorschedule" />
+            <End Role="usersschedule" EntitySet="usersschedule" />
+          </AssociationSet>
+          <AssociationSet Name="fk_evidencedata_companydata1" Association="Self.fk_evidencedata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="evidencedata" EntitySet="evidencedata" />
           </AssociationSet>
           <AssociationSet Name="fk_EvidencedataData_DoctorData1" Association="Self.fk_EvidencedataData_DoctorData1">
             <End Role="userdata" EntitySet="userdata" />
@@ -957,6 +1114,10 @@
           <AssociationSet Name="fk_evidencedatadocuments_st_evidencedatadocuments1" Association="Self.fk_evidencedatadocuments_st_evidencedatadocuments1">
             <End Role="evidencedatadocuments" EntitySet="evidencedatadocuments" />
             <End Role="evidencedatadocuments_st" EntitySet="evidencedatadocuments_st" />
+          </AssociationSet>
+          <AssociationSet Name="fk_examinationdata_companydata1" Association="Self.fk_examinationdata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="examinationdata" EntitySet="examinationdata" />
           </AssociationSet>
           <AssociationSet Name="fk_examinationdata_patientdata1" Association="Self.fk_examinationdata_patientdata1">
             <End Role="patientdata" EntitySet="patientdata" />
@@ -994,6 +1155,14 @@
             <End Role="importedevidencedata" EntitySet="importedevidencedata" />
             <End Role="examinationeachimportedevidence_st" EntitySet="examinationeachimportedevidence_st" />
           </AssociationSet>
+          <AssociationSet Name="fk_exceptedschedule_userdata1" Association="Self.fk_exceptedschedule_userdata1">
+            <End Role="userdata" EntitySet="userdata" />
+            <End Role="exceptedschedule" EntitySet="exceptedschedule" />
+          </AssociationSet>
+          <AssociationSet Name="fk_importedevidencedata_companydata1" Association="Self.fk_importedevidencedata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="importedevidencedata" EntitySet="importedevidencedata" />
+          </AssociationSet>
           <AssociationSet Name="fk_importedevidencedata_patientdata1" Association="Self.fk_importedevidencedata_patientdata1">
             <End Role="patientdata" EntitySet="patientdata" />
             <End Role="importedevidencedata" EntitySet="importedevidencedata" />
@@ -1009,6 +1178,10 @@
           <AssociationSet Name="fk_importedevidencedatadocuments_st_importedevidencedata1" Association="Self.fk_importedevidencedatadocuments_st_importedevidencedata1">
             <End Role="importedevidencedata" EntitySet="importedevidencedata" />
             <End Role="importedevidencedatadocuments_st" EntitySet="importedevidencedatadocuments_st" />
+          </AssociationSet>
+          <AssociationSet Name="fk_importedexaminationdata_companydata1" Association="Self.fk_importedexaminationdata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
           </AssociationSet>
           <AssociationSet Name="fk_ImportedExaminationData_patientdata1" Association="Self.fk_ImportedExaminationData_patientdata1">
             <End Role="patientdata" EntitySet="patientdata" />
@@ -1142,6 +1315,23 @@
           <NavigationProperty Name="userdata" Relationship="Self.fk_BelongST_DoctorData1" FromRole="belong_st" ToRole="userdata" />
           <NavigationProperty Name="patientdata" Relationship="Self.fk_BelongST_PatientData1" FromRole="belong_st" ToRole="patientdata" />
         </EntityType>
+        <EntityType Name="billing">
+          <Key>
+            <PropertyRef Name="IdB" />
+          </Key>
+          <Property Name="IdB" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientIdB" Type="Int32" Nullable="false" />
+          <Property Name="UserIdB" Type="Int32" Nullable="false" />
+          <Property Name="CompanyIdFromB" Type="Int32" Nullable="false" />
+          <Property Name="CompanyIdToB" Type="Int32" />
+          <Property Name="CodeB" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateTimeB" Type="DateTime" Nullable="false" />
+          <Property Name="BillB" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="companydata" Relationship="Self.fk_billing_companydata1" FromRole="billing" ToRole="companydata" />
+          <NavigationProperty Name="companydata1" Relationship="Self.fk_billing_companydata2" FromRole="billing" ToRole="companydata" />
+          <NavigationProperty Name="patientdata" Relationship="Self.fk_billing_patientdata1" FromRole="billing" ToRole="patientdata" />
+          <NavigationProperty Name="userdata" Relationship="Self.fk_billing_userdata1" FromRole="billing" ToRole="userdata" />
+        </EntityType>
         <EntityType Name="companydata">
           <Key>
             <PropertyRef Name="IdCD" />
@@ -1157,19 +1347,14 @@
           <Property Name="PhoneCD" Type="String" MaxLength="19" FixedLength="false" Unicode="false" />
           <Property Name="EmailCD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="WebPageCD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="billing" Relationship="Self.fk_billing_companydata1" FromRole="companydata" ToRole="billing" />
+          <NavigationProperty Name="billing1" Relationship="Self.fk_billing_companydata2" FromRole="companydata" ToRole="billing" />
           <NavigationProperty Name="settlement_fx" Relationship="Self.fk_CompanyData_SettlementFX1" FromRole="companydata" ToRole="settlement_fx" />
           <NavigationProperty Name="zipcode_fx" Relationship="Self.fk_CompanyData_ZipCodeFX1" FromRole="companydata" ToRole="zipcode_fx" />
-        </EntityType>
-        <EntityType Name="doctorschedule">
-          <Key>
-            <PropertyRef Name="IdDS" />
-          </Key>
-          <Property Name="IdDS" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserDataIdDS" Type="Int32" Nullable="false" />
-          <Property Name="DateDS" Type="DateTime" Nullable="false" />
-          <Property Name="StartTimeDS" Type="Time" Nullable="false" />
-          <Property Name="FinishTimeDS" Type="Time" Nullable="false" />
-          <NavigationProperty Name="userdata" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="doctorschedule" ToRole="userdata" />
+          <NavigationProperty Name="evidencedata" Relationship="Self.fk_evidencedata_companydata1" FromRole="companydata" ToRole="evidencedata" />
+          <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_companydata1" FromRole="companydata" ToRole="examinationdata" />
+          <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_importedevidencedata_companydata1" FromRole="companydata" ToRole="importedevidencedata" />
+          <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_importedexaminationdata_companydata1" FromRole="companydata" ToRole="importedexaminationdata" />
         </EntityType>
         <EntityType Name="evidencedata">
           <Key>
@@ -1181,6 +1366,8 @@
           <Property Name="ScheduleIdED" Type="Int32" />
           <Property Name="DateTimeED" Type="DateTime" Nullable="false" />
           <Property Name="CodeED" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CompanyIdED" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="companydata" Relationship="Self.fk_evidencedata_companydata1" FromRole="evidencedata" ToRole="companydata" />
           <NavigationProperty Name="userdata" Relationship="Self.fk_EvidencedataData_DoctorData1" FromRole="evidencedata" ToRole="userdata" />
           <NavigationProperty Name="patientdata" Relationship="Self.fk_EvidencedataData_PatientData1" FromRole="evidencedata" ToRole="patientdata" />
           <NavigationProperty Name="scheduledata" Relationship="Self.fk_EvidencedataData_ScheduleData1" FromRole="evidencedata" ToRole="scheduledata" />
@@ -1220,6 +1407,8 @@
           <Property Name="DateTimeEX" Type="DateTime" Nullable="false" />
           <Property Name="TreatmentIdEX" Type="Int32" Nullable="false" />
           <Property Name="CodeEX" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CompanyIdEX" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="companydata" Relationship="Self.fk_examinationdata_companydata1" FromRole="examinationdata" ToRole="companydata" />
           <NavigationProperty Name="patientdata" Relationship="Self.fk_examinationdata_patientdata1" FromRole="examinationdata" ToRole="patientdata" />
           <NavigationProperty Name="treatmentdata" Relationship="Self.fk_examinationdata_treatmentdata1" FromRole="examinationdata" ToRole="treatmentdata" />
           <NavigationProperty Name="userdata" Relationship="Self.fk_examinationdata_userdata1" FromRole="examinationdata" ToRole="userdata" />
@@ -1271,6 +1460,17 @@
           <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationeachimportedevidence_examinationdata1" FromRole="examinationeachimportedevidence_st" ToRole="examinationdata" />
           <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_examinationeachimportedevidence_importedevidencedata1" FromRole="examinationeachimportedevidence_st" ToRole="importedevidencedata" />
         </EntityType>
+        <EntityType Name="exceptedschedule">
+          <Key>
+            <PropertyRef Name="IdES" />
+          </Key>
+          <Property Name="IdES" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IncludedES" Type="Boolean" Nullable="false" />
+          <Property Name="UserDataIdES" Type="Int32" Nullable="false" />
+          <Property Name="StartDateES" Type="DateTime" Nullable="false" />
+          <Property Name="FinishDateED" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="userdata" Relationship="Self.fk_exceptedschedule_userdata1" FromRole="exceptedschedule" ToRole="userdata" />
+        </EntityType>
         <EntityType Name="gender_fx">
           <Key>
             <PropertyRef Name="IdG" />
@@ -1289,6 +1489,8 @@
           <Property Name="UserDataIdIED" Type="Int32" Nullable="false" />
           <Property Name="DateTimeIED" Type="DateTime" Nullable="false" />
           <Property Name="CodeIED" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CompanyIdIED" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="companydata" Relationship="Self.fk_importedevidencedata_companydata1" FromRole="importedevidencedata" ToRole="companydata" />
           <NavigationProperty Name="examinationeachimportedevidence_st" Relationship="Self.fk_examinationeachimportedevidence_importedevidencedata1" FromRole="importedevidencedata" ToRole="examinationeachimportedevidence_st" />
           <NavigationProperty Name="patientdata" Relationship="Self.fk_importedevidencedata_patientdata1" FromRole="importedevidencedata" ToRole="patientdata" />
           <NavigationProperty Name="userdata" Relationship="Self.fk_importedevidencedata_userdata1" FromRole="importedevidencedata" ToRole="userdata" />
@@ -1316,6 +1518,8 @@
           <Property Name="DateTimeIEX" Type="DateTime" Nullable="false" />
           <Property Name="NameIEX" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CodeIEX" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CompanyIdIEX" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="companydata" Relationship="Self.fk_importedexaminationdata_companydata1" FromRole="importedexaminationdata" ToRole="companydata" />
           <NavigationProperty Name="patientdata" Relationship="Self.fk_ImportedExaminationData_patientdata1" FromRole="importedexaminationdata" ToRole="patientdata" />
           <NavigationProperty Name="userdata" Relationship="Self.fk_importedexaminationdata_userdata1" FromRole="importedexaminationdata" ToRole="userdata" />
           <NavigationProperty Name="importedexaminationdatadocuments_st" Relationship="Self.fk_importedexaminationdatadocuments_st_importedexaminationdata1" FromRole="importedexaminationdata" ToRole="importedexaminationdatadocuments_st" />
@@ -1380,6 +1584,7 @@
           <Property Name="BillingAddressPD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NotesPD" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="belong_st" Relationship="Self.fk_BelongST_PatientData1" FromRole="patientdata" ToRole="belong_st" />
+          <NavigationProperty Name="billing" Relationship="Self.fk_billing_patientdata1" FromRole="patientdata" ToRole="billing" />
           <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_PatientData1" FromRole="patientdata" ToRole="evidencedata" />
           <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_patientdata1" FromRole="patientdata" ToRole="examinationdata" />
           <NavigationProperty Name="gender_fx" Relationship="Self.fk_PatientData_Gender" FromRole="patientdata" ToRole="gender_fx" />
@@ -1420,8 +1625,8 @@
           <Property Name="IdSD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PatientIdSD" Type="Int32" Nullable="false" />
           <Property Name="DoctorIdSD" Type="Int32" Nullable="false" />
-          <Property Name="StartSD" Type="DateTime" Nullable="false" />
-          <Property Name="FinishSD" Type="DateTime" Nullable="false" />
+          <Property Name="StartSD" Type="Time" Nullable="false" />
+          <Property Name="FinishSD" Type="Time" Nullable="false" />
           <Property Name="StatusSD" Type="Int32" />
           <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_ScheduleData1" FromRole="scheduledata" ToRole="evidencedata" />
           <NavigationProperty Name="patientdata" Relationship="Self.fk_ScheduleData_PatientData1" FromRole="scheduledata" ToRole="patientdata" />
@@ -1497,16 +1702,29 @@
           <Property Name="EmailUD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="accountdata" Relationship="Self.fk_UserData_AccountData1" FromRole="userdata" ToRole="accountdata" />
           <NavigationProperty Name="belong_st" Relationship="Self.fk_BelongST_DoctorData1" FromRole="userdata" ToRole="belong_st" />
-          <NavigationProperty Name="doctorschedule" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="userdata" ToRole="doctorschedule" />
+          <NavigationProperty Name="billing" Relationship="Self.fk_billing_userdata1" FromRole="userdata" ToRole="billing" />
           <NavigationProperty Name="evidencedata" Relationship="Self.fk_EvidencedataData_DoctorData1" FromRole="userdata" ToRole="evidencedata" />
           <NavigationProperty Name="examinationdata" Relationship="Self.fk_examinationdata_userdata1" FromRole="userdata" ToRole="examinationdata" />
+          <NavigationProperty Name="exceptedschedule" Relationship="Self.fk_exceptedschedule_userdata1" FromRole="userdata" ToRole="exceptedschedule" />
           <NavigationProperty Name="gender_fx" Relationship="Self.fk_UserData_Gender1" FromRole="userdata" ToRole="gender_fx" />
           <NavigationProperty Name="importedevidencedata" Relationship="Self.fk_importedevidencedata_userdata1" FromRole="userdata" ToRole="importedevidencedata" />
           <NavigationProperty Name="importedexaminationdata" Relationship="Self.fk_importedexaminationdata_userdata1" FromRole="userdata" ToRole="importedexaminationdata" />
           <NavigationProperty Name="scheduledata" Relationship="Self.fk_ScheduleData_DoctorData1" FromRole="userdata" ToRole="scheduledata" />
           <NavigationProperty Name="settlement_fx" Relationship="Self.fk_UserData_Settlement1" FromRole="userdata" ToRole="settlement_fx" />
           <NavigationProperty Name="settlement_fx1" Relationship="Self.fk_UserData_Settlement2" FromRole="userdata" ToRole="settlement_fx" />
+          <NavigationProperty Name="usersschedule" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="userdata" ToRole="usersschedule" />
           <NavigationProperty Name="zipcode_fx" Relationship="Self.fk_UserData_ZipCode1" FromRole="userdata" ToRole="zipcode_fx" />
+        </EntityType>
+        <EntityType Name="usersschedule">
+          <Key>
+            <PropertyRef Name="IdUS" />
+          </Key>
+          <Property Name="IdUS" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserDataIdUS" Type="Int32" Nullable="false" />
+          <Property Name="DayOfWeekUS" Type="Int32" Nullable="false" />
+          <Property Name="StartTimeUS" Type="DateTime" Nullable="false" />
+          <Property Name="FinishTimeUS" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="userdata" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="usersschedule" ToRole="userdata" />
         </EntityType>
         <EntityType Name="zipcode_fx">
           <Key>
@@ -1568,6 +1786,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_billing_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="CompanyIdFromB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_billing_companydata2">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="0..1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="CompanyIdToB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_billing_patientdata1">
+          <End Role="patientdata" Type="Self.patientdata" Multiplicity="1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="patientdata">
+              <PropertyRef Name="IdPD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="PatientIdB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_billing_userdata1">
+          <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+          <End Role="billing" Type="Self.billing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userdata">
+              <PropertyRef Name="IdUD" />
+            </Principal>
+            <Dependent Role="billing">
+              <PropertyRef Name="UserIdB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_CompanyData_SettlementFX1">
           <End Role="settlement_fx" Type="Self.settlement_fx" Multiplicity="1" />
           <End Role="companydata" Type="Self.companydata" Multiplicity="*" />
@@ -1592,15 +1858,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_DoctorSchedule_DoctorData1">
-          <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
-          <End Role="doctorschedule" Type="Self.doctorschedule" Multiplicity="*" />
+        <Association Name="fk_evidencedata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="evidencedata" Type="Self.evidencedata" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="userdata">
-              <PropertyRef Name="IdUD" />
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
             </Principal>
-            <Dependent Role="doctorschedule">
-              <PropertyRef Name="UserDataIdDS" />
+            <Dependent Role="evidencedata">
+              <PropertyRef Name="CompanyIdED" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examinationdata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="examinationdata" Type="Self.examinationdata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="examinationdata">
+              <PropertyRef Name="CompanyIdEX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_importedevidencedata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="importedevidencedata" Type="Self.importedevidencedata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="importedevidencedata">
+              <PropertyRef Name="CompanyIdIED" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_importedexaminationdata_companydata1">
+          <End Role="companydata" Type="Self.companydata" Multiplicity="1" />
+          <End Role="importedexaminationdata" Type="Self.importedexaminationdata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companydata">
+              <PropertyRef Name="IdCD" />
+            </Principal>
+            <Dependent Role="importedexaminationdata">
+              <PropertyRef Name="CompanyIdIEX" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1805,6 +2107,18 @@
             </Principal>
             <Dependent Role="examinationeachimportedevidence_st">
               <PropertyRef Name="IdIED" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_exceptedschedule_userdata1">
+          <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+          <End Role="exceptedschedule" Type="Self.exceptedschedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userdata">
+              <PropertyRef Name="IdUD" />
+            </Principal>
+            <Dependent Role="exceptedschedule">
+              <PropertyRef Name="UserDataIdES" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2084,6 +2398,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_DoctorSchedule_DoctorData1">
+          <End Role="userdata" Type="Self.userdata" Multiplicity="1" />
+          <End Role="usersschedule" Type="Self.usersschedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userdata">
+              <PropertyRef Name="IdUD" />
+            </Principal>
+            <Dependent Role="usersschedule">
+              <PropertyRef Name="UserDataIdUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_UserData_ZipCode1">
           <End Role="zipcode_fx" Type="Self.zipcode_fx" Multiplicity="0..1" />
           <End Role="userdata" Type="Self.userdata" Multiplicity="*" />
@@ -2099,8 +2425,8 @@
         <EntityContainer Name="medicalEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="accountdata" EntityType="Self.accountdata" />
           <EntitySet Name="belong_st" EntityType="Self.belong_st" />
+          <EntitySet Name="billing" EntityType="Self.billing" />
           <EntitySet Name="companydata" EntityType="Self.companydata" />
-          <EntitySet Name="doctorschedule" EntityType="Self.doctorschedule" />
           <EntitySet Name="evidencedata" EntityType="Self.evidencedata" />
           <EntitySet Name="evidencedatadocuments" EntityType="Self.evidencedatadocuments" />
           <EntitySet Name="evidencedatadocuments_st" EntityType="Self.evidencedatadocuments_st" />
@@ -2109,6 +2435,7 @@
           <EntitySet Name="examinationdatadocuments_st" EntityType="Self.examinationdatadocuments_st" />
           <EntitySet Name="examinationeachevidence_st" EntityType="Self.examinationeachevidence_st" />
           <EntitySet Name="examinationeachimportedevidence_st" EntityType="Self.examinationeachimportedevidence_st" />
+          <EntitySet Name="exceptedschedule" EntityType="Self.exceptedschedule" />
           <EntitySet Name="gender_fx" EntityType="Self.gender_fx" />
           <EntitySet Name="importedevidencedata" EntityType="Self.importedevidencedata" />
           <EntitySet Name="importedevidencedatadocuments_st" EntityType="Self.importedevidencedatadocuments_st" />
@@ -2124,6 +2451,7 @@
           <EntitySet Name="status_fx" EntityType="Self.status_fx" />
           <EntitySet Name="treatmentdata" EntityType="Self.treatmentdata" />
           <EntitySet Name="userdata" EntityType="Self.userdata" />
+          <EntitySet Name="usersschedule" EntityType="Self.usersschedule" />
           <EntitySet Name="zipcode_fx" EntityType="Self.zipcode_fx" />
           <AssociationSet Name="fk_UserData_AccountData1" Association="Self.fk_UserData_AccountData1">
             <End Role="accountdata" EntitySet="accountdata" />
@@ -2141,6 +2469,22 @@
             <End Role="patientdata" EntitySet="patientdata" />
             <End Role="belong_st" EntitySet="belong_st" />
           </AssociationSet>
+          <AssociationSet Name="fk_billing_companydata1" Association="Self.fk_billing_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="billing" EntitySet="billing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_billing_companydata2" Association="Self.fk_billing_companydata2">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="billing" EntitySet="billing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_billing_patientdata1" Association="Self.fk_billing_patientdata1">
+            <End Role="patientdata" EntitySet="patientdata" />
+            <End Role="billing" EntitySet="billing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_billing_userdata1" Association="Self.fk_billing_userdata1">
+            <End Role="userdata" EntitySet="userdata" />
+            <End Role="billing" EntitySet="billing" />
+          </AssociationSet>
           <AssociationSet Name="fk_CompanyData_SettlementFX1" Association="Self.fk_CompanyData_SettlementFX1">
             <End Role="settlement_fx" EntitySet="settlement_fx" />
             <End Role="companydata" EntitySet="companydata" />
@@ -2149,9 +2493,21 @@
             <End Role="zipcode_fx" EntitySet="zipcode_fx" />
             <End Role="companydata" EntitySet="companydata" />
           </AssociationSet>
-          <AssociationSet Name="fk_DoctorSchedule_DoctorData1" Association="Self.fk_DoctorSchedule_DoctorData1">
-            <End Role="userdata" EntitySet="userdata" />
-            <End Role="doctorschedule" EntitySet="doctorschedule" />
+          <AssociationSet Name="fk_evidencedata_companydata1" Association="Self.fk_evidencedata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="evidencedata" EntitySet="evidencedata" />
+          </AssociationSet>
+          <AssociationSet Name="fk_examinationdata_companydata1" Association="Self.fk_examinationdata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="examinationdata" EntitySet="examinationdata" />
+          </AssociationSet>
+          <AssociationSet Name="fk_importedevidencedata_companydata1" Association="Self.fk_importedevidencedata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="importedevidencedata" EntitySet="importedevidencedata" />
+          </AssociationSet>
+          <AssociationSet Name="fk_importedexaminationdata_companydata1" Association="Self.fk_importedexaminationdata_companydata1">
+            <End Role="companydata" EntitySet="companydata" />
+            <End Role="importedexaminationdata" EntitySet="importedexaminationdata" />
           </AssociationSet>
           <AssociationSet Name="fk_EvidencedataData_DoctorData1" Association="Self.fk_EvidencedataData_DoctorData1">
             <End Role="userdata" EntitySet="userdata" />
@@ -2220,6 +2576,10 @@
           <AssociationSet Name="fk_examinationeachimportedevidence_importedevidencedata1" Association="Self.fk_examinationeachimportedevidence_importedevidencedata1">
             <End Role="importedevidencedata" EntitySet="importedevidencedata" />
             <End Role="examinationeachimportedevidence_st" EntitySet="examinationeachimportedevidence_st" />
+          </AssociationSet>
+          <AssociationSet Name="fk_exceptedschedule_userdata1" Association="Self.fk_exceptedschedule_userdata1">
+            <End Role="userdata" EntitySet="userdata" />
+            <End Role="exceptedschedule" EntitySet="exceptedschedule" />
           </AssociationSet>
           <AssociationSet Name="fk_PatientData_Gender" Association="Self.fk_PatientData_Gender">
             <End Role="gender_fx" EntitySet="gender_fx" />
@@ -2313,6 +2673,10 @@
             <End Role="zipcode_fx" EntitySet="zipcode_fx" />
             <End Role="settlementzipcode_st" EntitySet="settlementzipcode_st" />
           </AssociationSet>
+          <AssociationSet Name="fk_DoctorSchedule_DoctorData1" Association="Self.fk_DoctorSchedule_DoctorData1">
+            <End Role="userdata" EntitySet="userdata" />
+            <End Role="usersschedule" EntitySet="usersschedule" />
+          </AssociationSet>
           <AssociationSet Name="fk_UserData_ZipCode1" Association="Self.fk_UserData_ZipCode1">
             <End Role="zipcode_fx" EntitySet="zipcode_fx" />
             <End Role="userdata" EntitySet="userdata" />
@@ -2347,6 +2711,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="billing">
+            <EntityTypeMapping TypeName="medicalModel.billing">
+              <MappingFragment StoreEntitySet="billing">
+                <ScalarProperty Name="IdB" ColumnName="IdB" />
+                <ScalarProperty Name="PatientIdB" ColumnName="PatientIdB" />
+                <ScalarProperty Name="UserIdB" ColumnName="UserIdB" />
+                <ScalarProperty Name="CompanyIdFromB" ColumnName="CompanyIdFromB" />
+                <ScalarProperty Name="CompanyIdToB" ColumnName="CompanyIdToB" />
+                <ScalarProperty Name="CodeB" ColumnName="CodeB" />
+                <ScalarProperty Name="DateTimeB" ColumnName="DateTimeB" />
+                <ScalarProperty Name="BillB" ColumnName="BillB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="companydata">
             <EntityTypeMapping TypeName="medicalModel.companydata">
               <MappingFragment StoreEntitySet="companydata">
@@ -2364,17 +2742,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="doctorschedule">
-            <EntityTypeMapping TypeName="medicalModel.doctorschedule">
-              <MappingFragment StoreEntitySet="doctorschedule">
-                <ScalarProperty Name="IdDS" ColumnName="IdDS" />
-                <ScalarProperty Name="UserDataIdDS" ColumnName="UserDataIdDS" />
-                <ScalarProperty Name="DateDS" ColumnName="DateDS" />
-                <ScalarProperty Name="StartTimeDS" ColumnName="StartTimeDS" />
-                <ScalarProperty Name="FinishTimeDS" ColumnName="FinishTimeDS" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="evidencedata">
             <EntityTypeMapping TypeName="medicalModel.evidencedata">
               <MappingFragment StoreEntitySet="evidencedata">
@@ -2384,6 +2751,7 @@
                 <ScalarProperty Name="ScheduleIdED" ColumnName="ScheduleIdED" />
                 <ScalarProperty Name="DateTimeED" ColumnName="DateTimeED" />
                 <ScalarProperty Name="CodeED" ColumnName="CodeED" />
+                <ScalarProperty Name="CompanyIdED" ColumnName="CompanyIdED" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2415,6 +2783,7 @@
                 <ScalarProperty Name="DateTimeEX" ColumnName="DateTimeEX" />
                 <ScalarProperty Name="TreatmentIdEX" ColumnName="TreatmentIdEX" />
                 <ScalarProperty Name="CodeEX" ColumnName="CodeEX" />
+                <ScalarProperty Name="CompanyIdEX" ColumnName="CompanyIdEX" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2455,6 +2824,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="exceptedschedule">
+            <EntityTypeMapping TypeName="medicalModel.exceptedschedule">
+              <MappingFragment StoreEntitySet="exceptedschedule">
+                <ScalarProperty Name="IdES" ColumnName="IdES" />
+                <ScalarProperty Name="IncludedES" ColumnName="IncludedES" />
+                <ScalarProperty Name="UserDataIdES" ColumnName="UserDataIdES" />
+                <ScalarProperty Name="StartDateES" ColumnName="StartDateES" />
+                <ScalarProperty Name="FinishDateED" ColumnName="FinishDateED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="gender_fx">
             <EntityTypeMapping TypeName="medicalModel.gender_fx">
               <MappingFragment StoreEntitySet="gender_fx">
@@ -2471,6 +2851,7 @@
                 <ScalarProperty Name="UserDataIdIED" ColumnName="UserDataIdIED" />
                 <ScalarProperty Name="DateTimeIED" ColumnName="DateTimeIED" />
                 <ScalarProperty Name="CodeIED" ColumnName="CodeIED" />
+                <ScalarProperty Name="CompanyIdIED" ColumnName="CompanyIdIED" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2492,6 +2873,7 @@
                 <ScalarProperty Name="DateTimeIEX" ColumnName="DateTimeIEX" />
                 <ScalarProperty Name="NameIEX" ColumnName="NameIEX" />
                 <ScalarProperty Name="CodeIEX" ColumnName="CodeIEX" />
+                <ScalarProperty Name="CompanyIdIEX" ColumnName="CompanyIdIEX" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2639,6 +3021,17 @@
                 <ScalarProperty Name="PhoneUD" ColumnName="PhoneUD" />
                 <ScalarProperty Name="JobPhoneUD" ColumnName="JobPhoneUD" />
                 <ScalarProperty Name="EmailUD" ColumnName="EmailUD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usersschedule">
+            <EntityTypeMapping TypeName="medicalModel.usersschedule">
+              <MappingFragment StoreEntitySet="usersschedule">
+                <ScalarProperty Name="IdUS" ColumnName="IdUS" />
+                <ScalarProperty Name="UserDataIdUS" ColumnName="UserDataIdUS" />
+                <ScalarProperty Name="DayOfWeekUS" ColumnName="DayOfWeekUS" />
+                <ScalarProperty Name="StartTimeUS" ColumnName="StartTimeUS" />
+                <ScalarProperty Name="FinishTimeUS" ColumnName="FinishTimeUS" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

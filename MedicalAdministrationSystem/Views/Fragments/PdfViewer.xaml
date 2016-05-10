@@ -87,7 +87,7 @@
             </dxb:ToolBarControl.Items>
         </dxb:ToolBarControl>
         <Button Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
-                VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close">
+                VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close" x:Name="exit">
             <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
                     Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
         </Button>

@@ -18,6 +18,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public patientdata()
         {
             this.belong_st = new HashSet<belong_st>();
+            this.billing = new HashSet<billing>();
             this.evidencedata = new HashSet<evidencedata>();
             this.examinationdata = new HashSet<examinationdata>();
             this.importedevidencedata = new HashSet<importedevidencedata>();
@@ -48,6 +49,8 @@ namespace MedicalAdministrationSystem.DataAccess
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<belong_st> belong_st { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<billing> billing { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<evidencedata> evidencedata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -135,7 +135,7 @@
                     <dxg:TableView x:Name="viewer" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
                             ShowGroupPanel="False" ShowIndicator="False" AllowScrollAnimation="True" AutoWidth="True"
                             SearchPanelHorizontalAlignment="Right" BestFitMode="AllRows" AllowBestFit="True"
-                            BestFitArea="All" />
+                            BestFitArea="All"/>
                 </dxg:GridControl.View>
             </dxg:GridControl>
             <dxe:ButtonEdit Height="29" Margin="8,8,0,0" ShowText="False" AllowDefaultButton="False" BorderThickness="0"

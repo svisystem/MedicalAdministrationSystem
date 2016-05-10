@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using MedicalAdministrationSystem.DataAccess;
+﻿using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Settings;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
+using System;
+using System.ComponentModel;
+using System.Linq;
 
 namespace MedicalAdministrationSystem.ViewModels.Settings
 {

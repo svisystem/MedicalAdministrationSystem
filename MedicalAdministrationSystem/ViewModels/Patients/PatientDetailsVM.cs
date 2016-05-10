@@ -279,7 +279,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 else
                 {
                     this.settle = what;
-                    if (!SettlementSearch.IsBusy) ZipCodeSearch.RunWorkerAsync();
+                    if (!ZipCodeSearch.IsBusy) ZipCodeSearch.RunWorkerAsync();
                 }
         }
         protected internal bool ListChecker(string selected, Type type)

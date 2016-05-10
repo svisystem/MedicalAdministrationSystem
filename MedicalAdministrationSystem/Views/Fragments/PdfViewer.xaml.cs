@@ -19,6 +19,15 @@ namespace MedicalAdministrationSystem.Views.Fragments
             bs = new BufferedStream(memstream);
             pdfViewer.DocumentSource = bs;
         }
+        public PdfViewer(MemoryStream ms)
+        {
+            this.DataContext = this;
+            InitializeComponent();
+            exit.Visibility = System.Windows.Visibility.Collapsed;
+            memstream = new MemoryStream(ms.ToArray());
+            bs = new BufferedStream(memstream);
+            pdfViewer.DocumentSource = bs;
+        }
 
         private void Close(object sender, System.Windows.RoutedEventArgs e)
         {
