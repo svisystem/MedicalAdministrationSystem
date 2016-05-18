@@ -83,6 +83,8 @@ namespace MedicalAdministrationSystem.Models.Settings
         private bool _StatisticP;
         private bool _SettingP;
         private bool _AllSeeP;
+        private bool _IsDoctorP;
+        private bool _IncludeScheduleP;
         private bool _New;
         private bool _Enabled;
         public int IdP
@@ -239,6 +241,32 @@ namespace MedicalAdministrationSystem.Models.Settings
                 if (_AllSeeP == value) return;
                 _AllSeeP = value;
                 OnPropertyChanged("AllSeeP");
+            }
+        }
+        public bool IsDoctorP
+        {
+            get
+            {
+                return _IsDoctorP;
+            }
+            set
+            {
+                if (_IsDoctorP == value) return;
+                _IsDoctorP = value;
+                OnPropertyChanged("IsDoctorP");
+            }
+        }
+        public bool IncludeScheduleP
+        {
+            get
+            {
+                return _IncludeScheduleP;
+            }
+            set
+            {
+                if (_IncludeScheduleP == value) return;
+                _IncludeScheduleP = value;
+                OnPropertyChanged("IncludeScheduleP");
             }
         }
         public bool New

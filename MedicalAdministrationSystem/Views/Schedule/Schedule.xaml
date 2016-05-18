@@ -1,0 +1,262 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Schedule"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduler"
+        xmlns:dxschdui="http://schemas.devexpress.com/winfx/2008/xaml/scheduler"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+        xmlns:dxo="http://schemas.devexpress.com/winfx/2008/xaml/office"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
+        x:Class="MedicalAdministrationSystem.Views.Schedule.Schedule" Loaded="UserControlLoaded">
+    <UserControl.Resources>
+        <dxsch:SchedulerUICommand x:Key="commands" />
+        <dxsch:SchedulerControlStringIdConverter x:Key="stringIdConverter" />
+        <Style x:Key="DialogWindowStyle" TargetType="{x:Type dx:DXWindow}">
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="WindowStyle" Value="None" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="ShowInTaskbar" Value="False" />
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        <dxe:DateNavigator DockPanel.Dock="Left" VerticalAlignment="Stretch" ShowTodayButton="False"
+                FirstDayOfWeek="Monday" Width="242">
+            <dxe:DateNavigator.StyleSettings>
+                <dxsch:SchedulerDateNavigatorStyleSettings SchedulerControl="{Binding ElementName=scheduler}" />
+            </dxe:DateNavigator.StyleSettings>
+        </dxe:DateNavigator>
+        <dxb:BarManager x:Name="barManager1" ToolbarGlyphSize="Small">
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem x:Name="biNewAppointment" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding NewAppointment, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Új időpont" LargeGlyph="{dx:DXImageOffice2013 Image=AddFile_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=AddFile_16x16.png}" />
+                <dxb:BarButtonItem x:Name="biNavigateViewBackward" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding NavigateViewBackward, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Vissza" LargeGlyph="{dx:DXImageOffice2013 Image=Backward_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=Backward_16x16.png}" />
+                <dxb:BarButtonItem x:Name="biNavigateViewForward" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding NavigateViewForward, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Előre" LargeGlyph="{dx:DXImageOffice2013 Image=Forward_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=Forward_16x16.png}" />
+                <dxb:BarButtonItem x:Name="biGotoToday" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding GotoToday, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Váltás a mai napra" LargeGlyph="{dx:DXImageOffice2013 Image=Today_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=Today_16x16.png}" />
+                <dxb:BarButtonItem x:Name="biViewZoomIn" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding ViewZoomIn, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Nagyítás"
+                        LargeGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/ZoomIn_32x32.png"
+                        Glyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/ZoomIn_32x32.png" />
+                <dxb:BarButtonItem x:Name="biViewZoomOut" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding ViewZoomOut, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Kicsinyítés"
+                        Glyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/ZoomOut_32x32.png"
+                        LargeGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/ZoomOut_32x32.png" />
+                <dxb:BarCheckItem x:Name="biSwitchToDayView" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToDayView, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Egy nap nézet" Glyph="{dx:DXImageOffice2013 Image=DayView_16x16.png}"
+                        LargeGlyph="{dx:DXImageOffice2013 Image=DayView_32x32.png}" />
+                <dxb:BarCheckItem x:Name="biSwitchToWorkWeekView" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToWorkWeekView, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Munkahét nézet" LargeGlyph="{dx:DXImageOffice2013 Image=WorkWeekView_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=WorkWeekView_16x16.png}" />
+                <dxb:BarCheckItem x:Name="biSwitchToWeekView" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToWeekView, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Teljes hét nézet" LargeGlyph="{dx:DXImageOffice2013 Image=WeekView_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=WeekView_16x16.png}" />
+                <dxb:BarCheckItem x:Name="biSwitchToFullWeekView" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToFullWeekView, Mode=OneTime, Source={StaticResource commands}}" />
+                <dxb:BarCheckItem x:Name="biSwitchToMonthView" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToMonthView, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Egész hónap nézet" Glyph="{dx:DXImageOffice2013 Image=MonthView_16x16.png}"
+                        LargeGlyph="{dx:DXImageOffice2013 Image=MonthView_32x32.png}" />
+                <dxb:BarCheckItem x:Name="biSwitchToTimelineView" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToTimelineView, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Idővonal nézet" LargeGlyph="{dx:DXImageOffice2013 Image=TimeLineView_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=TimeLineView_16x16.png}" />
+                <dxb:BarCheckItem x:Name="biSwitchToGroupByNone" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToGroupByNone, Mode=OneTime, Source={StaticResource commands}}"
+                        LargeGlyph="{dx:DXImageOffice2013 Image=MonthView_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=MonthView_16x16.png}" Content="Nincs csoportosítás"
+                        ItemClick="ItemClick" />
+                <dxb:BarCheckItem x:Name="biSwitchToGroupByDate" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToGroupByDate, Mode=OneTime, Source={StaticResource commands}}"
+                        LargeGlyph="{dx:DXImageOffice2013 Image=SwitchTimeScalesTo_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=SwitchTimeScalesTo_16x16.png}"
+                        Content="Dátum szerinti csoportosítás" ItemClick="ItemClick" />
+                <dxb:BarCheckItem x:Name="biSwitchToGroupByResource" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchToGroupByResource, Mode=OneTime, Source={StaticResource commands}}"
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/View/Meeting_32x32.png"
+                        Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/View/Meeting_16x16.png"
+                        Content="Felhasználónkénti csoportosítás" ItemClick="ItemClick" />
+                <dxsch:TimeScaleBarSubItem x:Name="biSwitchTimeScalesUICommand"
+                        CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchTimeScalesUICommand, Mode=OneTime, Source={StaticResource commands}}"
+                        SchedulerControl="{Binding ElementName=scheduler}"
+                        LargeGlyph="{dx:DXImageOffice2013 Image=Time_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=Time_16x16.png}" />
+                <dxb:BarEditItem x:Name="biSetTimeIntervalCount" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SetTimeIntervalCount, Mode=OneTime, Source={StaticResource commands}}"
+                        EditWidth="50" Content="Intervallumok száma">
+                    <dxb:BarEditItem.EditSettings>
+                        <dxe:SpinEditSettings MaxValue="15" MinValue="1" />
+                    </dxb:BarEditItem.EditSettings>
+                </dxb:BarEditItem>
+                <dxb:BarSplitButtonItem x:Name="resourceSelector" Content="Felhasználók" ActAsDropDown="True">
+                    <dxb:BarSplitButtonItem.PopupControl>
+                        <dxb:PopupControlContainer>
+                            <dxsch:ResourcesCheckedListBoxControl SchedulerControl="{Binding ElementName=scheduler}"
+                                    MinHeight="20" ShowBorder="False">
+                                <dxsch:ResourcesCheckedListBoxControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Fill="{Binding Id, Converter={utilities:ResourceColorConverter}}"
+                                                    Width="13" Height="13" Margin="0,0,5,0" VerticalAlignment="Stretch"
+                                                    Stroke="#FFB9B9B9" />
+                                            <TextBlock Text="{Binding Caption}" Margin="0,0,5,0" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </dxsch:ResourcesCheckedListBoxControl.ItemTemplate>
+                            </dxsch:ResourcesCheckedListBoxControl>
+                        </dxb:PopupControlContainer>
+                    </dxb:BarSplitButtonItem.PopupControl>
+                </dxb:BarSplitButtonItem>
+                <dxsch:SwitchTimeScalesCaptionBarSubItem x:Name="biSwitchTimeScalesCaptionUICommand"
+                        CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding SwitchTimeScalesCaptionUICommand, Mode=OneTime, Source={StaticResource commands}}"
+                        SchedulerControl="{Binding ElementName=scheduler}" />
+                <dxb:BarButtonItem x:Name="biEditAppointment" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding EditAppointment, Mode=OneTime, Source={StaticResource commands}}"
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_32x32.png"
+                        Content="Időpont szerkesztése"
+                        Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_16x16.png" />
+                <dxb:BarButtonItem x:Name="biDeleteAppointment" CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding DeleteAppointment, Mode=OneTime, Source={StaticResource commands}}"
+                        Content="Időpont törlése" LargeGlyph="{dx:DXImageOffice2013 Image=DeleteList_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=DeleteList_16x16.png}" />
+                <dxschdui:ChangeLabelBarItem x:Name="biChangeAppointmentLabel"
+                        CommandParameter="{Binding ElementName=scheduler}"
+                        Command="{Binding ChangeAppointmentLabel, Mode=OneTime, Source={StaticResource commands}}"
+                        SchedulerControl="{Binding ElementName=scheduler}" Content="Időpont státusza"
+                        LargeGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/ContentAutoArrange_32x32.png" />
+            </dxb:BarManager.Items>
+            <DockPanel>
+                <Separator DockPanel.Dock="Left" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                        Margin="0" Panel.ZIndex="1" />
+                <dxr:RibbonControl x:Name="ribbonControl1" DockPanel.Dock="Top" AllowCustomization="False"
+                        AllowMinimizeRibbon="False" RibbonTitleBarVisibility="Collapsed"
+                        MinimizationButtonVisibility="Collapsed" ToolbarShowMode="Hide"
+                        ToolbarShowCustomizationButton="False" RibbonHeaderVisibility="Collapsed"
+                        ShowApplicationButton="False" Margin="-1,-1,-1,0">
+                    <dxr:RibbonDefaultPageCategory>
+                        <dxr:RibbonPage x:Name="pagePageFile">
+                            <dxr:RibbonPageGroup>
+                                <dxb:BarButtonItem x:Name="biRefresh"
+                                        LargeGlyph="{dx:DXImageOffice2013 Image=Refresh_32x32.png}"
+                                        Glyph="{dx:DXImageOffice2013 Image=Refresh_16x16.png}" Content="Frissítés" />
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup>
+                                <dxr:RibbonPageGroup.ItemLinks>
+                                    <dxb:BarButtonItemLink BarItemName="biNewAppointment" />
+                                    <dxb:BarSubItemLink BarItemName="biEditAppointmentSeriesGroup" />
+                                    <dxb:BarButtonItemLink BarItemName="biEditAppointment" />
+                                    <dxb:BarSubItemLink BarItemName="biDeleteAppointmentSeriesGroup" />
+                                    <dxb:BarButtonItemLink BarItemName="biDeleteAppointment" />
+                                    <dxschdui:ColorablePopupMenuBasedBarItemLink BarItemName="biChangeAppointmentLabel" />
+                                </dxr:RibbonPageGroup.ItemLinks>
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup x:Name="grpPageHomeViewNavigator">
+                                <dxr:RibbonPageGroup.ItemLinks>
+                                    <dxb:BarButtonItemLink BarItemName="biNavigateViewBackward" />
+                                    <dxb:BarButtonItemLink BarItemName="biNavigateViewForward" />
+                                    <dxb:BarButtonItemLink BarItemName="biGotoToday" />
+                                    <dxb:BarButtonItemLink BarItemName="biViewZoomIn" />
+                                    <dxb:BarButtonItemLink BarItemName="biViewZoomOut" />
+                                </dxr:RibbonPageGroup.ItemLinks>
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup x:Name="grpPageHomeArrangeView">
+                                <dxr:RibbonPageGroup.ItemLinks>
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToDayView" />
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToWorkWeekView" />
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToWeekView" />
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToFullWeekView" />
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToMonthView" />
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToTimelineView" />
+                                </dxr:RibbonPageGroup.ItemLinks>
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup x:Name="grpPageHomeGroupBy">
+                                <dxr:RibbonPageGroup.ItemLinks>
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToGroupByNone" />
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToGroupByDate" />
+                                    <dxb:BarCheckItemLink BarItemName="biSwitchToGroupByResource" />
+                                </dxr:RibbonPageGroup.ItemLinks>
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup x:Name="grpPageViewTimeScale">
+                                <dxr:RibbonPageGroup.ItemLinks>
+                                    <dxb:BarSubItemLink BarItemName="biSwitchTimeScalesUICommand" />
+                                    <dxb:BarEditItemLink BarItemName="biSetTimeIntervalCount" />
+                                    <dxb:BarSubItemLink BarItemName="biSwitchTimeScalesCaptionUICommand" />
+                                    <dxb:BarSplitButtonItemLink BarItemName="resourceSelector" />
+                                </dxr:RibbonPageGroup.ItemLinks>
+                            </dxr:RibbonPageGroup>
+                        </dxr:RibbonPage>
+                    </dxr:RibbonDefaultPageCategory>
+                    <dxr:RibbonPageCategory x:Name="catAppointmentTools"
+                            Caption="{Binding ConverterParameter=Caption_PageCategoryAppointmentTools, Converter={StaticResource stringIdConverter}, Mode=OneTime, Source={StaticResource stringIdConverter}}"
+                            dxo:AttachedCommand.Command="{Binding ToolsAppointmentCommandGroup, Mode=OneTime, Source={StaticResource commands}}" />
+                </dxr:RibbonControl>
+                <dxsch:SchedulerControl x:Name="scheduler" ShowBorder="False" Margin="0,-18,0,0"
+                        BarManager="{Binding ElementName=barManager1, Mode=OneTime}"
+                        Ribbon="{Binding ElementName=ribbonControl1, Mode=OneTime}"
+                        PopupMenuShowing="scheduler_PopupMenuShowing" FormCustomizationUsingMVVMLocal="True"
+                        EditAppointmentFormShowing="scheduler_EditAppointmentFormShowing">
+                    <dxsch:SchedulerControl.AppointmentFormServiceTemplate>
+                        <DataTemplate>
+                            <ContentControl>
+                                <dx:WindowedDocumentUIService WindowStyle="{StaticResource DialogWindowStyle}"
+                                        WindowStartupLocation="CenterOwner">
+                                    <dx:WindowedDocumentUIService.ViewTemplate>
+                                        <DataTemplate>
+                                            <local:Appointment />
+                                        </DataTemplate>
+                                    </dx:WindowedDocumentUIService.ViewTemplate>
+                                </dx:WindowedDocumentUIService>
+                            </ContentControl>
+                        </DataTemplate>
+                    </dxsch:SchedulerControl.AppointmentFormServiceTemplate>
+                    <dxsch:SchedulerControl.Storage>
+                        <dxsch:SchedulerStorage>
+                            <dxsch:SchedulerStorage.AppointmentStorage>
+                                <dxsch:AppointmentStorage DataSource="{Binding ScheduleM.Appointments}"
+                                        Labels="{Binding ScheduleM.Labels}" CommitIdToDataSource="True">
+                                    <dxsch:AppointmentStorage.Mappings>
+                                        <dxsch:AppointmentMapping Start="StartTime" End="EndTime" Subject="PatientName"
+                                                ResourceId="DoctorId" Label="Label" AppointmentId="Id" />
+                                    </dxsch:AppointmentStorage.Mappings>
+                                    <dxsch:AppointmentStorage.CustomFieldMappings>
+                                        <dxsch:SchedulerCustomFieldMapping Member="PatientTajNumber"
+                                                Name="PatientTajNumber" />
+                                        <dxsch:SchedulerCustomFieldMapping Member="AllreadyVisited"
+                                                Name="AllreadyVisited" />
+                                        <dxsch:SchedulerCustomFieldMapping Member="Notes" Name="Notes" />
+                                    </dxsch:AppointmentStorage.CustomFieldMappings>
+                                </dxsch:AppointmentStorage>
+                            </dxsch:SchedulerStorage.AppointmentStorage>
+                            <dxsch:SchedulerStorage.ResourceStorage>
+                                <dxsch:ResourceStorage DataSource="{Binding ScheduleM.Doctors}" ColorSaving="ArgbColor">
+                                    <dxsch:ResourceStorage.Mappings>
+                                        <dxsch:ResourceMapping Id="Id" Caption="Name" Color="Color" />
+                                    </dxsch:ResourceStorage.Mappings>
+                                </dxsch:ResourceStorage>
+                            </dxsch:SchedulerStorage.ResourceStorage>
+                        </dxsch:SchedulerStorage>
+                    </dxsch:SchedulerControl.Storage>
+                </dxsch:SchedulerControl>
+            </DockPanel>
+        </dxb:BarManager>
+    </DockPanel>
+</UserControl>

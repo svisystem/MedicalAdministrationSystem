@@ -64,7 +64,7 @@
                     SelectedItem="{Binding FacilityDataMDataSet.SelectedCompany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ItemsSource="{Binding FacilityDataMDataSet.Companies, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     IsTextEditable="False" PopupFooterButtons="None" EditValueChanged="selectedCompany_EditValueChanged"
-                    ApplyItemTemplateToSelectedItem="True" Spin="Spin" Padding="3,0,0,0">
+                    ApplyItemTemplateToSelectedItem="True" Spin="Spin" Padding="3,0,0,0" Height="22">
                 <dxe:ComboBoxEdit.ItemTemplate>
                     <DataTemplate>
                         <TextBlock x:Name="tbTitle" Text="{Binding Name}" VerticalAlignment="Center" />

@@ -101,9 +101,8 @@
                             AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
                             ValidateOnEnterKeyPressed="False" NullValueButtonPlacement="None"
                             NullText="Vizsgálat időpontja..." Mask="D" MaskType="DateTimeAdvancingCaret"
-                            MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False"
-                            IsTextEditable="False" MaskIgnoreBlank="False" Spin="Spin"
-                            HorizontalAlignment="Right" Height="22" VerticalAlignment="Center" Width="220">
+                            MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" IsTextEditable="False" MaskIgnoreBlank="False" Spin="Spin"
+                            HorizontalAlignment="Right" Height="22" VerticalAlignment="Center" Width="220" ShowClearButton="False">
                         <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése"
                                 x:Name="examinationDateClear" />
                         <dxe:ButtonInfo GlyphKind="DropDown"

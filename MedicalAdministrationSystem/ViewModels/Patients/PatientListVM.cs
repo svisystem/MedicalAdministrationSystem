@@ -39,7 +39,8 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 me.Database.Connection.Open();
                 PatientListM.FullZipCodeList = me.zipcode_fx.ToList();
                 PatientListM.FullSettlementList = me.settlement_fx.ToList();
-                PatientListM.FullUsersList = me.userdata.Where(a => me.accountdata.Where(b => b.IdAD == a.AccountDataIdUD).Select(b => b.DeletedAD).FirstOrDefault() == false)
+                PatientListM.FullUsersList = me.userdata.Where(a => !me.accountdata.Where(b => b.IdAD == a.AccountDataIdUD).FirstOrDefault().DeletedAD).ToList()
+                    .Where(n => me.priviledges_fx.Where(p => p.IdP == me.accountdata.Where(b => b.IdAD == n.AccountDataIdUD).FirstOrDefault().PriviledgesIdAD).FirstOrDefault().IsDoctorP)
                     .Select(a => new PatientListM.UserList
                     {
                         Id = a.IdUD,

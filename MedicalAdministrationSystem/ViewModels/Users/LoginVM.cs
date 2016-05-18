@@ -44,7 +44,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                         workingConn = true;
                     }
                     config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    if (config.AppSettings.Settings["facilityId"].Value != "") GlobalVM.GlobalM.CompanyId = Convert.ToInt32(config.AppSettings.Settings["facilityId"].Value);
+                    if (config.AppSettings.Settings["facilityId"].Value != string.Empty) GlobalVM.GlobalM.CompanyId = Convert.ToInt32(config.AppSettings.Settings["facilityId"].Value);
                 }
                 catch
                 {
@@ -236,7 +236,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 dialog = new Dialog(false, "Sikeres belépés", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("Üdvözöljük felhasználóink között");
                 dialog.Start();
-                new MenuButtonsEnabled(pr).LoadItem(GlobalVM.StockLayout.usersTBI);
+                new MenuButtonsEnabled(pr).LoadFirst();
             }
             else ConnectionMessage();
         }

@@ -16,11 +16,11 @@
     </UserControl.Resources>
     <dxb:BarManager x:Name="barManager1">
         <DockPanel>
-            <dxr:RibbonControl x:Name="ribbonControl1" DockPanel.Dock="Top" AllowCustomization="False"
-                    AllowMinimizeRibbon="False" RibbonTitleBarVisibility="Collapsed"
+            <dxr:RibbonControl x:Name="ribbonControl1" DockPanel.Dock="Top" AllowMinimizeRibbon="False" RibbonTitleBarVisibility="Collapsed"
                     MinimizationButtonVisibility="Collapsed" ToolbarShowMode="Hide"
                     ToolbarShowCustomizationButton="False" RibbonHeaderVisibility="Collapsed" Padding="0"
-                    Margin="-1,-1,-1,0" HorizontalContentAlignment="Stretch" ShowApplicationButton="False">
+                    Margin="-1,-1,-1,0" HorizontalContentAlignment="Stretch" ShowApplicationButton="False"
+                    AllowCustomization="False">
                 <dxr:RibbonDefaultPageCategory>
                     <dxr:RibbonPage x:Name="pageFile">
                         <dxr:RibbonPageGroup x:Name="grpFileCommon" Caption="{x:Null}">
@@ -84,7 +84,8 @@
                     Ribbon="{Binding ElementName=ribbonControl1, Mode=OneTime}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="-1,-19,-1,-1" ShowCaretInReadOnly="False"
                     PopupMenuShowing="wordEditor_PopupMenuShowing" ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    HorizontalContentAlignment="Stretch" AutoSizeMode="Both" />
+                    HorizontalContentAlignment="Stretch" AutoSizeMode="Both" Loaded="wordEditor_Loaded"
+                    ShowBorder="False" />
         </DockPanel>
         <dxb:BarManager.Items>
             <dxb:BarButtonItem x:Name="biFileNew" Content="Új dokumentum" ItemClick="New"

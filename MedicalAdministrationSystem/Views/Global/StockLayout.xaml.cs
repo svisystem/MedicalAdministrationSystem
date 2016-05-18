@@ -64,14 +64,20 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             Check(sender as TileBarItem, LogOutLoad, Back);
         }
-        protected internal void ScheduleLoad()
+        protected async internal void ScheduleLoad()
         {
-            //TODO
+            await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Collapsed;
+            ScheduleVM schedule = new ScheduleVM();
+            schedule.ScheduleLoad();
+            currentItem = scheduleTBI;
             SelectedPatient();
+            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void PatiensLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             PatientsVM patients = new PatientsVM(earlierItem);
             patients.PatientListLoad();
             currentItem = patientsTBI;
@@ -80,6 +86,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void PatiensLoad(bool modifier)
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             PatientsVM patients = new PatientsVM(earlierItem);
             if (modifier) patients.PatientDetailsLoad();
             else patients.PatientListLoad();
@@ -89,6 +96,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void ExaminationLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             ExaminationVM examination = new ExaminationVM();
             examination.ExaminationsLoad();
             currentItem = examinationTBI;
@@ -97,6 +105,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void ExaminationLoad(bool modifier, bool imported, int ID)
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             ExaminationVM examination = new ExaminationVM();
             if (modifier) examination.ViewLoad(imported, ID);
             else examination.EditLoad(imported, ID);
@@ -106,6 +115,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void EvidenceLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             EvidenceVM evidence = new EvidenceVM();
             evidence.EvidencesLoad();
             currentItem = evidenceTBI;
@@ -114,6 +124,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void EvidenceLoad(bool modifier, bool imported, int ID)
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             EvidenceVM evidence = new EvidenceVM();
             if (modifier) evidence.ViewEvidenceLoad(imported, ID);
             else evidence.EditEvidenceLoad(imported, ID);
@@ -123,18 +134,21 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void LabLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             //TODO
             await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void PrescriptionLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             //TODO
             await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void BillingLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             BillingVM billing = new BillingVM();
             billing.BillsLoad();
             currentItem = billingTBI;
@@ -143,6 +157,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void BillingLoad(int ID)
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             BillingVM billing = new BillingVM();
             billing.ViewBillLoad(ID);
             currentItem = billingTBI;
@@ -151,6 +166,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void StatisticsLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Collapsed;
             //TODO
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
@@ -158,6 +174,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void UsersLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             UsersVM users = new UsersVM();
             if (GlobalVM.GlobalM.AccountID == null) users.LoginLoad();
             else users.DetailsModifyLoad();
@@ -168,6 +185,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void UsersLoad(bool modifier)
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             UsersVM users = new UsersVM();
             if (modifier) users.fromPatient = modifier;
             if (!modifier) users.RegistrationLoad();
@@ -183,6 +201,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void SettingsLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             SettingsVM settings = new SettingsVM();
             if (GlobalVM.GlobalM.Secure) settings.ConnectionLoad();
             else settings.UsersLoad();
@@ -193,6 +212,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void HelpLoad()
         {
             await ViewModels.Utilities.Loading.Show();
+            menu.Visibility = System.Windows.Visibility.Visible;
             //TODO
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();

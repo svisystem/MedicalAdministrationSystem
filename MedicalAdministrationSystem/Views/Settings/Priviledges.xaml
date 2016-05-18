@@ -145,6 +145,18 @@
                                 <dxe:CheckEditSettings />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
+                        <dxg:GridColumn Header="Doktor" MinWidth="50"
+                                Binding="{Binding IsDoctorP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:CheckEditSettings />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Előjegyezhetnek a részére" MinWidth="150"
+                                Binding="{Binding IncludeScheduleP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:CheckEditSettings />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
                         <dxg:GridColumn Header="Felhasználó törlése" MinWidth="120">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>

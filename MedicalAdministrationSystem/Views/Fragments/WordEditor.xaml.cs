@@ -85,7 +85,6 @@ namespace MedicalAdministrationSystem.Views.Fragments
             }
             else wordEditor.Document.Protect("admin");
             wordEditor.Modified = false;
-            wordEditor.ClearUndo();
         }
         private void Close(object sender, ItemClickEventArgs e)
         {
@@ -137,15 +136,13 @@ namespace MedicalAdministrationSystem.Views.Fragments
 
         private void wordEditor_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
         {
-            for (int i = e.Menu.ItemLinks.Count - 1; i >= 0; i--)
-                if (e.Menu.ItemLinks[i] is BarItemLink)
-                {
-                    RichEditMenuItem item = ((BarItemLink)((e.Menu.ItemLinks[i]))).Item as RichEditMenuItem;
-                    if (item != null)
-                        if ((RichEditCommandId.NewComment == ((RichEditUICommand)item.Command).CommandId) ||
-                           (RichEditCommandId.DeleteOneComment == ((RichEditUICommand)item.Command).CommandId))
-                            e.Menu.ItemLinks.Remove(e.Menu.ItemLinks[i]);
-                }
+            e.Menu.ItemLinks.Clear();
+        }
+
+        private void wordEditor_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            wordEditor.ClearUndo();
+            biEditUndo.IsEnabled = false;
         }
     }
 }

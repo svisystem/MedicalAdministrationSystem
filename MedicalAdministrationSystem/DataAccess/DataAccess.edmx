@@ -254,6 +254,8 @@
           <Property Name="HelpP" Type="bool" Nullable="false" />
           <Property Name="LogoutP" Type="bool" Nullable="false" />
           <Property Name="AllSeeP" Type="bool" Nullable="false" />
+          <Property Name="IsDoctorP" Type="bool" Nullable="false" />
+          <Property Name="IncludeScheduleP" Type="bool" Nullable="false" />
         </EntityType>
         <EntityType Name="scheduledata">
           <Key>
@@ -1616,6 +1618,8 @@
           <Property Name="HelpP" Type="Boolean" Nullable="false" />
           <Property Name="LogoutP" Type="Boolean" Nullable="false" />
           <Property Name="AllSeeP" Type="Boolean" Nullable="false" />
+          <Property Name="IsDoctorP" Type="Boolean" Nullable="false" />
+          <Property Name="IncludeScheduleP" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="accountdata" Relationship="Self.fk_UserData_PriviledgeST1" FromRole="priviledges_fx" ToRole="accountdata" />
         </EntityType>
         <EntityType Name="scheduledata">
@@ -2948,6 +2952,8 @@
                 <ScalarProperty Name="HelpP" ColumnName="HelpP" />
                 <ScalarProperty Name="LogoutP" ColumnName="LogoutP" />
                 <ScalarProperty Name="AllSeeP" ColumnName="AllSeeP" />
+                <ScalarProperty Name="IsDoctorP" ColumnName="IsDoctorP" />
+                <ScalarProperty Name="IncludeScheduleP" ColumnName="IncludeScheduleP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -43,7 +43,7 @@
             <dxlc:LayoutItem Label="Felhasználónév:" Padding="10,0,0,0">
                 <dxe:ButtonEdit x:Name="userName" EditValue="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
                     AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
-                    NullText=" Írja be felhasználónevét" AllowNullInput="True" Margin="0,0,1,0">
+                    NullText="Írja be felhasználónevét" AllowNullInput="True" Margin="0,0,1,0">
                     <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
                 </dxe:ButtonEdit>
             </dxlc:LayoutItem>
@@ -77,7 +77,7 @@
                 <dxe:ComboBoxEdit Margin="0,0,1,0" x:Name="priviledges" AutoComplete="True" 
                     ItemsSource="{Binding PriviledgesList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding PriviledgesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    NullText=" Válasszon jogosultságot" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" 
+                    NullText="Válasszon jogosultságot" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" 
                     AllowDefaultButton="True" NullValueButtonPlacement="EditBox"/>
             </dxlc:LayoutItem>
             <dxlc:LayoutItem HorizontalAlignment="Center">

@@ -17,6 +17,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 lastState = e;
                 (sender as dynamic).EditValue = e.Value;
             }
+            else if (lastState.Value.Equals(e.Value)) lastState = null;
             button.IsEnabled = (validatorClass as FormValidate).Validate(validatorClass);
         }
         protected internal virtual void ForceBindingWithoutEnabledCheck(object sender, ValidationEventArgs e)
@@ -26,6 +27,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 lastState = e;
                 (sender as dynamic).EditValue = e.Value;
             }
+            else if (lastState.Value.Equals(e.Value)) lastState = null;
         }
         protected internal void TextChanged(object sender, RoutedEventArgs e)
         {
@@ -39,18 +41,15 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         protected internal void ButtonEditErase(object sender, RoutedEventArgs e)
         {
-            var parent = LayoutHelper.FindParentObject<ButtonEdit>(sender as DependencyObject);
-            parent.Clear();
+            LayoutHelper.FindParentObject<ButtonEdit>(sender as DependencyObject).Clear();
         }
         protected internal void ComboBoxEditErase(object sender, RoutedEventArgs e)
         {
-            var parent = LayoutHelper.FindParentObject<ComboBoxEdit>(sender as DependencyObject);
-            parent.Clear();
+            LayoutHelper.FindParentObject<ComboBoxEdit>(sender as DependencyObject).Clear();
         }
         protected internal void DateEditErase(object sender, RoutedEventArgs e)
         {
-            var parent = LayoutHelper.FindParentObject<DateEdit>(sender as DependencyObject);
-            parent.Clear();
+           LayoutHelper.FindParentObject<DateEdit>(sender as DependencyObject).Clear();
         }
         protected internal void MaskedNotNullValidateForString(object sender, ValidationEventArgs e)
         {

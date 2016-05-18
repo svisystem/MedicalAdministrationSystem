@@ -55,6 +55,8 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                         StatisticP = row.StatisticP,
                         SettingP = row.SettingP,
                         AllSeeP = row.AllSeeP,
+                        IsDoctorP = row.IsDoctorP,
+                        IncludeScheduleP = row.IncludeScheduleP,
                         New = false,
                         Enabled = true
                     });
@@ -129,6 +131,8 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             pr.StatisticP = PriviledgesM.Priviledges[i].StatisticP;
                             pr.SettingP = PriviledgesM.Priviledges[i].SettingP;
                             pr.AllSeeP = PriviledgesM.Priviledges[i].AllSeeP;
+                            pr.IsDoctorP = PriviledgesM.Priviledges[i].IsDoctorP;
+                            pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
                             me.priviledges_fx.Add(pr);
                             me.SaveChanges();
                         }
@@ -188,6 +192,16 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             if (!PriviledgesM.Priviledges[i].AllSeeP.Equals(pr.AllSeeP))
                             {
                                 pr.AllSeeP = PriviledgesM.Priviledges[i].AllSeeP;
+                                me.SaveChanges();
+                            }
+                            if (!PriviledgesM.Priviledges[i].IsDoctorP.Equals(pr.IsDoctorP))
+                            {
+                                pr.IsDoctorP = PriviledgesM.Priviledges[i].IsDoctorP;
+                                me.SaveChanges();
+                            }
+                            if (!PriviledgesM.Priviledges[i].IncludeScheduleP.Equals(pr.IncludeScheduleP))
+                            {
+                                pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
                                 me.SaveChanges();
                             }
                         }

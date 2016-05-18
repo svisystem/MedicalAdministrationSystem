@@ -2,7 +2,6 @@
 using MedicalAdministrationSystem.Views.Global;
 using MedicalAdministrationSystem.Views.Settings;
 using System;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.ViewModels.MenuItem

@@ -95,8 +95,8 @@
                     IsTabStop="False" />
         </dxnav:TileBar>
         <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
-        <DockPanel x:Name="dock" LastChildFill="True">
-            <ScrollViewer DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Right"
+        <DockPanel LastChildFill="True">
+            <ScrollViewer DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Right" x:Name="menu"
                     VerticalAlignment="Top">
                 <StackPanel x:Name="verticalMenu" Orientation="Vertical" Width="160" />
             </ScrollViewer>

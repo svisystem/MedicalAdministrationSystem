@@ -42,7 +42,7 @@
             <dxlc:LayoutGroup Orientation="Horizontal" ItemSpace="10">
                 <dxlc:LayoutGroup Header="Személyes adatok" View="GroupBox" Orientation="Vertical">
                     <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
-                        <dxlc:LayoutItem Label="Felhasználó neve:" Padding="10,0,0,0">
+                        <dxlc:LayoutItem Label="Páciens neve:" Padding="10,0,0,0">
                             <dxe:ButtonEdit x:Name="userName" EditValue="{Binding PatientDetailsMViewElements.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
                                 Mask="(([A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]{1,4})\.?\ )*[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+(-[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)*(\ [A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)+" 
@@ -242,7 +242,7 @@
             </dxlc:LayoutGroup>
             <dxlc:LayoutGroup Header="Megjegyzések" View="GroupBox">
                 <dxe:TextEdit Margin="-12" EditValue="{Binding PatientDetailsMViewElements.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                    TextWrapping="WrapWithOverflow" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" MinHeight="60" MaxHeight="200" AcceptsReturn="True"/>
+                    TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" MinHeight="60" MaxHeight="200" AcceptsReturn="True"/>
             </dxlc:LayoutGroup>
             <dxlc:LayoutItem HorizontalAlignment="Center">
                 <Button x:Name="modify" Content="Adatok mentése" Margin="0,15,0,5" Height="30" KeyDown="ModifyWithEnter" Click="ModifyExecute"/>

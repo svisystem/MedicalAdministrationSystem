@@ -6,7 +6,7 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Global" 
     xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-    x:Class="MedicalAdministrationSystem.Views.Global.DialogBase" Focusable="False">
+    x:Class="MedicalAdministrationSystem.Views.Global.DialogBase" Focusable="False" SnapsToDevicePixels="True">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25*" />

@@ -35,6 +35,8 @@ namespace MedicalAdministrationSystem.DataAccess
         public bool HelpP { get; set; }
         public bool LogoutP { get; set; }
         public bool AllSeeP { get; set; }
+        public bool IsDoctorP { get; set; }
+        public bool IncludeScheduleP { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<accountdata> accountdata { get; set; }
