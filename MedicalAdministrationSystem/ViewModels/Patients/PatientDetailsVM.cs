@@ -89,10 +89,10 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     {
                         me.patientdata.Add(selected);
                         me.SaveChanges();
-                        int id = me.patientdata.Where(a => a.NamePD == selected.NamePD).Select(a => a.IdPD).Single();
+
                         belong_st bt = new belong_st();
                         bt.IdUD = (int)GlobalVM.GlobalM.UserID;
-                        bt.IdPD = id;
+                        bt.IdPD = selected.IdPD;
                         me.belong_st.Add(bt);
                     }
                     me.SaveChanges();

@@ -134,10 +134,14 @@
                         LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_32x32.png"
                         Content="Időpont szerkesztése"
                         Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_16x16.png" />
+                <dxb:BarButtonItem x:Name="biRegistratePatient" Content="Páciens felvétele"
+                        LargeGlyph="{dx:DXImageOffice2013 Image=NewContact_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=NewContact_16x16.png}" IsEnabled="False" />
                 <dxb:BarButtonItem x:Name="biDeleteAppointment" CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding DeleteAppointment, Mode=OneTime, Source={StaticResource commands}}"
                         Content="Időpont törlése" LargeGlyph="{dx:DXImageOffice2013 Image=DeleteList_32x32.png}"
-                        Glyph="{dx:DXImageOffice2013 Image=DeleteList_16x16.png}" />
+                        Glyph="{dx:DXImageOffice2013 Image=DeleteList_16x16.png}"
+                        ItemClick="biDeleteAppointment_ItemClick" />
                 <dxschdui:ChangeLabelBarItem x:Name="biChangeAppointmentLabel"
                         CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding ChangeAppointmentLabel, Mode=OneTime, Source={StaticResource commands}}"
@@ -157,7 +161,8 @@
                             <dxr:RibbonPageGroup>
                                 <dxb:BarButtonItem x:Name="biRefresh"
                                         LargeGlyph="{dx:DXImageOffice2013 Image=Refresh_32x32.png}"
-                                        Glyph="{dx:DXImageOffice2013 Image=Refresh_16x16.png}" Content="Frissítés" />
+                                        Glyph="{dx:DXImageOffice2013 Image=Refresh_16x16.png}" Content="Frissítés"
+                                        ItemClick="biRefresh_ItemClick" />
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup>
                                 <dxr:RibbonPageGroup.ItemLinks>
@@ -167,6 +172,7 @@
                                     <dxb:BarSubItemLink BarItemName="biDeleteAppointmentSeriesGroup" />
                                     <dxb:BarButtonItemLink BarItemName="biDeleteAppointment" />
                                     <dxschdui:ColorablePopupMenuBasedBarItemLink BarItemName="biChangeAppointmentLabel" />
+                                    <dxb:BarButtonItemLink BarItemName="biRegistratePatient" />
                                 </dxr:RibbonPageGroup.ItemLinks>
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup x:Name="grpPageHomeViewNavigator">
@@ -213,7 +219,8 @@
                         BarManager="{Binding ElementName=barManager1, Mode=OneTime}"
                         Ribbon="{Binding ElementName=ribbonControl1, Mode=OneTime}"
                         PopupMenuShowing="scheduler_PopupMenuShowing" FormCustomizationUsingMVVMLocal="True"
-                        EditAppointmentFormShowing="scheduler_EditAppointmentFormShowing">
+                        EditAppointmentFormShowing="scheduler_EditAppointmentFormShowing"
+                        SelectionChanged="scheduler_SelectionChanged" Drop="scheduler_Drop">
                     <dxsch:SchedulerControl.AppointmentFormServiceTemplate>
                         <DataTemplate>
                             <ContentControl>
@@ -232,7 +239,7 @@
                         <dxsch:SchedulerStorage>
                             <dxsch:SchedulerStorage.AppointmentStorage>
                                 <dxsch:AppointmentStorage DataSource="{Binding ScheduleM.Appointments}"
-                                        Labels="{Binding ScheduleM.Labels}" CommitIdToDataSource="True">
+                                        Labels="{Binding ScheduleM.Labels}" ResourceSharing="True">
                                     <dxsch:AppointmentStorage.Mappings>
                                         <dxsch:AppointmentMapping Start="StartTime" End="EndTime" Subject="PatientName"
                                                 ResourceId="DoctorId" Label="Label" AppointmentId="Id" />
@@ -240,8 +247,8 @@
                                     <dxsch:AppointmentStorage.CustomFieldMappings>
                                         <dxsch:SchedulerCustomFieldMapping Member="PatientTajNumber"
                                                 Name="PatientTajNumber" />
-                                        <dxsch:SchedulerCustomFieldMapping Member="AllreadyVisited"
-                                                Name="AllreadyVisited" />
+                                        <dxsch:SchedulerCustomFieldMapping Member="StillNotVisited"
+                                                Name="StillNotVisited" />
                                         <dxsch:SchedulerCustomFieldMapping Member="Notes" Name="Notes" />
                                     </dxsch:AppointmentStorage.CustomFieldMappings>
                                 </dxsch:AppointmentStorage>

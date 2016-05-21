@@ -224,6 +224,9 @@
     <Compile Include="DataAccess\importedexaminationeachimportedevidence_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\newperson.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\patientdata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
@@ -231,6 +234,9 @@
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\scheduledata.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\scheduleperson_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\settlementzipcode_st.cs">
@@ -728,7 +734,6 @@
       <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\9b8bc62a-3233-4b16-9d80-27b04fb6b4ad.pdf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -780,7 +785,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Icons\Logout.png" />
   </ItemGroup>
@@ -802,6 +806,9 @@
     <Resource Include="Icons\pdf.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\ContentAutoArrange_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="DataAccess\DataAccess.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataAccess.edmx</DependentUpon>
@@ -812,7 +819,6 @@
       <DependentUpon>DataAccess.edmx</DependentUpon>
       <LastGenOutput>DataAccess.cs</LastGenOutput>
     </Content>
-    <Resource Include="Icons\ContentAutoArrange_32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

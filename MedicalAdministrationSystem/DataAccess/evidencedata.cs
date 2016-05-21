@@ -25,7 +25,6 @@ namespace MedicalAdministrationSystem.DataAccess
         public int IdED { get; set; }
         public int PatientIdED { get; set; }
         public int UserDataIdED { get; set; }
-        public Nullable<int> ScheduleIdED { get; set; }
         public System.DateTime DateTimeED { get; set; }
         public string CodeED { get; set; }
         public int CompanyIdED { get; set; }
@@ -33,7 +32,6 @@ namespace MedicalAdministrationSystem.DataAccess
         public virtual companydata companydata { get; set; }
         public virtual userdata userdata { get; set; }
         public virtual patientdata patientdata { get; set; }
-        public virtual scheduledata scheduledata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<evidencedatadocuments_st> evidencedatadocuments_st { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

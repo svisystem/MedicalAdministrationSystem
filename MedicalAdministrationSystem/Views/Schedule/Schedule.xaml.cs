@@ -3,6 +3,7 @@ using DevExpress.Xpf.Scheduler;
 using DevExpress.XtraScheduler;
 using MedicalAdministrationSystem.ViewModels.Schedule;
 using MedicalAdministrationSystem.ViewModels.Utilities;
+using System;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.Views.Schedule
@@ -52,6 +53,31 @@ namespace MedicalAdministrationSystem.Views.Schedule
         private void scheduler_EditAppointmentFormShowing(object sender, EditAppointmentFormEventArgs e)
         {
             e.ViewModel = OwnAppointmentFormViewModel.Create(sender as SchedulerControl, e.Appointment, e.ReadOnly, e.OpenRecurrenceDialog, ScheduleVM.Patients);
+        }
+        private void scheduler_SelectionChanged(object sender, EventArgs e)
+        {
+            if (scheduler.SelectedAppointments.Count == 1)
+            {
+               //scheduler.SelectedAppointments[0].Id;
+            }
+            //   biRegistratePatient.IsEnabled = true;
+            //else biRegistratePatient.IsEnabled = false;
+        }
+
+        private void biDeleteAppointment_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ScheduleVM.EraseInt = (int)scheduler.SelectedAppointments[0].Id;
+            //ScheduleVM.EraseMethod.RunWorkerAsync();
+        }
+
+        private void biRefresh_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ScheduleVM.Refresh();
+        }
+
+        private void scheduler_Drop(object sender, System.Windows.DragEventArgs e)
+        {
+
         }
     }
 }

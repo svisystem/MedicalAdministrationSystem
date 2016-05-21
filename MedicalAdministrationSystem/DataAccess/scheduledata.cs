@@ -14,23 +14,17 @@ namespace MedicalAdministrationSystem.DataAccess
     
     public partial class scheduledata
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public scheduledata()
-        {
-            this.evidencedata = new HashSet<evidencedata>();
-        }
-    
         public int IdSD { get; set; }
+        public bool StillNotVisitedSD { get; set; }
         public int PatientIdSD { get; set; }
-        public int DoctorIdSD { get; set; }
-        public System.TimeSpan StartSD { get; set; }
-        public System.TimeSpan FinishSD { get; set; }
-        public Nullable<int> StatusSD { get; set; }
+        public System.DateTime StartSD { get; set; }
+        public System.DateTime FinishSD { get; set; }
+        public Nullable<int> DoctorIdSD { get; set; }
+        public string NotesSD { get; set; }
+        public int StatusSD { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<evidencedata> evidencedata { get; set; }
-        public virtual patientdata patientdata { get; set; }
         public virtual userdata userdata { get; set; }
+        public virtual scheduleperson_st scheduleperson_st { get; set; }
         public virtual status_fx status_fx { get; set; }
     }
 }

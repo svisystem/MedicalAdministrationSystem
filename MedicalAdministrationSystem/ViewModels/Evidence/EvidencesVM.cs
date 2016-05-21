@@ -46,8 +46,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             Code = ex.CodeED,
                             Date = ex.DateTimeED,
                             DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdED).FirstOrDefault().NameUD,
-                            DocCount = me.evidencedatadocuments_st.Where(exd => exd.IdED == ex.IdED).Count(),
-                            Scheduled = ex.ScheduleIdED != null
+                            DocCount = me.evidencedatadocuments_st.Where(exd => exd.IdED == ex.IdED).Count()
                         }))
                         EvidencesM.Evidences.Add(item);
 
@@ -60,8 +59,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             Code = ex.CodeIED,
                             Date = ex.DateTimeIED,
                             DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdIED).FirstOrDefault().NameUD,
-                            DocCount = me.importedevidencedatadocuments_st.Where(exd => exd.IdIED == ex.IdIED).Count(),
-                            Scheduled = false
+                            DocCount = me.importedevidencedatadocuments_st.Where(exd => exd.IdIED == ex.IdIED).Count()
                         }))
                         EvidencesM.Evidences.Add(item);
 

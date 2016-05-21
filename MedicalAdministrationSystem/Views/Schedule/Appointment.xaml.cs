@@ -23,7 +23,6 @@ namespace MedicalAdministrationSystem.Views.Schedule
             InitializeComponent();
             validatorClass = appointmentValid;
             button = btnOk;
-            ConnectValidators();
             grid.Width = GlobalVM.MainWindow.ActualWidth;
             GlobalVM.MainWindow.ShowMetroDialogAsync(CustomDialog);
             GlobalVM.MainWindow.ResizeMode = System.Windows.ResizeMode.NoResize;
@@ -154,6 +153,7 @@ namespace MedicalAdministrationSystem.Views.Schedule
             Patients = (this.DataContext as dynamic).Patients;
             patientName.ItemsSource = Patients.Select(p => p.Name).ToList();
             AppointmentLenght = (DateTime)endDateTime.EditValue - (DateTime)startDateTime.EditValue;
+            ConnectValidators();
         }
 
         private void patientNameErase(object sender, System.Windows.RoutedEventArgs e)

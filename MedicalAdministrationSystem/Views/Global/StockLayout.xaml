@@ -96,11 +96,13 @@
         </dxnav:TileBar>
         <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
         <DockPanel LastChildFill="True">
-            <ScrollViewer DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Right" x:Name="menu"
-                    VerticalAlignment="Top">
-                <StackPanel x:Name="verticalMenu" Orientation="Vertical" Width="160" />
-            </ScrollViewer>
-            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <DockPanel DockPanel.Dock="Left" x:Name="menu" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+                    <StackPanel x:Name="verticalMenu" Orientation="Vertical" Width="160" />
+                </ScrollViewer>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            </DockPanel>
             <DockPanel LastChildFill="True">
                 <ContentControl DockPanel.Dock="Top" x:Name="headerContent" IsTabStop="False" />
                 <ContentControl x:Name="actualContent" IsTabStop="False" />

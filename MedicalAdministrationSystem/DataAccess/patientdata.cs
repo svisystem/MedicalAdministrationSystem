@@ -23,7 +23,7 @@ namespace MedicalAdministrationSystem.DataAccess
             this.examinationdata = new HashSet<examinationdata>();
             this.importedevidencedata = new HashSet<importedevidencedata>();
             this.importedexaminationdata = new HashSet<importedexaminationdata>();
-            this.scheduledata = new HashSet<scheduledata>();
+            this.scheduleperson_st = new HashSet<scheduleperson_st>();
         }
     
         public int IdPD { get; set; }
@@ -66,6 +66,6 @@ namespace MedicalAdministrationSystem.DataAccess
         public virtual zipcode_fx zipcode_fx { get; set; }
         public virtual zipcode_fx zipcode_fx1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<scheduledata> scheduledata { get; set; }
+        public virtual ICollection<scheduleperson_st> scheduleperson_st { get; set; }
     }
 }

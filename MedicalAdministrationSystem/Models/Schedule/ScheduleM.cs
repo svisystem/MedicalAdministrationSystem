@@ -112,7 +112,7 @@ namespace MedicalAdministrationSystem.Models.Schedule
         public class Appointment : NotifyPropertyChanged
         {
             private int _Id;
-            private bool _AllreadyVisited;
+            private bool _StillNotVisited;
             private string _PatientName;
             private string _PatientTajNumber;
             private DateTime _StartTime;
@@ -120,6 +120,7 @@ namespace MedicalAdministrationSystem.Models.Schedule
             private int _DoctorId;
             private string _Notes;
             private int _Label;
+            private bool _StoreInDB;
             public int Id
             {
                 get
@@ -133,17 +134,17 @@ namespace MedicalAdministrationSystem.Models.Schedule
                     OnPropertyChanged("Id");
                 }
             }
-            public bool AllreadyVisited
+            public bool StillNotVisited
             {
                 get
                 {
-                    return _AllreadyVisited;
+                    return _StillNotVisited;
                 }
                 set
                 {
-                    if (_AllreadyVisited == value) return;
-                    _AllreadyVisited = value;
-                    OnPropertyChanged("AllreadyVisited");
+                    if (_StillNotVisited == value) return;
+                    _StillNotVisited = value;
+                    OnPropertyChanged("StillNotVisited");
                 }
             }
             public string PatientName
@@ -235,6 +236,19 @@ namespace MedicalAdministrationSystem.Models.Schedule
                     if (_Label == value) return;
                     _Label = value;
                     OnPropertyChanged("Label");
+                }
+            }
+            public bool StoreInDB
+            {
+                get
+                {
+                    return _StoreInDB;
+                }
+                set
+                {
+                    if (_StoreInDB == value) return;
+                    _StoreInDB = value;
+                    OnPropertyChanged("StoreInDB");
                 }
             }
         }

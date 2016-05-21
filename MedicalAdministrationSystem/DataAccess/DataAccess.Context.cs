@@ -45,9 +45,11 @@ namespace MedicalAdministrationSystem.DataAccess
         public virtual DbSet<importedexaminationdatadocuments_st> importedexaminationdatadocuments_st { get; set; }
         public virtual DbSet<importedexaminationeachevidence_st> importedexaminationeachevidence_st { get; set; }
         public virtual DbSet<importedexaminationeachimportedevidence_st> importedexaminationeachimportedevidence_st { get; set; }
+        public virtual DbSet<newperson> newperson { get; set; }
         public virtual DbSet<patientdata> patientdata { get; set; }
         public virtual DbSet<priviledges_fx> priviledges_fx { get; set; }
         public virtual DbSet<scheduledata> scheduledata { get; set; }
+        public virtual DbSet<scheduleperson_st> scheduleperson_st { get; set; }
         public virtual DbSet<settlement_fx> settlement_fx { get; set; }
         public virtual DbSet<settlementzipcode_st> settlementzipcode_st { get; set; }
         public virtual DbSet<status_fx> status_fx { get; set; }

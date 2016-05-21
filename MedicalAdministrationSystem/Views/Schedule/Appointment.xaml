@@ -70,7 +70,7 @@
                                 IsHitTestVisible="False">Még nem járt itt:</TextBlock>
                         <dxe:CheckEdit x:Name="visited" VerticalAlignment="Center" HorizontalAlignment="Right"
                                 DockPanel.Dock="Right"
-                                EditValue="{Binding CustomFields[AllreadyVisited], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                EditValue="{Binding CustomFields[StillNotVisited], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Loaded="visited_Loaded" IsHitTestVisible="False" />
                     </DockPanel>
                 </Grid>
