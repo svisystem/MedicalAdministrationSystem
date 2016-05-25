@@ -12,7 +12,10 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         private List<Item> menuItems { get; set; }
         protected internal bool? modifier = null;
         protected internal bool? imported = null;
-        protected internal int? ID = null;
+        protected internal int? Id = null;
+        protected internal string Name;
+        protected internal string Taj;
+        protected internal Action<int> Save;
 
         public MenuButtonsEnabled(priviledges_fx priviledges)
         {
@@ -89,25 +92,25 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                         GlobalVM.StockLayout.ScheduleLoad();
                         break;
                     case "patientsTBI":
-                        if (modifier == true) GlobalVM.StockLayout.PatiensLoad(true);
+                        if (modifier == true) GlobalVM.StockLayout.PatiensLoad(true, Name, Taj, Id);
                         else GlobalVM.StockLayout.PatiensLoad();
                         break;
                     case "examinationTBI":
                         if (modifier == null) GlobalVM.StockLayout.ExaminationLoad();
-                        else GlobalVM.StockLayout.ExaminationLoad((bool)modifier, (bool)imported, (int)ID);
+                        else GlobalVM.StockLayout.ExaminationLoad((bool)modifier, (bool)imported, (int)Id);
                         break;
                     case "labTBI":
                         GlobalVM.StockLayout.LabLoad();
                         break;
                     case "evidenceTBI":
                         if (modifier == null) GlobalVM.StockLayout.EvidenceLoad();
-                        else GlobalVM.StockLayout.EvidenceLoad((bool)modifier, (bool)imported, (int)ID);
+                        else GlobalVM.StockLayout.EvidenceLoad((bool)modifier, (bool)imported, (int)Id);
                         break;
                     case "prescriptionTBI":
                         GlobalVM.StockLayout.PrescriptionLoad();
                         break;
                     case "billingTBI":
-                        if (ID != null) GlobalVM.StockLayout.BillingLoad((int)ID);
+                        if (Id != null) GlobalVM.StockLayout.BillingLoad((int)Id);
                         else GlobalVM.StockLayout.BillingLoad();
                         break;
                     case "statisticsTBI":

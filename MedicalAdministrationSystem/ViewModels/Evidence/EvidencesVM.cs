@@ -258,7 +258,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             new MenuButtonsEnabled()
             {
                 modifier = which,
-                ID = EvidencesM.SelectedEvidence.Id,
+                Id = EvidencesM.SelectedEvidence.Id,
                 imported = EvidencesM.SelectedEvidence.Imported
             }.LoadItem(GlobalVM.StockLayout.evidenceTBI);
         }

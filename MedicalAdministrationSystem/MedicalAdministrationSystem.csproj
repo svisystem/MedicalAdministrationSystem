@@ -808,6 +808,7 @@
   <ItemGroup>
     <Resource Include="Icons\ContentAutoArrange_32x32.png" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="DataAccess\DataAccess.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

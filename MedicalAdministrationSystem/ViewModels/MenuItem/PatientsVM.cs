@@ -3,6 +3,7 @@ using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Global;
 using MedicalAdministrationSystem.Views.Patients;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -98,22 +99,22 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         private void PatientDetailsView(object sender, EventArgs e)
         {
-            Check((sender as Button).Parent as StockVerticalMenuItem, PatientDetailsLoad, Back);
+            Check((sender as Button).Parent as StockVerticalMenuItem, () => PatientDetailsLoad(), Back);
         }
         protected internal async void NewPatientLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new PatientDetails(true)), newPatient);
+            await ViewLoad(new Func<UserControl>(() => new PatientDetails(true)), newPatient);
         }
         protected internal async void PatientListLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new PatientList(Selected)), patientList);
+            await ViewLoad(new Func<UserControl>(() => new PatientList(Selected)), patientList);
         }
-        protected internal async void PatientDetailsLoad()
+        protected internal async void PatientDetailsLoad(string Name = null, string Taj = null, int? Id = null)
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new PatientDetails(false)), patientDetails);
+            await ViewLoad(new Func<UserControl>(() => new PatientDetails(false, Name, Taj, Id)), patientDetails);
         }
     }
 }

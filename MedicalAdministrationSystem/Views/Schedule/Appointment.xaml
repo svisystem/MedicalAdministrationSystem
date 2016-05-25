@@ -64,7 +64,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Időpont" Margin="0,0,0,10" FontSize="18" />
                 <Grid Grid.Column="0" Grid.Row="1">
-                    <Button Opacity="0" VerticalAlignment="Center" Height="23" Click="Button_Click" />
+                    <Button Opacity="0" VerticalAlignment="Center" Height="23" Click="Button_Click" x:Name="change"/>
                     <DockPanel Margin="0,0,10,0">
                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0,0,5,0"
                                 IsHitTestVisible="False">Még nem járt itt:</TextBlock>
@@ -87,11 +87,9 @@
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Páciens neve:" Margin="0,0,10,5"
                                 VerticalAlignment="Center" />
                         <dxe:ComboBoxEdit Grid.Row="0" Grid.Column="1" x:Name="patientName" Margin="0,0,0,5"
-                                EditValue="{Binding Subject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                NullText="Páciens neve..." InvalidValueBehavior="AllowLeaveEditor"
-                                ValidateOnEnterKeyPressed="False" VerticalContentAlignment="Top" Padding="0"
-                                AllowDefaultButton="False" AllowNullInput="True" AutoComplete="True"
-                                IncrementalFiltering="True">
+                                VerticalContentAlignment="Top" NullText="Páciens neve..."
+                                InvalidValueBehavior="AllowLeaveEditor" AutoComplete="True" IncrementalFiltering="True"
+                                ValidateOnEnterKeyPressed="False" Padding="0" AllowDefaultButton="False">
                             <dxe:ComboBoxEdit.Buttons>
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="patientNameErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown" x:Name="nameDropDown"
@@ -138,12 +136,11 @@
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Kihez jelentkezik be:" Margin="0,0,10,10"
                         VerticalAlignment="Center" HorizontalAlignment="Left" />
                 <dxsch:AppointmentResourceEdit Grid.Row="4" Margin="0,0,0,10" Grid.Column="1"
-                        SchedulerControl="{Binding Control}"
-                        EditValue="{Binding ResourceId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        MinHeight="22" />
+                        SchedulerControl="{Binding Control}" x:Name="doctors"
+                        EditValue="{Binding ResourceId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Megjegyzések:" Margin="0,0,10,10"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <dxe:TextEdit Grid.Row="5" Grid.Column="1" Height="50" Margin="0,0,0,10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <dxe:TextEdit Grid.Row="5" Grid.Column="1" Height="50" Margin="0,0,0,10" x:Name="notes"
                         EditValue="{Binding CustomFields[Notes], Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Left"
                         VerticalContentAlignment="Top" />

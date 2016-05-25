@@ -2,6 +2,8 @@
 using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Schedule;
 using MedicalAdministrationSystem.ViewModels.Utilities;
+using MedicalAdministrationSystem.Views.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -23,8 +25,10 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
         }
         public ScheduleM ScheduleM { get; set; }
         protected internal BackgroundWorker Loading { get; set; }
-        protected internal ScheduleVM()
+        private Action<bool> RegistrateEnabled { get; set; }
+        protected internal ScheduleVM(Action<bool> RegistrateEnabled)
         {
+            this.RegistrateEnabled = RegistrateEnabled;
             ScheduleM = new ScheduleM();
             Loading = new BackgroundWorker();
             Loading.DoWork += LoadingModel;
@@ -42,17 +46,18 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             label = ScheduleM.Labels.CreateNewLabel(5, "Új időpontot kért", "Új időpontot kért", (Color)ColorConverter.ConvertFromString("#FF9FD3F5"));
             ScheduleM.Labels.Add(label);
 
-            EraseMethod.DoWork += EraseDoWork;
-            EraseMethod.RunWorkerCompleted += EraseComplete;
+            Erase.DoWork += EraseDoWork;
+            Erase.RunWorkerCompleted += EraseComplete;
             Create.DoWork += CreateDoWork;
             Create.RunWorkerCompleted += CreateComplete;
+            Modify.DoWork += ModifyDoWork;
+            Modify.RunWorkerCompleted += ModifyComplete;
         }
-        List<ScheduleM.Doctor> temp = new List<ScheduleM.Doctor>();
+        List<ScheduleM.Doctor> tempdoc = new List<ScheduleM.Doctor>();
         ObservableCollection<ScheduleM.Appointment> tempApp = new ObservableCollection<ScheduleM.Appointment>();
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
-            ScheduleM.Appointments.CollectionChanged -= CollectionChangedMethod;
-            temp.Clear();
+            tempdoc.Clear();
             tempApp.Clear();
 
             try
@@ -67,7 +72,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                         Id = a.IdUD,
                         Name = a.NameUD,
                     }))
-                    temp.Add(doctor);
+                    tempdoc.Add(doctor);
 
                 foreach (ScheduleM.Patient patient in me.patientdata.OrderBy(p => p.NamePD).Select(p => new ScheduleM.Patient()
                 {
@@ -83,7 +88,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                         ScheduleM.Appointment app = new ScheduleM.Appointment()
                         {
                             StillNotVisited = appointment.StillNotVisitedSD,
-                            DoctorId = appointment.DoctorIdSD != null ? (int)appointment.DoctorIdSD : 0,
+                            DoctorId = appointment.DoctorIdSD,
                             EndTime = appointment.FinishSD,
                             Id = appointment.IdSD,
                             Label = appointment.StatusSD,
@@ -114,10 +119,12 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
         {
             if (workingConn)
             {
-                ColorFixer(false);
                 foreach (ScheduleM.Appointment a in tempApp)
+                {
+                    a.AcceptChanges();
                     ScheduleM.Appointments.Add(a);
-                //ScheduleM.Appointments.CollectionChanged += CollectionChangedMethod;
+                }
+                ColorFixer(false);
                 await Utilities.Loading.Hide();
             }
             else ConnectionMessage();
@@ -125,11 +132,92 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
         protected async internal void Refresh()
         {
             await Utilities.Loading.Show();
-            runOnce = false;
             ScheduleM.Appointments.Clear();
             ScheduleM.Doctors.Clear();
             ScheduleM.Patients.Clear();
+            runOnce = false;
             Loading.RunWorkerAsync();
+        }
+        protected internal void Modified()
+        {
+            if (ScheduleM.Appointments.Any(s => s.IsChanged)) Modify.RunWorkerAsync();
+        }
+        private BackgroundWorker Modify = new BackgroundWorker();
+        private void ModifyDoWork(object sender, DoWorkEventArgs e)
+        {
+            foreach (ScheduleM.Appointment appointment in
+                ScheduleM.Appointments.Where(s => s.IsChanged && s.StoreInDB))
+            {
+                try
+                {
+                    me = new medicalEntities();
+                    me.Database.Connection.Open();
+
+                    scheduledata dbAppointment = me.scheduledata.Where(s => s.IdSD == appointment.Id).Single();
+
+                    if (dbAppointment.StillNotVisitedSD != appointment.StillNotVisited)
+                    {
+                        if (dbAppointment.StillNotVisitedSD)
+                        {
+
+                            scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
+                            me.newperson.Remove(me.newperson.Where(np => np.IdNP == spst.NewPersonIdSP).Single());
+                            spst.NewPersonIdSP = null;
+                            spst.ExistedIdSP = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
+                            dbAppointment.StillNotVisitedSD = false;
+                            me.SaveChanges();
+                        }
+                        else
+                        {
+                            scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
+                            spst.ExistedIdSP = null;
+
+                            newperson np = new newperson();
+                            dbAppointment.StillNotVisitedSD = true;
+                            np.PatientNameNP = appointment.PatientName;
+                            np.TAJNumberNP = appointment.PatientTajNumber;
+                            me.newperson.Add(np);
+                            me.SaveChanges();
+                            spst.NewPersonIdSP = np.IdNP;
+                            me.SaveChanges();
+                        }
+                        me.SaveChanges();
+                    }
+                    else if (dbAppointment.StillNotVisitedSD)
+                    {
+                        newperson newp = me.newperson.Where(per => per.IdNP == me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single();
+                        if (newp.PatientNameNP != appointment.PatientName) newp.PatientNameNP = appointment.PatientName;
+                        if (newp.TAJNumberNP != appointment.PatientTajNumber) newp.TAJNumberNP = appointment.PatientTajNumber;
+                        me.SaveChanges();
+                    }
+                    else
+                    {
+                        scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
+                        spst.ExistedIdSP = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
+                        me.SaveChanges();
+                    }
+
+                    if (appointment.StillNotVisited != dbAppointment.StillNotVisitedSD) dbAppointment.StillNotVisitedSD = appointment.StillNotVisited;
+                    if (appointment.StartTime != dbAppointment.StartSD) dbAppointment.StartSD = appointment.StartTime;
+                    if (appointment.EndTime != dbAppointment.FinishSD) dbAppointment.FinishSD = appointment.EndTime;
+                    if (appointment.DoctorId != dbAppointment.DoctorIdSD) dbAppointment.DoctorIdSD = appointment.DoctorId;
+                    if (appointment.Notes != dbAppointment.NotesSD) dbAppointment.NotesSD = appointment.Notes;
+                    if (appointment.Label != dbAppointment.StatusSD) dbAppointment.StatusSD = appointment.Label;
+                    me.SaveChanges();
+
+                    me.Database.Connection.Close();
+                    workingConn = true;
+                }
+                catch
+                {
+                    workingConn = false;
+                }
+            }
+        }
+        private void ModifyComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (workingConn) CollectionGetChanges(false);
+            else ConnectionMessage();
         }
         private BackgroundWorker Create = new BackgroundWorker();
         int NewId;
@@ -155,20 +243,18 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                 }
                 else belong = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
 
-                scheduleperson_st spst = new scheduleperson_st()
-                {
-                    WhereSP = appointment.StillNotVisited
-                };
+                scheduleperson_st spst;
                 if (appointment.StillNotVisited)
+                    spst = new scheduleperson_st()
+                    {
+                        ExistedIdSP = null,
+                        NewPersonIdSP = belong
+                    };
+                else spst = new scheduleperson_st()
                 {
-                    spst.ExistedIdSP = null;
-                    spst.NewPersonIdSP = belong;
-                }
-                else
-                {
-                    spst.ExistedIdSP = belong;
-                    spst.NewPersonIdSP = null;
-                }
+                    ExistedIdSP = belong,
+                    NewPersonIdSP = null
+                };
                 me.scheduleperson_st.Add(spst);
                 me.SaveChanges();
 
@@ -178,11 +264,10 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                     StartSD = appointment.StartTime,
                     FinishSD = appointment.EndTime,
                     PatientIdSD = spst.IdSP,
+                    DoctorIdSD = appointment.DoctorId,
                     NotesSD = appointment.Notes,
                     StatusSD = appointment.Label
                 };
-                if (appointment.DoctorId != 0) sd.DoctorIdSD = appointment.DoctorId;
-                else sd.DoctorIdSD = null;
 
                 me.scheduledata.Add(sd);
                 me.SaveChanges();
@@ -203,57 +288,93 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             {
                 ScheduleM.Appointments.Where(s => !s.StoreInDB).Single().Id = NewId;
                 ScheduleM.Appointments.Where(s => !s.StoreInDB).Single().StoreInDB = true;
+                ScheduleM.Appointments.Where(s => s.Id == NewId).Single().AcceptChanges();
+                CollectionGetChanges(false);
+                RegistrateEnabled(false);
                 await Utilities.Loading.Hide();
             }
             else ConnectionMessage();
+        }
+        protected internal void CollectionGetChanges(bool get)
+        {
+            if (get) ScheduleM.Appointments.CollectionChanged += CollectionChangedMethod;
+            else ScheduleM.Appointments.CollectionChanged -= CollectionChangedMethod;
         }
         private async void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
             await Utilities.Loading.Show();
             Create.RunWorkerAsync();
         }
-        bool runOnce;
-        bool viewLoaded;
+        protected internal bool Load;
+        private bool runOnce;
         protected internal void ColorFixer(bool from)
         {
-            ScheduleM.Doctors.Clear();
-            if (from) viewLoaded = true;
-            if (!runOnce && workingConn && viewLoaded)
+            if (from) Load = true;
+            if (Load && !runOnce && workingConn)
             {
                 SchedulerColorSchemaCollection colorSchemas = (GlobalVM.StockLayout.actualContent.Content as Views.Schedule.Schedule).scheduler.GetResourceColorSchemasCopy();
-                for (int i = 0; i < temp.Count; i++)
+                for (int i = 0; i < tempdoc.Count; i++)
                 {
-                    temp[i].Color = colorSchemas[i % colorSchemas.Count].Cell.ToArgb();
-                    ScheduleM.Doctors.Add(temp[i]);
+                    tempdoc[i].Color = colorSchemas[i % colorSchemas.Count].Cell.ToArgb();
+                    ScheduleM.Doctors.Add(tempdoc[i]);
                 }
                 runOnce = true;
             }
         }
-        protected internal int EraseInt;
-        protected internal BackgroundWorker EraseMethod = new BackgroundWorker();
-        private async void EraseDoWork(object sender, DoWorkEventArgs e)
+        private List<int> EraseInt;
+        private BackgroundWorker Erase = new BackgroundWorker();
+        protected async internal void EraseMethod(List<int> list)
         {
             await Utilities.Loading.Show();
-            try
-            {
-                me = new medicalEntities();
-                me.Database.Connection.Open();
+            dialog = new Dialog(true, "Időpont törlése", Erase.RunWorkerAsync, async () => await Utilities.Loading.Hide(), true);
+            dialog.content = new TextBlock("Biztosan eltávolítja a kiválasztott bejegyzést?\n" +
+                "Az eltávolítást a késöbbiekben nem lehet visszavonni");
+            dialog.Start();
+            EraseInt = list;
+        }
+        private void EraseDoWork(object sender, DoWorkEventArgs e)
+        {
+            foreach (int item in EraseInt)
+                try
+                {
+                    me = new medicalEntities();
+                    me.Database.Connection.Open();
+                    
+                    scheduledata sd = me.scheduledata.Where(s => s.IdSD == item).FirstOrDefault();
+                    if (sd.StillNotVisitedSD) me.newperson.Remove(me.newperson.Where(np => np.IdNP == me.scheduleperson_st.
+                    Where(sps => sps.IdSP == sd.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single());
+                    me.scheduleperson_st.Remove(me.scheduleperson_st.Where(sps => sps.IdSP == sd.PatientIdSD).Single());
+                    me.scheduledata.Remove(sd);
+                    me.SaveChanges();
 
-                me.scheduledata.Remove(me.scheduledata.Where(s => s.IdSD == EraseInt).FirstOrDefault());
-                me.SaveChanges();
-
-                me.Database.Connection.Close();
-                workingConn = true;
-            }
-            catch
-            {
-                workingConn = false;
-            }
+                    me.Database.Connection.Close();
+                    workingConn = true;
+                }
+                catch
+                {
+                    workingConn = false;
+                }
         }
         private async void EraseComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (workingConn) await Utilities.Loading.Hide();
+            if (workingConn)
+            {
+                foreach (int Id in EraseInt)
+                    ScheduleM.Appointments.Remove(ScheduleM.Appointments.Where(a => a.Id == Id).Single());
+                await Utilities.Loading.Hide();
+            }
             else ConnectionMessage();
+        }
+        protected internal void NewPatient(int Id)
+        {
+            new MenuButtonsEnabled()
+            {
+                modifier = true,
+                Id = Id,
+                Name = ScheduleM.Appointments.Where(a => a.Id == Id).Single().PatientName,
+                Taj = ScheduleM.Appointments.Where(a => a.Id == Id).Single().PatientTajNumber,
+
+            }.LoadItem(GlobalVM.StockLayout.patientsTBI);
         }
     }
 }

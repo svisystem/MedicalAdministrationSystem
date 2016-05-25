@@ -282,7 +282,6 @@
             <PropertyRef Name="IdSP" />
           </Key>
           <Property Name="IdSP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="WhereSP" Type="bool" Nullable="false" />
           <Property Name="NewPersonIdSP" Type="int" />
           <Property Name="ExistedIdSP" Type="int" />
         </EntityType>
@@ -1686,7 +1685,6 @@
             <PropertyRef Name="IdSP" />
           </Key>
           <Property Name="IdSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WhereSP" Type="Boolean" Nullable="false" />
           <Property Name="NewPersonIdSP" Type="Int32" />
           <Property Name="ExistedIdSP" Type="Int32" />
           <NavigationProperty Name="newperson" Relationship="Self.fk_scheduleperson_st_newperson1" FromRole="scheduleperson_st" ToRole="newperson" />
@@ -3057,7 +3055,6 @@
             <EntityTypeMapping TypeName="medicalModel.scheduleperson_st">
               <MappingFragment StoreEntitySet="scheduleperson_st">
                 <ScalarProperty Name="IdSP" ColumnName="IdSP" />
-                <ScalarProperty Name="WhereSP" ColumnName="WhereSP" />
                 <ScalarProperty Name="NewPersonIdSP" ColumnName="NewPersonIdSP" />
                 <ScalarProperty Name="ExistedIdSP" ColumnName="ExistedIdSP" />
               </MappingFragment>

@@ -7,6 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.Views.Schedule
 {
@@ -37,33 +38,43 @@ namespace MedicalAdministrationSystem.Views.Schedule
         private void patientName_Validate(object sender, ValidationEventArgs e)
         {
             validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, false);
-            if (string.IsNullOrEmpty(e.Value as string))
-                e.SetError("A páciens nevét nem lehet üresen hagyni", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
-            else
+            if (!(bool)visited.IsChecked)
             {
-                if ((bool)visited.IsChecked)
+                if (e.Value == null || e.Value as string == "")
                 {
-                    Match match = Regex.Match(e.Value as string, @"(([A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]{1,4})\.?\ )*[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+(-[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)*(\ [A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)+");
-                    if (match.Success && match.Length == (e.Value as string).Length)
-                    {
-                        e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                        validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, true);
-                    }
-                    else e.SetError("A mező tartalma nem megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+                    e.SetError("A páciens nevét nem lehet üresen hagyni", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
+                    tajNumber.EditValue = null;
+                }
+                else if (e.Value.GetType() != typeof(Person))
+                {
+                    e.SetError("Nincs ilyen felhasználó", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+                    tajNumber.EditValue = null;
                 }
                 else
                 {
-                    if (Patients.Any(p => p.Name == e.Value as string))
+                    e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
+                    validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, true);
+                    tajNumber.EditValue = Patients.Where(p => p.Id == (e.Value as Person).Id).Single().TajNumber;
+                    (this.DataContext as OwnAppointmentFormViewModel).Subject = (e.Value as Person).Name;
+                }
+            }
+            else
+            {
+                if (e.Value == null || e.Value as string == "") e.SetError("A páciens nevét nem lehet üresen hagyni", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
+                else
+                {
+                    string currentName = e.Value.GetType() == typeof(Person) ? (e.Value as Person).Name : e.Value as string;
+                    Match match = Regex.Match(currentName,
+                        @"(([A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]{1,4})\.?\ )*[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+(-[A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)*(\ [A-ZÁÉÍÓÖŐÚÜŰ]{1}[a-záéíóöőúüű]+)+");
+                    if (match.Success && match.Length == currentName.Length)
                     {
                         e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
+                        (this.DataContext as OwnAppointmentFormViewModel).Subject = currentName;
                         validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, true);
                     }
                     else e.SetError("A mező tartalma nem megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
-                    if ((sender as ComboBoxEdit).SelectedIndex != -1) tajNumber.EditValue = Patients[(sender as ComboBoxEdit).SelectedIndex].TajNumber;
-                    else tajNumber.EditValue = null;
                 }
             }
-            ForceBinding(sender, e);
         }
         private void tajNumber_Validate(object sender, ValidationEventArgs e)
         {
@@ -120,10 +131,13 @@ namespace MedicalAdministrationSystem.Views.Schedule
             }
             button.IsEnabled = (validatorClass as FormValidate).Validate(validatorClass);
         }
-        private void CloseButton(object sender, System.Windows.RoutedEventArgs e)
+        private async void CloseButton(object sender, System.Windows.RoutedEventArgs e)
         {
-            GlobalVM.MainWindow.HideMetroDialogAsync(CustomDialog);
+            await GlobalVM.MainWindow.HideMetroDialogAsync(CustomDialog);
             GlobalVM.MainWindow.ResizeMode = System.Windows.ResizeMode.CanResize;
+            if ((sender as Button).Name == "btnOk")
+                (this.DataContext as OwnAppointmentFormViewModel).RegistrateEnabled((bool)visited.IsChecked);
+            else (this.DataContext as OwnAppointmentFormViewModel).CollectionGetChanges(false);
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -131,14 +145,23 @@ namespace MedicalAdministrationSystem.Views.Schedule
             visited.IsChecked = !(bool)visited.IsChecked;
             patientName.AutoComplete = nameDropDown.IsEnabled = !(bool)visited.IsChecked;
             tajNumber.IsEnabled = (bool)visited.IsChecked;
+            if ((bool)visited.IsChecked) tajNumber.Clear();
             patientName.DoValidate();
             tajNumber.DoValidate();
         }
         private void visited_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             (sender as CheckEdit).IsChecked = ((sender as CheckEdit).IsChecked == null) ? false : (sender as CheckEdit).IsChecked;
-            if ((sender as CheckEdit).IsChecked == true) patientName.AutoComplete = nameDropDown.IsEnabled = false;
-            tajNumber.IsEnabled = (bool)visited.IsChecked;
+            if ((sender as CheckEdit).IsChecked == true)
+            {
+                patientName.AutoComplete = nameDropDown.IsEnabled = false;
+                patientName.EditValue = (this.DataContext as OwnAppointmentFormViewModel).Subject;
+            }
+            else if (!string.IsNullOrEmpty((this.DataContext as OwnAppointmentFormViewModel).Subject as string))
+                patientName.SelectedItem = (patientName.ItemsSource as ObservableCollection<Person>).
+                    Where(pn => pn.Id == Patients.Where(p => p.TajNumber ==
+                    (this.DataContext as OwnAppointmentFormViewModel).CustomFields["PatientTajNumber"] as string).Single().Id).Single();
+            if ((DateTime)startDateTime.EditValue > DateTime.Now) tajNumber.IsEnabled = (bool)visited.IsChecked;
         }
         private class AppointmentValid : FormValidate
         {
@@ -147,18 +170,30 @@ namespace MedicalAdministrationSystem.Views.Schedule
             public bool startDateTime { get; set; }
             public bool endDateTime { get; set; }
         }
+        private class Person
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public override string ToString()
+            {
+                return Name;
+            }
+        }
 
         private void ViewExtender_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Patients = (this.DataContext as dynamic).Patients;
-            patientName.ItemsSource = Patients.Select(p => p.Name).ToList();
+            Patients = (this.DataContext as OwnAppointmentFormViewModel).Patients;
+            patientName.ItemsSource = new ObservableCollection<Person>(Patients.Select(p => new Person() { Id = p.Id, Name = p.Name }));
             AppointmentLenght = (DateTime)endDateTime.EditValue - (DateTime)startDateTime.EditValue;
             ConnectValidators();
+            if ((DateTime)startDateTime.EditValue < DateTime.Now)
+                patientName.IsEnabled = tajNumber.IsEnabled = startDateTime.IsEnabled = endDateTime.IsEnabled = doctors.IsEnabled = notes.IsEnabled = change.IsEnabled = false;
         }
 
         private void patientNameErase(object sender, System.Windows.RoutedEventArgs e)
         {
             patientName.Clear();
+            patientName.DoValidate();
             if (!(bool)visited.IsChecked) tajNumber.Clear();
         }
     }

@@ -197,7 +197,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             new MenuButtonsEnabled()
             {
                 modifier = which,
-                ID = ExaminationsM.SelectedExamination.Id,
+                Id = ExaminationsM.SelectedExamination.Id,
                 imported = ExaminationsM.SelectedExamination.Imported
             }.LoadItem(GlobalVM.StockLayout.examinationTBI);
         }

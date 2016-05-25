@@ -2,6 +2,7 @@
 using MedicalAdministrationSystem.Views.Billing;
 using MedicalAdministrationSystem.Views.Global;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.ViewModels.MenuItem
@@ -63,7 +64,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void CompanyDataLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new CompanyData();
@@ -72,7 +73,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void BillsLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new Bills();
@@ -81,7 +82,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void CreateBillLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new CreateBill();
@@ -91,7 +92,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             await Utilities.Loading.Show();
             viewBill.IsEnabledTrigger = true;
-            ViewLoad(new Func<UserControl>(() => new ViewBill(ID)), viewBill);
+            await ViewLoad(new Func<UserControl>(() => new ViewBill(ID)), viewBill);
         }
     }
 }

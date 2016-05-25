@@ -2,10 +2,6 @@
 using MedicalAdministrationSystem.Views.Evidence;
 using MedicalAdministrationSystem.Views.Global;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.ViewModels
@@ -75,7 +71,7 @@ namespace MedicalAdministrationSystem.ViewModels
         protected internal async void EvidencesLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new Evidences();
@@ -84,7 +80,7 @@ namespace MedicalAdministrationSystem.ViewModels
         protected internal async void NewEvidenceLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new NewEvidence();
@@ -93,7 +89,7 @@ namespace MedicalAdministrationSystem.ViewModels
         protected internal async void ImportEvidenceLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new ImportEvidence();
@@ -103,13 +99,13 @@ namespace MedicalAdministrationSystem.ViewModels
         {
             await Utilities.Loading.Show();
             viewEvidence.IsEnabledTrigger = true;
-            ViewLoad(new Func<UserControl>(() => new ViewEvidence(imported, ID)), viewEvidence);
+            await ViewLoad(new Func<UserControl>(() => new ViewEvidence(imported, ID)), viewEvidence);
         }
         protected internal async void EditEvidenceLoad(bool imported, int ID)
         {
             await Utilities.Loading.Show();
             editEvidence.IsEnabledTrigger = true;
-            ViewLoad(new Func<UserControl>(() => new EditEvidence(imported, ID)), editEvidence);
+            await ViewLoad(new Func<UserControl>(() => new EditEvidence(imported, ID)), editEvidence);
         }
     }
 }

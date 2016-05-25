@@ -5,7 +5,7 @@ using MedicalAdministrationSystem.Views.Users;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -158,22 +158,22 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void RegistrationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new Registration()), registration);
+            await ViewLoad(new Func<UserControl>(() => new Registration()), registration);
         }
         protected internal async void LoginLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new Login()), login);
+            await ViewLoad(new Func<UserControl>(() => new Login()), login);
         }
         protected internal async void PassChangeLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new PassChange()), passChange);
+            await ViewLoad(new Func<UserControl>(() => new PassChange()), passChange);
         }
         protected internal async void DetailsModifyLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 if (!fromPatient) return new DetailsModify();
                 else return new DetailsModify(fromPatient);
@@ -182,7 +182,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void SurgeryTimeLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new SurgeryTime()), surgeryTime);
+            await ViewLoad(new Func<UserControl>(() => new SurgeryTime()), surgeryTime);
         }
     }
 }

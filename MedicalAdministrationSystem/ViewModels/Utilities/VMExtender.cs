@@ -23,10 +23,10 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 "Kérjük jelezze a problémát a rendszergazdának\nAz alkalmazás most bezárul");
             dialog.Start();
         }
-        protected internal async void ViewLoad(Func<UserControl> method, StockVerticalMenuItem button)
+        protected internal async Task ViewLoad(Func<UserControl> method, StockVerticalMenuItem button)
         {
-            await Task.Factory.StartNew(() =>
-                method(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
+            await Task.Factory.StartNew(method, 
+            CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
             {
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>

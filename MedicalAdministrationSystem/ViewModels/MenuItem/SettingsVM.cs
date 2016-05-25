@@ -85,32 +85,32 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ServicesLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new Services()), services);
+            await ViewLoad(new Func<UserControl>(() => new Services()), services);
         }
         protected internal async void UsersLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new UserAdministrate()), users);
+            await ViewLoad(new Func<UserControl>(() => new UserAdministrate()), users);
         }
         protected internal async void PriviledgesLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new Priviledges()), priviledges);
+            await ViewLoad(new Func<UserControl>(() => new Priviledges()), priviledges);
         }
         protected internal async void FacilityDataLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new FacilityData()), facilityData);
+            await ViewLoad(new Func<UserControl>(() => new FacilityData()), facilityData);
         }
         protected internal async void ConnectionLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new Connection()), connection);
+            await ViewLoad(new Func<UserControl>(() => new Connection()), connection);
         }
         protected internal async void SecurityLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new Security(SecurityLoad)), security);
+            await ViewLoad(new Func<UserControl>(() => new Security(SecurityLoad)), security);
         }
     }
 }

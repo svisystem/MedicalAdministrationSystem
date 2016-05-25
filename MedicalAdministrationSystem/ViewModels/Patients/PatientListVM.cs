@@ -164,15 +164,11 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             {
                 foreach (PatientListM.Patient patient in temp)
                     foreach (int Id in patient.Belong)
-                        try
-                        {
+                        if (patient.BelongUsers.Any(a => a.Id == Id))
                             patient.BelongUsers.Where(a => a.Id == Id).Single().Belong = true;
-                        }
-                        catch { }
                 PatientListM.PatientList = new ObservableCollection<PatientListM.Patient>(temp);
             }
 
-            await Utilities.Loading.Hide();
             PatientListM.Erased.Clear();
             Loaded();
 
@@ -182,6 +178,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 foreach (PatientListM.UserList user in row.BelongUsers)
                     user.AcceptChanges();
             }
+            await Utilities.Loading.Hide();
         }
 
         protected internal async void ExecuteMethod()

@@ -83,12 +83,12 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = patientsTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void PatiensLoad(bool modifier)
+        protected async internal void PatiensLoad(bool modifier, string Name = null, string Taj = null, int? Id = null)
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
             PatientsVM patients = new PatientsVM(earlierItem);
-            if (modifier) patients.PatientDetailsLoad();
+            if (modifier) patients.PatientDetailsLoad(Name, Taj, Id);
             else patients.PatientListLoad();
             currentItem = patientsTBI;
             await ViewModels.Utilities.Loading.Hide();

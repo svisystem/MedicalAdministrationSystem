@@ -49,7 +49,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         protected internal void DateEditErase(object sender, RoutedEventArgs e)
         {
-           LayoutHelper.FindParentObject<DateEdit>(sender as DependencyObject).Clear();
+            LayoutHelper.FindParentObject<DateEdit>(sender as DependencyObject).Clear();
         }
         protected internal void MaskedNotNullValidateForString(object sender, ValidationEventArgs e)
         {

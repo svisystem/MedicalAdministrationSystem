@@ -133,13 +133,14 @@
                         Command="{Binding EditAppointment, Mode=OneTime, Source={StaticResource commands}}"
                         LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_32x32.png"
                         Content="Időpont szerkesztése"
-                        Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_16x16.png" />
+                        Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_16x16.png"
+                        IsEnabledChanged="biEditAppointment_IsEnabledChanged" />
                 <dxb:BarButtonItem x:Name="biRegistratePatient" Content="Páciens felvétele"
                         LargeGlyph="{dx:DXImageOffice2013 Image=NewContact_32x32.png}"
-                        Glyph="{dx:DXImageOffice2013 Image=NewContact_16x16.png}" IsEnabled="False" />
-                <dxb:BarButtonItem x:Name="biDeleteAppointment" CommandParameter="{Binding ElementName=scheduler}"
-                        Command="{Binding DeleteAppointment, Mode=OneTime, Source={StaticResource commands}}"
-                        Content="Időpont törlése" LargeGlyph="{dx:DXImageOffice2013 Image=DeleteList_32x32.png}"
+                        Glyph="{dx:DXImageOffice2013 Image=NewContact_16x16.png}" IsEnabled="False"
+                        ItemClick="biRegistratePatient_ItemClick" />
+                <dxb:BarButtonItem x:Name="biDeleteAppointment" Content="Időpont törlése"
+                        LargeGlyph="{dx:DXImageOffice2013 Image=DeleteList_32x32.png}"
                         Glyph="{dx:DXImageOffice2013 Image=DeleteList_16x16.png}"
                         ItemClick="biDeleteAppointment_ItemClick" />
                 <dxschdui:ChangeLabelBarItem x:Name="biChangeAppointmentLabel"
@@ -220,7 +221,7 @@
                         Ribbon="{Binding ElementName=ribbonControl1, Mode=OneTime}"
                         PopupMenuShowing="scheduler_PopupMenuShowing" FormCustomizationUsingMVVMLocal="True"
                         EditAppointmentFormShowing="scheduler_EditAppointmentFormShowing"
-                        SelectionChanged="scheduler_SelectionChanged" Drop="scheduler_Drop">
+                        AppointmentDrag="scheduler_AppointmentDrag" SelectionChanged="scheduler_SelectionChanged">
                     <dxsch:SchedulerControl.AppointmentFormServiceTemplate>
                         <DataTemplate>
                             <ContentControl>
@@ -236,10 +237,11 @@
                         </DataTemplate>
                     </dxsch:SchedulerControl.AppointmentFormServiceTemplate>
                     <dxsch:SchedulerControl.Storage>
-                        <dxsch:SchedulerStorage>
+                        <dxsch:SchedulerStorage AppointmentsChanged="SchedulerStorage_AppointmentsChanged">
                             <dxsch:SchedulerStorage.AppointmentStorage>
-                                <dxsch:AppointmentStorage DataSource="{Binding ScheduleM.Appointments}"
-                                        Labels="{Binding ScheduleM.Labels}" ResourceSharing="True">
+                                <dxsch:AppointmentStorage
+                                        DataSource="{Binding ScheduleM.Appointments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Labels="{Binding ScheduleM.Labels}">
                                     <dxsch:AppointmentStorage.Mappings>
                                         <dxsch:AppointmentMapping Start="StartTime" End="EndTime" Subject="PatientName"
                                                 ResourceId="DoctorId" Label="Label" AppointmentId="Id" />
@@ -254,7 +256,9 @@
                                 </dxsch:AppointmentStorage>
                             </dxsch:SchedulerStorage.AppointmentStorage>
                             <dxsch:SchedulerStorage.ResourceStorage>
-                                <dxsch:ResourceStorage DataSource="{Binding ScheduleM.Doctors}" ColorSaving="ArgbColor">
+                                <dxsch:ResourceStorage
+                                        DataSource="{Binding ScheduleM.Doctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ColorSaving="ArgbColor">
                                     <dxsch:ResourceStorage.Mappings>
                                         <dxsch:ResourceMapping Id="Id" Caption="Name" Color="Color" />
                                     </dxsch:ResourceStorage.Mappings>

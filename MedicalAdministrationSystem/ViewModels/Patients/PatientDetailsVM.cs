@@ -1,6 +1,5 @@
 ﻿using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Patients;
-using MedicalAdministrationSystem.ViewModels.MenuItem;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
 using MedicalAdministrationSystem.Views.Global;
@@ -23,12 +22,18 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         private bool newform { get; set; }
         protected internal bool From { get; set; }
         private patientdata selected { get; set; }
-        private int selectedId { get; set; }
-        protected internal PatientDetailsVM(bool newform)
+        private int? selectedId { get; set; }
+        protected internal PatientDetailsVM(bool newform, string Name = null, string Taj = null, int? Id = null)
         {
-            this.newform = newform;
-            if (!newform) selectedId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).AskId();
+            if (!newform && Id == null) selectedId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).AskId();
+            this.newform = !newform;
             PatientDetailsMViewElements = new PatientDetailsMViewElements();
+            if (Id != null)
+            {
+                selectedId = Id;
+                PatientDetailsMViewElements.UserName = Name;
+                PatientDetailsMViewElements.TajNumber = Taj;
+            }
             PatientDetailsMDataSet = new PatientDetailsMDataSet();
             ZipCodeSearch = new BackgroundWorker();
             ZipCodeSearch.DoWork += new DoWorkEventHandler(ZipCodeDoWork);
@@ -95,6 +100,15 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                         bt.IdPD = selected.IdPD;
                         me.belong_st.Add(bt);
                     }
+                    if (newform && selectedId != null)
+                    {
+                        scheduleperson_st sp = me.scheduleperson_st.Where(spd => spd.IdSP == me.scheduledata.
+                            Where(sd => sd.IdSD == selectedId).FirstOrDefault().PatientIdSD).Single();
+                        me.newperson.Remove(me.newperson.Where(np => np.IdNP == sp.NewPersonIdSP).Single());
+                        sp.NewPersonIdSP = null;
+                        sp.ExistedIdSP = selected.IdPD;
+                        me.scheduledata.Where(sd => sd.IdSD == selectedId).Single().StillNotVisitedSD = false;
+                    }
                     me.SaveChanges();
                     me.Database.Connection.Close();
                 }
@@ -113,23 +127,12 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
 
                 if (newform) temp = "rögzítettük";
                 else temp = "módosítottuk";
-
-
-                PatientDetailsMViewElements.AcceptChanges();
-                dialog = new Dialog(false, "Páciens adatok", Reload);
+                dialog = new Dialog(false, "Páciens adatok", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("Sikeresen " + temp + " az adatokat.");
                 dialog.Start();
+                new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.patientsTBI);
             }
             else ConnectionMessage();
-        }
-        private async void Reload()
-        {
-            if (newform)
-            {
-                PatientsVM PatientsVM = new PatientsVM();
-                PatientsVM.NewPatientLoad();
-            }
-            await Utilities.Loading.Hide();
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
@@ -221,7 +224,8 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     }
                 }
                 await Utilities.Loading.Hide();
-                PatientDetailsMViewElements.AcceptChanges();
+
+                if (!newform) PatientDetailsMViewElements.AcceptChanges();
             }
             else ConnectionMessage();
         }

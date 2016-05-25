@@ -13,18 +13,16 @@ namespace MedicalAdministrationSystem.Views.Patients
     {
         protected internal PatientDetailsVM PatientDetailsVM { get; set; }
         private PatientDetailsValid patientDetailsValid { get; set; }
-        protected internal bool newView { get; private set; }
-        public PatientDetails(bool newView)
+        public PatientDetails(bool newView, string Name = null, string Taj = null, int? Id = null)
         {
-            Start(newView);
+            Start(newView, Name, Taj, Id);
         }
-        private async void Start(bool newView)
+        private async void Start(bool newView, string Name = null, string Taj = null, int? Id = null)
         {
             await Loading.Show();
-            this.newView = newView;
             EditorLocalizer.Active = new Localizer();
             patientDetailsValid = new PatientDetailsValid();
-            PatientDetailsVM = new PatientDetailsVM(newView);
+            PatientDetailsVM = new PatientDetailsVM(newView, Name, Taj, Id);
             this.DataContext = PatientDetailsVM;
             InitializeComponent();
             validatorClass = patientDetailsValid;

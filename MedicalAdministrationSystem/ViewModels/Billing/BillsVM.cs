@@ -83,7 +83,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             new MenuButtonsEnabled()
             {
-                ID = BillsM.SelectedBill.Id
+                Id = BillsM.SelectedBill.Id
             }.LoadItem(GlobalVM.StockLayout.billingTBI);
         }
     }

@@ -4,6 +4,7 @@ using DevExpress.XtraScheduler;
 using MedicalAdministrationSystem.ViewModels.Schedule;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.Views.Schedule
@@ -18,7 +19,7 @@ namespace MedicalAdministrationSystem.Views.Schedule
         private async void Start()
         {
             await Loading.Show();
-            ScheduleVM = new ScheduleVM();
+            ScheduleVM = new ScheduleVM(RegistrateEnabled);
             this.DataContext = ScheduleVM;
             InitializeComponent();
             scheduler.OptionsCustomization.AllowInplaceEditor = UsedAppointmentType.None;
@@ -52,22 +53,12 @@ namespace MedicalAdministrationSystem.Views.Schedule
 
         private void scheduler_EditAppointmentFormShowing(object sender, EditAppointmentFormEventArgs e)
         {
-            e.ViewModel = OwnAppointmentFormViewModel.Create(sender as SchedulerControl, e.Appointment, e.ReadOnly, e.OpenRecurrenceDialog, ScheduleVM.Patients);
+            ScheduleVM.CollectionGetChanges(true);
+            e.ViewModel = OwnAppointmentFormViewModel.Create(sender as SchedulerControl, e.Appointment, ScheduleVM.Patients, RegistrateEnabled, ScheduleVM.CollectionGetChanges);
         }
-        private void scheduler_SelectionChanged(object sender, EventArgs e)
-        {
-            if (scheduler.SelectedAppointments.Count == 1)
-            {
-               //scheduler.SelectedAppointments[0].Id;
-            }
-            //   biRegistratePatient.IsEnabled = true;
-            //else biRegistratePatient.IsEnabled = false;
-        }
-
         private void biDeleteAppointment_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ScheduleVM.EraseInt = (int)scheduler.SelectedAppointments[0].Id;
-            //ScheduleVM.EraseMethod.RunWorkerAsync();
+            ScheduleVM.EraseMethod(scheduler.SelectedAppointments.Select(sa => (int)sa.Id).ToList());
         }
 
         private void biRefresh_ItemClick(object sender, ItemClickEventArgs e)
@@ -75,9 +66,36 @@ namespace MedicalAdministrationSystem.Views.Schedule
             ScheduleVM.Refresh();
         }
 
-        private void scheduler_Drop(object sender, System.Windows.DragEventArgs e)
+        private void biEditAppointment_IsEnabledChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
+            if ((bool)e.NewValue && (bool)scheduler.SelectedAppointments[0].CustomFields["StillNotVisited"])
+                biRegistratePatient.IsEnabled = true;
+            else biRegistratePatient.IsEnabled = false;
+        }
+        private void RegistrateEnabled(bool enabled)
+        {
+            biRegistratePatient.IsEnabled = enabled;
+        }
 
+        private void scheduler_AppointmentDrag(object sender, AppointmentDragEventArgs e)
+        {
+            if (scheduler.SelectedAppointments.Any(sa => sa.Start < DateTime.Now)) e.Allow = false;
+        }
+        private void SchedulerStorage_AppointmentsChanged(object sender, PersistentObjectsEventArgs e)
+        {
+            ScheduleVM.Modified();
+        }
+
+        private void biRegistratePatient_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ScheduleVM.NewPatient((int)scheduler.SelectedAppointments[0].Id);
+        }
+
+        private void scheduler_SelectionChanged(object sender, EventArgs e)
+        {
+            if (scheduler.SelectedAppointments.Count == 1 && (bool)scheduler.SelectedAppointments[0].CustomFields["StillNotVisited"])
+                biRegistratePatient.IsEnabled = true;
+            else biRegistratePatient.IsEnabled = false;
         }
     }
 }

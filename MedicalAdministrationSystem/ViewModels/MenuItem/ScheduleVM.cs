@@ -13,7 +13,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ScheduleLoad()
         {
             await Loading.Show();
-            ViewLoad(new Func<UserControl>(() => new Views.Schedule.Schedule()), new Views.Global.StockVerticalMenuItem());
+            await ViewLoad(new Func<UserControl>(() => new Views.Schedule.Schedule()), new Views.Global.StockVerticalMenuItem());
         }
     }
 }

@@ -117,7 +117,7 @@ namespace MedicalAdministrationSystem.Models.Schedule
             private string _PatientTajNumber;
             private DateTime _StartTime;
             private DateTime _EndTime;
-            private int _DoctorId;
+            private int? _DoctorId;
             private string _Notes;
             private int _Label;
             private bool _StoreInDB;
@@ -199,7 +199,7 @@ namespace MedicalAdministrationSystem.Models.Schedule
                     OnPropertyChanged("EndTime");
                 }
             }
-            public int DoctorId
+            public int? DoctorId
             {
                 get
                 {

@@ -21,7 +21,6 @@ namespace MedicalAdministrationSystem.DataAccess
         }
     
         public int IdSP { get; set; }
-        public bool WhereSP { get; set; }
         public Nullable<int> NewPersonIdSP { get; set; }
         public Nullable<int> ExistedIdSP { get; set; }
     

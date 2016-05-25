@@ -210,7 +210,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
 
                 new MenuButtonsEnabled()
                 {
-                    ID = billId
+                    Id = billId
                 }.LoadItem(GlobalVM.StockLayout.billingTBI);
             }
             else ConnectionMessage();

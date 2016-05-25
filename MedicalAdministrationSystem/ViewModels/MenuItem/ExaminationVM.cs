@@ -80,7 +80,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ExaminationsLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new Examinations();
@@ -89,7 +89,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void NewExaminationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new NewExamination();
@@ -98,7 +98,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         protected internal async void ImportExaminationLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new ImportExamination();
@@ -108,18 +108,18 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             await Utilities.Loading.Show();
             view.IsEnabledTrigger = true;
-            ViewLoad(new Func<UserControl>(() => new ExaminationView(imported, ID)), view);
+            await ViewLoad(new Func<UserControl>(() => new ExaminationView(imported, ID)), view);
         }
         protected internal async void EditLoad(bool imported, int ID)
         {
             await Utilities.Loading.Show();
             edit.IsEnabledTrigger = true;
-            ViewLoad(new Func<UserControl>(() => new ExaminationEdit(imported, ID)), edit);
+            await ViewLoad(new Func<UserControl>(() => new ExaminationEdit(imported, ID)), edit);
         }
         protected internal async void ExaminationPlanLoad()
         {
             await Utilities.Loading.Show();
-            ViewLoad(new Func<UserControl>(() =>
+            await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
                 return new ExaminationPlan();
