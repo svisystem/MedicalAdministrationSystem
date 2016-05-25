@@ -161,6 +161,9 @@
     <Compile Include="DataAccess\companydata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\currentpricesforeachbill_st.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\DataAccess.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -230,6 +233,9 @@
     <Compile Include="DataAccess\patientdata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\pricesforeachservice.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\priviledges_fx.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
@@ -239,6 +245,9 @@
     <Compile Include="DataAccess\scheduleperson_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\servicesdata.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\settlementzipcode_st.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
@@ -246,9 +255,6 @@
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\status_fx.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\treatmentdata.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\userdata.cs">
@@ -292,6 +298,7 @@
     <Compile Include="Models\Settings\ServicesM.cs" />
     <Compile Include="Models\Settings\UserAdministrateMViewElements.cs" />
     <Compile Include="Models\Settings\UserAdministrateMDataSet.cs" />
+    <Compile Include="Models\Statistics\StatisticsM.cs" />
     <Compile Include="Models\Users\DetailsModifyMDataSet.cs" />
     <Compile Include="Models\Users\DetailsModifyMViewElements.cs" />
     <Compile Include="Models\Users\LoginM.cs" />
@@ -339,6 +346,7 @@
     <Compile Include="ViewModels\Settings\ServicesVM.cs" />
     <Compile Include="ViewModels\Settings\UserAdministrateVM.cs" />
     <Compile Include="ViewModels\MenuItem\StatisticsVM.cs" />
+    <Compile Include="ViewModels\Statistics\StatisticsVM.cs" />
     <Compile Include="ViewModels\Users\DetailsModifyVM.cs" />
     <Compile Include="ViewModels\Users\LoginVM.cs" />
     <Compile Include="ViewModels\Users\PassChangeVM.cs" />
@@ -489,6 +497,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\Statistics\Statistics.xaml.cs">
+      <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Users\DetailsModify.xaml.cs">
       <DependentUpon>DetailsModify.xaml</DependentUpon>
@@ -676,6 +687,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Statistics\Statistics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Users\DetailsModify.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -808,7 +823,6 @@
   <ItemGroup>
     <Resource Include="Icons\ContentAutoArrange_32x32.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="DataAccess\DataAccess.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

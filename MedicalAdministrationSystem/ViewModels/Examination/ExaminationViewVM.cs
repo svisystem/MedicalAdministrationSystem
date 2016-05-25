@@ -55,8 +55,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                         (p => DocumentControlVM.Add(p.TypeEXD, p.FileTypeEXD, p.IdEXD, new MemoryStream(p.DataEXD)));
 
                         ExaminationViewM.ExaminationCode = me.examinationdata.Where(iex => iex.IdEX == ExaminationViewM.Id).Single().CodeEX;
-                        ExaminationViewM.ExaminationName = me.treatmentdata.Where(t => t.IdTD == me.examinationdata.
-                        Where(iex => iex.IdEX == ExaminationViewM.Id).FirstOrDefault().TreatmentIdEX).Single().NameTD;
+                        ExaminationViewM.ExaminationName = me.servicesdata.Where(t => t.IdTD == me.examinationdata.
+                        Where(iex => iex.IdEX == ExaminationViewM.Id).FirstOrDefault().ServiceIdEX).Single().NameTD;
                         ExaminationViewM.ExaminationDate = me.examinationdata.Where(iex => iex.IdEX == ExaminationViewM.Id).Single().DateTimeEX;
                     }
                     me.Database.Connection.Close();

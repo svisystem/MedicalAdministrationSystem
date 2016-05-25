@@ -76,7 +76,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                                 Date = ed.DateTimeEX,
                                 Id = ed.IdEX,
                                 Imported = false,
-                                Name = me.treatmentdata.Where(t => t.IdTD == ed.TreatmentIdEX).FirstOrDefault().NameTD
+                                Name = me.servicesdata.Where(t => t.IdTD == ed.ServiceIdEX).FirstOrDefault().NameTD
                             }))
                             item.BelongDocs.Add(element);
 
@@ -104,7 +104,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                                 Date = ed.DateTimeEX,
                                 Id = ed.IdEX,
                                 Imported = false,
-                                Name = me.treatmentdata.Where(t => t.IdTD == ed.TreatmentIdEX).FirstOrDefault().NameTD
+                                Name = me.servicesdata.Where(t => t.IdTD == ed.ServiceIdEX).FirstOrDefault().NameTD
                             }))
                             item.BelongDocs.Add(element);
 

@@ -12,28 +12,21 @@ namespace MedicalAdministrationSystem.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class billing
+    public partial class pricesforeachservice
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public billing()
+        public pricesforeachservice()
         {
             this.currentpricesforeachbill_st = new HashSet<currentpricesforeachbill_st>();
         }
     
-        public int IdB { get; set; }
-        public int PatientIdB { get; set; }
-        public int UserIdB { get; set; }
-        public int CompanyIdFromB { get; set; }
-        public Nullable<int> CompanyIdToB { get; set; }
-        public string CodeB { get; set; }
-        public System.DateTime DateTimeB { get; set; }
-        public byte[] BillB { get; set; }
+        public int IdPFS { get; set; }
+        public int VatPFS { get; set; }
+        public int PricePFS { get; set; }
+        public int ServiceDataIdPFS { get; set; }
     
-        public virtual companydata companydata { get; set; }
-        public virtual companydata companydata1 { get; set; }
-        public virtual patientdata patientdata { get; set; }
-        public virtual userdata userdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<currentpricesforeachbill_st> currentpricesforeachbill_st { get; set; }
+        public virtual servicesdata servicesdata { get; set; }
     }
 }

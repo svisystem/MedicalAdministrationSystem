@@ -26,13 +26,13 @@ namespace MedicalAdministrationSystem.DataAccess
         public int PatientIdEX { get; set; }
         public int DoctorIdEX { get; set; }
         public System.DateTime DateTimeEX { get; set; }
-        public int TreatmentIdEX { get; set; }
+        public int ServiceIdEX { get; set; }
         public string CodeEX { get; set; }
         public int CompanyIdEX { get; set; }
     
         public virtual companydata companydata { get; set; }
         public virtual patientdata patientdata { get; set; }
-        public virtual treatmentdata treatmentdata { get; set; }
+        public virtual servicesdata servicesdata { get; set; }
         public virtual userdata userdata { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<examinationdatadocuments_st> examinationdatadocuments_st { get; set; }

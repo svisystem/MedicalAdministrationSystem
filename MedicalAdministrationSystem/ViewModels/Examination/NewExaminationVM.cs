@@ -38,7 +38,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 using (me = new medicalEntities())
                 {
                     me.Database.Connection.Open();
-                    NewExaminationM.Treats = me.treatmentdata.Where(t => t.DeletedTD == false)
+                    NewExaminationM.Treats = me.servicesdata.Where(t => t.DeletedTD == false)
                         .Select(t => t.NameTD).ToList();
                     me.Database.Connection.Close();
                     workingConn = true;
@@ -93,7 +93,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     PatientIdEX = NewExaminationM.PatientId,
                     DoctorIdEX = (int)GlobalVM.GlobalM.UserID,
                     DateTimeEX = (DateTime)NewExaminationM.ExaminationDate,
-                    TreatmentIdEX = me.treatmentdata.Where(t => t.NameTD == NewExaminationM.SelectedTreat).Single().IdTD,
+                    ServiceIdEX = me.servicesdata.Where(t => t.NameTD == NewExaminationM.SelectedTreat).Single().IdTD,
                     CodeEX = NewExaminationM.ExaminationCode,
                     CompanyIdEX = (int)GlobalVM.GlobalM.CompanyId
                 };

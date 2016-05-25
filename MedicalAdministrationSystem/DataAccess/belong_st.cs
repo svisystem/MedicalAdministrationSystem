@@ -16,6 +16,7 @@ namespace MedicalAdministrationSystem.DataAccess
     {
         public int IdPD { get; set; }
         public int IdUD { get; set; }
+        public System.DateTime WhenBelongBS { get; set; }
         public Nullable<bool> Dummy { get; set; }
     
         public virtual userdata userdata { get; set; }

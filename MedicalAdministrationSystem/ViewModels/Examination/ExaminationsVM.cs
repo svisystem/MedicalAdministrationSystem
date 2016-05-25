@@ -43,7 +43,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                             {
                                 Id = ex.IdEX,
                                 Imported = false,
-                                Name = me.treatmentdata.Where(t => t.IdTD == ex.TreatmentIdEX).FirstOrDefault().NameTD,
+                                Name = me.servicesdata.Where(t => t.IdTD == ex.ServiceIdEX).FirstOrDefault().NameTD,
                                 Code = ex.CodeEX,
                                 DateTime = ex.DateTimeEX,
                                 DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
@@ -86,7 +86,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                             {
                                 Id = ex.IdEX,
                                 Imported = false,
-                                Name = me.treatmentdata.Where(t => t.IdTD == ex.TreatmentIdEX).FirstOrDefault().NameTD,
+                                Name = me.servicesdata.Where(t => t.IdTD == ex.ServiceIdEX).FirstOrDefault().NameTD,
                                 Code = ex.CodeEX,
                                 DateTime = ex.DateTimeEX,
                                 DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,

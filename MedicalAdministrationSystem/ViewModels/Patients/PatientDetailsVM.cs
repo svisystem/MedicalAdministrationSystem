@@ -90,15 +90,17 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     selected.BillingSettlementPD = PatientDetailsMDataSet.FullSettlementList.Where(a => a.DataS == PatientDetailsMViewElements.BillingSettlement).Select(a => a.IdS).Single();
                     selected.BillingAddressPD = PatientDetailsMViewElements.BillingAddress;
                     if (PatientDetailsMViewElements.Notes != null) selected.NotesPD = PatientDetailsMViewElements.Notes;
-                    if (newform)
+                    if (newform && me.priviledges_fx.Where(p => p.IdP == GlobalVM.GlobalM.PriviledgeID).Single().IsDoctorP)
                     {
                         me.patientdata.Add(selected);
                         me.SaveChanges();
 
-                        belong_st bt = new belong_st();
-                        bt.IdUD = (int)GlobalVM.GlobalM.UserID;
-                        bt.IdPD = selected.IdPD;
-                        me.belong_st.Add(bt);
+                        me.belong_st.Add(new belong_st()
+                        {
+                            IdUD = (int)GlobalVM.GlobalM.UserID,
+                            IdPD = selected.IdPD,
+                            WhenBelongBS = DateTime.Now
+                        });
                     }
                     if (newform && selectedId != null)
                     {

@@ -12,22 +12,23 @@ namespace MedicalAdministrationSystem.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class treatmentdata
+    public partial class servicesdata
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public treatmentdata()
+        public servicesdata()
         {
             this.examinationdata = new HashSet<examinationdata>();
+            this.pricesforeachservice = new HashSet<pricesforeachservice>();
         }
     
         public int IdTD { get; set; }
         public string NameTD { get; set; }
-        public int VatTD { get; set; }
-        public int PriceTD { get; set; }
         public string DetailsTD { get; set; }
         public bool DeletedTD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<examinationdata> examinationdata { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<pricesforeachservice> pricesforeachservice { get; set; }
     }
 }

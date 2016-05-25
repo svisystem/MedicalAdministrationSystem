@@ -33,13 +33,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 me = new medicalEntities();
                 me.Database.Connection.Open();
                 ServicesM.Services.Clear();
-                foreach (treatmentdata row in me.treatmentdata.Where(a => a.DeletedTD == false).ToList())
+                foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == false).ToList())
                     ServicesM.Services.Add(new ServicesM.Service
                     {
                         ID = row.IdTD,
                         Name = row.NameTD,
-                        Vat = row.VatTD,
-                        Price = row.PriceTD,
+                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).FirstOrDefault().VatPFS,
+                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).FirstOrDefault().PricePFS,
                         Details = row.DetailsTD,
                         New = false
                     });
@@ -81,7 +81,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     foreach (int service in ServicesM.Erased)
                         try
                         {
-                            me.treatmentdata.Where(a => a.IdTD == service).Single().DeletedTD = true;
+                            me.servicesdata.Where(a => a.IdTD == service).Single().DeletedTD = true;
                             me.SaveChanges();
                         }
                         catch { }
@@ -89,14 +89,18 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 {
                     try
                     {
-                        treatmentdata tr = new treatmentdata();
+                        servicesdata tr = new servicesdata();
+                        pricesforeachservice pfs = new pricesforeachservice();
                         if (ServicesM.Services[i].New)
                         {
                             tr.NameTD = ServicesM.Services[i].Name;
-                            tr.VatTD = ServicesM.Services[i].Vat;
-                            tr.PriceTD = ServicesM.Services[i].Price;
+                            pfs.VatPFS = ServicesM.Services[i].Vat;
+                            pfs.PricePFS = ServicesM.Services[i].Price;
                             tr.DetailsTD = ServicesM.Services[i].Details;
-                            me.treatmentdata.Add(tr);
+                            me.servicesdata.Add(tr);
+                            me.SaveChanges();
+                            pfs.ServiceDataIdPFS = tr.IdTD;
+                            me.pricesforeachservice.Add(pfs);
                             me.SaveChanges();
                             ServicesM.Services[i].ID = tr.IdTD;
                             ServicesM.Services[i].New = false;
@@ -104,15 +108,20 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                         else
                         {
                             int temp = ServicesM.Services[i].ID;
-                            tr = me.treatmentdata.Where(a => a.IdTD == temp).Single();
+                            tr = me.servicesdata.Where(a => a.IdTD == temp).Single();
+                            pfs = me.pricesforeachservice.Where(pf => pf.ServiceDataIdPFS == temp).LastOrDefault();
                             if (!ServicesM.Services[i].Name.Equals(tr.NameTD))
                                 tr.NameTD = ServicesM.Services[i].Name;
-                            if (!ServicesM.Services[i].Vat.Equals(tr.VatTD))
-                                tr.VatTD = ServicesM.Services[i].Vat;
-                            if (!ServicesM.Services[i].Price.Equals(tr.PriceTD))
-                                tr.PriceTD = ServicesM.Services[i].Price;
                             if (!ServicesM.Services[i].Details.Equals(tr.DetailsTD))
                                 tr.DetailsTD = ServicesM.Services[i].Details;
+                            if (!ServicesM.Services[i].Vat.Equals(pfs.VatPFS) || !ServicesM.Services[i].Price.Equals(pfs.PricePFS))
+                                pfs = new pricesforeachservice()
+                                {
+                                    PricePFS = ServicesM.Services[i].Price,
+                                    VatPFS = ServicesM.Services[i].Vat,
+                                    ServiceDataIdPFS = temp
+                                };
+                            me.pricesforeachservice.Add(pfs);
                             me.SaveChanges();
                         }
                     }

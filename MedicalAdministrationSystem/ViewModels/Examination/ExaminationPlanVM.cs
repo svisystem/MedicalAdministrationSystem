@@ -31,13 +31,13 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             {
                 me = new medicalEntities();
                 me.Database.Connection.Open();
-                foreach (treatmentdata row in me.treatmentdata.Where(a => a.DeletedTD == false).ToList())
+                foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == false).ToList())
                     ExaminationPlanM.Services.Add(new ExaminationPlanM.Service
                     {
                         ID = row.IdTD,
                         Name = row.NameTD,
-                        Vat = row.VatTD,
-                        Price = row.PriceTD,
+                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).LastOrDefault().VatPFS,
+                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).LastOrDefault().PricePFS,
                         Details = row.DetailsTD
                     });
                 me.Database.Connection.Close();

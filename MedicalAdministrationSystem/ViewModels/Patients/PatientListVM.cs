@@ -218,7 +218,12 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                             belong_st temp = me.belong_st.Where(a => a.IdPD == patient.Id && a.IdUD == user.Id).FirstOrDefault();
                             if (user.Belong && temp == null)
                             {
-                                me.belong_st.Add(new belong_st { IdPD = patient.Id, IdUD = user.Id });
+                                me.belong_st.Add(new belong_st
+                                {
+                                    IdPD = patient.Id,
+                                    IdUD = user.Id,
+                                    WhenBelongBS = DateTime.Now
+                                });
                                 patient.Belong.Add(user.Id);
                             }
                             if (!user.Belong && temp != null)

@@ -67,7 +67,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             {
                                 Imported = false,
                                 Id = s.IdEX,
-                                Name = me.treatmentdata.Where(t => t.IdTD == s.TreatmentIdEX).Select(t => t.NameTD).FirstOrDefault(),
+                                Name = me.servicesdata.Where(t => t.IdTD == s.ServiceIdEX).Select(t => t.NameTD).FirstOrDefault(),
                                 Code = s.CodeEX,
                                 Date = s.DateTimeEX
                             }))
@@ -101,7 +101,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             {
                                 Imported = false,
                                 Id = s.IdEX,
-                                Name = me.treatmentdata.Where(t => t.IdTD == s.TreatmentIdEX).Select(t => t.NameTD).FirstOrDefault(),
+                                Name = me.servicesdata.Where(t => t.IdTD == s.ServiceIdEX).Select(t => t.NameTD).FirstOrDefault(),
                                 Code = s.CodeEX,
                                 Date = s.DateTimeEX
                             }))

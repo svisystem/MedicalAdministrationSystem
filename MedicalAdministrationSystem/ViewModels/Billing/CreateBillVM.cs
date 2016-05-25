@@ -51,13 +51,13 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                     }
                 }
 
-                foreach (CreateBillM.Service item in me.treatmentdata.ToList().
+                foreach (CreateBillM.Service item in me.servicesdata.ToList().
                     Select(s => new CreateBillM.Service()
                     {
                         Id = s.IdTD,
                         Name = s.NameTD,
-                        Vat = s.VatTD,
-                        Price = s.PriceTD
+                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).LastOrDefault().VatPFS,
+                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).LastOrDefault().PricePFS
                     }))
                     CreateBillM.Services.Add(item);
 
