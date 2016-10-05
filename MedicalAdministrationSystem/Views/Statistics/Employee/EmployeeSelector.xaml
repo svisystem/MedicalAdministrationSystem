@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="MedicalAdministrationSystem.Views.Statistics.Employee.EmployeeSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Employee">
+    <DockPanel>
+        <Separator DockPanel.Dock="Right" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <DockPanel DockPanel.Dock="Top">
+            <Button Width="22" Padding="0" Margin="0,-1,-1,0" Height="22" VerticalAlignment="Top"
+                    HorizontalAlignment="Right" Click="DeleteClick" DockPanel.Dock="Right">
+                <ContentPresenter
+                        ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Height="18" Width="18" />
+            </Button>
+            <TextBlock Text="Kiről vagy kikről készítsünk statisztikát?" DockPanel.Dock="Top" VerticalAlignment="Top"
+                    Margin="10,10,10,10" HorizontalAlignment="Center" Foreground="#FF373A3D" TextWrapping="Wrap" />
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Separator DockPanel.Dock="Top" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                    BorderThickness="0" />
+            <Button Content="Kiválasztás" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"
+                    Height="29" Focusable="False" Click="Next" x:Name="next"
+                    IsEnabled="{Binding EmployeeSelectorM.ButtonEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Separator DockPanel.Dock="Top" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                    BorderThickness="0" />
+            <Separator DockPanel.Dock="Bottom" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                    BorderThickness="0" />
+            <dxe:SearchControl x:Name="searchControl" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                    FilterCondition="Contains" FilterByColumnsMode="Custom" Margin="0" ShowMRUButton="False"
+                    ShowFindButton="False" ShowClearButton="False" BorderBrush="{x:Null}" Focusable="False"
+                    BorderThickness="0" Height="22">
+                <dxe:SearchControl.ColumnProvider>
+                    <dxe:SelectorEditColumnProvider>
+                        <dxe:SelectorEditColumnProvider.CustomColumns>
+                            <sys:String>Name</sys:String>
+                        </dxe:SelectorEditColumnProvider.CustomColumns>
+                    </dxe:SelectorEditColumnProvider>
+                </dxe:SearchControl.ColumnProvider>
+                <dxe:SearchControl.Template>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <ContentPresenter DockPanel.Dock="Left"
+                                    ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=SearchGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1,0,0,0" Height="20"
+                                    Width="20" Opacity="0.5" RenderTransformOrigin="0.5,0.5">
+                                <ContentPresenter.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                            <dxe:ButtonEdit
+                                    EditValue="{Binding SearchText, ElementName=searchControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ShowBorder="False" Margin="0,0,-1,0" NullValueButtonPlacement="EditBox"
+                                    NullText="Keresés..." AllowDefaultButton="False" />
+                        </DockPanel>
+                    </ControlTemplate>
+                </dxe:SearchControl.Template>
+            </dxe:SearchControl>
+        </DockPanel>
+        <dxe:ListBoxEdit x:Name="listBox" Foreground="#FF373A3D"
+                ItemsSource="{Binding EmployeeSelectorM.Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ShowBorder="False" ScrollViewer.CanContentScroll="False" IsTabStop="False"
+                FilterCriteria="{Binding FilterCriteria, ElementName=searchControl}" IncrementalSearch="False"
+                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
+            <dxe:ListBoxEdit.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </dxe:ListBoxEdit.ItemsPanel>
+            <dxe:ListBoxEdit.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding Button, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+                </DataTemplate>
+            </dxe:ListBoxEdit.ItemTemplate>
+            <dxe:ListBoxEdit.ItemContainerStyle>
+                <Style TargetType="{x:Type dxe:ListBoxEditItem}">
+                    <Setter Property="Focusable" Value="False" />
+                </Style>
+            </dxe:ListBoxEdit.ItemContainerStyle>
+        </dxe:ListBoxEdit>
+    </DockPanel>
+</UserControl>

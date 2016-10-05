@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="MedicalAdministrationSystem.Views.Statistics.Employee.EmployeeQuestion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Employee">
+    <DockPanel x:Name="question">
+        <Separator DockPanel.Dock="Right" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <DockPanel DockPanel.Dock="Top">
+            <Button Width="22" Padding="0" Margin="0,-1,-1,0" Height="22" VerticalAlignment="Top"
+                    HorizontalAlignment="Right" Click="DeleteClick" DockPanel.Dock="Right">
+                <ContentPresenter
+                        ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Height="18" Width="18" />
+            </Button>
+            <TextBlock Text="Milyen statisztikát szeretnénk?" DockPanel.Dock="Top" VerticalAlignment="Top"
+                    Margin="10,10,10,10" Foreground="#FF373A3D" TextWrapping="Wrap" HorizontalAlignment="Center" />
+    </DockPanel>
+    <Separator DockPanel.Dock="Top" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <dxe:ListBoxEdit x:Name="listBox"
+                ItemsSource="{Binding EmployeeQuestionM.Choices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ShowBorder="False" ScrollViewer.CanContentScroll="False" IsTabStop="False" IncrementalSearch="False"
+                Margin="0" HorizontalContentAlignment="Stretch" Padding="0" VerticalContentAlignment="Top">
+            <dxe:ListBoxEdit.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding Item, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,10,10"
+                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                </DataTemplate>
+            </dxe:ListBoxEdit.ItemTemplate>
+            <dxe:ListBoxEdit.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Margin="0,10,0,0" />
+                </ItemsPanelTemplate>
+            </dxe:ListBoxEdit.ItemsPanel>
+            <dxe:ListBoxEdit.ItemContainerStyle>
+                <Style TargetType="{x:Type dxe:ListBoxEditItem}">
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="Padding" Value="0" />
+                </Style>
+            </dxe:ListBoxEdit.ItemContainerStyle>
+        </dxe:ListBoxEdit>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,166 @@
+﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Statistics.Interval"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities" Width="240">
+    <utilities:ViewExtender.Resources>
+        <Style x:Key="{dxet:EditorListBoxThemeKey ResourceKey=RadioButtonItemStyle, IsThemeIndependent=True}"
+                BasedOn="{StaticResource {dxet:EditorListBoxThemeKey ResourceKey=RadioButtonItemStyle}}"
+                TargetType="{x:Type dxe:ListBoxEditItem}">
+            <Setter Property="IsEnabled" Value="{Binding Enabled}" />
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Info_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=User1, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=CheckBox_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
+            <Viewbox Stretch="None">
+                <Grid Width="16" Height="16">
+                    <Image Source="{dx:DXImageOffice2013 Image=Close_32x32.png}" />
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+        <Style TargetType="{x:Type dxe:ErrorControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Content.ErrorType, RelativeSource={RelativeSource Self}}"
+                        Value="User1">
+                    <Setter Property="ContentTemplate"
+                            Value="{DynamicResource {dxet:ErrorTypesThemeKeyExtension ResourceKey=User1}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </utilities:ViewExtender.Resources>
+    <DockPanel x:Name="question">
+        <Separator DockPanel.Dock="Right" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <DockPanel DockPanel.Dock="Top">
+            <Button Width="22" Padding="0" Margin="0,-1,-1,0" Height="22" VerticalAlignment="Top"
+                    HorizontalAlignment="Right" Click="DeleteClick" DockPanel.Dock="Right">
+                <ContentPresenter
+                        ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Height="18" Width="18" />
+            </Button>
+            <TextBlock DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10,10,10,10" Foreground="#FF373A3D"
+                    TextWrapping="Wrap" HorizontalAlignment="Center">Milyen intervallumban szeretné ábrázolni a statisztikát?</TextBlock>
+        </DockPanel>
+        <Separator DockPanel.Dock="Top" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <TextBlock DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10" Foreground="#FF373A3D" TextWrapping="Wrap"
+                HorizontalAlignment="Center">Intervallum meghatározása</TextBlock>
+        <Separator DockPanel.Dock="Top" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <Grid DockPanel.Dock="Top">
+            <dxe:CheckEdit x:Name="FixDate" Padding="10,0,0,0" EditValueChanged="ClickEvent" Focusable="False" 
+                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, Path=intervalEnabled.FixDate}" />
+            <TextBlock Padding="10,3,5,5" Foreground="#FF373A3D" Text="Adott időpontban" IsHitTestVisible="False"
+                    Margin="24,11,0,10" />
+        </Grid>
+        <dxe:DateEdit DockPanel.Dock="Top" x:Name="fixDateEdit"
+                EditValue="{Binding IntervalM.FixDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                NullValueButtonPlacement="None" NullText="Időpont..." Mask="D" MaskType="DateTimeAdvancingCaret"
+                MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" IsTextEditable="False" MaskIgnoreBlank="False"
+                Spin="Spin" VerticalAlignment="Center" ShowClearButton="False" Padding="0" Margin="-1,0"
+                Focusable="False" IsReadOnly="True" PopupOpening="PopupOpening">
+            <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" x:Name="fixDateErase"
+                    IsEnabled="False" />
+            <dxe:ButtonInfo GlyphKind="DropDown" x:Name="fixDatePicker"
+                    Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"
+                    IsEnabled="False" />
+            <dxe:DateEdit.StyleSettings>
+                <dxe:DateEditPickerStyleSettings />
+            </dxe:DateEdit.StyleSettings>
+        </dxe:DateEdit>
+        <Grid DockPanel.Dock="Top">
+            <dxe:CheckEdit x:Name="IntervalDate" Padding="10,0,0,0" EditValueChanged="ClickEvent" Focusable="False"
+                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, Path=intervalEnabled.IntervalDate}" />
+            <TextBlock Padding="10,3,5,5" Foreground="#FF373A3D" Text="Adott intervallumban" IsHitTestVisible="False"
+                    Margin="24,11,0,10" />
+        </Grid>
+        <dxe:DateEdit DockPanel.Dock="Top" x:Name="intervalStart"
+                EditValue="{Binding IntervalM.IntervalStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                NullValueButtonPlacement="None" NullText="Intervallum kezdete..." Mask="D"
+                MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU" MaskUseAsDisplayFormat="True"
+                IsTextEditable="False" MaskIgnoreBlank="False" Spin="Spin" VerticalAlignment="Center"
+                ShowClearButton="False" Padding="0" Margin="-1,0,-1,-1" Focusable="False" IsReadOnly="True"
+                PopupOpening="PopupOpening">
+            <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" x:Name="intervalStartErase"
+                    IsEnabled="False" />
+            <dxe:ButtonInfo GlyphKind="DropDown" x:Name="intervalStartPicker"
+                    Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"
+                    IsEnabled="False" />
+            <dxe:DateEdit.StyleSettings>
+                <dxe:DateEditPickerStyleSettings />
+            </dxe:DateEdit.StyleSettings>
+        </dxe:DateEdit>
+        <dxe:DateEdit x:Name="intervalEnd" DockPanel.Dock="Top"
+                EditValue="{Binding IntervalM.IntervalEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False"
+                NullValueButtonPlacement="None" NullText="Intervallum vége..." Mask="D"
+                MaskType="DateTimeAdvancingCaret" MaskCulture="hu-HU" MaskUseAsDisplayFormat="True"
+                IsTextEditable="False" MaskIgnoreBlank="False" Spin="Spin" VerticalAlignment="Center"
+                ShowClearButton="False" Padding="0" Margin="-1,0" Focusable="False" IsReadOnly="True"
+                PopupOpening="PopupOpening">
+            <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" x:Name="intervalEndErase"
+                    IsEnabled="False" />
+            <dxe:ButtonInfo GlyphKind="DropDown" x:Name="intervalEndPicker"
+                    Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}"
+                    IsEnabled="False" />
+            <dxe:DateEdit.StyleSettings>
+                <dxe:DateEditPickerStyleSettings />
+            </dxe:DateEdit.StyleSettings>
+        </dxe:DateEdit>
+        <Grid DockPanel.Dock="Top">
+            <dxe:CheckEdit x:Name="Continuous" Padding="10,0,0,0" EditValueChanged="ClickEvent" Focusable="False"
+                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, Path=intervalEnabled.Continuous}" />
+            <TextBlock Padding="10,3,5,5" Foreground="#FF373A3D" Text="Folyamatában" IsHitTestVisible="False"
+                    Margin="24,11,0,10" />
+        </Grid>
+        <Separator DockPanel.Dock="Top" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <TextBlock DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10,10,10,10" Foreground="#FF373A3D"
+                TextWrapping="Wrap" HorizontalAlignment="Center">Skálázás léptékének beállítása</TextBlock>
+        <Separator DockPanel.Dock="Top" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" />
+        <Button Margin="10" DockPanel.Dock="Bottom" HorizontalContentAlignment="Left" Focusable="False" Padding="0"
+                IsEnabled="False" x:Name="create" Click="Create">
+            <DockPanel Margin="10">
+                <Image DockPanel.Dock="Left"
+                        Source="pack://application:,,,/MedicalAdministrationSystem;component/Icons/ChartButton.png"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Width="68" />
+                <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="15,0,0,0">Statisztika elkésztése</TextBlock>
+            </DockPanel>
+        </Button>
+        <Separator DockPanel.Dock="Bottom" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                BorderThickness="0" HorizontalContentAlignment="Stretch" />
+        <dxe:ListBoxEdit ShowBorder="False" IncrementalSearch="False"
+                ItemsSource="{Binding IntervalM.Scales, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding IntervalM.SelectedScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ScrollViewer.CanContentScroll="False" IsTabStop="False" Padding="8,2,0,0">
+            <dxe:ListBoxEdit.StyleSettings>
+                <dxe:RadioListBoxEditStyleSettings />
+            </dxe:ListBoxEdit.StyleSettings>
+            <dxe:ListBoxEdit.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Title}" IsEnabled="{Binding Enabled}" Margin="8,1,8,0" />
+                </DataTemplate>
+            </dxe:ListBoxEdit.ItemTemplate>
+        </dxe:ListBoxEdit>
+    </DockPanel>
+</utilities:ViewExtender>
