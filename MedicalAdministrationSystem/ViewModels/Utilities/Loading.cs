@@ -1,7 +1,9 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
@@ -23,8 +25,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         static async internal Task Hide()
         {
-            if (counter > 0)
-                counter--;
+            if (counter > 0) counter--;
             if (counter.Equals(0) && showed)
             {
                 GlobalVM.MainWindow.Focusable = true;

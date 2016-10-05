@@ -48,7 +48,7 @@
         <Button x:Name="image" DockPanel.Dock="Left" Width="50" Padding="0" Margin="10,0" Height="50" VerticalAlignment="Center"
                 HorizontalAlignment="Left" Focusable="False" Click="Include" />
         <Button DockPanel.Dock="Right" Width="22" Padding="0" Margin="0,-1,-1,0" Height="22" VerticalAlignment="Top"
-                HorizontalAlignment="Right" Click="DeleteClick">
+                HorizontalAlignment="Right" Click="DeleteClick" x:Name="delete">
             <ContentPresenter
                     ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Height="18" Width="18" />
@@ -63,8 +63,8 @@
                     MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
                     MaskIgnoreBlank="False" Spin="Spin" Height="22"
                     VerticalAlignment="Center" Margin="0,0,10,0">
-                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
-                <dxe:ButtonInfo GlyphKind="DropDown"
+                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" x:Name="startDateErase"/>
+                <dxe:ButtonInfo GlyphKind="DropDown" x:Name="startDateDrop"
                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
                 <dxe:DateEdit.StyleSettings>
                     <dxe:DateEditPickerStyleSettings />
@@ -81,8 +81,8 @@
                     MaskCulture="hu-HU" MaskUseAsDisplayFormat="True" ShowClearButton="False" IsTextEditable="False"
                     MaskIgnoreBlank="False" Spin="Spin" Height="22"
                     VerticalAlignment="Center" Margin="0,0,10,0">
-                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
-                <dxe:ButtonInfo GlyphKind="DropDown"
+                <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" x:Name="finishDateErase"/>
+                <dxe:ButtonInfo GlyphKind="DropDown" x:Name="finishDateDrop"
                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
                 <dxe:DateEdit.StyleSettings>
                     <dxe:DateEditPickerStyleSettings />

@@ -87,7 +87,7 @@ namespace MedicalAdministrationSystem.Views.Users
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
                 detailsModifyValid.birthPlace = true;
             }
-            //ForceBinding(sender, e);
+            ForceBinding(sender, e);
         }
         private void birthDate_Validate(object sender, ValidationEventArgs e)
         {

@@ -68,6 +68,7 @@
     <StartupObject>MedicalAdministrationSystem.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>True</Private>
@@ -78,6 +79,7 @@
     <Reference Include="DevExpress.Pdf.v15.2.Drawing, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.RichEdit.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Charts.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpf.Controls.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Core.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Docking.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -298,6 +300,16 @@
     <Compile Include="Models\Settings\ServicesM.cs" />
     <Compile Include="Models\Settings\UserAdministrateMViewElements.cs" />
     <Compile Include="Models\Settings\UserAdministrateMDataSet.cs" />
+    <Compile Include="Models\Statistics\ChartM.cs" />
+    <Compile Include="Models\Statistics\DefaultM.cs" />
+    <Compile Include="Models\Statistics\Employee\EmployeeQuestionM.cs" />
+    <Compile Include="Models\Statistics\Employee\EmployeeSelectorM.cs" />
+    <Compile Include="Models\Statistics\Finance\FinanceQuestionM.cs" />
+    <Compile Include="Models\Statistics\IntervalM.cs" />
+    <Compile Include="Models\Statistics\Patient\PatientQuestionM.cs" />
+    <Compile Include="Models\Statistics\Patient\PatientSelectorM.cs" />
+    <Compile Include="Models\Statistics\Service\ServiceQuestionM.cs" />
+    <Compile Include="Models\Statistics\Service\ServiceSelectorM.cs" />
     <Compile Include="Models\Statistics\StatisticsM.cs" />
     <Compile Include="Models\Users\DetailsModifyMDataSet.cs" />
     <Compile Include="Models\Users\DetailsModifyMViewElements.cs" />
@@ -346,6 +358,17 @@
     <Compile Include="ViewModels\Settings\ServicesVM.cs" />
     <Compile Include="ViewModels\Settings\UserAdministrateVM.cs" />
     <Compile Include="ViewModels\MenuItem\StatisticsVM.cs" />
+    <Compile Include="ViewModels\Statistics\ChartVM.cs" />
+    <Compile Include="ViewModels\Statistics\DefaultVM.cs" />
+    <Compile Include="ViewModels\Statistics\Employee\EmployeeQuestionVM.cs" />
+    <Compile Include="ViewModels\Statistics\Employee\EmployeeSelectorVM.cs" />
+    <Compile Include="ViewModels\Statistics\Finance\FinanceQuestionVM.cs" />
+    <Compile Include="ViewModels\Statistics\IntervalVM.cs" />
+    <Compile Include="ViewModels\Statistics\Patient\PatientQuestionVM.cs" />
+    <Compile Include="ViewModels\Statistics\Patient\PatientSelectorVM.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\Employee\WorkingHoursWeek.cs" />
+    <Compile Include="ViewModels\Statistics\Service\ServiceQuestionVM.cs" />
+    <Compile Include="ViewModels\Statistics\Service\ServiceSelectorVM.cs" />
     <Compile Include="ViewModels\Statistics\StatisticsVM.cs" />
     <Compile Include="ViewModels\Users\DetailsModifyVM.cs" />
     <Compile Include="ViewModels\Users\LoginVM.cs" />
@@ -356,6 +379,7 @@
     <Compile Include="ViewModels\Utilities\DocumentGenerator.cs" />
     <Compile Include="ViewModels\Utilities\EmptyComboBoxEdit.cs" />
     <Compile Include="ViewModels\Utilities\Loading.cs" />
+    <Compile Include="ViewModels\Utilities\MainChart.cs" />
     <Compile Include="ViewModels\Utilities\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModels\Utilities\FormChecking.cs" />
     <Compile Include="ViewModels\Utilities\FormValidate.cs" />
@@ -497,6 +521,54 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\Statistics\Chart.xaml.cs">
+      <DependentUpon>Chart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Finance\FinanceQuestion.xaml.cs">
+      <DependentUpon>FinanceQuestion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Fragments\Button.xaml.cs">
+      <DependentUpon>Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Fragments\CheckButton.xaml.cs">
+      <DependentUpon>CheckButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Default.xaml.cs">
+      <DependentUpon>Default.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Employee\EmployeeQuestion.xaml.cs">
+      <DependentUpon>EmployeeQuestion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Employee\EmployeeSelector.xaml.cs">
+      <DependentUpon>EmployeeSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Fragments\CheckButtonForPatients.xaml.cs">
+      <DependentUpon>CheckButtonForPatients.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Fragments\ColorCheckButton.xaml.cs">
+      <DependentUpon>ColorCheckButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Graphs\Line.xaml.cs">
+      <DependentUpon>Line.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Graphs\Pie.xaml.cs">
+      <DependentUpon>Pie.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Interval.xaml.cs">
+      <DependentUpon>Interval.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Patient\PatientQuestion.xaml.cs">
+      <DependentUpon>PatientQuestion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Patient\PatientSelector.xaml.cs">
+      <DependentUpon>PatientSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Service\ServiceQuestion.xaml.cs">
+      <DependentUpon>ServiceQuestion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Service\ServiceSelector.xaml.cs">
+      <DependentUpon>ServiceSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Statistics\Statistics.xaml.cs">
       <DependentUpon>Statistics.xaml</DependentUpon>
@@ -687,6 +759,70 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Statistics\Chart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Finance\FinanceQuestion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Fragments\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Fragments\CheckButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Default.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Employee\EmployeeQuestion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Employee\EmployeeSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Fragments\CheckButtonForPatients.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Fragments\ColorCheckButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Graphs\Line.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Graphs\Pie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Interval.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Patient\PatientQuestion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Patient\PatientSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Service\ServiceQuestion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Service\ServiceSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Statistics\Statistics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -822,6 +958,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\ContentAutoArrange_32x32.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\ChartButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataAccess\DataAccess.Context.tt">

@@ -19,14 +19,14 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         private BackgroundWorker Execute { get; set; }
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
-        private bool newform { get; set; }
+        private bool newForm { get; set; }
         protected internal bool From { get; set; }
         private patientdata selected { get; set; }
         private int? selectedId { get; set; }
-        protected internal PatientDetailsVM(bool newform, string Name = null, string Taj = null, int? Id = null)
+        protected internal PatientDetailsVM(bool newForm, string Name = null, string Taj = null, int? Id = null)
         {
-            if (!newform && Id == null) selectedId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).AskId();
-            this.newform = !newform;
+            if (!newForm && Id == null) selectedId = (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).AskId();
+            this.newForm = newForm;
             PatientDetailsMViewElements = new PatientDetailsMViewElements();
             if (Id != null)
             {
@@ -46,7 +46,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         }
         protected internal async void ExecuteMethod()
         {
-            if (!newform)
+            if (!newForm)
             {
                 await Utilities.Loading.Show();
                 dialog = new Dialog(false, "Módosítás megerősítése", OkMethod, () => { }, true);
@@ -69,7 +69,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 using (me = new medicalEntities())
                 {
                     me.Database.Connection.Open();
-                    if (!newform) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
+                    if (!newForm) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
                     else selected = new patientdata();
                     selected.NamePD = PatientDetailsMViewElements.UserName;
                     if (PatientDetailsMViewElements.BirthName != null) selected.BirthNamePD = PatientDetailsMViewElements.BirthName;
@@ -90,26 +90,27 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     selected.BillingSettlementPD = PatientDetailsMDataSet.FullSettlementList.Where(a => a.DataS == PatientDetailsMViewElements.BillingSettlement).Select(a => a.IdS).Single();
                     selected.BillingAddressPD = PatientDetailsMViewElements.BillingAddress;
                     if (PatientDetailsMViewElements.Notes != null) selected.NotesPD = PatientDetailsMViewElements.Notes;
-                    if (newform && me.priviledges_fx.Where(p => p.IdP == GlobalVM.GlobalM.PriviledgeID).Single().IsDoctorP)
+                    if (newForm)
                     {
                         me.patientdata.Add(selected);
                         me.SaveChanges();
 
-                        me.belong_st.Add(new belong_st()
+                        if (me.priviledges_fx.Where(p => p.IdP == GlobalVM.GlobalM.PriviledgeID).Single().IsDoctorP)
+                            me.belong_st.Add(new belong_st()
+                            {
+                                IdUD = (int)GlobalVM.GlobalM.UserID,
+                                IdPD = selected.IdPD,
+                                WhenBelongBS = DateTime.Now
+                            });
+                        if (newForm && selectedId != null)
                         {
-                            IdUD = (int)GlobalVM.GlobalM.UserID,
-                            IdPD = selected.IdPD,
-                            WhenBelongBS = DateTime.Now
-                        });
-                    }
-                    if (newform && selectedId != null)
-                    {
-                        scheduleperson_st sp = me.scheduleperson_st.Where(spd => spd.IdSP == me.scheduledata.
-                            Where(sd => sd.IdSD == selectedId).FirstOrDefault().PatientIdSD).Single();
-                        me.newperson.Remove(me.newperson.Where(np => np.IdNP == sp.NewPersonIdSP).Single());
-                        sp.NewPersonIdSP = null;
-                        sp.ExistedIdSP = selected.IdPD;
-                        me.scheduledata.Where(sd => sd.IdSD == selectedId).Single().StillNotVisitedSD = false;
+                            scheduleperson_st sp = me.scheduleperson_st.Where(spd => spd.IdSP == me.scheduledata.
+                                Where(sd => sd.IdSD == selectedId).FirstOrDefault().PatientIdSD).Single();
+                            me.newperson.Remove(me.newperson.Where(np => np.IdNP == sp.NewPersonIdSP).Single());
+                            sp.NewPersonIdSP = null;
+                            sp.ExistedIdSP = selected.IdPD;
+                            me.scheduledata.Where(sd => sd.IdSD == selectedId).Single().StillNotVisitedSD = false;
+                        }
                     }
                     me.SaveChanges();
                     me.Database.Connection.Close();
@@ -125,9 +126,10 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             if (workingConn)
             {
+                if (!newForm) (GlobalVM.StockLayout.headerContent.Content as SelectedPatient).Refresh((int)selectedId, PatientDetailsMViewElements.UserName);
                 string temp;
 
-                if (newform) temp = "rögzítettük";
+                if (newForm) temp = "rögzítettük";
                 else temp = "módosítottuk";
                 dialog = new Dialog(false, "Páciens adatok", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("Sikeresen " + temp + " az adatokat.");
@@ -147,7 +149,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     PatientDetailsMDataSet.FullZipCodeList = me.zipcode_fx.ToList();
                     PatientDetailsMDataSet.FullSettlementList = me.settlement_fx.ToList();
                     PatientDetailsMDataSet.SettlementZipSwitch = me.settlementzipcode_st.ToList();
-                    if (!newform) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
+                    if (!newForm) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
@@ -168,7 +170,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 PatientDetailsMDataSet.ViewBirthPlaceList = PatientDetailsMDataSet.ViewSettlementList;
                 PatientDetailsMDataSet.ViewBillingSettlementList = PatientDetailsMDataSet.ViewSettlementList;
 
-                if (!newform)
+                if (!newForm)
                 {
                     PatientDetailsMViewElements.UserName = selected.NamePD;
                     try
@@ -227,7 +229,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 }
                 await Utilities.Loading.Hide();
 
-                if (!newform) PatientDetailsMViewElements.AcceptChanges();
+                if (!newForm) PatientDetailsMViewElements.AcceptChanges();
             }
             else ConnectionMessage();
         }

@@ -187,7 +187,10 @@ namespace MedicalAdministrationSystem.Views.Schedule
             AppointmentLenght = (DateTime)endDateTime.EditValue - (DateTime)startDateTime.EditValue;
             ConnectValidators();
             if ((DateTime)startDateTime.EditValue < DateTime.Now)
-                patientName.IsEnabled = tajNumber.IsEnabled = startDateTime.IsEnabled = endDateTime.IsEnabled = doctors.IsEnabled = notes.IsEnabled = change.IsEnabled = false;
+            {
+                patientName.IsReadOnly = tajNumber.IsReadOnly = startDateTime.IsReadOnly = endDateTime.IsReadOnly = doctors.IsReadOnly = notes.IsReadOnly = true;
+                change.IsEnabled = cancel.IsEnabled = false;
+            }
         }
 
         private void patientNameErase(object sender, System.Windows.RoutedEventArgs e)

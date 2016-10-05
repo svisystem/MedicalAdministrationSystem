@@ -43,43 +43,36 @@
         <DockPanel DockPanel.Dock="Bottom" Height="40">
             <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
             <Button Height="29" Content="Változtatások mentése" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Click="save" x:Name="create"/>
+                    Click="save" x:Name="create" />
         </DockPanel>
         <DockPanel DockPanel.Dock="Right">
             <Separator DockPanel.Dock="Left" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
             <Label Content="Kivételek:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="13,10,10,10"
                     HorizontalAlignment="Left" />
             <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
-            <dxe:ListBoxEdit x:Name="listBox"
+            <ItemsControl x:Name="listBox"
                     ItemsSource="{Binding SurgeryTimeM.ExceptionsButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    ShowBorder="False" HorizontalContentAlignment="Center" ScrollViewer.CanContentScroll="False"
-                    IsTabStop="False" VerticalContentAlignment="Top" Padding="0"
+                          IsTabStop="False" VerticalContentAlignment="Top" Padding="0"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <dxe:ListBoxEdit.ItemTemplate>
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <UserControl Content="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                HorizontalAlignment="Left" Width="446" />
+                        <ContentControl Content="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Width="446" />
                     </DataTemplate>
-                </dxe:ListBoxEdit.ItemTemplate>
-                <dxe:ListBoxEdit.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="IsSelected"
-                                Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </dxe:ListBoxEdit.ItemContainerStyle>
-            </dxe:ListBoxEdit>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer Padding="{TemplateBinding Padding}" VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+            </ItemsControl>
         </DockPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <dxlc:LayoutGroup Header="Rendelési idő" View="GroupBox" Orientation="Vertical" HorizontalAlignment="Center"
                     VerticalAlignment="Center" Margin="30">
-                <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
+                <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0,1,0,0" Margin="5">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -97,8 +90,8 @@
                                             HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
                                             DockPanel.Dock="Right"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}" 
-                                            EditValue="{Binding SurgeryTimeM.Monday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}"
+                                            EditValue="{Binding SurgeryTimeM.Monday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DockPanel>
                             </Grid>
                             <Grid Margin="0,1,0,16">

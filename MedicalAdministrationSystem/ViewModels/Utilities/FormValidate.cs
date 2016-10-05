@@ -11,9 +11,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             Type type = Type.GetType(item.ToString());
             PropertyInfo[] properties = type.GetProperties().Where(p => p.Name != "IsChanged").ToArray();
             for (int i = 0; i < properties.Length; i++)
-            {
                 if (!(bool)properties[i].GetValue(item)) return false;
-            }
             return true;
         }
         protected internal bool Validation(object input, object empty, object valid)

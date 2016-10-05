@@ -44,32 +44,25 @@
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Right"
                 Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}">
-            <Label Content="Dokumentumok:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="13,10,10,10"
+            <Label Content="Dokumentumok:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10,10,10,10"
                     HorizontalAlignment="Left" />
-            <dxe:ListBoxEdit x:Name="listBox"
+            <ItemsControl x:Name="listBox"
                     ItemsSource="{Binding NewEvidenceM.EvidenceList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    ShowBorder="False" Padding="0,40,0,0" HorizontalContentAlignment="Center"
-                    ScrollViewer.CanContentScroll="False" IsTabStop="False">
-                <dxe:ListBoxEdit.ItemTemplate>
+                    Padding="0,40,0,0" HorizontalContentAlignment="Center" IsTabStop="False">
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <UserControl Content="{Binding Button, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,0,10,10" />
                     </DataTemplate>
-                </dxe:ListBoxEdit.ItemTemplate>
-                <dxe:ListBoxEdit.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="IsSelected"
-                                Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </dxe:ListBoxEdit.ItemContainerStyle>
-            </dxe:ListBoxEdit>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer Padding="{TemplateBinding Padding}" VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+            </ItemsControl>
         </Grid>
         <Separator DockPanel.Dock="Right" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         <DockPanel Height="40" LastChildFill="True" DockPanel.Dock="Top">

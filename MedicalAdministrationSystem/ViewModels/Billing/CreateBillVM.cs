@@ -56,8 +56,8 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                     {
                         Id = s.IdTD,
                         Name = s.NameTD,
-                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).LastOrDefault().VatPFS,
-                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).LastOrDefault().PricePFS
+                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
+                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS
                     }))
                     CreateBillM.Services.Add(item);
 

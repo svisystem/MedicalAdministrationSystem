@@ -84,8 +84,7 @@
                     Ribbon="{Binding ElementName=ribbonControl1, Mode=OneTime}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="-1,-19,-1,-1" ShowCaretInReadOnly="False"
                     PopupMenuShowing="wordEditor_PopupMenuShowing" ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    HorizontalContentAlignment="Stretch" AutoSizeMode="Both" Loaded="wordEditor_Loaded"
-                    ShowBorder="False" />
+                    HorizontalContentAlignment="Stretch" AutoSizeMode="Both" Loaded="wordEditor_Loaded" />
         </DockPanel>
         <dxb:BarManager.Items>
             <dxb:BarButtonItem x:Name="biFileNew" Content="Új dokumentum" ItemClick="New"

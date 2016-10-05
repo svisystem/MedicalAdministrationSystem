@@ -260,6 +260,7 @@
           <Property Name="VatPFS" Type="int" Nullable="false" />
           <Property Name="PricePFS" Type="int" Nullable="false" />
           <Property Name="ServiceDataIdPFS" Type="int" Nullable="false" />
+          <Property Name="WhenChangedPFS" Type="datetime" Precision="0" Nullable="false" />
         </EntityType>
         <EntityType Name="priviledges_fx">
           <Key>
@@ -368,6 +369,7 @@
           <Property Name="DayOfWeekUS" Type="int" Nullable="false" />
           <Property Name="StartTimeUS" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="FinishTimeUS" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="WhenCreateUS" Type="datetime" Precision="0" Nullable="false" />
         </EntityType>
         <EntityType Name="zipcode_fx">
           <Key>
@@ -1729,6 +1731,7 @@
           <Property Name="VatPFS" Type="Int32" Nullable="false" />
           <Property Name="PricePFS" Type="Int32" Nullable="false" />
           <Property Name="ServiceDataIdPFS" Type="Int32" Nullable="false" />
+          <Property Name="WhenChangedPFS" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="currentpricesforeachbill_st" Relationship="Self.fk_CurrentPricesForEachBill_ST_pricesforeachservice1" FromRole="pricesforeachservice" ToRole="currentpricesforeachbill_st" />
           <NavigationProperty Name="servicesdata" Relationship="Self.fk_pricesforeachservice_servicesdata1" FromRole="pricesforeachservice" ToRole="servicesdata" />
         </EntityType>
@@ -1872,6 +1875,7 @@
           <Property Name="DayOfWeekUS" Type="Int32" Nullable="false" />
           <Property Name="StartTimeUS" Type="DateTime" Nullable="false" />
           <Property Name="FinishTimeUS" Type="DateTime" Nullable="false" />
+          <Property Name="WhenCreateUS" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="userdata" Relationship="Self.fk_DoctorSchedule_DoctorData1" FromRole="usersschedule" ToRole="userdata" />
         </EntityType>
         <EntityType Name="zipcode_fx">
@@ -3171,6 +3175,7 @@
                 <ScalarProperty Name="VatPFS" ColumnName="VatPFS" />
                 <ScalarProperty Name="PricePFS" ColumnName="PricePFS" />
                 <ScalarProperty Name="ServiceDataIdPFS" ColumnName="ServiceDataIdPFS" />
+                <ScalarProperty Name="WhenChangedPFS" ColumnName="WhenChangedPFS" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3287,6 +3292,7 @@
                 <ScalarProperty Name="DayOfWeekUS" ColumnName="DayOfWeekUS" />
                 <ScalarProperty Name="StartTimeUS" ColumnName="StartTimeUS" />
                 <ScalarProperty Name="FinishTimeUS" ColumnName="FinishTimeUS" />
+                <ScalarProperty Name="WhenCreateUS" ColumnName="WhenCreateUS" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -21,14 +21,10 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         {
             LoadList();
             foreach (Item item in menuItems)
-            {
-                if (Convert.ToBoolean(priviledges.GetType().GetProperty(item.DataBaseName, BindingFlags.Instance | BindingFlags.Public |
-                    BindingFlags.NonPublic).GetValue(priviledges, null)))
-                {
+                if (Convert.ToBoolean(priviledges.GetType().GetProperty(item.DataBaseName, BindingFlags.Instance | 
+                    BindingFlags.Public | BindingFlags.NonPublic).GetValue(priviledges)))
                     item.Tile.Visibility = Visibility.Visible;
-                }
                 else item.Tile.Visibility = Visibility.Collapsed;
-            }
             GlobalVM.StockLayout.billingTBI.IsEnabled = !GlobalVM.StockLayout.patientsTBI.IsVisible;
         }
         public MenuButtonsEnabled()
@@ -56,13 +52,11 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         protected internal void LoadFirst()
         {
             foreach (Item item in menuItems)
-            {
                 if (Visible(item.Tile) && Enabled(item.Tile))
                 {
                     LoadItem(item.Tile);
                     break;
                 }
-            }
         }
         protected internal void ChangeEnable(TileBarItem tile, bool enabled)
         {
@@ -92,7 +86,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                         GlobalVM.StockLayout.ScheduleLoad();
                         break;
                     case "patientsTBI":
-                        if (modifier == true) GlobalVM.StockLayout.PatiensLoad(true, Name, Taj, Id);
+                        if (modifier != null) GlobalVM.StockLayout.PatiensLoad((bool)modifier, Name, Taj, Id);
                         else GlobalVM.StockLayout.PatiensLoad();
                         break;
                     case "examinationTBI":

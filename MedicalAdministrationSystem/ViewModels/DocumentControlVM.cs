@@ -57,7 +57,6 @@ namespace MedicalAdministrationSystem.ViewModels
         {
             foreach (DocumentControlM.ListElement row in DocumentControlM.List)
                 row.AcceptChanges();
-            DocumentControlM.AcceptChanges();
             Buttons();
         }
         protected internal async void Add(string type, string fileType = null, int? dbId = null, MemoryStream ms = null)

@@ -12,16 +12,27 @@ namespace MedicalAdministrationSystem.Views.Fragments
         private ExceptedTimeValid exceptedTimeValid { get; set; }
         private Action Valid { get; set; }
         private Action<int> Delete { get; set; }
-        public ExceptedTime(SurgeryTimeM.Exception data, Action Valid, Action<int> Delete)
+        private Func<bool, int, DateTime?, DateTime?, bool> Between { get; set; }
+        public ExceptedTime(SurgeryTimeM.Exception data, Action Valid, Action<int> Delete, Func<bool, int, DateTime?, DateTime?, bool> Between, bool disable = false)
         {
             this.Data = data;
             this.Valid = Valid;
             this.Delete = Delete;
+            this.Between = Between;
             this.DataContext = this;
             exceptedTimeValid = new ExceptedTimeValid();
             InitializeComponent();
             ConnectValidators();
             ButtonImage(image);
+            Disable(disable);
+        }
+        private void Disable(bool disable)
+        {
+            if (disable)
+            {
+                image.IsEnabled = startDateDrop.IsEnabled = startDateErase.IsEnabled = finishDateDrop.IsEnabled = finishDateErase.IsEnabled = delete.IsEnabled = false;
+                startDate.IsReadOnly = finishDate.IsReadOnly = true;
+            }
         }
         private void ConnectValidators()
         {
@@ -34,6 +45,8 @@ namespace MedicalAdministrationSystem.Views.Fragments
         {
             Data.Included = !Data.Included;
             ButtonImage(sender as Button);
+            startDate.DoValidate();
+            finishDate.DoValidate();
         }
         private void StartTime_Validate(object sender, ValidationEventArgs e)
         {
@@ -42,6 +55,8 @@ namespace MedicalAdministrationSystem.Views.Fragments
                 e.SetError("A mező kitöltése kötelező", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else if (finishDate.EditValue != null && (DateTime)e.Value > (DateTime)finishDate.EditValue)
                 e.SetError("A kezdő időpont nem lehet nagyobb a befejezés időpontjánál", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+            else if (Between(Data.Included, Data.Id, (DateTime)e.Value, Data.FinishDateTime))
+                e.SetError("Ebben az időtartamban már lett felvéve ilyen irányú kivétel", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else
             {
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
@@ -56,6 +71,10 @@ namespace MedicalAdministrationSystem.Views.Fragments
             fromFinish = false;
             Validate();
         }
+        private bool Compare(DateTime first, DateTime second)
+        {
+            return first.Date == second.Date;
+        }
         private void FinishTime_Validate(object sender, ValidationEventArgs e)
         {
             exceptedTimeValid.Finish = false;
@@ -63,6 +82,10 @@ namespace MedicalAdministrationSystem.Views.Fragments
                 e.SetError("A mező kitöltése kötelező", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else if (startDate.EditValue != null && (DateTime)e.Value < (DateTime)startDate.EditValue)
                 e.SetError("A kezdő időpont nem lehet nagyobb a befejezés időpontjánál", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+            else if (Between(Data.Included, Data.Id, Data.StartDateTime, (DateTime)e.Value))
+                e.SetError("Ebben az időtartamban már lett felvéve ilyen irányú kivétel", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+            else if (startDate.EditValue != null && Data.Included && !Compare((DateTime)startDate.EditValue, (DateTime)e.Value))
+                e.SetError("Amennyiben bejelöltük hogy ezt az időintervallumot a munkaórába\nbeleértve értjük, nem lehet több napnyi intervalumot megjelölni.", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else
             {
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);

@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.Views.Global
 {
@@ -17,6 +18,12 @@ namespace MedicalAdministrationSystem.Views.Global
         protected internal void Load(int id, string name)
         {
             SelectedPatientVM.Loaded(id, name);
+        }
+        protected internal async void Refresh(int Id, string Name)
+        {
+            if (AskId() == Id)
+                await this.Dispatcher.BeginInvoke(new Action(() =>
+                    SelectedPatientVM.Refresh(Name)), DispatcherPriority.Loaded);
         }
         private void Close(object sender, RoutedEventArgs e)
         {

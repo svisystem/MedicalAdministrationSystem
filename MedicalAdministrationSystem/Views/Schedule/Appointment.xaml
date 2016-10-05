@@ -91,7 +91,7 @@
                                 InvalidValueBehavior="AllowLeaveEditor" AutoComplete="True" IncrementalFiltering="True"
                                 ValidateOnEnterKeyPressed="False" Padding="0" AllowDefaultButton="False">
                             <dxe:ComboBoxEdit.Buttons>
-                                <dxe:ButtonInfo GlyphKind="Cancel" Click="patientNameErase" ToolTip="Mező törlése" />
+                                <dxe:ButtonInfo GlyphKind="Cancel" Click="patientNameErase" ToolTip="Mező törlése" x:Name="cancel"/>
                                 <dxe:ButtonInfo GlyphKind="DropDown" x:Name="nameDropDown"
                                         Command="{Binding (dxe:ComboBoxEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
                             </dxe:ComboBoxEdit.Buttons>

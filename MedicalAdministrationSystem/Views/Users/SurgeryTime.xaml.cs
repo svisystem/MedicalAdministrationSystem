@@ -22,7 +22,6 @@ namespace MedicalAdministrationSystem.Views.Users
             this.DataContext = SurgeryTimeVM;
             InitializeComponent();
             validatorClass = surgeryTimeValid;
-            ConnectValidators();
         }
         private void ConnectValidators()
         {
@@ -75,8 +74,8 @@ namespace MedicalAdministrationSystem.Views.Users
             {
                 fromStart = true;
                 (this.FindName(GetSenderName(sender).Remove(3) + "FinishTime") as DateEdit).DoValidate();
-            } 
-            (sender as DateEdit).EditValue = e.Value;
+                (sender as DateEdit).EditValue = e.Value;
+            }
             fromFinish = false;
             SaveButtonValid();
         }
@@ -102,8 +101,8 @@ namespace MedicalAdministrationSystem.Views.Users
             {
                 fromFinish = true;
                 (this.FindName(GetSenderName(sender).Remove(3) + "StartTime") as DateEdit).DoValidate();
+                (sender as DateEdit).EditValue = e.Value;
             }
-            (sender as DateEdit).EditValue = e.Value;
             fromStart = false;
             SaveButtonValid();
         }
@@ -223,7 +222,6 @@ namespace MedicalAdministrationSystem.Views.Users
         }
         private class SurgeryTimeValid : FormValidate
         {
-
             public bool monStart { get; set; }
             public bool tueStart { get; set; }
             public bool wedStart { get; set; }
@@ -244,6 +242,7 @@ namespace MedicalAdministrationSystem.Views.Users
         private void ViewLoaded(object sender, System.Windows.RoutedEventArgs e)
         {
             SurgeryTimeVM.AfterLoaded();
+            ConnectValidators();
         }
     }
 }

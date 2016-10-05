@@ -117,7 +117,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         protected internal void Spin(object sender, SpinEventArgs e)
         {
-            e.Handled = true;
+            e.Handled = (sender as DateEdit).IsEnabled;
         }
     }
 }

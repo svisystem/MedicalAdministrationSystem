@@ -36,8 +36,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     {
                         ID = row.IdTD,
                         Name = row.NameTD,
-                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).LastOrDefault().VatPFS,
-                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).LastOrDefault().PricePFS,
+                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
+                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS,
                         Details = row.DetailsTD
                     });
                 me.Database.Connection.Close();

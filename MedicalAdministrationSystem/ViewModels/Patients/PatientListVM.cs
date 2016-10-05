@@ -158,7 +158,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     }).ToList();
                 }
         }
-        private async void LoadingListComplete(object sender, RunWorkerCompletedEventArgs e)
+        private void LoadingListComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (temp != null)
             {
@@ -170,7 +170,6 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             }
 
             PatientListM.Erased.Clear();
-            Loaded();
 
             foreach (PatientListM.Patient row in PatientListM.PatientList)
             {
@@ -178,7 +177,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 foreach (PatientListM.UserList user in row.BelongUsers)
                     user.AcceptChanges();
             }
-            await Utilities.Loading.Hide();
+            Loaded();
         }
 
         protected internal async void ExecuteMethod()
@@ -199,7 +198,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 {
                     foreach (int patient in PatientListM.Erased)
                         try
-                        { //TODO
+                        { //TODO There is a TODO, but I don't know what is the reason for, maybe unhandled other constrains still there
                             me.belong_st.RemoveRange(me.belong_st.Where(a => a.IdPD == patient));
                             me.examinationeachevidence_st.RemoveRange(me.examinationeachevidence_st.Where
                                 (b => me.examinationdata.Where(a => a.PatientIdEX == patient).Select(a => a.IdEX).ToList().Any(c => c == b.IdEX)));
@@ -268,7 +267,13 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 Ok = Loading.RunWorkerAsync;
                 fullRefresh = fullRefreshGiven;
             }
-            else Ok = RefreshTable.RunWorkerAsync;
+            else Ok = async () =>
+            {
+                if (!fullRefresh) await Utilities.Loading.Show();
+                fullRefresh = false;
+                RefreshTable.RunWorkerAsync();
+                await Utilities.Loading.Hide();
+            };
             No = async () => await Utilities.Loading.Hide();
             if (VMDirty() && (fullRefreshGiven || (!fullRefreshGiven && !fullRefresh)))
             {

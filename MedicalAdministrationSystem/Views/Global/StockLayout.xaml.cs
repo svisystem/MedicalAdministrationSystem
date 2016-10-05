@@ -22,7 +22,7 @@ namespace MedicalAdministrationSystem.Views.Global
         }
         private void patientsTBIClick(object sender, EventArgs e)
         {
-            Check(sender as TileBarItem, PatiensLoad, Back);
+            Check(sender as TileBarItem, () => PatiensLoad(), Back);
         }
         private void examinationTBIClick(object sender, EventArgs e)
         {
@@ -68,28 +68,17 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Collapsed;
-            ScheduleVM schedule = new ScheduleVM();
-            schedule.ScheduleLoad();
+            new ScheduleVM().ScheduleLoad();
             currentItem = scheduleTBI;
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void PatiensLoad()
+        protected async internal void PatiensLoad(bool? modifier = null, string Name = null, string Taj = null, int? Id = null)
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            PatientsVM patients = new PatientsVM(earlierItem);
-            patients.PatientListLoad();
-            currentItem = patientsTBI;
-            await ViewModels.Utilities.Loading.Hide();
-        }
-        protected async internal void PatiensLoad(bool modifier, string Name = null, string Taj = null, int? Id = null)
-        {
-            await ViewModels.Utilities.Loading.Show();
-            menu.Visibility = System.Windows.Visibility.Visible;
-            PatientsVM patients = new PatientsVM(earlierItem);
-            if (modifier) patients.PatientDetailsLoad(Name, Taj, Id);
-            else patients.PatientListLoad();
+            if (modifier != null) new PatientsVM(earlierItem).PatientDetailsLoad((bool)modifier, Name, Taj, Id);
+            else new PatientsVM(earlierItem).PatientListLoad();
             currentItem = patientsTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -97,8 +86,7 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            ExaminationVM examination = new ExaminationVM();
-            examination.ExaminationsLoad();
+            new ExaminationVM().ExaminationsLoad();
             currentItem = examinationTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -106,9 +94,8 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            ExaminationVM examination = new ExaminationVM();
-            if (modifier) examination.ViewLoad(imported, ID);
-            else examination.EditLoad(imported, ID);
+            if (modifier) new ExaminationVM().ViewLoad(imported, ID);
+            else new ExaminationVM().EditLoad(imported, ID);
             currentItem = examinationTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -116,8 +103,7 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            EvidenceVM evidence = new EvidenceVM();
-            evidence.EvidencesLoad();
+            new EvidenceVM().EvidencesLoad();
             currentItem = evidenceTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -125,9 +111,8 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            EvidenceVM evidence = new EvidenceVM();
-            if (modifier) evidence.ViewEvidenceLoad(imported, ID);
-            else evidence.EditEvidenceLoad(imported, ID);
+            if (modifier) new EvidenceVM().ViewEvidenceLoad(imported, ID);
+            else new EvidenceVM().EditEvidenceLoad(imported, ID);
             currentItem = evidenceTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -149,8 +134,7 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            BillingVM billing = new BillingVM();
-            billing.BillsLoad();
+            new BillingVM().BillsLoad();
             currentItem = billingTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -158,8 +142,7 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            BillingVM billing = new BillingVM();
-            billing.ViewBillLoad(ID);
+            new BillingVM().ViewBillLoad(ID);
             currentItem = billingTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -167,7 +150,8 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Collapsed;
-            //TODO
+            new StatisticsVM().StatisticsLoad();
+            currentItem = statisticsTBI;
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
         }
@@ -175,9 +159,8 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            UsersVM users = new UsersVM();
-            if (GlobalVM.GlobalM.AccountID == null) users.LoginLoad();
-            else users.DetailsModifyLoad();
+            if (GlobalVM.GlobalM.AccountID == null) new UsersVM().LoginLoad();
+            else new UsersVM().DetailsModifyLoad();
             currentItem = usersTBI;
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
@@ -186,14 +169,10 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            UsersVM users = new UsersVM();
-            if (modifier) users.fromPatient = modifier;
-            if (!modifier) users.RegistrationLoad();
-            else
-            {
-                if (GlobalVM.GlobalM.AccountID == null) users.LoginLoad();
-                else users.DetailsModifyLoad();
-            }
+            if (modifier) new UsersVM().fromPatient = modifier;
+            if (!modifier) new UsersVM().RegistrationLoad();
+            else if (GlobalVM.GlobalM.AccountID == null) new UsersVM().LoginLoad();
+            else new UsersVM().DetailsModifyLoad();
             currentItem = usersTBI;
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
@@ -202,9 +181,8 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            SettingsVM settings = new SettingsVM();
-            if (GlobalVM.GlobalM.Secure) settings.ConnectionLoad();
-            else settings.UsersLoad();
+            if (GlobalVM.GlobalM.Secure) new SettingsVM().ConnectionLoad();
+            else new SettingsVM().UsersLoad();
             currentItem = settingsTBI;
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
@@ -220,8 +198,7 @@ namespace MedicalAdministrationSystem.Views.Global
         protected async internal void LogOutLoad()
         {
             await ViewModels.Utilities.Loading.Show();
-            LogoutVM logout = new LogoutVM();
-            logout.Click(Back);
+            new LogoutVM().Click(Back);
             currentItem = logoutTBI;
             await ViewModels.Utilities.Loading.Hide();
         }

@@ -25,15 +25,15 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             this.firstRow = firstRow;
             CompanyDataM = new CompanyDataM();
             ZipCodeSearch = new BackgroundWorker();
-            ZipCodeSearch.DoWork += new DoWorkEventHandler(ZipCodeDoWork);
+            ZipCodeSearch.DoWork += ZipCodeDoWork;
             SettlementSearch = new BackgroundWorker();
-            SettlementSearch.DoWork += new DoWorkEventHandler(SettlementDoWork);
+            SettlementSearch.DoWork += SettlementDoWork;
             LoadingFixMembers = new BackgroundWorker();
-            LoadingFixMembers.DoWork += new DoWorkEventHandler(LoadingFixMembersModel);
-            LoadingFixMembers.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingFixMembersComplete);
+            LoadingFixMembers.DoWork += LoadingFixMembersModel;
+            LoadingFixMembers.RunWorkerCompleted += LoadingFixMembersComplete;
             LoadingList = new BackgroundWorker();
-            LoadingList.DoWork += new DoWorkEventHandler(LoadingListModel);
-            LoadingList.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingListComplete);
+            LoadingList.DoWork += LoadingListModel;
+            LoadingList.RunWorkerCompleted += LoadingListComplete;
             LoadingFixMembers.RunWorkerAsync();
         }
         private void LoadingFixMembersModel(object sender, DoWorkEventArgs e)

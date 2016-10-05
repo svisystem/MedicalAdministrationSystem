@@ -24,6 +24,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public int VatPFS { get; set; }
         public int PricePFS { get; set; }
         public int ServiceDataIdPFS { get; set; }
+        public System.DateTime WhenChangedPFS { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<currentpricesforeachbill_st> currentpricesforeachbill_st { get; set; }

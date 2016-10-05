@@ -38,8 +38,8 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     {
                         ID = row.IdTD,
                         Name = row.NameTD,
-                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).FirstOrDefault().VatPFS,
-                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).FirstOrDefault().PricePFS,
+                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
+                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS,
                         Details = row.DetailsTD,
                         New = false
                     });
@@ -100,6 +100,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             me.servicesdata.Add(tr);
                             me.SaveChanges();
                             pfs.ServiceDataIdPFS = tr.IdTD;
+                            pfs.WhenChangedPFS = DateTime.Now;
                             me.pricesforeachservice.Add(pfs);
                             me.SaveChanges();
                             ServicesM.Services[i].ID = tr.IdTD;
@@ -109,17 +110,18 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                         {
                             int temp = ServicesM.Services[i].ID;
                             tr = me.servicesdata.Where(a => a.IdTD == temp).Single();
-                            pfs = me.pricesforeachservice.Where(pf => pf.ServiceDataIdPFS == temp).LastOrDefault();
+                            pfs = me.pricesforeachservice.Where(pf => pf.ServiceDataIdPFS == temp).OrderByDescending(pf => pf.IdPFS).FirstOrDefault();
                             if (!ServicesM.Services[i].Name.Equals(tr.NameTD))
                                 tr.NameTD = ServicesM.Services[i].Name;
-                            if (!ServicesM.Services[i].Details.Equals(tr.DetailsTD))
+                            if (string.IsNullOrEmpty(ServicesM.Services[i].Details) || (ServicesM.Services[i].Details != tr.DetailsTD))
                                 tr.DetailsTD = ServicesM.Services[i].Details;
                             if (!ServicesM.Services[i].Vat.Equals(pfs.VatPFS) || !ServicesM.Services[i].Price.Equals(pfs.PricePFS))
                                 pfs = new pricesforeachservice()
                                 {
                                     PricePFS = ServicesM.Services[i].Price,
                                     VatPFS = ServicesM.Services[i].Vat,
-                                    ServiceDataIdPFS = temp
+                                    ServiceDataIdPFS = temp,
+                                    WhenChangedPFS = DateTime.Now
                                 };
                             me.pricesforeachservice.Add(pfs);
                             me.SaveChanges();

@@ -432,5 +432,11 @@ namespace MedicalAdministrationSystem.Models.Users
 				}
 			}
 		}
+		public class Day
+		{
+			public int DaysOfWeek { get; set; }
+			public DateTime Start { get; set; }
+			public DateTime End { get; set; }
+		}
 	}
 }

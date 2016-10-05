@@ -4,6 +4,7 @@ using MedicalAdministrationSystem.Views.Patients;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels
 {
@@ -28,6 +29,10 @@ namespace MedicalAdministrationSystem.ViewModels
                 EraseAll();
             }
         }
+        protected internal void Refresh(string Name)
+        {
+            SelectedPatientM.Name = Name;
+        }
         protected internal async void PatientDetailsModify()
         {
             if (GlobalVM.StockLayout.actualContent.Content.GetType() != typeof(PatientDetails))
@@ -39,7 +44,7 @@ namespace MedicalAdministrationSystem.ViewModels
         private void Ok()
         {
             MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-            mbe.modifier = true;
+            mbe.modifier = false;
             mbe.LoadItem(GlobalVM.StockLayout.patientsTBI);
         }
         protected internal void Dispose()

@@ -19,6 +19,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public int DayOfWeekUS { get; set; }
         public System.DateTime StartTimeUS { get; set; }
         public System.DateTime FinishTimeUS { get; set; }
+        public System.DateTime WhenCreateUS { get; set; }
     
         public virtual userdata userdata { get; set; }
     }
