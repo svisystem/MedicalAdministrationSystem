@@ -73,7 +73,8 @@
                 <dxb:BarCheckItem x:Name="biSwitchToMonthView" CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding SwitchToMonthView, Mode=OneTime, Source={StaticResource commands}}"
                         Content="Egész hónap nézet" Glyph="{dx:DXImageOffice2013 Image=MonthView_16x16.png}"
-                        LargeGlyph="{dx:DXImageOffice2013 Image=MonthView_32x32.png}" />
+                        LargeGlyph="{dx:DXImageOffice2013 Image=MonthView_32x32.png}"
+                        />
                 <dxb:BarCheckItem x:Name="biSwitchToTimelineView" CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding SwitchToTimelineView, Mode=OneTime, Source={StaticResource commands}}"
                         Content="Idővonal nézet" LargeGlyph="{dx:DXImageOffice2013 Image=TimeLineView_32x32.png}"
@@ -81,7 +82,8 @@
                 <dxb:BarCheckItem x:Name="biSwitchToGroupByNone" CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding SwitchToGroupByNone, Mode=OneTime, Source={StaticResource commands}}"
                         LargeGlyph="{dx:DXImageOffice2013 Image=MonthView_32x32.png}"
-                        Glyph="{dx:DXImageOffice2013 Image=MonthView_16x16.png}" Content="Nincs csoportosítás"
+                        Glyph="{dx:DXImageOffice2013 Image=MonthView_16x16.png}"
+                        Content="Nincs csoportosítás"
                         ItemClick="ItemClick" />
                 <dxb:BarCheckItem x:Name="biSwitchToGroupByDate" CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding SwitchToGroupByDate, Mode=OneTime, Source={StaticResource commands}}"
@@ -90,9 +92,7 @@
                         Content="Dátum szerinti csoportosítás" ItemClick="ItemClick" />
                 <dxb:BarCheckItem x:Name="biSwitchToGroupByResource" CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding SwitchToGroupByResource, Mode=OneTime, Source={StaticResource commands}}"
-                        LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/View/Meeting_32x32.png"
-                        Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/View/Meeting_16x16.png"
-                        Content="Felhasználónkénti csoportosítás" ItemClick="ItemClick" />
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/View/Meeting_32x32.png" Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/View/Meeting_16x16.png" Content="Felhasználónkénti csoportosítás" ItemClick="ItemClick" />
                 <dxsch:TimeScaleBarSubItem x:Name="biSwitchTimeScalesUICommand"
                         CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding SwitchTimeScalesUICommand, Mode=OneTime, Source={StaticResource commands}}"
@@ -131,10 +131,8 @@
                         SchedulerControl="{Binding ElementName=scheduler}" />
                 <dxb:BarButtonItem x:Name="biEditAppointment" CommandParameter="{Binding ElementName=scheduler}"
                         Command="{Binding EditAppointment, Mode=OneTime, Source={StaticResource commands}}"
-                        LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_32x32.png"
-                        Content="Időpont szerkesztése"
-                        Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Edit_16x16.png"
-                        IsEnabledChanged="biEditAppointment_IsEnabledChanged" />
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Edit_32x32.png" Content="Időpont szerkesztése"
+                        Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Edit_16x16.png" IsEnabledChanged="biEditAppointment_IsEnabledChanged" />
                 <dxb:BarButtonItem x:Name="biRegistratePatient" Content="Páciens felvétele"
                         LargeGlyph="{dx:DXImageOffice2013 Image=NewContact_32x32.png}"
                         Glyph="{dx:DXImageOffice2013 Image=NewContact_16x16.png}" IsEnabled="False"
@@ -239,8 +237,7 @@
                     <dxsch:SchedulerControl.Storage>
                         <dxsch:SchedulerStorage AppointmentsChanged="SchedulerStorage_AppointmentsChanged">
                             <dxsch:SchedulerStorage.AppointmentStorage>
-                                <dxsch:AppointmentStorage
-                                        DataSource="{Binding ScheduleM.Appointments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                <dxsch:AppointmentStorage DataSource="{Binding ScheduleM.Appointments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         Labels="{Binding ScheduleM.Labels}">
                                     <dxsch:AppointmentStorage.Mappings>
                                         <dxsch:AppointmentMapping Start="StartTime" End="EndTime" Subject="PatientName"
@@ -256,8 +253,7 @@
                                 </dxsch:AppointmentStorage>
                             </dxsch:SchedulerStorage.AppointmentStorage>
                             <dxsch:SchedulerStorage.ResourceStorage>
-                                <dxsch:ResourceStorage
-                                        DataSource="{Binding ScheduleM.Doctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                <dxsch:ResourceStorage DataSource="{Binding ScheduleM.Doctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ColorSaving="ArgbColor">
                                     <dxsch:ResourceStorage.Mappings>
                                         <dxsch:ResourceMapping Id="Id" Caption="Name" Color="Color" />

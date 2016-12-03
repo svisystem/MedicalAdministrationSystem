@@ -9,31 +9,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
     public class MenuButtonsEnabled
     {
-        private List<Item> menuItems { get; set; }
-        protected internal bool? modifier = null;
-        protected internal bool? imported = null;
-        protected internal int? Id = null;
-        protected internal string Name;
-        protected internal string Taj;
-        protected internal Action<int> Save;
-
-        public MenuButtonsEnabled(priviledges_fx priviledges)
-        {
-            LoadList();
-            foreach (Item item in menuItems)
-                if (Convert.ToBoolean(priviledges.GetType().GetProperty(item.DataBaseName, BindingFlags.Instance | 
-                    BindingFlags.Public | BindingFlags.NonPublic).GetValue(priviledges)))
-                    item.Tile.Visibility = Visibility.Visible;
-                else item.Tile.Visibility = Visibility.Collapsed;
-            GlobalVM.StockLayout.billingTBI.IsEnabled = !GlobalVM.StockLayout.patientsTBI.IsVisible;
-        }
-        public MenuButtonsEnabled()
-        {
-            LoadList();
-        }
-        private void LoadList()
-        {
-            menuItems = new List<Item>()
+        private List<Item> menuItems { get; set; } = new List<Item>()
             {
                 new Item() { Tile = GlobalVM.StockLayout.scheduleTBI, DataBaseName = "ScheduleP" },
                 new Item() { Tile = GlobalVM.StockLayout.patientsTBI, DataBaseName = "PatientP" },
@@ -48,7 +24,23 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 new Item() { Tile = GlobalVM.StockLayout.helpTBI, DataBaseName = "HelpP" },
                 new Item() { Tile = GlobalVM.StockLayout.logoutTBI, DataBaseName = "LogoutP" }
             };
+        protected internal bool? modifier = null;
+        protected internal bool? imported = null;
+        protected internal int? Id = null;
+        protected internal string Name;
+        protected internal string Taj;
+        protected internal Action<int> Save;
+
+        public MenuButtonsEnabled(priviledges_fx priviledges)
+        {
+            foreach (Item item in menuItems)
+                if (Convert.ToBoolean(priviledges.GetType().GetProperty(item.DataBaseName, BindingFlags.Instance | 
+                    BindingFlags.Public | BindingFlags.NonPublic).GetValue(priviledges)))
+                    item.Tile.Visibility = Visibility.Visible;
+                else item.Tile.Visibility = Visibility.Collapsed;
+            GlobalVM.StockLayout.billingTBI.IsEnabled = !GlobalVM.StockLayout.patientsTBI.IsVisible;
         }
+        public MenuButtonsEnabled() { }
         protected internal void LoadFirst()
         {
             foreach (Item item in menuItems)
@@ -62,18 +54,9 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         {
             if (Visible(tile)) tile.IsEnabled = enabled;
         }
-        protected internal void SingleChange(TileBarItem item, Visibility vis)
-        {
-            item.Visibility = vis;
-        }
-        private bool Visible(TileBarItem item)
-        {
-            return item.Visibility == Visibility.Visible;
-        }
-        private bool Enabled(TileBarItem item)
-        {
-            return item.IsEnabled;
-        }
+        protected internal void SingleChange(TileBarItem item, Visibility vis) => item.Visibility = vis;
+        private bool Visible(TileBarItem item) => item.Visibility == Visibility.Visible;
+        private bool Enabled(TileBarItem item) => item.IsEnabled;
         protected internal async void LoadItem(TileBarItem item)
         {
             if (Visible(item) && Enabled(item))

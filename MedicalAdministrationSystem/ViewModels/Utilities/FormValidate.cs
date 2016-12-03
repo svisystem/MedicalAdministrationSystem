@@ -8,8 +8,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
     {
         protected internal bool Validate(object item)
         {
-            Type type = Type.GetType(item.ToString());
-            PropertyInfo[] properties = type.GetProperties().Where(p => p.Name != "IsChanged").ToArray();
+            PropertyInfo[] properties = item.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
             for (int i = 0; i < properties.Length; i++)
                 if (!(bool)properties[i].GetValue(item)) return false;
             return true;
@@ -20,8 +19,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         private bool Validate2(object item)
         {
-            Type type = Type.GetType(item.ToString());
-            PropertyInfo[] properties = type.GetProperties().Where(p => p.Name != "IsChanged").ToArray();
+            PropertyInfo[] properties = item.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
             for (int i = 0; i < properties.Length; i++)
                 if (!(bool)properties[i].GetValue(item)) return true;
             return false;
@@ -29,10 +27,8 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         private bool Validate3(object empty, object valid)
         {
             bool[] user = new bool[2];
-            Type type1 = Type.GetType(empty.ToString());
-            Type type2 = Type.GetType(valid.ToString());
-            PropertyInfo[] properties1 = type1.GetProperties().Where(p => p.Name != "IsChanged").ToArray();
-            PropertyInfo[] properties2 = type2.GetProperties().Where(p => p.Name != "IsChanged").ToArray();
+            PropertyInfo[] properties1 = empty.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
+            PropertyInfo[] properties2 = valid.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
             for (int i = 0; i < properties1.Length; i++)
                 if (!(bool)properties1[i].GetValue(empty))
                     if ((bool)properties2[i].GetValue(valid)) user[i] = true;

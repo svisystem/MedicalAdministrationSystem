@@ -30,9 +30,9 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Employee
                 Questions = new List<string>()
                 {
                     "Az adott alkalmazotthoz\nmennyi páciens tartozik.",
-                    "Az adott alkalmazott\nmennyit értékesített.",
                     "Az adott alakalmazott\nmennyi kezelést végzett el.",
-                    "Az adott alkalmazottnak\nmennyi munkaórája volt."
+                    "Az adott alkalmazottnak\nmennyi munkaórája volt.",
+                    "Az adott alkalmazott\nmennyit értékesített."
                 };
             else Questions = new List<string>()
             {

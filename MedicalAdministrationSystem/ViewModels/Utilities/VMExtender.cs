@@ -53,9 +53,5 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             currentItem = earlierItem;
             currentItem.button_Click(currentItem.button, new RoutedEventArgs(Button.ClickEvent));
         }
-        protected internal int DayOfWeek(DateTime day)
-        {
-            return day.DayOfWeek == 0 ? 7 : (int)day.DayOfWeek;
-        }
     }
 }

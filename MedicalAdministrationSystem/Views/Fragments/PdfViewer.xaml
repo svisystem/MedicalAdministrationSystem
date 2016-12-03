@@ -15,12 +15,10 @@
                 AllowQuickCustomization="False">
             <dxb:ToolBarControl.Items>
                 <dxb:BarButtonItem Name="bExport" Content="Exportálás"
-                        LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_32x32.png"
-                        KeyGesture="Ctrl+E" Command="{Binding ElementName=pdfViewer, Path=SaveAsCommand}"
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Export_32x32.png" KeyGesture="Ctrl+E" Command="{Binding ElementName=pdfViewer, Path=SaveAsCommand}"
                         Hint="Fájl kiexportálása" Description="A megnyitott PDF dokumentum kiexprtálása" />
                 <dxb:BarButtonItem Name="bPrint" Content="Nyomtatás"
-                        LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Print_32x32.png"
-                        KeyGesture="Ctrl+P" Description="A megnyitott PDF dokumentum nyomtatása." Hint="Fájl nyomtatása"
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Print_32x32.png" KeyGesture="Ctrl+P" Description="A megnyitott PDF dokumentum nyomtatása." Hint="Fájl nyomtatása"
                         Command="{Binding ElementName=pdfViewer, Path=PrintDocumentCommand}" />
                 <dxb:BarItemLinkSeparator />
                 <dxb:BarButtonItem Name="bSearch" Content="Keresés"
@@ -75,8 +73,10 @@
                         <dxb:BarButtonItem Content="100%" CommandParameter="1" ItemClick="SpecifiedZoom" />
                         <dxb:BarButtonItem Content="125%" CommandParameter="1.25" ItemClick="SpecifiedZoom" />
                         <dxb:BarButtonItem Content="150%" CommandParameter="1.5" ItemClick="SpecifiedZoom" />
-                        <dxb:BarButtonItem Content="200%" CommandParameter="2" ItemClick="SpecifiedZoom" />
-                        <dxb:BarButtonItem Content="400%" CommandParameter="4" ItemClick="SpecifiedZoom" />
+                        <dxb:BarButtonItem Content="200%" CommandParameter="2"
+                                ItemClick="SpecifiedZoom" />
+                        <dxb:BarButtonItem Content="400%" CommandParameter="4"
+                                ItemClick="SpecifiedZoom" />
                         <dxb:BarButtonItem Content="500%" CommandParameter="5" ItemClick="SpecifiedZoom" />
                         <dxb:BarItemLinkSeparator />
                         <dxb:BarButtonItem Content="Tényleges méret" ItemClick="ActualSize" />
@@ -88,8 +88,7 @@
         </dxb:ToolBarControl>
         <Button Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
                 VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close" x:Name="exit">
-            <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
-                    Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+            <Image Source="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Close_32x32.png" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
         </Button>
         <dxpdf:PdfViewerControl x:Name="pdfViewer" Grid.Row="1" CommandBarStyle="None" MaxHeight="80000" Margin="-4"
                 ShowStartScreen="False" ZoomMode="FitToWidth" DetachStreamOnLoadComplete="False" />

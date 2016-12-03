@@ -4,8 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="611bfe95b1a4497ba7b5c0cbd272748e" Name="Diagram1">
-        <EntityTypeShape EntityType="medicalModel.accountdata" Width="1.5" PointX="6.75" PointY="32.5" IsExpanded="true" />
+      <Diagram DiagramId="e6f8d89c90b9428c8dec22cd17400a97" Name="Diagram1">
+        <EntityTypeShape EntityType="medicalModel.accountdata" Width="1.5" PointX="6.75" PointY="32.375" IsExpanded="true" />
         <EntityTypeShape EntityType="medicalModel.belong_st" Width="1.5" PointX="17.25" PointY="24.875" IsExpanded="true" />
         <EntityTypeShape EntityType="medicalModel.billing" Width="1.5" PointX="14.25" PointY="24.125" IsExpanded="true" />
         <EntityTypeShape EntityType="medicalModel.companydata" Width="1.5" PointX="3" PointY="23.625" IsExpanded="true" />

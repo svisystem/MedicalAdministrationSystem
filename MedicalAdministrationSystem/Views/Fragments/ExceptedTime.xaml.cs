@@ -12,13 +12,15 @@ namespace MedicalAdministrationSystem.Views.Fragments
         private ExceptedTimeValid exceptedTimeValid { get; set; }
         private Action Valid { get; set; }
         private Action<int> Delete { get; set; }
+        private DateTime RegistrateDate { get; set; }
         private Func<bool, int, DateTime?, DateTime?, bool> Between { get; set; }
-        public ExceptedTime(SurgeryTimeM.Exception data, Action Valid, Action<int> Delete, Func<bool, int, DateTime?, DateTime?, bool> Between, bool disable = false)
+        public ExceptedTime(SurgeryTimeM.Exception data, Action Valid, Action<int> Delete, Func<bool, int, DateTime?, DateTime?, bool> Between, DateTime RegistrateDate, bool disable = false)
         {
             this.Data = data;
             this.Valid = Valid;
             this.Delete = Delete;
             this.Between = Between;
+            this.RegistrateDate = RegistrateDate;
             this.DataContext = this;
             exceptedTimeValid = new ExceptedTimeValid();
             InitializeComponent();
@@ -53,6 +55,8 @@ namespace MedicalAdministrationSystem.Views.Fragments
             exceptedTimeValid.Start = false;
             if (e.Value == null)
                 e.SetError("A mező kitöltése kötelező", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+            else if ((DateTime)e.Value < RegistrateDate)
+                e.SetError("Nem lehet felvenni időpontot a profil regisztrációjánál korábbra", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else if (finishDate.EditValue != null && (DateTime)e.Value > (DateTime)finishDate.EditValue)
                 e.SetError("A kezdő időpont nem lehet nagyobb a befejezés időpontjánál", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else if (Between(Data.Included, Data.Id, (DateTime)e.Value, Data.FinishDateTime))

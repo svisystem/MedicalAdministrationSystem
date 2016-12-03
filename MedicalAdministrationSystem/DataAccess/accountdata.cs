@@ -28,6 +28,7 @@ namespace MedicalAdministrationSystem.DataAccess
         public int PriviledgesIdAD { get; set; }
         public bool VerifiedByAdminAD { get; set; }
         public bool DeletedAD { get; set; }
+        public Nullable<System.DateTime> DeletedTimeAD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userdata> userdata { get; set; }

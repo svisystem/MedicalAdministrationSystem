@@ -32,6 +32,7 @@ namespace MedicalAdministrationSystem.Models.Users
 		private DateTime? _FinishSaturday;
 		private DateTime? _StartSunday;
 		private DateTime? _FinishSunday;
+		private DateTime? _UserRegistrateDate;
 
 		public ObservableCollection<UserControl> ExceptionsButton
 		{
@@ -343,6 +344,19 @@ namespace MedicalAdministrationSystem.Models.Users
 				if (_FinishSunday == value) return;
 				_FinishSunday = value;
 				OnPropertyChanged("FinishSunday");
+			}
+		}
+		public DateTime? UserRegistrateDate
+		{
+			get
+			{
+				return _UserRegistrateDate;
+			}
+			set
+			{
+				if (_UserRegistrateDate == value) return;
+				_UserRegistrateDate = value;
+				OnPropertyChanged("UserRegistrateDate");
 			}
 		}
 		public class Exception : NotifyPropertyChanged

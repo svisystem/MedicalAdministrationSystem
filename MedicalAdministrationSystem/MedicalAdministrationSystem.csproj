@@ -61,41 +61,42 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Logo3.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>MedicalAdministrationSystem.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+    <Reference Include="DevExpress.Charts.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Data.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.Images.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.Mvvm.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Office.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Pdf.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Pdf.v15.2.Drawing, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.RichEdit.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Charts.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Xpf.Controls.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Core.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Docking.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.DocumentViewer.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Grid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Grid.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.LayoutControl.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.PdfViewer.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Printing.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Ribbon.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.RichEdit.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Scheduler.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v15.2, Version=15.2.9.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Mvvm.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Office.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Pdf.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Pdf.v16.1.Drawing, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.RichEdit.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Charts.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Xpf.Controls.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Core.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Docking.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.DocumentViewer.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Grid.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Grid.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.LayoutControl.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.PdfViewer.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Printing.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Ribbon.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.RichEdit.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Scheduler.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v16.1, Version=16.1.6.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraScheduler.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -366,7 +367,7 @@
     <Compile Include="ViewModels\Statistics\IntervalVM.cs" />
     <Compile Include="ViewModels\Statistics\Patient\PatientQuestionVM.cs" />
     <Compile Include="ViewModels\Statistics\Patient\PatientSelectorVM.cs" />
-    <Compile Include="ViewModels\Statistics\Queries\Employee\WorkingHoursWeek.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\WorkingHours.cs" />
     <Compile Include="ViewModels\Statistics\Service\ServiceQuestionVM.cs" />
     <Compile Include="ViewModels\Statistics\Service\ServiceSelectorVM.cs" />
     <Compile Include="ViewModels\Statistics\StatisticsVM.cs" />
@@ -379,7 +380,8 @@
     <Compile Include="ViewModels\Utilities\DocumentGenerator.cs" />
     <Compile Include="ViewModels\Utilities\EmptyComboBoxEdit.cs" />
     <Compile Include="ViewModels\Utilities\Loading.cs" />
-    <Compile Include="ViewModels\Utilities\MainChart.cs" />
+    <Compile Include="ViewModels\Utilities\LowerAssistChart.cs" />
+    <Compile Include="ViewModels\Utilities\ChartBase.cs" />
     <Compile Include="ViewModels\Utilities\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModels\Utilities\FormChecking.cs" />
     <Compile Include="ViewModels\Utilities\FormValidate.cs" />
@@ -387,6 +389,7 @@
     <Compile Include="ViewModels\MenuItem\UsersVM.cs" />
     <Compile Include="ViewModels\Users\RegistrationVM.cs" />
     <Compile Include="ViewModels\Utilities\OwnAppointmentFormViewModel.cs" />
+    <Compile Include="ViewModels\Utilities\QueriesExtender.cs" />
     <Compile Include="ViewModels\Utilities\ResourceColorConverter.cs" />
     <Compile Include="ViewModels\Utilities\VMExtender.cs" />
     <Compile Include="ViewModels\Utilities\Localizer.cs" />
@@ -549,11 +552,20 @@
     <Compile Include="Views\Statistics\Fragments\ColorCheckButton.xaml.cs">
       <DependentUpon>ColorCheckButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Statistics\Graphs\Bar.xaml.cs">
+      <DependentUpon>Bar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Statistics\Graphs\Line.xaml.cs">
       <DependentUpon>Line.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Statistics\Graphs\Pie.xaml.cs">
       <DependentUpon>Pie.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Graphs\StackedBar.xaml.cs">
+      <DependentUpon>StackedBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Graphs\StackedLine.xaml.cs">
+      <DependentUpon>StackedLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Statistics\Interval.xaml.cs">
       <DependentUpon>Interval.xaml</DependentUpon>
@@ -795,11 +807,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Statistics\Graphs\Bar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Statistics\Graphs\Line.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Statistics\Graphs\Pie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Graphs\StackedBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Graphs\StackedLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -940,12 +964,6 @@
     <Resource Include="Icons\Logout.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MahApps.Metro\MahApps.Metro.NET45.csproj">
-      <Project>{942d11c4-29f5-46c4-8c14-4b976d56c637}</Project>
-      <Name>MahApps.Metro.NET45</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\RowSpace_16x16.png" />
     <Resource Include="Icons\ZoomIn_32x32.png" />
     <Resource Include="Icons\ZoomOut_32x32.png" />
@@ -959,10 +977,16 @@
   <ItemGroup>
     <Resource Include="Icons\ContentAutoArrange_32x32.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\Projects\VS\MahApps.Metro\MahApps.Metro.NET45.csproj">
+      <Project>{942d11c4-29f5-46c4-8c14-4b976d56c637}</Project>
+      <Name>MahApps.Metro.NET45</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\ChartButton.png" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="DataAccess\DataAccess.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -974,6 +998,7 @@
       <DependentUpon>DataAccess.edmx</DependentUpon>
       <LastGenOutput>DataAccess.cs</LastGenOutput>
     </Content>
+    <Resource Include="Logo3.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

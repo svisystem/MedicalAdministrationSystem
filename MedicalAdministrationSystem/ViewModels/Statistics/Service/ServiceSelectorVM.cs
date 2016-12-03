@@ -4,6 +4,7 @@ using MedicalAdministrationSystem.Models.Statistics.Service;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Statistics.Fragments;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -93,7 +94,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Service
         }
         protected internal void Execute()
         {
-            if (ServiceSelectorM.Services[0].Enabled == true) Item.Answer = 0;
+            if (ServiceSelectorM.Services[0].Enabled == true) Item.Answer = new List<int>();
             else Item.Answer = ServiceSelectorM.Services.Where(e => e.Id != 0 && (bool)e.Enabled).Select(e => e.Id).ToList();
         }
     }

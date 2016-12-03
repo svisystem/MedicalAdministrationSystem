@@ -26,7 +26,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
             for (int i = 0; i < temp.Count; i++)
                 IntervalM.Scales.Add(new IntervalM.Scale()
                 {
-                    Id = i,
+                    Id = i + 1,
                     Enabled = false,
                     Title = temp[i]
                 });
@@ -69,7 +69,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
                 {
                     0, IntervalM.FixDate
                 };
-            else if (Name == "Interval")
+            else if (Name == "IntervalDate")
                 return new List<object>
                 {
                     1,

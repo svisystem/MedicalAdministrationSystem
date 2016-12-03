@@ -29,10 +29,10 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Patient
             if (All != null && (bool)All)
                 Questions = new List<string>()
                 {
-                    "Mennyi új, illetve\nmeglévő páciensünk van.",
                     "Előjegyzés státuszainak\neloszlása.",
                     "Melyik pácienshez mennyi\nstátuszbejegyzés tartozik.",
-                    "Ki mennyi időt töltött\naz intézményben."
+                    "Ki mennyi időt töltött\naz intézményben.",
+                    "Mennyi új, illetve\nmeglévő páciensünk van."
                 };
             else Questions = new List<string>()
             {

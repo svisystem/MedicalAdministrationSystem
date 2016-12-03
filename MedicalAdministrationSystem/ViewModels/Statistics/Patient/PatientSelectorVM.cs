@@ -4,6 +4,7 @@ using MedicalAdministrationSystem.Models.Statistics.Patient;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Statistics.Fragments;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -94,7 +95,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Patient
         }
         protected internal void Execute()
         {
-            if (PatientSelectorM.Patients[0].Enabled == true) Item.Answer = 0;
+            if (PatientSelectorM.Patients[0].Enabled == true) Item.Answer = new List<int>();
             else Item.Answer = PatientSelectorM.Patients.Where(p => p.Id != 0 && (bool)p.Enabled).Select(p => p.Id).ToList();
         }
     }

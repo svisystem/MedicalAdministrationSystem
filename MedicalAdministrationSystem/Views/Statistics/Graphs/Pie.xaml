@@ -4,23 +4,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs">
-    <Grid>
-        <dxc:ChartControl BorderBrush="{x:Null}" BorderThickness="0" x:Name="PieChart" Background="{x:Null}">
+    <dxc:ChartControl BorderBrush="{x:Null}" BorderThickness="0" x:Name="ChartControl" MouseUp="chart_MouseUp"
+                QueryChartCursor="chart_QueryChartCursor" MouseMove="chart_MouseMove" MouseDown="chart_MouseDown"
+                CustomDrawSeriesPoint="CustomDrawSeriesPoint" ToolTipEnabled="False" Padding="10">
             <dxc:ChartControl.Palette>
                 <dxc:PastelKitPalette />
             </dxc:ChartControl.Palette>
-            <dxc:ChartControl.Diagram>
-                <dxc:SimpleDiagram2D>
-                    <dxc:SimpleDiagram2D.Series>
-                        <dxc:PieSeries2D DataSource="{Binding Data}" ArgumentDataMember="Date" ValueDataMember="Value1"
-                                HoleRadiusPercent="0">
-                            <dxc:PieSeries2D.Model>
-                                <dxc:BorderlessFlatPie2DModel />
-                            </dxc:PieSeries2D.Model>
-                        </dxc:PieSeries2D>
-                    </dxc:SimpleDiagram2D.Series>
-                </dxc:SimpleDiagram2D>
-            </dxc:ChartControl.Diagram>
+            <dxc:SimpleDiagram2D>
+                <dxc:SimpleDiagram2D.Series>
+                    <dxc:PieSeries2D DataSource="{Binding Data}" ArgumentDataMember="Date" ValueDataMember="Value1"
+                            HoleRadiusPercent="0" LabelsVisibility="True"
+                            Rotation="{Binding Rotate.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        <dxc:PieSeries2D.Label>
+                            <dxc:SeriesLabel dxc:PieSeries.LabelPosition="Inside" x:Name="SeriesLabel"
+                                    ConnectorVisible="False" ResolveOverlappingMode="JustifyAllAroundPoint" />
+                        </dxc:PieSeries2D.Label>
+                        <dxc:PieSeries2D.Model>
+                            <dxc:BorderlessFlatPie2DModel />
+                        </dxc:PieSeries2D.Model>
+                    </dxc:PieSeries2D>
+                </dxc:SimpleDiagram2D.Series>
+            </dxc:SimpleDiagram2D>
         </dxc:ChartControl>
-    </Grid>
 </UserControl>

@@ -8,12 +8,12 @@ using System.Windows.Input;
 
 namespace MedicalAdministrationSystem.Views.Statistics.Graphs
 {
-    public partial class Line : ChartBase
+    public partial class StackedLine : ChartBase
     {
         public ObservableCollection<ChartM.Record> Data { get; set; }
         private DateTime? SelectedDate;
         private bool MouseChecker = false;
-        public Line(ObservableCollection<ChartM.Record> Data)
+        public StackedLine(ObservableCollection<ChartM.Record> Data)
         {
             this.Data = Data;
             this.DataContext = this;
@@ -30,7 +30,7 @@ namespace MedicalAdministrationSystem.Views.Statistics.Graphs
         private void SetDefaultView(object sender, System.Windows.RoutedEventArgs e)
         {
             if (Data.Count - (int)(this.ActualWidth / 100) > 0)
-            AxisX.ActualVisualRange.MinValue = Data[Data.Count - (int)(this.ActualWidth / 100)].Date;
+                AxisX.ActualVisualRange.MinValue = Data[Data.Count - (int)(this.ActualWidth / 100)].Date;
         }
 
         private void GetArgumentValue(object sender, CustomDrawCrosshairEventArgs e)

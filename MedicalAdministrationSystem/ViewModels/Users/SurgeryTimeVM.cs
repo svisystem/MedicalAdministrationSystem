@@ -43,7 +43,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 me = new medicalEntities();
                 me.Database.Connection.Open();
 
-                for (int i = 1; i != 7; i++)
+                SurgeryTimeM.UserRegistrateDate = me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().RegistrateTimeAD;
+
+                for (int i = 1; i <= 7; i++)
                 {
                     usersschedule item = me.usersschedule.Where(u => u.UserDataIdUS == GlobalVM.GlobalM.UserID && u.DayOfWeekUS == i).OrderByDescending(u => u.WhenCreateUS).FirstOrDefault();
                     if (item != null)
@@ -83,7 +85,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 SurgeryTimeM.ExceptionsButton.Add(NewButton);
                 Count = SurgeryTimeM.Exceptions.Count;
                 foreach (SurgeryTimeM.Exception item in SurgeryTimeM.Exceptions)
-                    SurgeryTimeM.ExceptionsButton.Insert(SurgeryTimeM.ExceptionsButton.Count - 1, new ExceptedTime(item, Valid, DeleteItem, Between, true));
+                    SurgeryTimeM.ExceptionsButton.Insert(SurgeryTimeM.ExceptionsButton.Count - 1,
+                        new ExceptedTime(item, Valid, DeleteItem, Between, (DateTime)SurgeryTimeM.UserRegistrateDate, true));
 
                 foreach (SurgeryTimeM.Exception row in SurgeryTimeM.Exceptions)
                     row.AcceptChanges();
@@ -256,7 +259,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             SurgeryTimeM.Exceptions.Add(new SurgeryTimeM.Exception());
             CollectionChange();
-            SurgeryTimeM.ExceptionsButton.Insert(SurgeryTimeM.ExceptionsButton.Count - 1, new ExceptedTime(SurgeryTimeM.Exceptions.Last(), Valid, DeleteItem, Between));
+            SurgeryTimeM.ExceptionsButton.Insert(SurgeryTimeM.ExceptionsButton.Count - 1,
+                new ExceptedTime(SurgeryTimeM.Exceptions.Last(), Valid, DeleteItem, Between, (DateTime)SurgeryTimeM.UserRegistrateDate));
             Valid();
         }
         private void DeleteItem(int Id)

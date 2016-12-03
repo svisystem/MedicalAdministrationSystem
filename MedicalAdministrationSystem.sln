@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalAdministrationSystem", "MedicalAdministrationSystem\MedicalAdministrationSystem.csproj", "{C4875139-3EAE-49AE-A071-DDCD3D9696D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahApps.Metro.NET45", "..\MahApps.Metro\MahApps.Metro.NET45.csproj", "{942D11C4-29F5-46C4-8C14-4B976D56C637}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahApps.Metro.NET45", "D:\Projects\VS\MahApps.Metro\MahApps.Metro.NET45.csproj", "{942D11C4-29F5-46C4-8C14-4B976D56C637}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

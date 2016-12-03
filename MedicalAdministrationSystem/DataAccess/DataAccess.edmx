@@ -17,6 +17,7 @@
           <Property Name="PriviledgesIdAD" Type="int" Nullable="false" />
           <Property Name="VerifiedByAdminAD" Type="bool" Nullable="false" />
           <Property Name="DeletedAD" Type="bool" Nullable="false" />
+          <Property Name="DeletedTimeAD" Type="datetime" Precision="0" />
         </EntityType>
         <EntityType Name="belong_st">
           <Key>
@@ -1407,6 +1408,7 @@
           <Property Name="PriviledgesIdAD" Type="Int32" Nullable="false" />
           <Property Name="VerifiedByAdminAD" Type="Boolean" Nullable="false" />
           <Property Name="DeletedAD" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedTimeAD" Type="DateTime" />
           <NavigationProperty Name="userdata" Relationship="Self.fk_UserData_AccountData1" FromRole="accountdata" ToRole="userdata" />
           <NavigationProperty Name="priviledges_fx" Relationship="Self.fk_UserData_PriviledgeST1" FromRole="accountdata" ToRole="priviledges_fx" />
         </EntityType>
@@ -2919,6 +2921,7 @@
                 <ScalarProperty Name="PriviledgesIdAD" ColumnName="PriviledgesIdAD" />
                 <ScalarProperty Name="VerifiedByAdminAD" ColumnName="VerifiedByAdminAD" />
                 <ScalarProperty Name="DeletedAD" ColumnName="DeletedAD" />
+                <ScalarProperty Name="DeletedTimeAD" ColumnName="DeletedTimeAD" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

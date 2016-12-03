@@ -10,8 +10,12 @@ namespace MedicalAdministrationSystem.Models.Statistics
         private UserControl _MainContent;
         private UserControl _AssistContent;
         private UserControl _SecondaryAssistContent;
+        private string _SelectedDate;
+        private string _MainText;
+        private string _LesserText;
+        private string _Step;
         private ObservableCollection<Record> _FullRecords;
-        private ObservableCollection<Record> _ViewRecords;
+        private ObservableCollection<Record> _ViewRecords = new ObservableCollection<Record>();
         private ObservableCollection<Record> _SingleRecord = new ObservableCollection<Record>();
         private ObservableCollection<Legend> _Legends = new ObservableCollection<Legend>();
         private ObservableCollection<UserControl> _LegendsContainer = new ObservableCollection<UserControl>();
@@ -52,6 +56,58 @@ namespace MedicalAdministrationSystem.Models.Statistics
                 if (_SecondaryAssistContent == value) return;
                 _SecondaryAssistContent = value;
                 OnPropertyChanged("SecondaryAssistContent");
+            }
+        }
+        public string SelectedDate
+        {
+            get
+            {
+                return _SelectedDate;
+            }
+            set
+            {
+                if (_SelectedDate == value) return;
+                _SelectedDate = value;
+                OnPropertyChanged("SelectedDate");
+            }
+        }
+        public string MainText
+        {
+            get
+            {
+                return _MainText;
+            }
+            set
+            {
+                if (_MainText == value) return;
+                _MainText = value;
+                OnPropertyChanged("MainText");
+            }
+        }
+        public string LesserText
+        {
+            get
+            {
+                return _LesserText;
+            }
+            set
+            {
+                if (_LesserText == value) return;
+                _LesserText = value;
+                OnPropertyChanged("LesserText");
+            }
+        }
+        public string Step
+        {
+            get
+            {
+                return _Step;
+            }
+            set
+            {
+                if (_Step == value) return;
+                _Step = value;
+                OnPropertyChanged("Step");
             }
         }
         public ObservableCollection<Record> FullRecords

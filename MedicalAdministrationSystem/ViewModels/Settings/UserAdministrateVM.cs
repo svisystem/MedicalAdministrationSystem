@@ -6,6 +6,7 @@ using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Settings;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
+using System.Collections.Generic;
 
 namespace MedicalAdministrationSystem.ViewModels.Settings
 {
@@ -71,17 +72,14 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             if (workingConn)
             {
-                FindMyself();
+
+
                 foreach (object row in UsersMViewElements.Users)
                     (row as UserAdministrateMViewElements.UserRow).AcceptChanges();
                 UsersMViewElements.AcceptChanges();
                 Loaded();
             }
             else ConnectionMessage();
-        }
-        private void FindMyself()
-        {
-            UsersMViewElements.Users.Where(m => m.Id == GlobalVM.GlobalM.AccountID).Single().Enabled = false;
         }
         protected internal async void ExecuteMethod()
         {
@@ -102,8 +100,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     int temp = UsersMViewElements.UserDatas[i].IdAD;
                     try
                     {
-                        accountdata ac = new accountdata();
-                        ac = me.accountdata.Where(a => a.IdAD == temp).Single();
+                        accountdata ac = me.accountdata.Where(a => a.IdAD == temp).Single();
                         if (!UsersMViewElements.UserDatas[i].PasswordAD.Equals(ac.PasswordAD))
                         {
                             ac.PasswordAD = UsersMViewElements.UserDatas[i].PasswordAD;
@@ -124,6 +121,18 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                         if (!UsersMViewElements.Users[i].Deleted.Equals(ac.DeletedAD))
                         {
                             ac.DeletedAD = UsersMViewElements.Users[i].Deleted;
+
+                            if (UsersMViewElements.Users[i].Deleted)
+                            {
+                                ac.DeletedTimeAD = DateTime.Now;
+                                me.exceptedschedule.RemoveRange(me.exceptedschedule.Where(ex => ex.UserDataIdES == me.userdata.Where(ud => ud.AccountDataIdUD == ac.IdAD).FirstOrDefault().IdUD).ToList());
+                            }
+                            else
+                            {
+                                ac.RegistrateTimeAD = DateTime.Now;
+                                ac.DeletedTimeAD = null;
+                            }
+
                             me.SaveChanges();
                         }
                     }

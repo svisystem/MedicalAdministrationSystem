@@ -10,14 +10,14 @@
         xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
     <UserControl.Resources>
         <ControlTemplate x:Key="comboBoxTemplate">
-            <dxg:GridControl
-                    DataSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).ItemsSource, RelativeSource={RelativeSource Self}}"
+            <dxg:GridControl DataSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).ItemsSource, RelativeSource={RelativeSource Self}}"
                     SelectedItem="{Binding SelectedPatientM.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     MaxHeight="500" ShowBorder="False">
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn Header="Importált vizsgálat" Width="110" AllowFocus="False"
                             Binding="{Binding Imported, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            ReadOnly="True" AllowEditing="False" FixedWidth="True" MinWidth="110">
+                            ReadOnly="True" AllowEditing="False" FixedWidth="True"
+                            MinWidth="110">
                         <dxg:GridColumn.EditSettings>
                             <dxe:CheckEditSettings IsEnabled="False" />
                         </dxg:GridColumn.EditSettings>
@@ -26,7 +26,8 @@
                             Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <dxg:GridColumn Header="Vizsgálat azonosítója" MinWidth="120" AllowFocus="False"
                             Binding="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"
-                            FixedWidth="True" />
+                            FixedWidth="True"
+                            />
                     <dxg:GridColumn x:Name="dateTime" Header="Vizsgálat időpontja" Width="200" AllowFocus="False"
                             Binding="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FixedWidth="True"
                             MinWidth="200">
@@ -35,14 +36,15 @@
                                     MaskUseAsDisplayFormat="True" AllowDefaultButton="False" Mask="F" />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
-                    <dxg:GridColumn AllowFocus="False" Width="20" FixedWidth="True" MinWidth="19">
+                    <dxg:GridColumn AllowFocus="False"
+                            Width="20" FixedWidth="True"
+                            MinWidth="19">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <Button BorderThickness="0" Click="EraseItem" HorizontalAlignment="Center"
                                         VerticalAlignment="Center" Padding="0" Width="22" Height="22" Focusable="False"
                                         Margin="-1">
-                                    <ContentPresenter
-                                            ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
+                                    <ContentPresenter ContentTemplate="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=CancelGlyph, IsThemeIndependent=True, ThemeName=MetropolisLight}}"
                                             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" />
                                 </Button>
                             </DataTemplate>
@@ -81,9 +83,9 @@
                 <Italic>Kijelölt vizsgálatok</Italic></TextBlock>
         </Grid>
         <Button DockPanel.Dock="Right" Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
-                VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close">
-            <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
-                    Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+                VerticalAlignment="Center"
+                BorderBrush="{x:Null}" BorderThickness="0" Click="Close">
+            <Image Source="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Close_32x32.png" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
         </Button>
     </DockPanel>
 </UserControl>

@@ -156,7 +156,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
         }
         private bool? Type()
         {
-            if (StatisticsM.Steps[1].Answer.GetType() == typeof(int)) return true;
+            if ((StatisticsM.Steps[1].Answer as List<int>).Count == 0) return true;
             if ((StatisticsM.Steps[1].Answer as List<int>).Count > 1) return false;
             return null;
         }

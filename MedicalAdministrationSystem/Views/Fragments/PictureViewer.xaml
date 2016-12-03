@@ -12,11 +12,9 @@
                         ShowDragWidget="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                     <dxb:ToolBarControl.Items>
                         <dxb:BarButtonItem x:Name="bExport" Content="Kép exportálása"
-                                LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_32x32.png"
-                                ItemClick="bExport_ItemClick" />
+                                LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Export_32x32.png" ItemClick="bExport_ItemClick" />
                         <dxb:BarButtonItem x:Name="bPrint" Content="Nyomtatás"
-                                LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Print_32x32.png"
-                                ItemClick="bPrint_ItemClick" />
+                                LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Print_32x32.png" ItemClick="bPrint_ItemClick" />
                         <dxb:BarButtonItem x:Name="bDefaultView" Content="Nézet alaphelyzetbe állítása"
                                 LargeGlyph="{dx:DXImageOffice2013 Image=Image_32x32.png}" ItemClick="defaultView" />
                     </dxb:ToolBarControl.Items>
@@ -25,8 +23,7 @@
             </DockPanel>
             <Button Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Center"
                     BorderBrush="{x:Null}" BorderThickness="0" Click="Close" Grid.Row="0">
-                <Image Source="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
-                        Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+                <Image Source="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Close_32x32.png" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
             </Button>
         </Grid>
         <DockPanel x:Name="innerdock" SizeChanged="innerdock_SizeChanged" VerticalAlignment="Center"

@@ -73,9 +73,7 @@
                             </dxr:RibbonPageGroup.ItemLinks>
                         </dxr:RibbonPageGroup>
                         <dxr:RibbonPageGroup x:Name="exit" Caption="{x:Null}">
-                            <dxb:BarButtonItem
-                                    LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Close_32x32.png"
-                                    Content="Bezárás" ItemClick="Close" />
+                            <dxb:BarButtonItem LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Close_32x32.png" Content="Bezárás" ItemClick="Close" />
                         </dxr:RibbonPageGroup>
                     </dxr:RibbonPage>
                 </dxr:RibbonDefaultPageCategory>
@@ -91,11 +89,9 @@
                     LargeGlyph="{dx:DXImageOffice2013 Image=New_32x32.png}"
                     Glyph="{dx:DXImageOffice2013 Image=New_16x16.png}" />
             <dxb:BarButtonItem x:Name="biFileOpen" ItemClick="Load" Content="Megnyitás"
-                    LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/OpenDoc_32x32.png"
-                    Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/OpenDoc_16x16.png" />
+                    LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/OpenDoc_32x32.png" Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/OpenDoc_16x16.png" />
             <dxb:BarButtonItem x:Name="biFileSave" Content="Mentés" ItemClick="Save"
-                    LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Save_32x32.png"
-                    Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Save_16x16.png">
+                    LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Save_32x32.png" Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Save_16x16.png">
                 <dxb:BarButtonItem.Style>
                     <Style TargetType="dxb:BarButtonItem">
                         <Style.Triggers>
@@ -111,19 +107,15 @@
             </dxb:BarButtonItem>
             <dxb:BarButtonItem x:Name="biFileSaveAs"
                     Command="{Binding FileSaveAs, Mode=OneTime, Source={StaticResource commands}}" Content="Exportálás"
-                    LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_32x32.png"
-                    Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Export_16x16.png" />
+                    LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Export_32x32.png" Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Export_16x16.png" />
             <dxb:BarButtonItem x:Name="biFilePrint" ItemClick="biFilePrint_ItemClick" Content="Nyomtatás"
-                    LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Print_32x32.png"
-                    Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Print_16x16.png" />
+                    LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Print_32x32.png" Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Print_16x16.png" />
             <dxb:BarButtonItem x:Name="biEditUndo"
                     Command="{Binding EditUndo, Mode=OneTime, Source={StaticResource commands}}"
-                    LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Undo_32x32.png"
-                    Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Undo_16x16.png" />
+                    LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Undo_32x32.png" Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Undo_16x16.png" />
             <dxb:BarButtonItem x:Name="biEditRedo"
                     Command="{Binding EditRedo, Mode=OneTime, Source={StaticResource commands}}"
-                    LargeGlyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Redo_32x32.png"
-                    Glyph="pack://application:,,,/DevExpress.Images.v15.2;component/DevAV/Actions/Redo_16x16.png" />
+                    LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Redo_32x32.png" Glyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Redo_16x16.png" />
             <dxb:BarButtonItem x:Name="biEditPaste"
                     Command="{Binding EditPaste, Mode=OneTime, Source={StaticResource commands}}"
                     LargeGlyph="{dx:DXImageOffice2013 Image=Paste_32x32.png}"
@@ -351,7 +343,8 @@
                     Glyph="{dx:DXImageOffice2013 Image=PictureShapeFillColor_16x16.png}">
                 <dxb:PopupControlContainerInfo>
                     <dxe:ColorEdit EditValue="{Binding EditValue, ElementName=biFormatParagraphBackColor, Mode=TwoWay}"
-                            ShowDefaultColorButton="False" ShowNoColorButton="True" ShowBorder="False" />
+                            ShowDefaultColorButton="False" ShowNoColorButton="True"
+                            ShowBorder="False" />
                 </dxb:PopupControlContainerInfo>
             </dxre:BarSplitButtonColorEditItem>
             <dxr:BarButtonGroup x:Name="biParagraph" />
