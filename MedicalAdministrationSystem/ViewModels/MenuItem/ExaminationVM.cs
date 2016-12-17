@@ -48,6 +48,8 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
 
             view.IsEnabledTrigger = false;
             edit.IsEnabledTrigger = false;
+
+            newExamination.IsEnabledTrigger = !GlobalVM.GlobalM.JustImportDocuments;
         }
         protected internal void SetBack()
         {

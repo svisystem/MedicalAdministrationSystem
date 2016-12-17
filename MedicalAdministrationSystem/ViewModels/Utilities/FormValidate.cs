@@ -1,41 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
     public abstract class FormValidate : NotifyPropertyChanged
     {
-        protected internal bool Validate(object item)
-        {
-            PropertyInfo[] properties = item.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
-            for (int i = 0; i < properties.Length; i++)
-                if (!(bool)properties[i].GetValue(item)) return false;
-            return true;
-        }
-        protected internal bool Validation(object input, object empty, object valid)
-        {
-            return (Validate(input) && Validate2(empty) && Validate3(empty, valid));
-        }
-        private bool Validate2(object item)
-        {
-            PropertyInfo[] properties = item.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
-            for (int i = 0; i < properties.Length; i++)
-                if (!(bool)properties[i].GetValue(item)) return true;
-            return false;
-        }
-        private bool Validate3(object empty, object valid)
-        {
-            bool[] user = new bool[2];
-            PropertyInfo[] properties1 = empty.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
-            PropertyInfo[] properties2 = valid.GetType().GetProperties().Where(p => p.Name != "IsChanged").ToArray();
-            for (int i = 0; i < properties1.Length; i++)
-                if (!(bool)properties1[i].GetValue(empty))
-                    if ((bool)properties2[i].GetValue(valid)) user[i] = true;
-                    else user[i] = false;
-                else user[i] = true;
-            foreach (bool value in user) if (!value) return false;
-            return true;
-        }
+        protected internal bool Validate(object item) =>
+            !item.GetType().GetProperties().Where(p => p.Name != "IsChanged").Any(p => !(bool)p.GetValue(item));
+        protected internal bool Validation(object current, object userName, object password) =>
+            Validate(current) && Validate2(userName) && Validate2(password) && Validate3(userName, password);
+        private bool Validate2(object item) =>
+            item.GetType().GetProperties().Where(p => p.Name != "IsChanged").All(p => p.GetValue(item) == null) ? true :
+            item.GetType().GetProperties().Where(p => p.Name != "IsChanged").Any(p => p.GetValue(item) == null || !(bool)p.GetValue(item)) ? false : true;
+        private bool Validate3(object userName, object password) =>
+            userName.GetType().GetProperties().Where(p => p.Name != "IsChanged").All(p => p.GetValue(userName) == null) &&
+            password.GetType().GetProperties().Where(p => p.Name != "IsChanged").All(p => p.GetValue(password) == null) ? false : true;
     }
 }

@@ -62,11 +62,12 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             table.TableLayout = TableLayoutType.Fixed;
             table.PreferredWidth = 5000;
             table.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table.Borders.InsideHorizontalBorder.LineColor = Color.Transparent;
-            table.Borders.Left.LineColor = Color.Transparent;
-            table.Borders.Right.LineColor = Color.Transparent;
-            table.Borders.Bottom.LineColor = Color.Transparent;
+            table.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table.Borders.InsideHorizontalBorder.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
             table.TableCellSpacing = 2;
 
             table[details == null ? (price == null ? 0 : 1) : (price == null ? 1 : 2), 0].BottomPadding = 5;
@@ -82,10 +83,10 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 table2.TableLayout = TableLayoutType.Fixed;
                 table2.PreferredWidth = 5000;
                 table2.PreferredWidthType = WidthType.FiftiethsOfPercent;
-                table2.Borders.Left.LineColor = Color.Transparent;
-                table2.Borders.Right.LineColor = Color.Transparent;
-                table2.Borders.Bottom.LineColor = Color.Transparent;
-                table2.Borders.Top.LineColor = Color.Transparent;
+                table2.Borders.Left.LineStyle = TableBorderLineStyle.None;
+                table2.Borders.Right.LineStyle = TableBorderLineStyle.None;
+                table2.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
+                table2.Borders.Top.LineStyle = TableBorderLineStyle.None;
                 reds.Document.InsertText(table2[0, 0].Range.Start, details);
 
                 ParagraphProperties props = reds.Document.BeginUpdateParagraphs(table2.Rows[0].Cells[0].Range);
@@ -161,32 +162,32 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             table2.TableLayout = TableLayoutType.Fixed;
             table2.PreferredWidth = 5000;
             table2.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table2.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table2.Borders.Left.LineColor = Color.Transparent;
-            table2.Borders.Right.LineColor = Color.Transparent;
-            table2.Borders.Bottom.LineColor = Color.Transparent;
+            table2.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table2.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table2.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            table2.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
 
             subdoc2.InsertText(table2[0, 0].Range.Start, DateTime.Now.ToString("yyyy. MMMM d.", new CultureInfo("hu-HU")));
             DocumentRange range = subdoc2.InsertText(table2[0, 0].Range.Start, "Dátum: ");
             CharacterProperties cp = subdoc2.BeginUpdateCharacters(range);
             cp.Bold = true;
-            subdoc2.Paragraphs[0].SpacingBefore = 6;
+            subdoc2.Paragraphs[0].SpacingBefore = 3;
 
             subdoc2.InsertText(table2[0, 1].Range.Start, examinationCode);
             DocumentRange r = subdoc2.InsertText(table2[0, 1].Range.Start, "Azonosító: ");
             CharacterProperties c = subdoc2.BeginUpdateCharacters(r);
             c.Bold = true;
             subdoc2.Paragraphs[1].Alignment = ParagraphAlignment.Right;
-            subdoc2.Paragraphs[1].SpacingBefore = 6;
+            subdoc2.Paragraphs[1].SpacingBefore = 3;
             doc.Sections[0].EndUpdateFooter(subdoc2);
 
             Table table = doc.Tables.Create(doc.CaretPosition, 2, 2);
             table.TableLayout = TableLayoutType.Fixed;
             table.PreferredWidth = 5000;
             table.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table.Borders.Left.LineColor = Color.Transparent;
-            table.Borders.Right.LineColor = Color.Transparent;
+            table.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Right.LineStyle = TableBorderLineStyle.None;
 
             doc.InsertText(table[0, 0].Range.Start, "\t" + companyAddress);
             doc.InsertText(table[0, 0].Range.Start, "  Címe: " + companyZip + " " + companySettlement + "\n");
@@ -298,33 +299,33 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             table2.TableLayout = TableLayoutType.Fixed;
             table2.PreferredWidth = 5000;
             table2.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table2.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table2.Borders.Left.LineColor = Color.Transparent;
-            table2.Borders.Right.LineColor = Color.Transparent;
-            table2.Borders.Bottom.LineColor = Color.Transparent;
+            table2.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table2.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table2.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            table2.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
 
             subdoc2.InsertText(table2[0, 0].Range.Start, DateTime.Now.ToString("yyyy. MMMM d.", new CultureInfo("hu-HU")));
             DocumentRange range = subdoc2.InsertText(table2[0, 0].Range.Start, "Kiállítás dátuma: ");
             CharacterProperties cp = subdoc2.BeginUpdateCharacters(range);
             cp.Bold = true;
-            subdoc2.Paragraphs[0].SpacingBefore = 6;
+            subdoc2.Paragraphs[0].SpacingBefore = 3;
 
             subdoc2.InsertText(table2[0, 1].Range.Start, Code);
             DocumentRange r = subdoc2.InsertText(table2[0, 1].Range.Start, "Számla azonosító: ");
             CharacterProperties c = subdoc2.BeginUpdateCharacters(r);
             c.Bold = true;
             subdoc2.Paragraphs[1].Alignment = ParagraphAlignment.Right;
-            subdoc2.Paragraphs[1].SpacingBefore = 6;
+            subdoc2.Paragraphs[1].SpacingBefore = 3;
             doc.Sections[0].EndUpdateFooter(subdoc2);
 
             Table table = doc.Tables.Create(doc.Range.Start, 2, 2);
             table.TableLayout = TableLayoutType.Fixed;
             table.PreferredWidth = 5000;
             table.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table.Borders.Left.LineColor = Color.Transparent;
-            table.Borders.Right.LineColor = Color.Transparent;
-            table.Borders.Top.LineColor = Color.Transparent;
+            table.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            table.Borders.Top.LineStyle = TableBorderLineStyle.None;
 
             DocumentRange range2 = reds.Document.InsertText(table[0, 0].Range.Start, "Számla kiállító adatai");
             CharacterProperties cp2 = reds.Document.BeginUpdateCharacters(range2);
@@ -343,19 +344,19 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             left.TableLayout = TableLayoutType.Fixed;
             left.PreferredWidth = 5000;
             left.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            left.Borders.Left.LineColor = Color.Transparent;
-            left.Borders.Right.LineColor = Color.Transparent;
-            left.Borders.Top.LineColor = Color.Transparent;
-            left.Borders.Bottom.LineColor = Color.Transparent;
+            left.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            left.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            left.Borders.Top.LineStyle = TableBorderLineStyle.None;
+            left.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
 
             Table right = doc.Tables.Create(table[1, 1].Range.Start, 1, 1);
             right.TableLayout = TableLayoutType.Fixed;
             right.PreferredWidth = 5000;
             right.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            right.Borders.Left.LineColor = Color.Transparent;
-            right.Borders.Right.LineColor = Color.Transparent;
-            right.Borders.Top.LineColor = Color.Transparent;
-            right.Borders.Bottom.LineColor = Color.Transparent;
+            right.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            right.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            right.Borders.Top.LineStyle = TableBorderLineStyle.None;
+            right.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
 
             bool exist1 = false;
             bool exist2 = false;
@@ -483,11 +484,11 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             table1.TableLayout = TableLayoutType.Fixed;
             table1.PreferredWidth = 5000;
             table1.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table1.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table1.Borders.Left.LineColor = Color.Transparent;
-            table1.Borders.Right.LineColor = Color.Transparent;
-            table1.Borders.Top.LineColor = Color.Transparent;
-            table1.Borders.Bottom.LineColor = Color.Transparent;
+            table1.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table1.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table1.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            table1.Borders.Top.LineStyle = TableBorderLineStyle.None;
+            table1.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
 
             table1[0, 0].PreferredWidthType = WidthType.FiftiethsOfPercent;
             table1[0, 0].PreferredWidth = 1250;
@@ -556,10 +557,10 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             table3.TableLayout = TableLayoutType.Fixed;
             table3.PreferredWidth = 5000;
             table3.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table3.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table3.Borders.InsideHorizontalBorder.LineColor = Color.Transparent;
-            table3.Borders.Left.LineColor = Color.Transparent;
-            table3.Borders.Right.LineColor = Color.Transparent;
+            table3.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table3.Borders.InsideHorizontalBorder.LineStyle = TableBorderLineStyle.None;
+            table3.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table3.Borders.Right.LineStyle = TableBorderLineStyle.None;
 
             table3[0, 0].PreferredWidthType = WidthType.FiftiethsOfPercent;
             table3[0, 0].PreferredWidth = 1250;
@@ -587,50 +588,49 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 ppr.Add(doc.BeginUpdateParagraphs(dr[dr.Count - 1]));
                 cpr.Add(doc.BeginUpdateCharacters(dr[dr.Count - 1]));
                 cpr[cpr.Count - 1].FontSize = 10;
-                table3[i, 0].VerticalAlignment = TableCellVerticalAlignment.Bottom;
-                ppr[ppr.Count - 1].SpacingBefore = 4;
+                table3[i, 0].VerticalAlignment = TableCellVerticalAlignment.Center;
 
                 dr.Add(doc.InsertText(table3[i, 1].Range.Start, PrintList[i].Quantity.ToString()));
                 ppr.Add(doc.BeginUpdateParagraphs(dr[dr.Count - 1]));
                 ppr[ppr.Count - 1].Alignment = ParagraphAlignment.Right;
                 cpr.Add(doc.BeginUpdateCharacters(dr[dr.Count - 1]));
                 cpr[cpr.Count - 1].FontSize = 10;
-                table3[i, 1].VerticalAlignment = TableCellVerticalAlignment.Bottom;
+                table3[i, 1].VerticalAlignment = TableCellVerticalAlignment.Center;
 
                 dr.Add(doc.InsertText(table3[i, 2].Range.Start, Grouping(PrintList[i].QuantityPrice)));
                 ppr.Add(doc.BeginUpdateParagraphs(dr[dr.Count - 1]));
                 ppr[ppr.Count - 1].Alignment = ParagraphAlignment.Right;
                 cpr.Add(doc.BeginUpdateCharacters(dr[dr.Count - 1]));
                 cpr[cpr.Count - 1].FontSize = 10;
-                table3[i, 2].VerticalAlignment = TableCellVerticalAlignment.Bottom;
+                table3[i, 2].VerticalAlignment = TableCellVerticalAlignment.Center;
 
                 dr.Add(doc.InsertText(table3[i, 3].Range.Start, Grouping(PrintList[i].PriceWithoutVat)));
                 ppr.Add(doc.BeginUpdateParagraphs(dr[dr.Count - 1]));
                 ppr[ppr.Count - 1].Alignment = ParagraphAlignment.Right;
                 cpr.Add(doc.BeginUpdateCharacters(dr[dr.Count - 1]));
                 cpr[cpr.Count - 1].FontSize = 10;
-                table3[i, 3].VerticalAlignment = TableCellVerticalAlignment.Bottom;
+                table3[i, 3].VerticalAlignment = TableCellVerticalAlignment.Center;
 
                 dr.Add(doc.InsertText(table3[i, 4].Range.Start, PrintList[i].Vat.ToString() + " %"));
                 ppr.Add(doc.BeginUpdateParagraphs(dr[dr.Count - 1]));
                 ppr[ppr.Count - 1].Alignment = ParagraphAlignment.Right;
                 cpr.Add(doc.BeginUpdateCharacters(dr[dr.Count - 1]));
                 cpr[cpr.Count - 1].FontSize = 10;
-                table3[i, 4].VerticalAlignment = TableCellVerticalAlignment.Bottom;
+                table3[i, 4].VerticalAlignment = TableCellVerticalAlignment.Center;
 
                 dr.Add(doc.InsertText(table3[i, 5].Range.Start, Grouping(PrintList[i].VatPrice)));
                 ppr.Add(doc.BeginUpdateParagraphs(dr[dr.Count - 1]));
                 ppr[ppr.Count - 1].Alignment = ParagraphAlignment.Right;
                 cpr.Add(doc.BeginUpdateCharacters(dr[dr.Count - 1]));
                 cpr[cpr.Count - 1].FontSize = 10;
-                table3[i, 5].VerticalAlignment = TableCellVerticalAlignment.Bottom;
+                table3[i, 5].VerticalAlignment = TableCellVerticalAlignment.Center;
 
                 dr.Add(doc.InsertText(table3[i, 6].Range.Start, Grouping(PrintList[i].PriceWithVat)));
                 ppr.Add(doc.BeginUpdateParagraphs(dr[dr.Count - 1]));
                 ppr[ppr.Count - 1].Alignment = ParagraphAlignment.Right;
                 cpr.Add(doc.BeginUpdateCharacters(dr[dr.Count - 1]));
                 cpr[cpr.Count - 1].FontSize = 10;
-                table3[i, 6].VerticalAlignment = TableCellVerticalAlignment.Bottom;
+                table3[i, 6].VerticalAlignment = TableCellVerticalAlignment.Center;
 
                 dr.Clear();
                 ppr.Clear();
@@ -641,11 +641,11 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             table4.TableLayout = TableLayoutType.Fixed;
             table4.PreferredWidth = 5000;
             table4.PreferredWidthType = WidthType.FiftiethsOfPercent;
-            table4.Borders.InsideVerticalBorder.LineColor = Color.Transparent;
-            table4.Borders.Left.LineColor = Color.Transparent;
-            table4.Borders.Right.LineColor = Color.Transparent;
-            table4.Borders.Bottom.LineColor = Color.Transparent;
-            table4.Borders.Top.LineColor = Color.Transparent;
+            table4.Borders.InsideVerticalBorder.LineStyle = TableBorderLineStyle.None;
+            table4.Borders.Left.LineStyle = TableBorderLineStyle.None;
+            table4.Borders.Right.LineStyle = TableBorderLineStyle.None;
+            table4.Borders.Bottom.LineStyle = TableBorderLineStyle.None;
+            table4.Borders.Top.LineStyle = TableBorderLineStyle.None;
 
             table4[0, 0].PreferredWidthType = WidthType.FiftiethsOfPercent;
             table4[0, 0].PreferredWidth = 1250;

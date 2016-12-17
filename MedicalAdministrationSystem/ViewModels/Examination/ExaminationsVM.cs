@@ -32,7 +32,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             ExaminationsM.Erased.Clear();
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 if (SelectedPatient.SelectedPatientVM.Count() == 0)
@@ -48,6 +48,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                                 DateTime = ex.DateTimeEX,
                                 DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
                                 DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
+                                Editable = !GlobalVM.GlobalM.JustImportDocuments
                             }).ToList())
                             ExaminationsM.Examinations.Add(item);
 
@@ -62,6 +63,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                             DateTime = ex.DateTimeIEX,
                             DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdIEX).FirstOrDefault().NameUD,
                             DocumentCount = me.importedexaminationdatadocuments_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
+                            Editable = true
                         }).ToList())
                             ExaminationsM.Examinations.Add(item);
                 }
@@ -80,6 +82,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                                 DateTime = ex.DateTimeIEX,
                                 DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdIEX).FirstOrDefault().NameUD,
                                 DocumentCount = me.importedexaminationdatadocuments_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
+                                Editable = true
                             }).Single());
                         else ExaminationsM.Examinations.Add(me.examinationdata.Where(ex => ex.IdEX == item.Id)
                             .Select(ex => new ExaminationsM.Examination
@@ -91,6 +94,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                                 DateTime = ex.DateTimeEX,
                                 DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
                                 DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
+                                Editable = !GlobalVM.GlobalM.JustImportDocuments
                             }).Single());
 
                     }
@@ -126,7 +130,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 foreach (ExaminationsM.ErasedItem item in ExaminationsM.Erased)
@@ -232,7 +236,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 eraseable = false;
 

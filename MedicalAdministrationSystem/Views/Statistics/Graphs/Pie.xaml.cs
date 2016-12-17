@@ -12,6 +12,7 @@ namespace MedicalAdministrationSystem.Views.Statistics.Graphs
 {
     public partial class Pie : UserControl
     {
+        public string ValueDataMember { get; set; }
         public Rotation Rotate { get; set; } = new Rotation();
         const int clickDelta = 200;
 
@@ -20,10 +21,11 @@ namespace MedicalAdministrationSystem.Views.Statistics.Graphs
         Point startPosition;
 
         public ObservableCollection<ChartM.Record> Data { get; set; }
-        public Pie(ObservableCollection<ChartM.Record> Data)
+        public Pie(ObservableCollection<ChartM.Record> Data, bool finance)
         {
             this.Data = Data;
             this.DataContext = this;
+            ValueDataMember = finance ? "Value2" : "Value1";
             InitializeComponent();
             SeriesLabel.TextPattern = "{V},\n{VP:P0}";
         }

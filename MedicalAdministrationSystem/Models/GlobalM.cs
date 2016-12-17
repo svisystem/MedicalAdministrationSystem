@@ -7,6 +7,7 @@
         public int PriviledgeID { get; set; }
         public bool Secure { get; set; } = false;
         public bool AllSee { get; set; }
+        public bool JustImportDocuments { get; set; }
         public int? CompanyId { get; set; }
     }
 }

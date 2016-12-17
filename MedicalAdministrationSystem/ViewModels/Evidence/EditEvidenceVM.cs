@@ -49,7 +49,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     if (EditEvidenceM.Imported)
@@ -178,7 +178,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 foreach (DocumentControlM.ListElement item in EditEvidenceM.EvidenceList)

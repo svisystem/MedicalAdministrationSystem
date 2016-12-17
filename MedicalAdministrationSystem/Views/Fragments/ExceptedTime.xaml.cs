@@ -8,13 +8,20 @@ namespace MedicalAdministrationSystem.Views.Fragments
 {
     public partial class ExceptedTime : ViewExtender
     {
+        protected internal bool Enabler
+        {
+            set
+            {
+                Disable(value);
+            }
+        }
         public SurgeryTimeM.Exception Data { get; set; }
         private ExceptedTimeValid exceptedTimeValid { get; set; }
         private Action Valid { get; set; }
         private Action<int> Delete { get; set; }
         private DateTime RegistrateDate { get; set; }
         private Func<bool, int, DateTime?, DateTime?, bool> Between { get; set; }
-        public ExceptedTime(SurgeryTimeM.Exception data, Action Valid, Action<int> Delete, Func<bool, int, DateTime?, DateTime?, bool> Between, DateTime RegistrateDate, bool disable = false)
+        public ExceptedTime(SurgeryTimeM.Exception data, Action Valid, Action<int> Delete, Func<bool, int, DateTime?, DateTime?, bool> Between, DateTime RegistrateDate, bool enable = true)
         {
             this.Data = data;
             this.Valid = Valid;
@@ -26,15 +33,12 @@ namespace MedicalAdministrationSystem.Views.Fragments
             InitializeComponent();
             ConnectValidators();
             ButtonImage(image);
-            Disable(disable);
+            Enabler = enable;
         }
-        private void Disable(bool disable)
+        private void Disable(bool enable)
         {
-            if (disable)
-            {
-                image.IsEnabled = startDateDrop.IsEnabled = startDateErase.IsEnabled = finishDateDrop.IsEnabled = finishDateErase.IsEnabled = delete.IsEnabled = false;
-                startDate.IsReadOnly = finishDate.IsReadOnly = true;
-            }
+            image.IsEnabled = startDateDrop.IsEnabled = startDateErase.IsEnabled = finishDateDrop.IsEnabled = finishDateErase.IsEnabled = delete.IsEnabled = enable;
+            startDate.IsReadOnly = finishDate.IsReadOnly = !enable;
         }
         private void ConnectValidators()
         {

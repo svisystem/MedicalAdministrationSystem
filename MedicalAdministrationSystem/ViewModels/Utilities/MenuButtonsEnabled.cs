@@ -31,7 +31,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         protected internal string Taj;
         protected internal Action<int> Save;
 
-        public MenuButtonsEnabled(priviledges_fx priviledges)
+        public MenuButtonsEnabled(priviledges priviledges)
         {
             foreach (Item item in menuItems)
                 if (Convert.ToBoolean(priviledges.GetType().GetProperty(item.DataBaseName, BindingFlags.Instance | 

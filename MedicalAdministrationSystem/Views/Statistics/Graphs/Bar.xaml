@@ -3,17 +3,14 @@
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs"
         xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
         xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
-        x:Class="MedicalAdministrationSystem.Views.Statistics.Graphs.Bar" Loaded="SetView">
+        x:Class="MedicalAdministrationSystem.Views.Statistics.Graphs.Bar" Loaded="SetDefaultView">
     <dxc:ChartControl BorderBrush="{x:Null}" BorderThickness="0" DataSource="{Binding Data}" Width="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type utilities:LowerAssistChart}}, Path=Model.Width}" SizeChanged="SetBarWidth"
-            CustomDrawSeriesPoint="CustomDrawSeriesPoint" Padding="0" x:Name="ChartControl" CrosshairEnabled="False">
+            AncestorType={x:Type utilities:LowerAssistChart}}, Path=Model.Width}" Padding="10,0,10,10"
+            x:Name="ChartControl" CrosshairEnabled="False" BoundDataChanged="BoundDataChanged">
         <dxc:ChartControl.Palette>
             <dxc:PastelKitPalette />
         </dxc:ChartControl.Palette>
-        <dxc:XYDiagram2D Padding="10,9,10,10" EnableAxisXNavigation="True">
-            <dxc:XYDiagram2D.NavigationOptions>
-                <dxc:NavigationOptions UseKeyboard="False" UseTouchDevice="False" UseMouse="False" />
-            </dxc:XYDiagram2D.NavigationOptions>
+        <dxc:XYDiagram2D SeriesDataMember="Id" EnableAxisXNavigation="True">
             <dxc:XYDiagram2D.AxisX>
                 <dxc:AxisX2D x:Name="AxisX">
                     <dxc:AxisX2D.Label>
@@ -21,17 +18,17 @@
                     </dxc:AxisX2D.Label>
                 </dxc:AxisX2D>
             </dxc:XYDiagram2D.AxisX>
-            <dxc:XYDiagram2D.Series>
-                <dxc:BarSideBySideSeries2D ArgumentDataMember="{Binding Argument}" ValueDataMember="Value1" LabelsVisibility="True">
+            <dxc:XYDiagram2D.SeriesTemplate>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="{Binding Argument}" ValueDataMember="Value1"
+                        LabelsVisibility="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <dxc:BarSideBySideSeries2D.Label>
-                        <dxc:SeriesLabel ConnectorVisible="False" dxc:BarSideBySideSeries2D.LabelPosition="Center"
-                                ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+                        <dxc:SeriesLabel ConnectorVisible="False" dxc:BarSideBySideSeries2D.LabelPosition="Center" />
                     </dxc:BarSideBySideSeries2D.Label>
                     <dxc:BarSideBySideSeries2D.Model>
                         <dxc:BorderlessSimpleBar2DModel />
                     </dxc:BarSideBySideSeries2D.Model>
                 </dxc:BarSideBySideSeries2D>
-            </dxc:XYDiagram2D.Series>
+            </dxc:XYDiagram2D.SeriesTemplate>
         </dxc:XYDiagram2D>
     </dxc:ChartControl>
 </utilities:LowerAssistChart>

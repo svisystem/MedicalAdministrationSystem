@@ -1,12 +1,15 @@
 ﻿using DevExpress.Xpf.DocumentViewer;
+using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.Views.Fragments
 {
     public partial class PdfViewer : UserControl
     {
+        public Visible Bookmark { get; set; } = new Visible() { Visibility = Visibility.Collapsed };
         protected internal Action close;
         private BufferedStream bs;
         private MemoryStream memstream;
@@ -23,13 +26,13 @@ namespace MedicalAdministrationSystem.Views.Fragments
         {
             this.DataContext = this;
             InitializeComponent();
-            exit.Visibility = System.Windows.Visibility.Collapsed;
+            exit.Visibility = Visibility.Collapsed;
             memstream = new MemoryStream(ms.ToArray());
             bs = new BufferedStream(memstream);
             pdfViewer.DocumentSource = bs;
         }
 
-        private void Close(object sender, System.Windows.RoutedEventArgs e)
+        private void Close(object sender, RoutedEventArgs e)
         {
             pdfViewer.DocumentSource = null;
             close();
@@ -72,6 +75,28 @@ namespace MedicalAdministrationSystem.Views.Fragments
                 pdfViewer.PageLayout = DevExpress.Pdf.PdfPageLayout.TwoPageLeft;
             else if (id == 4)
                 pdfViewer.PageLayout = DevExpress.Pdf.PdfPageLayout.TwoColumnLeft;
+        }
+
+        private void bBookmark_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            Bookmark.Visibility = Bookmark.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+        }
+        public class Visible : NotifyPropertyChanged
+        {
+            private Visibility _Visibility;
+            public Visibility Visibility
+            {
+                get
+                {
+                    return _Visibility;
+                }
+                set
+                {
+                    if (value == _Visibility) return;
+                    _Visibility = value;
+                    OnPropertyChanged("Visibility");
+                }
+            }
         }
     }
 }

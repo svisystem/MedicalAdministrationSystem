@@ -1,9 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using System;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
@@ -18,7 +16,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             counter++;
             if (counter.Equals(1))
             {
-                GlobalVM.MainWindow.Focusable = false;
+                metroWindow.Focusable = false;
                 loading.Loaded += Loaded;
                 await metroWindow.ShowMetroDialogAsync(loading);
             }
@@ -28,7 +26,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             if (counter > 0) counter--;
             if (counter.Equals(0) && showed)
             {
-                GlobalVM.MainWindow.Focusable = true;
+                metroWindow.Focusable = true;
                 await metroWindow.HideMetroDialogAsync(loading);
                 showed = false;
             }
@@ -38,7 +36,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             showed = true;
             if (counter.Equals(0))
             {
-                GlobalVM.MainWindow.Focusable = true;
+                metroWindow.Focusable = true;
                 await metroWindow.HideMetroDialogAsync(loading);
                 showed = false;
             }

@@ -34,7 +34,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             EvidencesM.Erased.Clear();
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 if (me.evidencedata.Where(ex => ex.PatientIdED == EvidencesM.PatientId).Count() != 0)
@@ -46,7 +46,8 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             Code = ex.CodeED,
                             Date = ex.DateTimeED,
                             DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdED).FirstOrDefault().NameUD,
-                            DocCount = me.evidencedatadocuments_st.Where(exd => exd.IdED == ex.IdED).Count()
+                            DocCount = me.evidencedatadocuments_st.Where(exd => exd.IdED == ex.IdED).Count(),
+                            EditEvidence = !GlobalVM.GlobalM.JustImportDocuments
                         }))
                         EvidencesM.Evidences.Add(item);
 
@@ -59,7 +60,8 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             Code = ex.CodeIED,
                             Date = ex.DateTimeIED,
                             DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdIED).FirstOrDefault().NameUD,
-                            DocCount = me.importedevidencedatadocuments_st.Where(exd => exd.IdIED == ex.IdIED).Count()
+                            DocCount = me.importedevidencedatadocuments_st.Where(exd => exd.IdIED == ex.IdIED).Count(),
+                            EditEvidence = true
                         }))
                         EvidencesM.Evidences.Add(item);
 
@@ -159,7 +161,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 foreach (EvidencesM.ErasedItem item in EvidencesM.Erased)

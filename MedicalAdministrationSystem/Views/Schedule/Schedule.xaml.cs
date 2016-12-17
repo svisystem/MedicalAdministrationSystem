@@ -96,6 +96,7 @@ namespace MedicalAdministrationSystem.Views.Schedule
             if (scheduler.SelectedAppointments.Count == 1 && (bool)scheduler.SelectedAppointments[0].CustomFields["StillNotVisited"])
                 biRegistratePatient.IsEnabled = true;
             else biRegistratePatient.IsEnabled = false;
+            biDeleteAppointment.IsEnabled = scheduler.SelectedAppointments.Count > 0 && !scheduler.SelectedAppointments.Any(s => s.Start < DateTime.Now);
         }
     }
 }

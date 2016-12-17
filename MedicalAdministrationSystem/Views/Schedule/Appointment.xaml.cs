@@ -1,5 +1,4 @@
 ﻿using DevExpress.Xpf.Editors;
-using MahApps.Metro.Controls.Dialogs;
 using MedicalAdministrationSystem.Models.Schedule;
 using MedicalAdministrationSystem.ViewModels;
 using MedicalAdministrationSystem.ViewModels.Utilities;
@@ -14,19 +13,17 @@ namespace MedicalAdministrationSystem.Views.Schedule
     public partial class Appointment : ViewExtender
     {
         private TimeSpan AppointmentLenght;
-        private CustomDialog CustomDialog = new CustomDialog();
+        private Action CloseMethod { get; set; }
         private AppointmentValid appointmentValid { get; set; }
         public ObservableCollection<ScheduleM.Patient> Patients { get; set; }
-        public Appointment()
+        public Appointment(Action CloseMethod)
         {
+            this.CloseMethod = CloseMethod;
             EditorLocalizer.Active = new Localizer();
             appointmentValid = new AppointmentValid();
             InitializeComponent();
             validatorClass = appointmentValid;
             button = btnOk;
-            grid.Width = GlobalVM.MainWindow.ActualWidth;
-            GlobalVM.MainWindow.ShowMetroDialogAsync(CustomDialog);
-            GlobalVM.MainWindow.ResizeMode = System.Windows.ResizeMode.NoResize;
         }
         private void ConnectValidators()
         {
@@ -100,13 +97,13 @@ namespace MedicalAdministrationSystem.Views.Schedule
                 e.SetError("A mezőt nem lehet üresen hagyni", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
                 (sender as DateEdit).EditValue = e.Value;
             }
-            else if (e.Value as DateTime? < DateTime.Now)
+            else if (e.Value as DateTime? < DateTime.Now && !notes.IsReadOnly)
                 e.SetError("Nem vehetünk fel időpontot a múltba", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else
             {
                 (sender as DateEdit).EditValue = e.Value;
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, true);
+                validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, !notes.IsReadOnly);
                 if (appointmentValid.endDateTime) endDateTime.EditValue = (DateTime)(sender as DateEdit).EditValue + AppointmentLenght;
                 else endDateTime.DoValidate();
             }
@@ -131,10 +128,9 @@ namespace MedicalAdministrationSystem.Views.Schedule
             }
             button.IsEnabled = (validatorClass as FormValidate).Validate(validatorClass);
         }
-        private async void CloseButton(object sender, System.Windows.RoutedEventArgs e)
+        private void CloseButton(object sender, System.Windows.RoutedEventArgs e)
         {
-            await GlobalVM.MainWindow.HideMetroDialogAsync(CustomDialog);
-            GlobalVM.MainWindow.ResizeMode = System.Windows.ResizeMode.CanResize;
+            CloseMethod();
             if ((sender as Button).Name == "btnOk")
                 (this.DataContext as OwnAppointmentFormViewModel).RegistrateEnabled((bool)visited.IsChecked);
             else (this.DataContext as OwnAppointmentFormViewModel).CollectionGetChanges(false);
@@ -144,24 +140,10 @@ namespace MedicalAdministrationSystem.Views.Schedule
         {
             visited.IsChecked = !(bool)visited.IsChecked;
             patientName.AutoComplete = nameDropDown.IsEnabled = !(bool)visited.IsChecked;
-            tajNumber.IsEnabled = (bool)visited.IsChecked;
             if ((bool)visited.IsChecked) tajNumber.Clear();
+            tajNumber.IsReadOnly = !(bool)visited.IsChecked;
             patientName.DoValidate();
             tajNumber.DoValidate();
-        }
-        private void visited_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            (sender as CheckEdit).IsChecked = ((sender as CheckEdit).IsChecked == null) ? false : (sender as CheckEdit).IsChecked;
-            if ((sender as CheckEdit).IsChecked == true)
-            {
-                patientName.AutoComplete = nameDropDown.IsEnabled = false;
-                patientName.EditValue = (this.DataContext as OwnAppointmentFormViewModel).Subject;
-            }
-            else if (!string.IsNullOrEmpty((this.DataContext as OwnAppointmentFormViewModel).Subject as string))
-                patientName.SelectedItem = (patientName.ItemsSource as ObservableCollection<Person>).
-                    Where(pn => pn.Id == Patients.Where(p => p.TajNumber ==
-                    (this.DataContext as OwnAppointmentFormViewModel).CustomFields["PatientTajNumber"] as string).Single().Id).Single();
-            if ((DateTime)startDateTime.EditValue > DateTime.Now) tajNumber.IsEnabled = (bool)visited.IsChecked;
         }
         private class AppointmentValid : FormValidate
         {
@@ -179,6 +161,12 @@ namespace MedicalAdministrationSystem.Views.Schedule
                 return Name;
             }
         }
+        private void patientNameErase(object sender, System.Windows.RoutedEventArgs e)
+        {
+            patientName.Clear();
+            patientName.DoValidate();
+            if (!(bool)visited.IsChecked) tajNumber.Clear();
+        }
 
         private void ViewExtender_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -191,13 +179,18 @@ namespace MedicalAdministrationSystem.Views.Schedule
                 patientName.IsReadOnly = tajNumber.IsReadOnly = startDateTime.IsReadOnly = endDateTime.IsReadOnly = doctors.IsReadOnly = notes.IsReadOnly = true;
                 change.IsEnabled = cancel.IsEnabled = false;
             }
-        }
 
-        private void patientNameErase(object sender, System.Windows.RoutedEventArgs e)
-        {
-            patientName.Clear();
-            patientName.DoValidate();
-            if (!(bool)visited.IsChecked) tajNumber.Clear();
+            visited.IsChecked = (visited.IsChecked == null) ? false : visited.IsChecked;
+            if (visited.IsChecked == true)
+            {
+                patientName.AutoComplete = nameDropDown.IsEnabled = false;
+                patientName.EditValue = (this.DataContext as OwnAppointmentFormViewModel).Subject;
+            }
+            else if (!string.IsNullOrEmpty((this.DataContext as OwnAppointmentFormViewModel).Subject as string))
+                patientName.SelectedItem = (patientName.ItemsSource as ObservableCollection<Person>).
+                    Where(pn => pn.Id == Patients.Where(p => p.TajNumber ==
+                    (this.DataContext as OwnAppointmentFormViewModel).CustomFields["PatientTajNumber"] as string).Single().Id).Single();
+            if ((DateTime)startDateTime.EditValue > DateTime.Now) tajNumber.IsReadOnly = !(bool)visited.IsChecked;
         }
     }
 }

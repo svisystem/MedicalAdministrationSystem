@@ -62,11 +62,11 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
 
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
-                foreach (ScheduleM.Doctor doctor in me.userdata.Where(a => !me.accountdata.Where(b => b.IdAD == a.AccountDataIdUD).FirstOrDefault().DeletedAD).ToList()
-                    .Where(n => me.priviledges_fx.Where(p => p.IdP == me.accountdata.Where(b => b.IdAD == n.AccountDataIdUD).FirstOrDefault().PriviledgesIdAD).FirstOrDefault().IncludeScheduleP).ToList()
+                foreach (ScheduleM.Doctor doctor in me.userdata.Where(a => !me.accountdata.FirstOrDefault(b => b.IdAD == a.AccountDataIdUD).DeletedAD).ToList()
+                    .Where(n => me.priviledges.FirstOrDefault(p => p.IdP == me.accountdata.FirstOrDefault(b => b.IdAD == n.AccountDataIdUD).PriviledgesIdAD).IncludeScheduleP).ToList()
                     .Select(a => new ScheduleM.Doctor
                     {
                         Id = a.IdUD,
@@ -150,7 +150,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             {
                 try
                 {
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     me.Database.Connection.Open();
 
                     scheduledata dbAppointment = me.scheduledata.Where(s => s.IdSD == appointment.Id).Single();
@@ -227,7 +227,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                 ScheduleM.Appointments.Where(s => !s.StoreInDB).Single();
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 newperson np = new newperson();
@@ -241,21 +241,28 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
 
                     belong = np.IdNP;
                 }
-                else belong = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
+                else belong = ScheduleM.Patients.Single(p => p.TajNumber == appointment.PatientTajNumber).Id;
 
                 scheduleperson_st spst;
                 if (appointment.StillNotVisited)
+                {
                     spst = new scheduleperson_st()
                     {
                         ExistedIdSP = null,
                         NewPersonIdSP = belong
                     };
-                else spst = new scheduleperson_st()
+                    me.scheduleperson_st.Add(spst);
+                }
+                else if (!me.scheduleperson_st.Any(sc => sc.ExistedIdSP == belong))
                 {
-                    ExistedIdSP = belong,
-                    NewPersonIdSP = null
-                };
-                me.scheduleperson_st.Add(spst);
+                    spst = new scheduleperson_st()
+                    {
+                        ExistedIdSP = belong,
+                        NewPersonIdSP = null
+                    };
+                    me.scheduleperson_st.Add(spst);
+                }
+                else spst = me.scheduleperson_st.Single(sc => sc.ExistedIdSP == belong);
                 me.SaveChanges();
 
                 scheduledata sd = new scheduledata()
@@ -337,12 +344,12 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             foreach (int item in EraseInt)
                 try
                 {
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     me.Database.Connection.Open();
-                    
+
                     scheduledata sd = me.scheduledata.Where(s => s.IdSD == item).FirstOrDefault();
                     if (sd.StillNotVisitedSD) me.newperson.Remove(me.newperson.Where(np => np.IdNP == me.scheduleperson_st.
-                    Where(sps => sps.IdSP == sd.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single());
+                        Where(sps => sps.IdSP == sd.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single());
                     me.scheduleperson_st.Remove(me.scheduleperson_st.Where(sps => sps.IdSP == sd.PatientIdSD).Single());
                     me.scheduledata.Remove(sd);
                     me.SaveChanges();

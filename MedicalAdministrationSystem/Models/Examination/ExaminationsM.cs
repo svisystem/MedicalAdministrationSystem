@@ -103,6 +103,7 @@ namespace MedicalAdministrationSystem.Models.Examination
             private DateTime _DateTime;
             private string _DoctorName;
             private int _DocumentCount;
+            private bool _Editable;
             public int Id
             {
                 get
@@ -192,6 +193,19 @@ namespace MedicalAdministrationSystem.Models.Examination
                     if (_DocumentCount == value) return;
                     _DocumentCount = value;
                     OnPropertyChanged("DocumentCount");
+                }
+            }
+            public bool Editable
+            {
+                get
+                {
+                    return _Editable;
+                }
+                set
+                {
+                    if (_Editable == value) return;
+                    _Editable = value;
+                    OnPropertyChanged("Editable");
                 }
             }
         }

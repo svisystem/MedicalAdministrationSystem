@@ -43,8 +43,8 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <dxg:GridColumn Header="Importált vizsgálat" MinWidth="110" AllowFocus="False"
-                            Binding="{Binding Imported, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ReadOnly="True"
-                            AllowEditing="False">
+                            Binding="{Binding Imported, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ReadOnly="True" AllowEditing="False">
                         <dxg:GridColumn.EditSettings>
                             <dxe:CheckEditSettings IsEnabled="False" />
                         </dxg:GridColumn.EditSettings>
@@ -53,7 +53,7 @@
                             Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <dxg:GridColumn Header="Vizsgálat azonosítója" MinWidth="120" AllowFocus="False"
                             Binding="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <dxg:GridColumn x:Name="dateTime"  Header="Vizsgálat időpontja" MinWidth="120" AllowFocus="False"
+                    <dxg:GridColumn x:Name="dateTime" Header="Vizsgálat időpontja" MinWidth="120" AllowFocus="False"
                             Binding="{Binding DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <dxg:GridColumn.EditSettings>
                             <dxe:DateEditSettings MaskCulture="hu-HU" MaskType="DateTimeAdvancingCaret"
@@ -90,7 +90,8 @@
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
-                                        Margin="-1">
+                                        Margin="-1"
+                                        IsEnabled="{Binding Path=RowData.Row.Editable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="modify">
                                         <Grid VerticalAlignment="Center" Margin="0">
                                             <Grid.ColumnDefinitions>
@@ -135,7 +136,7 @@
                     <dxg:TableView x:Name="viewer" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés"
                             ShowGroupPanel="False" ShowIndicator="False" AllowScrollAnimation="True" AutoWidth="True"
                             SearchPanelHorizontalAlignment="Right" BestFitMode="AllRows" AllowBestFit="True"
-                            BestFitArea="All"/>
+                            BestFitArea="All" />
                 </dxg:GridControl.View>
             </dxg:GridControl>
             <dxe:ButtonEdit Height="29" Margin="8,8,0,0" ShowText="False" AllowDefaultButton="False" BorderThickness="0"

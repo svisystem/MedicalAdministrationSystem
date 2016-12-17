@@ -43,7 +43,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     FacilityDataMDataSet.FullZipCodeList = me.zipcode_fx.ToList();
@@ -92,7 +92,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             {
                 try
                 {
-                    using (me = new medicalEntities())
+                    using (me = new MedicalModel())
                     {
                         me.Database.Connection.Open();
                         cd = me.companydata.Where(b => b.IdCD == FacilityDataMDataSet.SelectedCompany.ID).Single();
@@ -197,7 +197,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     if (!FacilityDataMDataSet.SelectedCompany.ID.Equals(0)) cd = me.companydata.Where(b => b.IdCD == FacilityDataMDataSet.SelectedCompany.ID).Single();
@@ -225,7 +225,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             int newValue = 0;
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     newValue = me.companydata.Where(a => a.NameCD == FacilityDataMViewElements.Name).Select(a => a.IdCD).Single();

@@ -26,10 +26,7 @@ namespace MedicalAdministrationSystem.Views.Settings
         {
             UserAdministrateVM.ExecuteMethod();
         }
-        protected internal bool Dirty()
-        {
-            return UserAdministrateVM.VMDirty();
-        }
+        protected internal bool Dirty() => UserAdministrateVM.VMDirty();
         private void Update(object sender, RoutedEventArgs e)
         {
             grid.ClearSorting();

@@ -86,10 +86,7 @@ namespace MedicalAdministrationSystem.ViewModels
             if (State != "ReadOnly") return DocumentControlM.List.Count > 0 ? DocumentControlM.List.Count - 1 : 0;
             return DocumentControlM.List.Count;
         }
-        protected internal List<int> Erased()
-        {
-            return DocumentControlM.Erased;
-        }
+        protected internal List<int> Erased() => DocumentControlM.Erased;
         private void NewAdd()
         {
             if (Validate())
@@ -275,7 +272,12 @@ namespace MedicalAdministrationSystem.ViewModels
         {
             DocumentControlM.List.CollectionChanged -= CollectionChangedMethod;
             for (int i = 0; i < DocumentControlM.List.Count; i++)
+            {
                 DocumentControlM.List[i].Id = i + 1;
+                DocumentControlM.List[i].Button.Margin = new Thickness(10, 10, 10, 0);
+            }
+            if (DocumentControlM.List.Count > 0)
+                DocumentControlM.List.Last().Button.Margin = new Thickness(10);
             Buttons();
             DocumentControlM.List.CollectionChanged += CollectionChangedMethod;
         }
@@ -309,10 +311,6 @@ namespace MedicalAdministrationSystem.ViewModels
                 }
             }
         }
-        protected internal bool VMDirty()
-        {
-            if (DocumentControlM.List.Any(i => i.IsChanged)) return true;
-            return false;
-        }
+        protected internal bool VMDirty() => (DocumentControlM.List.Any(i => i.IsChanged));
     }
 }

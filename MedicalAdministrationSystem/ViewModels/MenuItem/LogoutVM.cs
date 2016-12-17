@@ -14,16 +14,17 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             cancel = Cancel;
             await Loading.Show();
-            Dialog dialog = new Dialog(false, "Kijelentkezés", OkMethod, CancelMethod, true);
+            Dialog dialog = new Dialog(false, "Kijelentkezés", () => OkMethod(false), CancelMethod, true);
             dialog.content = new TextBlock("Biztos benne hogy szeretne kijelentkezni az alkalmazásból?");
             dialog.Start();
         }
-        protected internal async void OkMethod()
+        protected internal async void OkMethod(bool registrate)
         {
             GlobalVM.GlobalM.AccountID = null;
             GlobalVM.GlobalM.UserID = null;
             GlobalVM.GlobalM.CompanyId = null;
-            priviledges_fx pr = new priviledges_fx();
+            GlobalVM.GlobalM.Secure = false;
+            priviledges pr = new priviledges();
             foreach (PropertyInfo value in pr.GetType().GetProperties())
             {
                 if (value.PropertyType == typeof(bool))
@@ -32,7 +33,13 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             }
             MenuButtonsEnabled mbe = new MenuButtonsEnabled(pr);
             mbe.SingleChange(GlobalVM.StockLayout.usersTBI, Visibility.Visible);
-            mbe.LoadFirst();
+            mbe.SingleChange(GlobalVM.StockLayout.helpTBI, Visibility.Visible);
+            if (registrate)
+            {
+                mbe.modifier = false;
+                mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
+            }
+            else mbe.LoadFirst();
             await Loading.Hide();
         }
         private async void CancelMethod()

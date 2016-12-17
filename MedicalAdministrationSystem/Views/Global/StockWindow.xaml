@@ -9,4 +9,4 @@
         AllowsTransparency="True" WindowStartupLocation="CenterScreen" NonActiveWindowTitleBrush="#DFDFDF"
         TitleForeground="Black" WindowTitleBrush="White" WindowTransitionsEnabled="False" TitleCaps="False"
         ShowInTaskbar="True" Icon="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Logo3.png"
-        BorderThickness="0" dx:ThemeManager.Theme="MetropolisLight" Loaded="MetroWindow_Loaded" />
+        BorderThickness="0" dx:ThemeManager.Theme="MetropolisLight"/>

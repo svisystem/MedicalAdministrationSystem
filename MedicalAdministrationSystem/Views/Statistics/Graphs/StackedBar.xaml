@@ -3,39 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
         xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
-        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs" Loaded="SetView">
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs" Loaded="SetDefaultView">
     <dxc:ChartControl BorderBrush="{x:Null}" BorderThickness="0" DataSource="{Binding Data}" Width="{Binding RelativeSource={RelativeSource FindAncestor, 
-            AncestorType={x:Type utilities:LowerAssistChart}}, Path=Model.Width}" SizeChanged="SetBarWidth"
-            CustomDrawCrosshair="GetArgumentValue" MouseLeftButtonUp="SetSelectedValues"
-            CustomDrawSeriesPoint="CustomDrawSeriesPoint" MouseLeftButtonDown="CheckerDown" Padding="0"
-            CrosshairEnabled="{Binding Continual}" x:Name="ChartControl">
+            AncestorType={x:Type utilities:LowerAssistChart}}, Path=Model.Width}"
+            CustomDrawCrosshair="GetArgumentValue" MouseLeftButtonUp="SetSelectedValues" MouseLeftButtonDown="CheckerDown" Padding="10,0,10,10"
+            MouseLeave="CheckerLeave" CrosshairEnabled="{Binding Continual}" x:Name="ChartControl" BoundDataChanged="BoundDataChanged">
         <dxc:ChartControl.Palette>
             <dxc:PastelKitPalette />
         </dxc:ChartControl.Palette>
         <dxc:ChartControl.CrosshairOptions>
             <dxc:CrosshairOptions ArgumentLineBrush="#FFb9b9b9" />
         </dxc:ChartControl.CrosshairOptions>
-        <dxc:XYDiagram2D Padding="10,9,10,10" EnableAxisXNavigation="True" x:Name="Diagram"
-                SeriesDataMember="{Binding SeriesDataMember}">
-            <dxc:XYDiagram2D.NavigationOptions>
-                <dxc:NavigationOptions UseKeyboard="False" UseTouchDevice="False" UseMouse="False" />
-            </dxc:XYDiagram2D.NavigationOptions>
+        <dxc:XYDiagram2D EnableAxisXNavigation="{Binding Continual}" x:Name="Diagram" SeriesDataMember="Id">
             <dxc:XYDiagram2D.AxisX>
                 <dxc:AxisX2D x:Name="AxisX">
                     <dxc:AxisX2D.DateTimeScaleOptions>
                         <dxc:ManualDateTimeScaleOptions MeasureUnit="{Binding MeasureUnit}" />
                     </dxc:AxisX2D.DateTimeScaleOptions>
-                    <dxc:AxisX2D.Label>
-                        <dxc:AxisLabel Visible="{Binding Continual}" />
-                    </dxc:AxisX2D.Label>
                 </dxc:AxisX2D>
             </dxc:XYDiagram2D.AxisX>
             <dxc:XYDiagram2D.SeriesTemplate>
                 <dxc:BarStackedSeries2D ArgumentDataMember="{Binding Argument}" LabelsVisibility="True"
-                        ValueDataMember="Value1">
+                        ValueDataMember="Value1" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <dxc:BarStackedSeries2D.Label>
-                        <dxc:SeriesLabel ConnectorVisible="False" dxc:BarSideBySideSeries2D.LabelPosition="Center"
-                                ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+                        <dxc:SeriesLabel ConnectorVisible="False" dxc:BarSideBySideSeries2D.LabelPosition="Center"/>
                     </dxc:BarStackedSeries2D.Label>
                     <dxc:BarStackedSeries2D.Model>
                         <dxc:BorderlessSimpleBar2DModel />

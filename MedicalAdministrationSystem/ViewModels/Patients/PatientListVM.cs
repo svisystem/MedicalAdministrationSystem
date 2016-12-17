@@ -35,12 +35,12 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 PatientListM.FullZipCodeList = me.zipcode_fx.ToList();
                 PatientListM.FullSettlementList = me.settlement_fx.ToList();
-                PatientListM.FullUsersList = me.userdata.Where(a => !me.accountdata.Where(b => b.IdAD == a.AccountDataIdUD).FirstOrDefault().DeletedAD).ToList()
-                    .Where(n => me.priviledges_fx.Where(p => p.IdP == me.accountdata.Where(b => b.IdAD == n.AccountDataIdUD).FirstOrDefault().PriviledgesIdAD).FirstOrDefault().IsDoctorP)
+                PatientListM.FullUsersList = me.userdata.Where(a => !me.accountdata.FirstOrDefault(b => b.IdAD == a.AccountDataIdUD).DeletedAD).ToList()
+                    .Where(n => me.priviledges.FirstOrDefault(p => p.IdP == me.accountdata.FirstOrDefault(b => b.IdAD == n.AccountDataIdUD).PriviledgesIdAD).IsDoctorP)
                     .Select(a => new PatientListM.UserList
                     {
                         Id = a.IdUD,
@@ -79,7 +79,8 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 }
                 else
                 {
-                    PatientListM.SelectedUser = new PatientListM.UserList { Id = (int)GlobalVM.GlobalM.UserID };
+                    PatientListM.SelectedUser = new PatientListM.UserList { Id = GlobalVM.GlobalM.UserID == null ? 0 : (int)GlobalVM.GlobalM.UserID };
+                    Question(false);
                 }
             }
             else ConnectionMessage();
@@ -90,7 +91,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 if (!PatientListM.SelectedUser.Id.Equals(0))
@@ -192,23 +193,21 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 if (PatientListM.Erased.Count != 0)
                 {
                     foreach (int patient in PatientListM.Erased)
-                        try
-                        { //TODO There is a TODO, but I don't know what is the reason for, maybe unhandled other constrains still there
-                            me.belong_st.RemoveRange(me.belong_st.Where(a => a.IdPD == patient));
-                            me.examinationeachevidence_st.RemoveRange(me.examinationeachevidence_st.Where
-                                (b => me.examinationdata.Where(a => a.PatientIdEX == patient).Select(a => a.IdEX).ToList().Any(c => c == b.IdEX)));
-                            me.examinationdata.RemoveRange(me.examinationdata.Where(a => a.PatientIdEX == patient));
-                            me.evidencedata.RemoveRange(me.evidencedata.Where(a => a.PatientIdED == patient));
-                            me.scheduledata.RemoveRange(me.scheduledata.Where(a => a.PatientIdSD == patient));
-                            me.patientdata.Remove(me.patientdata.Where(a => a.IdPD == patient).Single());
-                        }
-                        catch { }
-                    me.SaveChanges();
+                    {
+                        me.belong_st.RemoveRange(me.belong_st.Where(a => a.IdPD == patient));
+                        me.examinationeachevidence_st.RemoveRange(me.examinationeachevidence_st.Where
+                            (b => me.examinationdata.Where(a => a.PatientIdEX == patient).Select(a => a.IdEX).ToList().Any(c => c == b.IdEX)));
+                        me.examinationdata.RemoveRange(me.examinationdata.Where(a => a.PatientIdEX == patient));
+                        me.evidencedata.RemoveRange(me.evidencedata.Where(a => a.PatientIdED == patient));
+                        me.scheduledata.RemoveRange(me.scheduledata.Where(a => a.PatientIdSD == patient));
+                        me.patientdata.Remove(me.patientdata.Where(a => a.IdPD == patient).Single());
+                        me.SaveChanges();
+                    }
                 }
                 foreach (PatientListM.Patient patient in PatientListM.PatientList)
                     if (!patient.BelongUsers.Where(a => a.Belong == true).Select(a => a.Id).ToList().SequenceEqual(patient.Belong))

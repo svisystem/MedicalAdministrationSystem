@@ -39,11 +39,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 UsersMViewElements.UserDatas = me.accountdata.ToList();
 
-                UsersMDataSet.PriviledgesList = me.priviledges_fx.ToList();
+                UsersMDataSet.PriviledgesList = me.priviledges.ToList();
                 me.Database.Connection.Close();
                 workingConn = true;
             }
@@ -93,7 +93,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 for (int i = 0; i < UsersMViewElements.UserDatas.Count; i++)
                 {

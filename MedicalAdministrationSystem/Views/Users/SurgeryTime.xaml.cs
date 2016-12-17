@@ -1,4 +1,5 @@
 ﻿using DevExpress.Xpf.Editors;
+using MedicalAdministrationSystem.ViewModels;
 using MedicalAdministrationSystem.ViewModels.Users;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
@@ -18,9 +19,13 @@ namespace MedicalAdministrationSystem.Views.Users
         {
             await Loading.Show();
             surgeryTimeValid = new SurgeryTimeValid();
-            SurgeryTimeVM = new SurgeryTimeVM(SaveButtonValid);
-            this.DataContext = SurgeryTimeVM;
             InitializeComponent();
+            ConnectValidators();
+            SurgeryTimeVM = new SurgeryTimeVM(SaveButtonValid, () =>
+            {
+                this.DataContext = SurgeryTimeVM;
+                if (GlobalVM.GlobalM.UserID == null) create.IsEnabled = false;
+            });
             validatorClass = surgeryTimeValid;
         }
         private void ConnectValidators()
@@ -43,11 +48,14 @@ namespace MedicalAdministrationSystem.Views.Users
 
         private void ChangeDayEnabler(object sender, System.Windows.RoutedEventArgs e)
         {
-            CheckEdit ce = this.FindName(GetSenderName(sender) + "Check") as CheckEdit;
-            ce.IsChecked = !ce.IsChecked;
-            (this.FindName(GetSenderName(sender) + "StartTime") as DateEdit).DoValidate();
-            (this.FindName(GetSenderName(sender) + "FinishTime") as DateEdit).DoValidate();
-            SaveButtonValid();
+            if (GlobalVM.GlobalM.UserID != null)
+            {
+                CheckEdit ce = this.FindName(GetSenderName(sender) + "Check") as CheckEdit;
+                ce.IsChecked = !ce.IsChecked;
+                (this.FindName(GetSenderName(sender) + "StartTime") as DateEdit).DoValidate();
+                (this.FindName(GetSenderName(sender) + "FinishTime") as DateEdit).DoValidate();
+                SaveButtonValid();
+            }
         }
         bool fromStart = true;
         bool fromFinish = true;
@@ -241,8 +249,7 @@ namespace MedicalAdministrationSystem.Views.Users
 
         private void ViewLoaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            SurgeryTimeVM.AfterLoaded();
-            ConnectValidators();
+            SurgeryTimeVM.Loading.RunWorkerAsync();
         }
     }
 }

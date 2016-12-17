@@ -152,123 +152,41 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataAccess\accountdata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\belong_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\billing.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\companydata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\currentpricesforeachbill_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\DataAccess.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataAccess.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\DataAccess.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\DataAccess.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataAccess.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\evidencedata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\evidencedatadocuments.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\evidencedatadocuments_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\examinationdata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\examinationdatadocuments.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\examinationdatadocuments_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\examinationeachevidence_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\examinationeachimportedevidence_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\exceptedschedule.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\gender_fx.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\importedevidencedata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\importedevidencedatadocuments_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\importedexaminationdata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\importedexaminationdatadocuments_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\importedexaminationeachevidence_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\importedexaminationeachimportedevidence_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\newperson.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\patientdata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\pricesforeachservice.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\priviledges_fx.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\scheduledata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\scheduleperson_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\servicesdata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\settlementzipcode_st.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\settlement_fx.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\status_fx.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\userdata.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\usersschedule.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\zipcode_fx.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
+    <Compile Include="DataAccess\accountdata.cs" />
+    <Compile Include="DataAccess\belong_st.cs" />
+    <Compile Include="DataAccess\billing.cs" />
+    <Compile Include="DataAccess\companydata.cs" />
+    <Compile Include="DataAccess\currentpricesforeachbill_st.cs" />
+    <Compile Include="DataAccess\evidencedata.cs" />
+    <Compile Include="DataAccess\evidencedatadocuments.cs" />
+    <Compile Include="DataAccess\evidencedatadocuments_st.cs" />
+    <Compile Include="DataAccess\examinationdata.cs" />
+    <Compile Include="DataAccess\examinationdatadocuments.cs" />
+    <Compile Include="DataAccess\examinationdatadocuments_st.cs" />
+    <Compile Include="DataAccess\examinationeachevidence_st.cs" />
+    <Compile Include="DataAccess\examinationeachimportedevidence_st.cs" />
+    <Compile Include="DataAccess\exceptedschedule.cs" />
+    <Compile Include="DataAccess\gender_fx.cs" />
+    <Compile Include="DataAccess\importedevidencedata.cs" />
+    <Compile Include="DataAccess\importedevidencedatadocuments_st.cs" />
+    <Compile Include="DataAccess\importedexaminationdata.cs" />
+    <Compile Include="DataAccess\importedexaminationdatadocuments_st.cs" />
+    <Compile Include="DataAccess\importedexaminationeachevidence_st.cs" />
+    <Compile Include="DataAccess\importedexaminationeachimportedevidence_st.cs" />
+    <Compile Include="DataAccess\MedicalModel.cs" />
+    <Compile Include="DataAccess\newperson.cs" />
+    <Compile Include="DataAccess\patientdata.cs" />
+    <Compile Include="DataAccess\pricesforeachservice.cs" />
+    <Compile Include="DataAccess\priviledges.cs" />
+    <Compile Include="DataAccess\scheduledata.cs" />
+    <Compile Include="DataAccess\scheduleperson_st.cs" />
+    <Compile Include="DataAccess\servicesdata.cs" />
+    <Compile Include="DataAccess\settlementzipcode_st.cs" />
+    <Compile Include="DataAccess\settlement_fx.cs" />
+    <Compile Include="DataAccess\status_fx.cs" />
+    <Compile Include="DataAccess\userdata.cs" />
+    <Compile Include="DataAccess\usersschedule.cs" />
+    <Compile Include="DataAccess\zipcode_fx.cs" />
     <Compile Include="Models\Billing\BillsM.cs" />
     <Compile Include="Models\Billing\CompanyDataM.cs" />
     <Compile Include="Models\Billing\CreateBillM.cs" />
@@ -367,6 +285,19 @@
     <Compile Include="ViewModels\Statistics\IntervalVM.cs" />
     <Compile Include="ViewModels\Statistics\Patient\PatientQuestionVM.cs" />
     <Compile Include="ViewModels\Statistics\Patient\PatientSelectorVM.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\EvidenceCount.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\ExaminationCount.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\ExecutedService.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\IncomePerEmployee.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\IncomePerService.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\NewPatientPercentage.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\PatientBelong.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\ServicesCount.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\ServicesPrices.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\StatusDistribution.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\StatusPerPatient.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\TimePerPatient.cs" />
+    <Compile Include="ViewModels\Statistics\Queries\TotalIncome.cs" />
     <Compile Include="ViewModels\Statistics\Queries\WorkingHours.cs" />
     <Compile Include="ViewModels\Statistics\Service\ServiceQuestionVM.cs" />
     <Compile Include="ViewModels\Statistics\Service\ServiceSelectorVM.cs" />
@@ -494,6 +425,9 @@
     <Compile Include="Views\Schedule\Schedule.xaml.cs">
       <DependentUpon>Schedule.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Schedule\AppointmentBase.xaml.cs">
+      <DependentUpon>AppointmentBase.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings\Connection.xaml.cs">
       <DependentUpon>Connection.xaml</DependentUpon>
     </Compile>
@@ -557,6 +491,9 @@
     </Compile>
     <Compile Include="Views\Statistics\Graphs\Line.xaml.cs">
       <DependentUpon>Line.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics\Graphs\MultiLine.xaml.cs">
+      <DependentUpon>MultiLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Statistics\Graphs\Pie.xaml.cs">
       <DependentUpon>Pie.xaml</DependentUpon>
@@ -735,6 +672,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Schedule\AppointmentBase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Settings\Connection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -812,6 +753,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Statistics\Graphs\Line.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics\Graphs\MultiLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -895,13 +840,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="DataAccess\DataAccess.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DataAccess.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="DataAccess\DataAccess.edmx.diagram">
-      <DependentUpon>DataAccess.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -986,19 +924,14 @@
   <ItemGroup>
     <Resource Include="Icons\ChartButton.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="DataAccess\DataAccess.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataAccess.edmx</DependentUpon>
-      <LastGenOutput>DataAccess.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="DataAccess\DataAccess.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataAccess.edmx</DependentUpon>
-      <LastGenOutput>DataAccess.cs</LastGenOutput>
-    </Content>
     <Resource Include="Logo3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UsersGuide\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Bookmark.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

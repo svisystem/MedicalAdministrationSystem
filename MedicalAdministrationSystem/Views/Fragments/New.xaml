@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments">
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Fragments" Margin="0,0,0,10">
     <Button x:Name="button" HorizontalContentAlignment="Stretch" Padding="-2" Click="NewAdd" Focusable="False">
         <DockPanel Width="90" Height="120">
             <TextBlock DockPanel.Dock="Bottom" Text="Hozzáadás" Foreground="#FF373A3D" VerticalAlignment="Center"

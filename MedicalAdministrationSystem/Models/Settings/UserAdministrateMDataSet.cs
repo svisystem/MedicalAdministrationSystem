@@ -6,10 +6,10 @@ namespace MedicalAdministrationSystem.Models.Settings
 {
     public class UserAdministrateMDataSet : NotifyPropertyChanged
     {
-        private List<priviledges_fx> _PriviledgesList;
+        private List<priviledges> _PriviledgesList;
         private UserAdministrateMViewElements.UserRow _SelectedRow;
         
-        public List<priviledges_fx> PriviledgesList
+        public List<priviledges> PriviledgesList
         {
             get
             {

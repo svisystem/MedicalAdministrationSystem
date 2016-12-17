@@ -37,11 +37,11 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     RegistrationM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
-                    RegistrationM.PriviledgesList = me.priviledges_fx.Select(a => a.NameP).ToList();
+                    RegistrationM.PriviledgesList = me.priviledges.Select(a => a.NameP).ToList();
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
@@ -61,10 +61,10 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     await me.Database.Connection.OpenAsync();
-                    RegistrationM.PriviledgesID = me.priviledges_fx.Where(b => b.NameP == RegistrationM.PriviledgesSelected).Select(b => b.IdP).Single();
+                    RegistrationM.PriviledgesID = me.priviledges.Where(b => b.NameP == RegistrationM.PriviledgesSelected).Select(b => b.IdP).Single();
                     accountdata ad = new accountdata();
                     ad.UserNameAD = RegistrationM.Username;
                     PasswordManager pwm = new PasswordManager();

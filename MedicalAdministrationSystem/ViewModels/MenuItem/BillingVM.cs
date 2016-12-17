@@ -39,7 +39,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
 
             viewBill.IsEnabledTrigger = false;
 
-            createBill.IsEnabledTrigger = GlobalVM.StockLayout.headerContent.Visibility == System.Windows.Visibility.Collapsed ? false : true;
+            createBill.IsEnabledTrigger = GlobalVM.StockLayout.headerContent.Content != null;
         }
         protected internal void SetBack()
         {

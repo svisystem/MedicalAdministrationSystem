@@ -1,0 +1,112 @@
+﻿<utilities:ChartBase xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        x:Class="MedicalAdministrationSystem.Views.Statistics.Graphs.MultiLine" Loaded="SetDefaultView">
+    <utilities:ChartBase.Resources>
+        <dxc:BrushOverlayConverter x:Key="brushOverlayConverter" />
+    </utilities:ChartBase.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <dxc:ChartControl Grid.Row="0" BorderBrush="{x:Null}" BorderThickness="0" DataSource="{Binding Data}"
+                CustomDrawCrosshair="GetArgumentValue" MouseLeftButtonUp="SetSelectedValues" x:Name="ChartControl1"
+                Padding="0,0,10,0" MouseLeave="CheckerLeave" MouseLeftButtonDown="CheckerDown"
+                BoundDataChanged="BoundDataChanged">
+            <dxc:ChartControl.Palette>
+                <dxc:PastelKitPalette />
+            </dxc:ChartControl.Palette>
+            <dxc:ChartControl.CrosshairOptions>
+                <dxc:CrosshairOptions ArgumentLineBrush="#FFb9b9b9" />
+            </dxc:ChartControl.CrosshairOptions>
+            <dxc:XYDiagram2D SeriesDataMember="Id" x:Name="LineDiagram" EnableAxisXNavigation="True" Zoom="Zoom"
+                    Scroll="Scroll">
+                <dxc:XYDiagram2D.DefaultPane>
+                    <dxc:Pane EnableAxisXNavigation="True">
+                        <dxc:Pane.AxisXScrollBarOptions>
+                            <dxc:ScrollBarOptions Visible="False" />
+                        </dxc:Pane.AxisXScrollBarOptions>
+                    </dxc:Pane>
+                </dxc:XYDiagram2D.DefaultPane>
+                <dxc:XYDiagram2D.AxisX>
+                    <dxc:AxisX2D x:Name="LineAxisX" GridLinesVisible="True" GridLinesMinorVisible="True"
+                            TickmarksMinorVisible="False" TickmarksVisible="False">
+                        <dxc:AxisX2D.Label>
+                            <dxc:AxisLabel Visible="False" />
+                        </dxc:AxisX2D.Label>
+                    </dxc:AxisX2D>
+                </dxc:XYDiagram2D.AxisX>
+                <dxc:XYDiagram2D.AxisY>
+                    <dxc:AxisY2D>
+                        <dxc:AxisY2D.Title>
+                            <dxc:AxisTitle Content="Bruttó ár" Foreground="#FF373A3D" />
+                        </dxc:AxisY2D.Title>
+                    </dxc:AxisY2D>
+                </dxc:XYDiagram2D.AxisY>
+                <dxc:XYDiagram2D.SeriesTemplate>
+                    <dxc:SplineSeries2D ArgumentDataMember="Date" ValueDataMember="Value1" MarkerVisible="True"
+                            ValueScaleType="Numerical" LineTension="1" MarkerSize="8" ArgumentScaleType="DateTime">
+                        <dxc:SplineSeries2D.MarkerModel>
+                            <dxc:CustomMarker2DModel>
+                                <dxc:CustomMarker2DModel.PointTemplate>
+                                    <ControlTemplate>
+                                        <Ellipse
+                                                Fill="{Binding PointColor, ConverterParameter=Gray, Converter={StaticResource brushOverlayConverter}}" />
+                                    </ControlTemplate>
+                                </dxc:CustomMarker2DModel.PointTemplate>
+                            </dxc:CustomMarker2DModel>
+                        </dxc:SplineSeries2D.MarkerModel>
+                    </dxc:SplineSeries2D>
+                </dxc:XYDiagram2D.SeriesTemplate>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+        <dxc:ChartControl Grid.Row="1" BorderBrush="{x:Null}" BorderThickness="0" DataSource="{Binding Data}"
+                CustomDrawCrosshair="GetArgumentValue" MouseLeftButtonUp="SetSelectedValues" x:Name="ChartControl2"
+                Padding="0,0,10,10" MouseLeave="CheckerLeave" MouseLeftButtonDown="CheckerDown"
+                BoundDataChanged="BoundDataChanged">
+            <dxc:ChartControl.Palette>
+                <dxc:PastelKitPalette />
+            </dxc:ChartControl.Palette>
+            <dxc:ChartControl.CrosshairOptions>
+                <dxc:CrosshairOptions ArgumentLineBrush="#FFb9b9b9" />
+            </dxc:ChartControl.CrosshairOptions>
+            <dxc:XYDiagram2D SeriesDataMember="Id" x:Name="StackedLineDiagram" EnableAxisXNavigation="True" Zoom="Zoom"
+                    Scroll="Scroll">
+                <dxc:XYDiagram2D.DefaultPane>
+                    <dxc:Pane EnableAxisXNavigation="True" />
+                </dxc:XYDiagram2D.DefaultPane>
+                <dxc:XYDiagram2D.AxisX>
+                    <dxc:AxisX2D GridLinesMinorVisible="True" GridLinesVisible="True" x:Name="StackedLineAxisX" />
+                </dxc:XYDiagram2D.AxisX>
+                <dxc:XYDiagram2D.AxisY>
+                    <dxc:AxisY2D>
+                        <dxc:AxisY2D.Title>
+                            <dxc:AxisTitle Content="Áfa értéke" Foreground="#FF373A3D" />
+                        </dxc:AxisY2D.Title>
+                    </dxc:AxisY2D>
+                </dxc:XYDiagram2D.AxisY>
+                <dxc:XYDiagram2D.SeriesTemplate>
+                    <dxc:SplineAreaSeries2D ArgumentDataMember="Date" ValueDataMember="Value2" MarkerVisible="True"
+                            ValueScaleType="Numerical" LineTension="1" MarkerSize="8" ArgumentScaleType="DateTime"
+                            Transparency="0.5">
+                        <dxc:SplineAreaSeries2D.MarkerModel>
+                            <dxc:CustomMarker2DModel>
+                                <dxc:CustomMarker2DModel.PointTemplate>
+                                    <ControlTemplate>
+                                        <Ellipse
+                                                Fill="{Binding PointColor, ConverterParameter=Gray, Converter={StaticResource brushOverlayConverter}}" />
+                                    </ControlTemplate>
+                                </dxc:CustomMarker2DModel.PointTemplate>
+                            </dxc:CustomMarker2DModel>
+                        </dxc:SplineAreaSeries2D.MarkerModel>
+                    </dxc:SplineAreaSeries2D>
+                </dxc:XYDiagram2D.SeriesTemplate>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+    </Grid>
+</utilities:ChartBase>

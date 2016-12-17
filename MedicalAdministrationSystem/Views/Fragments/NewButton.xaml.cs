@@ -1,4 +1,5 @@
-﻿using MedicalAdministrationSystem.ViewModels.Utilities;
+﻿using MedicalAdministrationSystem.ViewModels;
+using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,13 +8,12 @@ namespace MedicalAdministrationSystem.Views.Fragments
 {
     public partial class NewButton : UserControl
     {
-        public Enabler enabler { get; set; } = new Enabler();
+        public Enabler enabler { get; set; } = new Enabler() { Enabled = GlobalVM.GlobalM.UserID != null };
         private Action NewItem { get; set; }
         public NewButton(Action NewItem)
         {
             this.NewItem = NewItem;
             InitializeComponent();
-            enabler.Enabled = true;
         }
 
         private void Add(object sender, RoutedEventArgs e)

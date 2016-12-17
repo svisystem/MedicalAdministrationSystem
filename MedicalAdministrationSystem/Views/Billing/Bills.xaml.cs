@@ -31,7 +31,7 @@ namespace MedicalAdministrationSystem.Views.Billing
         }
         private void Update(object sender, RoutedEventArgs e)
         {
-            //BillsVM.Loading.RunWorkerAsync();
+            BillsVM.Start();
         }
         private async void view_Loaded()
         {

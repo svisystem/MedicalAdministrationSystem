@@ -58,7 +58,7 @@ namespace MedicalAdministrationSystem.Views.Global
         }
         private void helpTBIClick(object sender, EventArgs e)
         {
-            Check(sender as TileBarItem, HelpLoad, Back);
+            HelpLoad();
         }
         private void logoutTBIClick(object sender, EventArgs e)
         {
@@ -169,10 +169,8 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
-            if (modifier) new UsersVM().fromPatient = modifier;
+            if (modifier) new UsersVM() { fromPatient = modifier }.DetailsModifyLoad();
             if (!modifier) new UsersVM().RegistrationLoad();
-            else if (GlobalVM.GlobalM.AccountID == null) new UsersVM().LoginLoad();
-            else new UsersVM().DetailsModifyLoad();
             currentItem = usersTBI;
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
@@ -187,13 +185,12 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void HelpLoad()
+        protected internal void HelpLoad()
         {
-            await ViewModels.Utilities.Loading.Show();
-            menu.Visibility = System.Windows.Visibility.Visible;
-            //TODO
+            currentItem = helpTBI;
+            new HelpVM().Start();
+            Back();
             SelectedPatient();
-            await ViewModels.Utilities.Loading.Hide();
         }
         protected async internal void LogOutLoad()
         {
@@ -230,6 +227,16 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             if (headerContent.Content != null)
                 (headerContent.Content as SelectedPatient).Dispose();
+        }
+
+        private async void StockLayoutLoaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            await ViewModels.Utilities.Loading.Show();
+            MenuButtonsEnabled mbe = new MenuButtonsEnabled();
+            mbe.SingleChange(GlobalVM.StockLayout.usersTBI, System.Windows.Visibility.Visible);
+            mbe.SingleChange(GlobalVM.StockLayout.helpTBI, System.Windows.Visibility.Visible);
+            mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
+            await ViewModels.Utilities.Loading.Hide();
         }
     }
 }

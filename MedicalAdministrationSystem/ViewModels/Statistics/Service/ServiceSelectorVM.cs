@@ -42,7 +42,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Service
                         });
                     }));
 
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     me.Database.Connection.Open();
 
                     foreach (object Service in me.servicesdata.OrderBy(u => u.NameTD).Select(u => new { u.IdTD, u.NameTD }).ToList())

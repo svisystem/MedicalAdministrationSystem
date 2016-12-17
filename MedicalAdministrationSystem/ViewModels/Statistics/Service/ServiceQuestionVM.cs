@@ -31,8 +31,8 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Service
                 Questions = new List<string>()
                 {
                     "Kezelések árainak\nmódosulásai.",
-                    "Kezelések számosságának\nalakulása.",
-                    "Elvégzett kezelések\nszámosságának alakulása."
+                    "Elvégzett kezelések\nszámosságának alakulása.",
+                    "Kezelések számosságának\nalakulása."
                 };
             else Questions = new List<string>()
             {

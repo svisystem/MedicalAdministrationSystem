@@ -3,30 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
         xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
-        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs">
+        xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs" Loaded="SetDefaultView">
     <utilities:ChartBase.Resources>
         <dxc:BrushOverlayConverter x:Key="brushOverlayConverter" />
     </utilities:ChartBase.Resources>
     <dxc:ChartControl BorderBrush="{x:Null}" BorderThickness="0" DataSource="{Binding Data}"
             CustomDrawCrosshair="GetArgumentValue" MouseLeftButtonUp="SetSelectedValues"
-            CustomDrawSeriesPoint="CustomDrawSeriesPoint" x:Name="ChartControl" Padding="10,0,10,10" MouseLeave="CheckerLeave"
-            MouseLeftButtonDown="CheckerDown">
+            x:Name="ChartControl" Padding="10,0,10,10" MouseLeave="CheckerLeave"
+            MouseLeftButtonDown="CheckerDown" BoundDataChanged="BoundDataChanged">
         <dxc:ChartControl.Palette>
             <dxc:PastelKitPalette />
         </dxc:ChartControl.Palette>
         <dxc:ChartControl.CrosshairOptions>
             <dxc:CrosshairOptions ArgumentLineBrush="#FFb9b9b9" />
         </dxc:ChartControl.CrosshairOptions>
-        <dxc:XYDiagram2D SeriesDataMember="Name" x:Name="Diagram">
-            <dxc:XYDiagram2D.DefaultPane>
-                <dxc:Pane EnableAxisXNavigation="True" EnableAxisYNavigation="True" />
-            </dxc:XYDiagram2D.DefaultPane>
+        <dxc:XYDiagram2D SeriesDataMember="Id" x:Name="Diagram" EnableAxisXNavigation="True"
+                EnableAxisYNavigation="True">
             <dxc:XYDiagram2D.AxisX>
                 <dxc:AxisX2D GridLinesMinorVisible="True" GridLinesVisible="True" x:Name="AxisX" />
             </dxc:XYDiagram2D.AxisX>
             <dxc:XYDiagram2D.SeriesTemplate>
                 <dxc:SplineAreaSeries2D ArgumentDataMember="Date" ValueDataMember="Value1" ValueScaleType="Numerical"
-                        x:Name="Series" LineTension="1" MarkerSize="8" ArgumentScaleType="DateTime" Transparency="0.5"
+                        LineTension="1" MarkerSize="8" ArgumentScaleType="DateTime" Transparency="0.5"
                         MarkerVisible="True">
                     <dxc:SplineAreaSeries2D.MarkerModel>
                         <dxc:CustomMarker2DModel>

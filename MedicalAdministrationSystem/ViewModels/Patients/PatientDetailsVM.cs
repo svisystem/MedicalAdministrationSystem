@@ -66,7 +66,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     if (!newForm) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
@@ -89,13 +89,14 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     selected.BillingZipCodePD = PatientDetailsMDataSet.FullZipCodeList.Where(a => a.DataZC == PatientDetailsMViewElements.BillingZipCode).Select(a => a.IdZC).Single();
                     selected.BillingSettlementPD = PatientDetailsMDataSet.FullSettlementList.Where(a => a.DataS == PatientDetailsMViewElements.BillingSettlement).Select(a => a.IdS).Single();
                     selected.BillingAddressPD = PatientDetailsMViewElements.BillingAddress;
+                    if (newForm) selected.CreatedPD = DateTime.Now;
                     if (PatientDetailsMViewElements.Notes != null) selected.NotesPD = PatientDetailsMViewElements.Notes;
                     if (newForm)
                     {
                         me.patientdata.Add(selected);
                         me.SaveChanges();
 
-                        if (me.priviledges_fx.Where(p => p.IdP == GlobalVM.GlobalM.PriviledgeID).Single().IsDoctorP)
+                        if (me.priviledges.Single(p => p.IdP == GlobalVM.GlobalM.PriviledgeID).IsDoctorP)
                             me.belong_st.Add(new belong_st()
                             {
                                 IdUD = (int)GlobalVM.GlobalM.UserID,
@@ -104,9 +105,9 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                             });
                         if (newForm && selectedId != null)
                         {
-                            scheduleperson_st sp = me.scheduleperson_st.Where(spd => spd.IdSP == me.scheduledata.
-                                Where(sd => sd.IdSD == selectedId).FirstOrDefault().PatientIdSD).Single();
-                            me.newperson.Remove(me.newperson.Where(np => np.IdNP == sp.NewPersonIdSP).Single());
+                            scheduleperson_st sp = me.scheduleperson_st.Single(spd => spd.IdSP == me.scheduledata.
+                                FirstOrDefault(sd => sd.IdSD == selectedId).PatientIdSD);
+                            me.newperson.Remove(me.newperson.Single(np => np.IdNP == sp.NewPersonIdSP));
                             sp.NewPersonIdSP = null;
                             sp.ExistedIdSP = selected.IdPD;
                             me.scheduledata.Where(sd => sd.IdSD == selectedId).Single().StillNotVisitedSD = false;
@@ -142,7 +143,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     PatientDetailsMDataSet.FullGenderList = me.gender_fx.ToList();

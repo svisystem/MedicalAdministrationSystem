@@ -1,6 +1,5 @@
 ﻿using MedicalAdministrationSystem.Models.Statistics;
 using System;
-using System.Collections.ObjectModel;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
@@ -8,8 +7,16 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
     {
         public string Argument { get; set; }
         public LowerAssistChartModel Model { get; set; } = new LowerAssistChartModel();
-        public ObservableCollection<ChartM.Record> Data { get; set; }
 
+        protected internal bool Compare(object value, ChartM.Legend item1 = null, DateTime? item2 = null)
+        {
+            if (item1 != null)
+                if (item1.GetType().GetProperty(Argument).PropertyType == typeof(DateTime))
+                    return ((DateTime)item1.GetType().GetProperty(Argument).GetValue(item1)).Date == ((DateTime)value).Date;
+                else
+                    return (int)item1.GetType().GetProperty(Argument).GetValue(item1) == Convert.ToInt32(value);
+            else return ((DateTime)item2).Date == ((DateTime)value).Date;
+        }
         public class LowerAssistChartModel : NotifyPropertyChanged
         {
             private double _Width;
@@ -26,16 +33,6 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                     OnPropertyChanged("Width");
                 }
             }
-        }
-
-        protected internal bool Compare(object value, ChartM.Record item1 = null, DateTime? item2 = null)
-        {
-            if (item1 != null)
-                if (item1.GetType().GetProperty(Argument).PropertyType == typeof(DateTime))
-                    return ((DateTime)item1.GetType().GetProperty(Argument).GetValue(item1)).Date == ((DateTime)value).Date;
-                else
-                    return (int)item1.GetType().GetProperty(Argument).GetValue(item1) == Convert.ToInt32(value);
-            else return ((DateTime)item2).Date == ((DateTime)value).Date;
         }
     }
 }

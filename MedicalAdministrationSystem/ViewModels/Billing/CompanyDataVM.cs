@@ -40,7 +40,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
 
@@ -73,7 +73,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             CompanyDataM.Erased.Clear();
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     foreach (CompanyDataM.Company item in me.companydata.ToList()
                         .Select(a => new CompanyDataM.Company
@@ -184,7 +184,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 if (CompanyDataM.SelectedCompany.ID == null) eraseable = true;
@@ -236,7 +236,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 if (CompanyDataM.Erased.Count != 0)
                 {

@@ -42,7 +42,7 @@
             </Style.Triggers>
         </Style>
     </utilities:ViewExtender.Resources>
-    <Grid Background="White" x:Name="grid" Margin="-16">
+    <Grid Background="White" x:Name="grid" Margin="-16" VerticalAlignment="Center">
         <DockPanel Margin="16">
             <Separator DockPanel.Dock="Left" Margin="-16,-16,0,-16" BorderBrush="#FFD2D2D2" Background="#FFD2D2D2"
                     Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" HorizontalAlignment="Left" />
@@ -71,7 +71,7 @@
                         <dxe:CheckEdit x:Name="visited" VerticalAlignment="Center" HorizontalAlignment="Right"
                                 DockPanel.Dock="Right"
                                 EditValue="{Binding CustomFields[StillNotVisited], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Loaded="visited_Loaded" IsHitTestVisible="False" />
+                                IsHitTestVisible="False" />
                     </DockPanel>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1" Margin="0,5">

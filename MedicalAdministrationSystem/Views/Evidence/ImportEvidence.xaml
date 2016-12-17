@@ -44,15 +44,18 @@
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Right"
                 Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}">
-            <Label Content="Dokumentumok:" DockPanel.Dock="Top" VerticalAlignment="Top" Margin="10,10,10,10"
-                    HorizontalAlignment="Left" />
+            <DockPanel VerticalAlignment="Top" Height="40">
+                <Separator DockPanel.Dock="Bottom" Margin="0"
+                        Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Label Content="Dokumentumok:" VerticalAlignment="Center" Margin="10,0" HorizontalAlignment="Left" />
+            </DockPanel>
             <ItemsControl x:Name="listBox"
                     ItemsSource="{Binding ImportEvidenceM.EvidenceList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Padding="0,40,0,0" HorizontalContentAlignment="Center" IsTabStop="False">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <UserControl Content="{Binding Button, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,0,10,10" />
+                                HorizontalAlignment="Center" VerticalAlignment="Top" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.Template>

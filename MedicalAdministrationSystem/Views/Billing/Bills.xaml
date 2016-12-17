@@ -8,8 +8,6 @@
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Billing">
     <Grid>
         <dxg:GridControl x:Name="grid"
-                MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
-                MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}"
                 ItemsSource="{Binding BillsM.Bills, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ShowBorder="False"
                 SelectedItem="{Binding BillsM.SelectedBill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

@@ -27,9 +27,16 @@
                     - <Italic>"Jogosultság törlése"</Italic> az adatbázis függőségei miatt, csak olyan jogosultságoknál lehetséges, melyekhez nem tartoznak felhasználók, 
                     próbálja meg az adott profil jogosultságait módosítani, illetve lehetősége van a <Italic>"Felhasználók"</Italic> almenü alatt módosítani a regisztrált 
                     felhasználók jogosultsági profilját, így lehetővé téve valamelyik jogosultsági kör törlését</TextBlock>
-                <TextBlock TextWrapping="Wrap" Margin="10,10,10,20">
+                <TextBlock TextWrapping="Wrap" Margin="10">
                     - a <Italic>"Minden pácienst láthat"</Italic> engedéllyel rendelkezők láhatják az alkalmazásban tárolt összes pácienst, a többiek csak a saját profiljukhoz 
                     rendelteket látják, recepciósoknak célszerű engedélyezni, többieknél nem javasolt</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="10">
+                    - <Italic>"Doktor"</Italic> jelölést engedélyezett jogosultsági körrel rendelkező felhasználókhoz van lehetőség hozzárendelni pácienst</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="10">
+                    - az <Italic>"Előjegyezhetnek a részére"</Italic> olyan jogosultságúaknál érdemes használni akiknél be van jelölve a <Italic>"Doktor"</Italic> jelölőnégyzet is, máskülönben
+                    az előjegyzett Pácienst nem tudja ellátni, nem tudja felvenni a hozzá tartozó Dokumentumokat</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="10,10,10,20">
+                    - az <Italic>"Csak importálhat dokumentumokat"</Italic> jelölés korlátozza a Dokumentumok felvételét csak importálható dokumentumokra</TextBlock>
             </StackPanel>
         </ScrollViewer>
         <Separator DockPanel.Dock="Right" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
@@ -102,10 +109,9 @@
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Header="Laboreredmények" MinWidth="110" AllowFocus="False"
-                                Binding="{Binding LabP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ReadOnly="True" AllowEditing="False">
+                                Binding="{Binding LabP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:CheckEditSettings IsEnabled="False" />
+                                <dxe:CheckEditSettings/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Header="Státusz" MinWidth="50"
@@ -114,11 +120,10 @@
                                 <dxe:CheckEditSettings />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Header="Receptek" MinWidth="60"
-                                Binding="{Binding PrescriptionP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ReadOnly="True" AllowEditing="False">
+                        <dxg:GridColumn Header="Receptek" MinWidth="60" AllowFocus="False"
+                                Binding="{Binding PrescriptionP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:CheckEditSettings IsEnabled="False" />
+                                <dxe:CheckEditSettings/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Header="Számlázás" MinWidth="70"
@@ -148,16 +153,22 @@
                         <dxg:GridColumn Header="Doktor" MinWidth="50"
                                 Binding="{Binding IsDoctorP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:CheckEditSettings />
+                                <dxe:CheckEditSettings/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Header="Előjegyezhetnek a részére" MinWidth="150"
+                        <dxg:GridColumn Header="Előjegyezhetnek a részére" MinWidth="150" 
                                 Binding="{Binding IncludeScheduleP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:CheckEditSettings />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Header="Felhasználó törlése" MinWidth="120">
+                        <dxg:GridColumn Header="Csak importálhat dokumentumokat" MinWidth="150"
+                                Binding="{Binding JustImportDocumentsP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:CheckEditSettings />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Header="Jogosultság törlése" MinWidth="120">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"

@@ -35,7 +35,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     if (ExaminationEditM.Imported)
@@ -109,7 +109,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 foreach (DocumentControlM.ListElement item in ExaminationEditM.ExaminationList)

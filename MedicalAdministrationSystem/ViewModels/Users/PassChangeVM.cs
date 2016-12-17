@@ -43,7 +43,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     await me.Database.Connection.OpenAsync();
                     accountdata ad = new accountdata();
@@ -84,7 +84,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     PassChangeM.RegPass = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PasswordAD).Single();

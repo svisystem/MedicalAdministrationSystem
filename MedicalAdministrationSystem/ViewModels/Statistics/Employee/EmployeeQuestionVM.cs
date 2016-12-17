@@ -30,7 +30,8 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Employee
                 Questions = new List<string>()
                 {
                     "Az adott alkalmazotthoz\nmennyi páciens tartozik.",
-                    "Az adott alakalmazott\nmennyi kezelést végzett el.",
+                    "Az adott alkalmazott\nmennyi kezelést végzett el.",
+                    "Az adott alkalmazott\nmennyi pácienst látott el.",
                     "Az adott alkalmazottnak\nmennyi munkaórája volt.",
                     "Az adott alkalmazott\nmennyit értékesített."
                 };
@@ -38,7 +39,9 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Employee
             {
                 "A kiválasztott alkalmazott" + temp + "hoz\nmikor, mennyi páciens tartozott.",
                 "A kiválasztott alkalmazott" + temp + " melyik\nkezelésből mennyit végzett el.",
-                "A kiválasztott alkalmazott" + temp + "nak\nmennyi munkaórája van."
+                "A kiválasztott alkalmazott" + temp + " mennyi\npácienst lát" + (All != null ? "tak" : "ott") + " el.",
+                "A kiválasztott alkalmazott" + temp + "nak\nmennyi munkaórája van.",
+                "A kiválasztott alkalmazott" + temp + "\nmennyit értékesített" + (All != null ? "ek" : null) + "."
             };
         }
         private async void Start()

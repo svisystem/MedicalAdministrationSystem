@@ -5,40 +5,21 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MedicalAdministrationSystem.Views.Statistics.Graphs
 {
     public partial class Line : ChartBase
     {
-        public ObservableCollection<ChartM.Record> Data { get; set; }
-        private DateTime? SelectedDate;
         private bool MouseChecker = false;
         public Line(ObservableCollection<ChartM.Record> Data)
         {
             this.Data = Data;
             this.DataContext = this;
+            this.VisualRange = Data.GroupBy(d => d.Date.Date).OrderBy(d => d.Key).Select(d => d.Key).ToList();
             InitializeComponent();
+            AxisXProperty = AxisX;
         }
-        protected internal override void SetVisualRange()
-        {
-            if (Data.Count != 0)
-            {
-                Diagram.ActualAxisY.ActualWholeRange.MinValue = Data.OrderBy(d => d.Value1).FirstOrDefault().Value1 - 1;
-                Diagram.ActualAxisY.ActualWholeRange.MaxValue = Data.OrderByDescending(d => d.Value1).FirstOrDefault().Value1 + 1;
-            }
-        }
-        private void SetDefaultView(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (Data.Count - (int)(this.ActualWidth / 100) > 0)
-            AxisX.ActualVisualRange.MinValue = Data[Data.Count - (int)(this.ActualWidth / 100)].Date;
-        }
-
-        private void GetArgumentValue(object sender, CustomDrawCrosshairEventArgs e)
-        {
-            if (e.CrosshairElementGroups.Count > 0) SelectedDate = e.CrosshairElementGroups[0].CrosshairElements[0].SeriesPoint.DateTimeArgument;
-            else SelectedDate = null;
-        }
-
         private void SetSelectedValues(object sender, MouseButtonEventArgs e)
         {
             if ((sender as ChartControl).CalcHitInfo(e.GetPosition(sender as ChartControl)).InDiagram && SelectedDate != null && MouseChecker)
@@ -47,14 +28,20 @@ namespace MedicalAdministrationSystem.Views.Statistics.Graphs
                 SelectedData((DateTime)SelectedDate);
             }
         }
-
-        private void CustomDrawSeriesPoint(object sender, CustomDrawSeriesPointEventArgs e)
-        {
-            e.DrawOptions.Color = ChartControl.Palette[(e.SeriesPoint.Tag as ChartM.Record).Id];
-        }
-
         private void CheckerLeave(object sender, MouseEventArgs e) => MouseChecker = false;
-
         private void CheckerDown(object sender, MouseButtonEventArgs e) => MouseChecker = true;
+        protected internal override void SetVisualRange(bool fresh)
+        {
+            if (LoadDone && fresh)
+            {
+                Diagram.ActualAxisY.ActualWholeRange.MinValue = Data.OrderBy(d => d.Value1).FirstOrDefault().Value1 - 1;
+                Diagram.ActualAxisY.ActualWholeRange.MaxValue = Data.OrderByDescending(d => d.Value1).FirstOrDefault().Value1 + 1;
+            }
+        }
+        private void BoundDataChanged(object sender, System.Windows.RoutedEventArgs e)
+        {
+            foreach (XYSeries series in ChartControl.Diagram.Series)
+                series.Brush = new SolidColorBrush(ChartControl.Palette[Convert.ToInt32(series.DisplayName)]);
+        }
     }
 }

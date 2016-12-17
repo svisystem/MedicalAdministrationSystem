@@ -10,7 +10,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
     class Codes
     {
-        protected internal medicalEntities me { get; set; }
+        protected internal MedicalModel me { get; set; }
         protected internal bool workingConn;
         protected internal async Task<string> Generate(int UserId, int PatientId)
         {
@@ -19,7 +19,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             {
                 try
                 {
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     workingConn = true;
                     me.Database.Connection.Open();
                     return Generate(

@@ -14,33 +14,27 @@ namespace MedicalAdministrationSystem.ViewModels.Users
     public class SurgeryTimeVM : VMExtender
     {
         public SurgeryTimeM SurgeryTimeM { get; set; }
-        private BackgroundWorker Loading { get; set; }
+        protected internal BackgroundWorker Loading { get; set; }
         private NewButton NewButton { get; set; }
         private Action SaveButtonValid { get; set; }
+        private Action DataContext { get; set; }
         private int Count = 0;
-        protected internal SurgeryTimeVM(Action SaveButtonValid)
+        protected internal SurgeryTimeVM(Action SaveButtonValid, Action DataContext)
         {
             this.SaveButtonValid = SaveButtonValid;
+            this.DataContext = DataContext;
             SurgeryTimeM = new SurgeryTimeM();
             NewButton = new NewButton(NewItem);
             Loading = new BackgroundWorker();
             Loading.DoWork += LoadingModel;
             Loading.RunWorkerCompleted += LoadingModelComplete;
-            Loading.RunWorkerAsync();
-        }
-        bool[] temp = new bool[7];
-        protected internal void AfterLoaded()
-        {
-            for (int i = 0; i < temp.Length; i++)
-                if (temp[i]) SurgeryTimeM.GetType().GetProperty(DayOfWeek(i + 1)).SetValue(SurgeryTimeM, true);
-            SurgeryTimeM.AcceptChanges();
         }
         List<SurgeryTimeM.Day> Actual = new List<SurgeryTimeM.Day>();
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 SurgeryTimeM.UserRegistrateDate = me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().RegistrateTimeAD;
@@ -50,7 +44,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     usersschedule item = me.usersschedule.Where(u => u.UserDataIdUS == GlobalVM.GlobalM.UserID && u.DayOfWeekUS == i).OrderByDescending(u => u.WhenCreateUS).FirstOrDefault();
                     if (item != null)
                     {
-                        temp[item.DayOfWeekUS - 1] = true;
+                        SurgeryTimeM.GetType().GetProperty(DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, true);
                         SurgeryTimeM.GetType().GetProperty("Start" + DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, item.StartTimeUS);
                         SurgeryTimeM.GetType().GetProperty("Finish" + DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, item.FinishTimeUS);
                         SetActual(i, item.StartTimeUS, item.FinishTimeUS);
@@ -86,14 +80,28 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 Count = SurgeryTimeM.Exceptions.Count;
                 foreach (SurgeryTimeM.Exception item in SurgeryTimeM.Exceptions)
                     SurgeryTimeM.ExceptionsButton.Insert(SurgeryTimeM.ExceptionsButton.Count - 1,
-                        new ExceptedTime(item, Valid, DeleteItem, Between, (DateTime)SurgeryTimeM.UserRegistrateDate, true));
+                        new ExceptedTime(item, Valid, DeleteItem, Between, (DateTime)SurgeryTimeM.UserRegistrateDate, false));
+
+                DataContext();
+                NoUserAttention();
 
                 foreach (SurgeryTimeM.Exception row in SurgeryTimeM.Exceptions)
                     row.AcceptChanges();
+                SurgeryTimeM.AcceptChanges();
 
                 await Utilities.Loading.Hide();
             }
             else ConnectionMessage();
+        }
+        private void NoUserAttention()
+        {
+            if (GlobalVM.GlobalM.UserID == null)
+            {
+                dialog = new Dialog(true, "Felhasználói adatok", () => { });
+                dialog.content = new TextBlock("Még nem töltötte ki a felhasználói adatait\n" +
+                    "Ameddig nem tölti ki a felhasználói adatait, nincs lehetőség a Rendelési idő beállítására");
+                dialog.Start();
+            }
         }
         protected internal async void ExecuteMethod()
         {
@@ -112,7 +120,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 foreach (int id in SurgeryTimeM.Erased)
@@ -235,6 +243,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             if (workingConn)
             {
                 SurgeryTimeM.Erased.Clear();
+                foreach (object item in SurgeryTimeM.ExceptionsButton)
+                    if (item.GetType() == typeof(ExceptedTime))
+                        (item as ExceptedTime).Enabler = false;
                 foreach (SurgeryTimeM.Exception row in SurgeryTimeM.Exceptions)
                     row.AcceptChanges();
                 SurgeryTimeM.AcceptChanges();

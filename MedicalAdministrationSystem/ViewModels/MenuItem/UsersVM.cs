@@ -5,7 +5,6 @@ using MedicalAdministrationSystem.Views.Users;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -110,7 +109,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().DeletedAD = true;
                 me.SaveChanges();
@@ -129,7 +128,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             {
                 dialog = new Dialog(false, "Felhasználói fiók törlése", async () => {
                     await Utilities.Loading.Show();
-                    new LogoutVM().OkMethod();
+                    new LogoutVM().OkMethod(false);
                 });
                 dialog.content = new Views.Dialogs.TextBlock("Sikeresen törölte felhasználói fiókját");
                 dialog.Start();
@@ -144,7 +143,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             dialog = new Dialog(false, "Bejelentkezett felhasználó nem regisztrálhat újra", async () => {
                 await Utilities.Loading.Show();
-                new LogoutVM().OkMethod(); }, CancelMethod, true);
+                new LogoutVM().OkMethod(true); }, CancelMethod, true);
             dialog.content = new Views.Dialogs.TextBlock("Amennyiben több felhasználó hasznája az alkalmazást ugyanazon a gépen," +
                 " a regisztrációhoz előbb ki kell jelentkeznie az aktuális felhasználónak\n" +
                 "Szeretne most kijelentkezni az alkalmazásból?");

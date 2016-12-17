@@ -24,13 +24,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
-            string temp = config.ConnectionStrings.ConnectionStrings["medicalEntities"].ConnectionString;
+            string temp = config.ConnectionStrings.ConnectionStrings["MedicalDb"].ConnectionString;
             string[] splitted = temp.Split(new char[] { ';', '=' });
-            ConnectionM.HostName = splitted[8];
-            ConnectionM.PortNumber = splitted[10];
-            ConnectionM.DatabaseName = splitted[16].Remove(splitted[16].Length - 1, 1);
-            ConnectionM.UserId = splitted[12];
-            ConnectionM.Password = splitted[14];
+            ConnectionM.HostName = splitted[3];
+            ConnectionM.PortNumber = splitted[5];
+            ConnectionM.DatabaseName = splitted[11];
+            ConnectionM.UserId = splitted[7];
+            ConnectionM.Password = splitted[9];
         }
         private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -53,9 +53,8 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         private void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
-            config.ConnectionStrings.ConnectionStrings["medicalEntities"].ConnectionString = "metadata=res://*/DataAccess.DataAccess.csdl|res:" +
-                "//*/DataAccess.DataAccess.ssdl|res://*/DataAccess.DataAccess.msl;provider=MySql.Data.MySqlClient;provider connection string=\"" +
-                "persistsecurityinfo=True;server=" + ConnectionM.HostName + ";port=" + ConnectionM.PortNumber + ";user id=" + ConnectionM.UserId + 
+            config.ConnectionStrings.ConnectionStrings["MedicalDb"].ConnectionString =
+                "\"persistsecurityinfo=True;server=" + ConnectionM.HostName + ";port=" + ConnectionM.PortNumber + ";user id=" + ConnectionM.UserId + 
                 ";password=" + ConnectionM.Password + ";database=" + ConnectionM.DatabaseName + "\"";
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("connectionStrings");

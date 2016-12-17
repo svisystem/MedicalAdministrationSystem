@@ -43,6 +43,8 @@ namespace MedicalAdministrationSystem.ViewModels
 
             viewEvidence.IsEnabledTrigger = false;
             editEvidence.IsEnabledTrigger = false;
+
+            newEvidence.IsEnabledTrigger = !GlobalVM.GlobalM.JustImportDocuments;
         }
         protected internal void SetBack()
         {

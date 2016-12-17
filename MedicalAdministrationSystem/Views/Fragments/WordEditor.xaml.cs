@@ -1,8 +1,6 @@
 ﻿using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.RichEdit;
-using DevExpress.Xpf.RichEdit.Menu;
 using DevExpress.XtraRichEdit;
-using DevExpress.XtraRichEdit.Commands;
 using MedicalAdministrationSystem.Models;
 using MedicalAdministrationSystem.ViewModels.Fragments;
 using MedicalAdministrationSystem.ViewModels.Utilities;
@@ -54,6 +52,7 @@ namespace MedicalAdministrationSystem.Views.Fragments
             exit.IsVisible = false;
             grpHomeFont.IsVisible = false;
             grpHomeParagraph.IsVisible = false;
+            grpHomeEditing.IsVisible = false;
         }
         protected internal void ExaminationPlanStart()
         {
@@ -85,6 +84,7 @@ namespace MedicalAdministrationSystem.Views.Fragments
             }
             else wordEditor.Document.Protect("admin");
             wordEditor.Modified = false;
+            wordEditor.ReadOnly = ReadOnly;
         }
         private void Close(object sender, ItemClickEventArgs e)
         {

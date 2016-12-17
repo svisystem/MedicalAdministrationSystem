@@ -36,11 +36,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
-                PriviledgesM.PriviledgesList = me.priviledges_fx.ToList();
+                PriviledgesM.PriviledgesList = me.priviledges.ToList();
                 PriviledgesM.Priviledges.Clear();
-                foreach (priviledges_fx row in PriviledgesM.PriviledgesList)
+                foreach (priviledges row in PriviledgesM.PriviledgesList)
                     PriviledgesM.Priviledges.Add(new Priviledge
                     {
                         IdP = row.IdP,
@@ -57,6 +57,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                         AllSeeP = row.AllSeeP,
                         IsDoctorP = row.IsDoctorP,
                         IncludeScheduleP = row.IncludeScheduleP,
+                        JustImportDocumentsP = row.JustImportDocumentsP,
                         New = false,
                         Enabled = true
                     });
@@ -98,7 +99,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
                 if (PriviledgesM.Erased.Count != 0)
                 {
@@ -106,7 +107,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     {
                         try
                         {
-                            me.priviledges_fx.Remove(me.priviledges_fx.Where(a => a.IdP == priviledge).Single());
+                            me.priviledges.Remove(me.priviledges.Where(a => a.IdP == priviledge).Single());
                             me.SaveChanges();
                         }
                         catch { }
@@ -117,7 +118,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     int temp = PriviledgesM.Priviledges[i].IdP;
                     try
                     {
-                        priviledges_fx pr = new priviledges_fx();
+                        priviledges pr = new priviledges();
                         if (PriviledgesM.Priviledges[i].New)
                         {
                             pr.NameP = PriviledgesM.Priviledges[i].NameP;
@@ -133,12 +134,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             pr.AllSeeP = PriviledgesM.Priviledges[i].AllSeeP;
                             pr.IsDoctorP = PriviledgesM.Priviledges[i].IsDoctorP;
                             pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
-                            me.priviledges_fx.Add(pr);
+                            pr.JustImportDocumentsP = PriviledgesM.Priviledges[i].JustImportDocumentsP;
+                            me.priviledges.Add(pr);
                             me.SaveChanges();
                         }
                         else
                         {
-                            pr = me.priviledges_fx.Where(a => a.IdP == temp).Single();
+                            pr = me.priviledges.Where(a => a.IdP == temp).Single();
                             if (!PriviledgesM.Priviledges[i].NameP.Equals(pr.NameP))
                             {
                                 pr.NameP = PriviledgesM.Priviledges[i].NameP;
@@ -202,6 +204,11 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             if (!PriviledgesM.Priviledges[i].IncludeScheduleP.Equals(pr.IncludeScheduleP))
                             {
                                 pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
+                                me.SaveChanges();
+                            }
+                            if (!PriviledgesM.Priviledges[i].JustImportDocumentsP.Equals(pr.JustImportDocumentsP))
+                            {
+                                pr.JustImportDocumentsP = PriviledgesM.Priviledges[i].JustImportDocumentsP;
                                 me.SaveChanges();
                             }
                         }
@@ -268,7 +275,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 int temp = PriviledgesM.PriviledgesList.Where(b => b.IdP == PriviledgeSelectedRow.Selected.IdP).Select(b => b.IdP).Single();
                 try
                 {
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     me.Database.Connection.Open();
                     listtemp = me.accountdata.Where(a => a.PriviledgesIdAD == temp).Count();
                     me.Database.Connection.Close();

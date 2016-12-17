@@ -65,7 +65,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 importedevidencedata ied = new importedevidencedata()

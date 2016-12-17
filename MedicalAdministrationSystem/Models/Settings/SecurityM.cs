@@ -9,6 +9,7 @@ namespace MedicalAdministrationSystem.Models.Settings
         private string _RegSecurityPassSalt;
         private string _CurrSecurityUser;
         private string _NewSecurityUser;
+        private string _ConfSecurityUser;
         private string _CurrSecurityPass;
         private string _NewSecurityPass;
         private string _ConfSecurityPass;
@@ -75,6 +76,19 @@ namespace MedicalAdministrationSystem.Models.Settings
                 if (_NewSecurityUser == value) return;
                 _NewSecurityUser = value;
                 OnPropertyChanged("NewSecurityUser");
+            }
+        }
+        public string ConfSecurityUser
+        {
+            get
+            {
+                return _ConfSecurityUser;
+            }
+            set
+            {
+                if (_ConfSecurityUser == value) return;
+                _ConfSecurityUser = value;
+                OnPropertyChanged("ConfSecurityUser");
             }
         }
         public string CurrSecurityPass

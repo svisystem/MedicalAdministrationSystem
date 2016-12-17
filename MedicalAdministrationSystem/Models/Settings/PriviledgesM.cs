@@ -9,7 +9,7 @@ namespace MedicalAdministrationSystem.Models.Settings
     {
         private ObservableCollection<Priviledge> _Priviledges = new ObservableCollection<Priviledge>();
         private List<int> _Erased = new List<int>();
-        private List<priviledges_fx> _PriviledgesList = new List<priviledges_fx>();
+        private List<priviledges> _PriviledgesList = new List<priviledges>();
         public ObservableCollection<Priviledge> Priviledges
         {
             get
@@ -37,7 +37,7 @@ namespace MedicalAdministrationSystem.Models.Settings
             }
         }
         
-        public List<priviledges_fx> PriviledgesList
+        public List<priviledges> PriviledgesList
         {
             get
             {
@@ -85,6 +85,7 @@ namespace MedicalAdministrationSystem.Models.Settings
         private bool _AllSeeP;
         private bool _IsDoctorP;
         private bool _IncludeScheduleP;
+        private bool _JustImportDocumentsP;
         private bool _New;
         private bool _Enabled;
         public int IdP
@@ -267,6 +268,19 @@ namespace MedicalAdministrationSystem.Models.Settings
                 if (_IncludeScheduleP == value) return;
                 _IncludeScheduleP = value;
                 OnPropertyChanged("IncludeScheduleP");
+            }
+        }
+        public bool JustImportDocumentsP
+        {
+            get
+            {
+                return _JustImportDocumentsP;
+            }
+            set
+            {
+                if (_JustImportDocumentsP == value) return;
+                _JustImportDocumentsP = value;
+                OnPropertyChanged("JustImportDocumentsP");
             }
         }
         public bool New

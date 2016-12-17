@@ -41,7 +41,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Patient
                         });
                     }));
 
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     me.Database.Connection.Open();
 
                     foreach (object patient in me.patientdata.OrderBy(u => u.NamePD).Select(u => new { u.IdPD, u.NamePD, u.TAJNumberPD }).ToList())

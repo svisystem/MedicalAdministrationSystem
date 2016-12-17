@@ -29,9 +29,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
-                foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == false).ToList())
+                foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == null).ToList())
                     ExaminationPlanM.Services.Add(new ExaminationPlanM.Service
                     {
                         ID = row.IdTD,

@@ -34,7 +34,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 foreach (CreateBillM.Company item in me.companydata.ToList().
@@ -54,7 +54,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 foreach (CreateBillM.Service item in me.servicesdata.ToList().
                     Select(s => new CreateBillM.Service()
                     {
-                        Id = s.IdTD,
+                        Id = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().IdPFS,
                         Name = s.NameTD,
                         Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
                         Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS
@@ -127,7 +127,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
 
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 CreateBillM.CompanyData from = me.companydata.Where(cd => cd.IdCD == GlobalVM.GlobalM.CompanyId).Select(
@@ -190,6 +190,15 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 await me.SaveChangesAsync();
 
                 billId = b.IdB;
+
+                foreach (CreateBillM.PrintItem item in CreateBillM.PrintList)
+                    me.currentpricesforeachbill_st.Add(new currentpricesforeachbill_st()
+                    {
+                        IdB = billId,
+                        IdPFS = item.Id
+                    });
+
+                await me.SaveChangesAsync();
 
                 me.Database.Connection.Close();
                 workingConn = true;

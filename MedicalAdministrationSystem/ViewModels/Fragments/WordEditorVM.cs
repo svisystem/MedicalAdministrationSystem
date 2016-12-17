@@ -23,7 +23,7 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
             {
                 try
                 {
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     workingConn = true;
                     me.Database.Connection.Open();
                     companydata cd = me.companydata.Where(a => a.IdCD == GlobalVM.GlobalM.CompanyId).Single();

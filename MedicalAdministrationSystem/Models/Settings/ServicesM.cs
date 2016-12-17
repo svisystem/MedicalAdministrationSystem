@@ -48,15 +48,16 @@ namespace MedicalAdministrationSystem.Models.Settings
                 OnPropertyChanged("Selected");
             }
         }
-    
+
         public class Service : NotifyPropertyChanged
         {
             private int _ID;
             private string _Name;
-            private int _Vat;
-            private int _Price;
+            private int? _Vat;
+            private int? _Price;
             private string _Details;
             private bool _New;
+            private bool _Valid;
             public int ID
             {
                 get
@@ -83,7 +84,7 @@ namespace MedicalAdministrationSystem.Models.Settings
                     OnPropertyChanged("Name");
                 }
             }
-            public int Vat
+            public int? Vat
             {
                 get
                 {
@@ -96,7 +97,7 @@ namespace MedicalAdministrationSystem.Models.Settings
                     OnPropertyChanged("Vat");
                 }
             }
-            public int Price
+            public int? Price
             {
                 get
                 {
@@ -134,6 +135,19 @@ namespace MedicalAdministrationSystem.Models.Settings
                     if (_New == value) return;
                     _New = value;
                     OnPropertyChanged("New");
+                }
+            }
+            public bool Valid
+            {
+                get
+                {
+                    return _Valid;
+                }
+                set
+                {
+                    if (_Valid == value) return;
+                    _Valid = value;
+                    OnPropertyChanged("Valid");
                 }
             }
         }

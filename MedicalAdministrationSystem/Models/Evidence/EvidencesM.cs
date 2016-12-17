@@ -106,6 +106,7 @@ namespace MedicalAdministrationSystem.Models.Evidence
             private ObservableCollection<SelectedPatientM.ExaminationItem> _BelongDocs = new ObservableCollection<SelectedPatientM.ExaminationItem>();
             private bool _Scheduled;
             private UserControl _ComboBox;
+            private bool _EditEvidence;
             public int Id
             {
                 get
@@ -221,6 +222,19 @@ namespace MedicalAdministrationSystem.Models.Evidence
                     if (_ComboBox == value) return;
                     _ComboBox = value;
                     OnPropertyChanged("ComboBox");
+                }
+            }
+            public bool EditEvidence
+            {
+                get
+                {
+                    return _EditEvidence;
+                }
+                set
+                {
+                    if (_EditEvidence == value) return;
+                    _EditEvidence = value;
+                    OnPropertyChanged("EditEvidence");
                 }
             }
         }

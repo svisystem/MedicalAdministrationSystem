@@ -35,10 +35,10 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
-                    NewExaminationM.Treats = me.servicesdata.Where(t => t.DeletedTD == false)
+                    NewExaminationM.Treats = me.servicesdata.Where(t => t.DeletedTD == null)
                         .Select(t => t.NameTD).ToList();
                     me.Database.Connection.Close();
                     workingConn = true;
@@ -85,7 +85,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new medicalEntities();
+                me = new MedicalModel();
                 me.Database.Connection.Open();
 
                 examinationdata ed = new examinationdata()

@@ -11,9 +11,9 @@ namespace MedicalAdministrationSystem.Views.Settings
     public partial class Security : ViewExtender
     {
         protected internal SecurityVM SecurityVM { get; set; }
-        private InputValid inputValid { get; set; }
-        private SecurityValid securityValid { get; set; }
-        private EmptyValid emptyValid { get; set; }
+        private CurrentValid currentValid { get; set; }
+        private UserNameValid userNameValid { get; set; }
+        private PasswordValid passwordValid { get; set; }
         public Security(Action SecurityLoad)
         {
             Start(SecurityLoad);   
@@ -22,12 +22,11 @@ namespace MedicalAdministrationSystem.Views.Settings
         {
             await Loading.Show();
             SecurityVM = new SecurityVM(SecurityLoad);
-            inputValid = new InputValid();
-            securityValid = new SecurityValid();
-            emptyValid = new EmptyValid();
+            currentValid = new CurrentValid();
+            userNameValid = new UserNameValid();
+            passwordValid = new PasswordValid();
             this.DataContext = SecurityVM;
             InitializeComponent();
-            validatorClass = inputValid;
             button = modify;
             ConnectValidators();
         }
@@ -35,14 +34,15 @@ namespace MedicalAdministrationSystem.Views.Settings
         {
             currSecurityUser.Validate += currSecurityUser_Validate;
             newSecurityUser.Validate += newSecurityUser_Validate;
+            confSecurityUser.Validate += confSecurityUser_Validate;
             currSecurityPass.Validate += currSecurityPass_Validate;
             newSecurityPass.Validate += newSecurityPass_Validate;
             confSecurityPass.Validate += confSecurityPass_Validate;
         }
         private void currSecurityUser_Validate(object sender, ValidationEventArgs e)
         {
-            newSecurityUser.IsEnabled = false;
-            inputValid.currUser = false;
+            newSecurityUser.IsEnabled = newSecurityPass.IsEnabled = false;
+            currentValid.currUser = false;
             if (string.IsNullOrEmpty(e.Value as string))
                 e.SetError("A felhasználónevet nem lehet üresen hagyni", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else if (e.Value.ToString().Length < 6)
@@ -50,23 +50,22 @@ namespace MedicalAdministrationSystem.Views.Settings
             else if (SecurityVM.RegSecurityUserCompare(e.Value.ToString()))
             {
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                newSecurityUser.IsEnabled = true;
-                inputValid.currUser = true;
+                currentValid.currUser = true;
             }
             else
                 e.SetError("A mező tartalma nem megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
-            modify.IsEnabled = securityValid.Validation(inputValid, emptyValid, securityValid);
+            modify.IsEnabled = currentValid.Validation(currentValid, userNameValid, passwordValid);
+            newSecurityUser.IsEnabled = newSecurityPass.IsEnabled = currentValid.Validate(currentValid);
         }
         private void newSecurityUser_Validate(object sender, ValidationEventArgs e)
         {
-            emptyValid.newUser = false;
-            securityValid.newUser = false;
+            userNameValid.newUser = false;
             e.IsValid = false;
             if (string.IsNullOrEmpty(e.Value as string))
             {
                 e.SetError("Amennyiben üresen hagyja ezt a mezőt, mentés után a felhasználónév nem fog változni",
                     DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
-                emptyValid.newUser = true;
+                userNameValid.newUser = null;
             }
             else
             {
@@ -77,22 +76,37 @@ namespace MedicalAdministrationSystem.Views.Settings
                     e.ErrorContent = "Az új felhasználónév nem egyezhet meg a régivel";
                 else if (SecurityVM.PasswordMatch(e.Value.ToString())) e.ErrorContent = "Az új felhasználónév nem egyezhet meg az aktuális jelszóval";
                 else if (e.Value.ToString().Equals(newSecurityPass.EditValue))
-                {
                     e.ErrorContent = "Az új felhasználónév nem egyezhet meg az új jelszóval";
-                }
                 else
                 {
                     e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                    securityValid.newUser = true;
+                    userNameValid.newUser = true;
                 }
             }
             CallOtherValidateMethod(newSecurityUser, newSecurityPass);
-            modify.IsEnabled = securityValid.Validation(inputValid, emptyValid, securityValid);
+            confSecurityUser.DoValidate();
+            modify.IsEnabled = currentValid.Validation(currentValid, userNameValid, passwordValid);
+        }
+        private void confSecurityUser_Validate(object sender, ValidationEventArgs e)
+        {
+            userNameValid.confUser = false;
+            if (string.IsNullOrEmpty(e.Value as string))
+            {
+                e.SetError("Írja be újra a választott felhasználónevet", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
+                userNameValid.confUser = null;
+            }
+            else if (e.Value.ToString().Equals(newSecurityUser.EditValue))
+            {
+                e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
+                userNameValid.confUser = true;
+            }
+            else e.SetError("A jelszavaknak meg kell egyezniük", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+            modify.IsEnabled = currentValid.Validation(currentValid, userNameValid, passwordValid);
         }
         private void currSecurityPass_Validate(object sender, ValidationEventArgs e)
         {
-            newSecurityPass.IsEnabled = false;
-            inputValid.currPass = false;
+            newSecurityUser.IsEnabled = newSecurityPass.IsEnabled = false;
+            currentValid.currPass = false;
             e.IsValid = false;
             e.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical;
             if (string.IsNullOrEmpty(e.Value as string))
@@ -108,24 +122,21 @@ namespace MedicalAdministrationSystem.Views.Settings
             else if (SecurityVM.PasswordMatch(e.Value.ToString()))
             {
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                newSecurityPass.IsEnabled = true;
-                inputValid.currPass = true;
+                currentValid.currPass = true;
             }
             else e.ErrorContent = "A beírt jelszó nem egyezik meg a biztonsági profil jelszavával";
-
-            newSecurityPass.DoValidate();
-            modify.IsEnabled = securityValid.Validation(inputValid, emptyValid, securityValid);
+            modify.IsEnabled = currentValid.Validation(currentValid, userNameValid, passwordValid);
+            newSecurityUser.IsEnabled = newSecurityPass.IsEnabled = currentValid.Validate(currentValid);
         }
         private void newSecurityPass_Validate(object sender, ValidationEventArgs e)
         {
             e.IsValid = false;
-            confSecurityPass.IsEnabled = false;
-            emptyValid.confPass = false;
+            passwordValid.newPass = false;
             if (string.IsNullOrEmpty(e.Value as string))
             {
-                e.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information;
-                e.ErrorContent = "Amennyiben üresen hagyja ezt a mezőt, mentés után a jelszó nem fog változni";
-                emptyValid.confPass = true;
+                e.SetError("Amennyiben üresen hagyja ezt a mezőt, mentés után a jelszó nem fog változni",
+                    DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
+                passwordValid.newPass = null;
             }
             else
             {
@@ -137,32 +148,32 @@ namespace MedicalAdministrationSystem.Views.Settings
                 else if (SecurityVM.PasswordMatch(e.Value.ToString())) e.ErrorContent = "Az új jelszó nem egyezhet meg az aktuálissal";
                 else if (SecurityVM.RegSecurityUserCompare(e.Value.ToString())) e.ErrorContent = "Az új jelszó nem egyezhet meg az aktuális felhasználónévvel";
                 else if (e.Value.ToString().Equals(newSecurityUser.EditValue))
-                {
                     e.ErrorContent = "Az új jelszó nem egyezhet meg az új felhasználónévvel";
-                }
                 else
                 {
-                    e.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1;
-                    e.ErrorContent = "A mező tartalma megfelelő";
-                    confSecurityPass.IsEnabled = true;
+                    e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
+                    passwordValid.newPass = true;
                 }
             }
             CallOtherValidateMethod(newSecurityPass, newSecurityUser);
             confSecurityPass.DoValidate();
-            modify.IsEnabled = securityValid.Validation(inputValid, emptyValid, securityValid);
+            modify.IsEnabled = currentValid.Validation(currentValid, userNameValid, passwordValid);
         }
         private void confSecurityPass_Validate(object sender, ValidationEventArgs e)
         {
-            securityValid.confPass = false;
+            passwordValid.confPass = false;
             if (string.IsNullOrEmpty(e.Value as string))
-                e.SetError("Írja be újra választott jelszavát", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
-            else if (SecurityVM.SecurityM.NewSecurityPass.Equals(e.Value.ToString()))
+            {
+                e.SetError("Írja be újra a választott jelszót", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
+                passwordValid.confPass = null;
+            }
+            else if (e.Value.ToString().Equals(newSecurityPass.EditValue))
             {
                 e.SetError("A mező tartalma megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.User1);
-                securityValid.confPass = true;
+                passwordValid.confPass = true;
             }
             else e.SetError("A jelszavaknak meg kell egyezniük", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
-            modify.IsEnabled = securityValid.Validation(inputValid, emptyValid, securityValid);
+            modify.IsEnabled = currentValid.Validation(currentValid, userNameValid, passwordValid);
         }
         private void SecurityDatasChangeExecute(object sender, RoutedEventArgs e)
         {
@@ -186,17 +197,17 @@ namespace MedicalAdministrationSystem.Views.Settings
             }
             else caller = null;
         }
-        private class SecurityValid : FormValidate
+        private class UserNameValid
         {
-            public bool newUser { get; set; }
-            public bool confPass { get; set; }
+            public bool? newUser { get; set; }
+            public bool? confUser { get; set; }
         }
-        private class EmptyValid
+        private class PasswordValid
         {
-            public bool newUser { get; set; }
-            public bool confPass { get; set; }
+            public bool? newPass { get; set; }
+            public bool? confPass { get; set; }
         }
-        private class InputValid
+        private class CurrentValid : FormValidate
         {
             public bool currUser { get; set; }
             public bool currPass { get; set; }

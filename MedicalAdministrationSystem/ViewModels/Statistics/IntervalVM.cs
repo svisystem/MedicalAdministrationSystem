@@ -35,22 +35,12 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
         {
             if (enabled != null)
                 foreach (IntervalM.Scale item in IntervalM.Scales) item.Enabled = (bool)enabled;
-            else
+            else if (IntervalM.IntervalStart != null && IntervalM.IntervalEnd != null)
             {
-                DateTime temp;
-                if (IntervalM.IntervalStart != null && IntervalM.IntervalEnd != null)
-                {
-                    temp = (DateTime)IntervalM.IntervalStart;
-                    if (temp.AddYears(1) > IntervalM.IntervalEnd) IntervalM.Scales[3].Enabled = false;
-                    else IntervalM.Scales[3].Enabled = true;
-                    if (temp.AddMonths(1) > IntervalM.IntervalEnd) IntervalM.Scales[2].Enabled = false;
-                    else IntervalM.Scales[2].Enabled = true;
-                    if (temp.AddDays(7) > IntervalM.IntervalEnd) IntervalM.Scales[1].Enabled = false;
-                    else IntervalM.Scales[1].Enabled = true;
-                    if (temp.AddDays(1) > IntervalM.IntervalEnd) IntervalM.Scales[0].Enabled = false;
-                    else IntervalM.Scales[0].Enabled = true;
-
-                }
+                IntervalM.Scales[3].Enabled = ((DateTime)IntervalM.IntervalStart).AddYears(1).Date <= ((DateTime)IntervalM.IntervalEnd).AddDays(1).Date;
+                IntervalM.Scales[2].Enabled = ((DateTime)IntervalM.IntervalStart).AddMonths(1).Date <= ((DateTime)IntervalM.IntervalEnd).AddDays(1).Date;
+                IntervalM.Scales[1].Enabled = ((DateTime)IntervalM.IntervalStart).AddDays(7).Date <= ((DateTime)IntervalM.IntervalEnd).AddDays(1).Date;
+                IntervalM.Scales[0].Enabled = ((DateTime)IntervalM.IntervalStart).AddDays(1).Date <= ((DateTime)IntervalM.IntervalEnd).AddDays(1).Date;
             }
             if (IntervalM.SelectedScale != null && !IntervalM.SelectedScale.Enabled) IntervalM.SelectedScale = null;
         }

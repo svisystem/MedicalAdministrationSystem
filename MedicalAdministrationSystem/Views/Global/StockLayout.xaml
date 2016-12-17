@@ -5,7 +5,8 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        x:Class="MedicalAdministrationSystem.Views.Global.StockLayout" SnapsToDevicePixels="True">
+        x:Class="MedicalAdministrationSystem.Views.Global.StockLayout" SnapsToDevicePixels="True"
+        Loaded="StockLayoutLoaded">
     <DockPanel LastChildFill="True">
         <dxnav:TileBar x:Name="tileBar" Padding="0,15,0,15" VerticalAlignment="Top" DockPanel.Dock="Top">
             <dxnav:TileBarItem x:Name="scheduleTBI" Content="Előjegyzés" SelectionPadding="2" Height="78" Width="160"

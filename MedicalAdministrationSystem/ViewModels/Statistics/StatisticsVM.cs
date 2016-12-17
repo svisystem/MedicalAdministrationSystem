@@ -64,7 +64,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
                 else
                 {
                     StatisticsM.Steps[StatisticsM.Steps.Count - 1].Item = new Interval(StatisticsM.Steps[StatisticsM.Steps.Count - 1], DeleteItems);
-                    StatisticsM.Steps[2].PropertyChanged += IntervalChanged;
+                    StatisticsM.Steps[StatisticsM.Steps.Count - 1].PropertyChanged += IntervalChanged;
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
                 else
                 {
                     StatisticsM.Steps[StatisticsM.Steps.Count - 1].Item = new Interval(StatisticsM.Steps[StatisticsM.Steps.Count - 1], DeleteItems);
-                    StatisticsM.Steps[2].PropertyChanged += IntervalChanged;
+                    StatisticsM.Steps[StatisticsM.Steps.Count - 1].PropertyChanged += IntervalChanged;
                 }
             }
         }

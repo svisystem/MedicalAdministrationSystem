@@ -13,7 +13,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
     {
         protected internal StockVerticalMenuItem currentItem { get; set; }
         protected internal StockVerticalMenuItem earlierItem { get; set; }
-        protected internal medicalEntities me { get; set; }
+        protected internal MedicalModel me { get; set; }
         protected internal Dialog dialog { get; set; }
         protected internal bool workingConn { get; set; }
         protected internal void ConnectionMessage()

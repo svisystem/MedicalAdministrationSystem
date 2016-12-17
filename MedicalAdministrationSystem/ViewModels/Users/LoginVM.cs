@@ -36,7 +36,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             {
                 try
                 {
-                    using (me = new medicalEntities())
+                    using (me = new MedicalModel())
                     {
                         me.Database.Connection.Open();
                         LoginM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
@@ -104,7 +104,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             {
                 try
                 {
-                    using (me = new medicalEntities())
+                    using (me = new MedicalModel())
                     {
                         await me.Database.Connection.OpenAsync();
                         GlobalVM.GlobalM.AccountID = await me.accountdata.Where(a => a.UserNameAD == LoginM.Username && a.DeletedAD != true).Select(a => a.IdAD).SingleAsync();
@@ -173,7 +173,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     await me.Database.Connection.OpenAsync();
                     LoginM.Verified = await me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.VerifiedByAdminAD).SingleAsync();
@@ -209,17 +209,18 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             else ConnectionMessage();
 
         }
-        priviledges_fx pr;
+        priviledges pr;
         private async void bgw2_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     await me.Database.Connection.OpenAsync();
                     GlobalVM.GlobalM.PriviledgeID = await me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(b => b.PriviledgesIdAD).SingleAsync();
-                    pr = await me.priviledges_fx.Where(b => b.IdP == GlobalVM.GlobalM.PriviledgeID).SingleAsync();
+                    pr = await me.priviledges.Where(b => b.IdP == GlobalVM.GlobalM.PriviledgeID).SingleAsync();
                     GlobalVM.GlobalM.AllSee = pr.AllSeeP;
+                    GlobalVM.GlobalM.JustImportDocuments = pr.JustImportDocumentsP;
                     me.Database.Connection.Close();
                     workingConn = true;
                 }

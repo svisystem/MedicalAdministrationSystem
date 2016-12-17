@@ -5,10 +5,11 @@ using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Statistics.Graphs;
 using System;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.Views.Statistics
 {
@@ -16,80 +17,93 @@ namespace MedicalAdministrationSystem.Views.Statistics
     {
         protected internal ChartVM ChartVM { get; set; }
         private bool? continual = null;
-        public Chart(ObservableCollection<StatisticsM.Step> Data)
+        public Chart(ObservableCollection<StatisticsM.Step> Steps)
         {
-            Start();
-            ChartVM = new ChartVM(SetLayout, Data);
+            Start(Steps);
+        }
+        private async void Start(ObservableCollection<StatisticsM.Step> Steps)
+        {
+            await Loading.Show();
+            ChartVM = new ChartVM(SetLayout, Steps);
             this.DataContext = ChartVM;
             InitializeComponent();
+
         }
-        private async void Start() => await Loading.Show();
-        private void SetLayout(Type mainChart, Type assistChart, ObservableCollection<ChartM.Record> Data, ObservableCollection<ChartM.Record> AssistData, DateTime Date, string Step)
+        private async Task SetLayout(ObservableCollection<ChartM.Record> Data, ObservableCollection<ChartM.Record> AssistData,
+            DateTime Date, string Step, ObservableCollection<ChartM.Legend> Legends)
         {
-            continual = mainChart != null;
-
-            if (mainChart != null)
+            await Task.Run(async () =>
             {
-                CheckType(mainChart, mainContent, Data, Step);
+                if (ChartVM.Continual())
+                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                    {
+                        CheckType(ChartVM.Main, mainContent, Data, Step, Legends);
+                        (mainContent.Content as ChartBase).SelectedData = ChartVM.SelectSingleData;
+                        CheckType(ChartVM.Secondary, lowerAssistContent, AssistData, Step, Legends);
 
-                (mainContent.Content as ChartBase).SelectedData = ChartVM.SelectSingleData;
+                        ChartVM.SetVisualRange = (bool? main, bool? secondary) =>
+                        {
+                            (mainContent.Content as ChartBase).SetVisualRange(main == null ? ChartVM.TypeCheck(ChartVM.Main, typeof(StackedBar)) :
+                                main == true ? ChartVM.TypeCheck(ChartVM.Main, typeof(StackedBar)) : false);
 
-                CheckType(assistChart, lowerAssistContent, AssistData, Step);
+                            (lowerAssistContent.Content as ChartBase).SetVisualRange(secondary == null ?
+                                ChartVM.TypeCheck(ChartVM.Secondary, typeof(Bar)) : secondary == true ? true : (bool)main);
+                        };
+                    }));
+                else
+                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                    {
+                        CheckType(ChartVM.Secondary, mainContent, AssistData, Step, Legends);
 
-                ChartVM.SetVisualRange = () =>
-                {
-                    (mainContent.Content as ChartBase).SetVisualRange();
-                    (lowerAssistContent.Content as ChartBase).SetVisualRange();
-                };
-            }
-            else
+                        lowerRowAssist.Height = GridLength.Auto;
+                        pieField.Height = new GridLength(1, GridUnitType.Star);
+                        ChartVM.SetVisualRange = (bool? main, bool? secondary) => (mainContent.Content as ChartBase).SetVisualRange(secondary == null ?
+                                ChartVM.TypeCheck(ChartVM.Secondary, typeof(Bar)) : secondary == true ? true : (bool)main);
+                    }));
+
+                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                    CheckType(typeof(Pie), mainContent, AssistData, Step, Legends)));
+            }, CancellationToken.None).ContinueWith(async task =>
             {
-                CheckType(assistChart, mainContent, AssistData, Step);
-
-                lowerRowAssist.Height = GridLength.Auto;
-                pieField.Height = new GridLength(1, GridUnitType.Star);
-                ChartVM.SetVisualRange = (mainContent.Content as ChartBase).SetVisualRange;
-            }
-
-            PieContent.Content = Activator.CreateInstance(typeof(Pie), AssistData);
-            ChartVM.SetLegends((PieContent.Content as Pie).ChartControl.Palette);
-
-            ChartVM.SelectSingleData(Date);
+                continual = ChartVM.Continual();
+                await ChartVM.SetLegends(Date);
+            });
         }
-
-        private void CheckType(Type type, ContentControl socket, ObservableCollection<ChartM.Record> Data, string Step)
+        private void CheckType(Type type, ContentControl socket, ObservableCollection<ChartM.Record> Data, string Step, ObservableCollection<ChartM.Legend> Legends)
         {
-            if (type == typeof(StackedBar))
-                socket.Content = Activator.CreateInstance(type, BindingFlags.CreateInstance | BindingFlags.Public |
-                    BindingFlags.Instance | BindingFlags.OptionalParamBinding, null, new object[] { Data, Step }, CultureInfo.CurrentCulture);
-
+            if (ChartVM.TypeCheck(type, typeof(StackedBar)))
+                socket.Content = Activator.CreateInstance(type, new object[] { Data, Step });
+            else if (ChartVM.TypeCheck(type, typeof(Bar)))
+                socket.Content = Activator.CreateInstance(type, new object[] { Data, Legends });
+            else if (ChartVM.TypeCheck(type, typeof(Pie)))
+                PieContent.Content = Activator.CreateInstance(type, new object[] { Data, ChartVM.TypeCheck(ChartVM.Main, typeof(MultiLine)) });
             else socket.Content = Activator.CreateInstance(type, Data);
         }
         private void CalculateContainerSizes()
         {
             if (continual != null)
             {
-                listBox.MaxWidth = this.ActualWidth / 6;
+                listBox.MaxWidth = assistContent.ActualWidth / 3;
                 PieContent.Width = ((this.ActualWidth / 2) - legend.ActualWidth >= this.ActualHeight / Ratio() - date.ActualHeight - 10) ?
                     this.ActualHeight / Ratio() - date.ActualHeight - 10 : (this.ActualWidth / 2) - legend.ActualWidth;
                 if ((bool)continual)
                 {
                     PieContent.Height = PieContent.Width;
                     (lowerAssistContent.Content as LowerAssistChart).Model.Width = PieContent.Width + legend.ActualWidth;
-                    if (mainContent.Content is StackedBar)
+                    if (ChartVM.TypeCheck(ChartVM.Main, typeof(StackedBar)))
                         (mainContent.Content as LowerAssistChart).Model.Width = this.ActualWidth - (PieContent.Width + legend.ActualWidth);
                 }
                 else (mainContent.Content as LowerAssistChart).Model.Width = this.ActualWidth - (PieContent.Width + legend.ActualWidth);
-
             }
+            if (ChartVM.SetVisualRange != null) ChartVM.SetVisualRange(null, true);
         }
         private int Ratio() => (bool)continual ? 2 : 1;
         private void CalculateSize(object sender, SizeChangedEventArgs e) => CalculateContainerSizes();
         protected internal bool Dirty() => false;
+        private void NewQuery(object sender, RoutedEventArgs e) => new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.statisticsTBI);
         private void listBox_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (continual != null) CalculateContainerSizes();
+            if (e.WidthChanged) CalculateContainerSizes();
         }
-        private void NewQuery(object sender, RoutedEventArgs e) => new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.statisticsTBI);
     }
 }

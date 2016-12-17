@@ -53,13 +53,27 @@
                     <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
                 </dxe:ButtonEdit>
             </dxlc:LayoutItem>
-            <dxlc:LayoutItem Label="Új biztonsági felhasználónév:" Padding="10,0,0,0">
+            <dxlc:LayoutItem Label="Új felhasználónév:" Padding="10,0,0,0">
                 <dxe:ButtonEdit x:Name="newSecurityUser" EditValue="{Binding SecurityM.NewSecurityUser, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                     AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" AllowNullInput="True" Margin="0,0,1,0" IsEnabled="False" IsTabStop="False">
                     <dxe:ButtonEdit.EditTemplate>
                         <ControlTemplate>
                             <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=newSecurityUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 NullText="Írja be az új biztonsági nevet" ShowBorder="False" Height="22"/>
+                        </ControlTemplate>
+                    </dxe:ButtonEdit.EditTemplate>
+                    <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Új felhasználónév megerősítése:" Padding="10,0,0,0">
+                <dxe:ButtonEdit x:Name="confSecurityUser" EditValue="{Binding SecurityM.ConfSecurityUser, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                        AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                        ValidateOnEnterKeyPressed="False" AllowNullInput="True" Margin="0,0,1,0"
+                        IsEnabled="{Binding ElementName=newSecurityUser, Path=IsEnabled}"  IsTabStop="False">
+                    <dxe:ButtonEdit.EditTemplate>
+                        <ControlTemplate>
+                            <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=confSecurityUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                NullText="Írja be mégegyszer" ShowBorder="False" Height="22"/>
                         </ControlTemplate>
                     </dxe:ButtonEdit.EditTemplate>
                     <dxe:ButtonInfo GlyphKind="Cancel" Click="ButtonEditErase" ToolTip="Mező törlése" Margin="0" MarginCorrection="0"/>
@@ -91,7 +105,9 @@
             </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="Új biztonsági jelszó megerőstése:" Padding="10,0,0,0">
                 <dxe:ButtonEdit x:Name="confSecurityPass" EditValue="{Binding SecurityM.ConfSecurityPass, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                    AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor" ValidateOnEnterKeyPressed="False" IsEnabled="False" Margin="0,0,1,0" AllowNullInput="True" IsTabStop="False">
+                        AllowDefaultButton="False" InvalidValueBehavior="AllowLeaveEditor"
+                        ValidateOnEnterKeyPressed="False"
+                        IsEnabled="{Binding ElementName=newSecurityPass, Path=IsEnabled}" Margin="0,0,1,0" AllowNullInput="True" IsTabStop="False">
                     <dxe:ButtonEdit.EditTemplate>
                         <ControlTemplate>
                             <dxe:PasswordBoxEdit Text="{Binding Text, ElementName=confSecurityPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

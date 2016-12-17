@@ -31,7 +31,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
 

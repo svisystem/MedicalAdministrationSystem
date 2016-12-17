@@ -84,6 +84,7 @@
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxe:ButtonEdit ShowText="False" AllowDefaultButton="False" BorderThickness="0"
+                                        IsEnabled="{Binding Path=RowData.Row.EditEvidence, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         Margin="-1">
                                     <dxe:ButtonInfo Margin="0" MarginCorrection="0" Click="modify">
                                         <Grid VerticalAlignment="Center" Margin="0">

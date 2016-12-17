@@ -27,7 +27,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new medicalEntities();
+                    me = new MedicalModel();
                     await me.Database.Connection.OpenAsync();
 
                     List<object> users = Members.Count == 0 ? users = me.userdata.Select(u =>
@@ -45,10 +45,10 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
 
                         if (schedule.Count != 0)
                         {
-                            DateTime regDate = (DateTime)user.GetType().GetProperty("RegistrateTimeAD").GetValue(user);
-                            DateTime LocalStart = StartTime == null ? Correction(true, regDate) : Correction(true, (DateTime)StartTime);
-                            DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime) :
-                                Correction(false, DateTime.Now)) : Correction(false, (DateTime)FinishTime);
+                            DateTime regDate = ((DateTime)user.GetType().GetProperty("RegistrateTimeAD").GetValue(user)).Date;
+                            DateTime LocalStart = StartTime == null ? Correction(true, regDate).Date : Correction(true, (DateTime)StartTime).Date;
+                            DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
+                                Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
 
                             while (LocalStart.Date < LocalFinish.Date)
                             {
@@ -89,7 +89,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
 
                                 int extendedHours = 0;
                                 int currentHours;
-                                
+
                                 if (!es.IncludedES)
                                 {
                                     if (tempUser != null)
@@ -152,7 +152,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
                                                 {
                                                     currentHours = collection.OrderByDescending(t => t.Date).FirstOrDefault(t => Compare(t.Date, start) && t.Id == users.IndexOf(user)).Value1;
 
-                                                    collection.OrderByDescending(t => t.Date).FirstOrDefault(t => Compare(t.Date, start) && t.Id == users.IndexOf(user)).Value1 = 
+                                                    collection.OrderByDescending(t => t.Date).FirstOrDefault(t => Compare(t.Date, start) && t.Id == users.IndexOf(user)).Value1 =
                                                         currentHours >= extendedHours ? currentHours - extendedHours : 0;
 
                                                     extendedHours = 0;
@@ -196,11 +196,11 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
                     return null;
                 }
             }, CancellationToken.None).ContinueWith(task =>
-            {
-                if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
-                else return task.Result;
-                return null;
-            });
+                {
+                    if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
+                    else return task.Result;
+                    return null;
+                });
         }
     }
 }

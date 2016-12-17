@@ -77,7 +77,7 @@
                 </dxe:ComboBoxEdit.ItemTemplate>
             </dxe:ComboBoxEdit>
             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="6,0" HorizontalAlignment="Right">
-                Meglévő intézmény adatainak használata:</TextBlock>
+                Meglévő intézmények listája:</TextBlock>
         </DockPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <dxlc:LayoutGroup Margin="0,30" Header="Intézmény adatai" View="GroupBox" Orientation="Vertical" Width="400"

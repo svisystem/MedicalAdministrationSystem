@@ -38,7 +38,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
 

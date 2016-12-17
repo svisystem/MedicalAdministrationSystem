@@ -46,10 +46,16 @@
         <DockPanel DockPanel.Dock="Bottom" Height="40" Background="White" Margin="0">
             <Separator DockPanel.Dock="Top" Margin="0" />
             <Button x:Name="save" Height="29" Content="Változtatások mentése" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Click="Save" Margin="0,0,8,0" IsEnabled="{Binding Valid, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                    VerticalAlignment="Center" Click="Save" Margin="0,0,8,0"
+                    IsEnabled="{Binding Valid, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
         </DockPanel>
-        <DockPanel LastChildFill="True">
-            <Grid DockPanel.Dock="Left" Margin="0,0,0,-40" Width="527">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Margin="0,0,0,-40" >
                 <dxg:GridControl x:Name="grid"
                         ItemsSource="{Binding CompanyDataM.Companies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SelectedItem="{Binding CompanyDataM.SelectedCompany, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
@@ -61,10 +67,10 @@
                         <dxg:GridColumn Header="Intézmény neve" MinWidth="150"
                                 Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowFocus="False" />
-                        <dxg:GridColumn Header="Cégjegyzékszám" MinWidth="80"
+                        <dxg:GridColumn Header="Cégjegyzékszám" MinWidth="100"
                                 Binding="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowFocus="False" />
-                        <dxg:GridColumn Header="Intézmény székhelye" MinWidth="80"
+                        <dxg:GridColumn Header="Intézmény székhelye" MinWidth="150"
                                 Binding="{Binding ViewSettlement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowFocus="False" />
                         <dxg:GridColumn Header="Intézmény törlése" MinWidth="120">
@@ -96,7 +102,8 @@
                                 BestFitMode="AllRows" AutoWidth="True" BeforeLayoutRefresh="view_BeforeLayoutRefresh"
                                 AllowSorting="False" AllowGrouping="False" AllowColumnFiltering="False"
                                 AllowFilterEditor="False" ShowFilterPanelMode="Never" AllowColumnMoving="False"
-                                IsColumnMenuEnabled="False" SearchPanelImmediateMRUPopup="False" ShowSearchPanelMode="Always" />
+                                IsColumnMenuEnabled="False" SearchPanelImmediateMRUPopup="False"
+                                ShowSearchPanelMode="Always" />
                     </dxg:GridControl.View>
                 </dxg:GridControl>
                 <dxe:ButtonEdit Height="29" Margin="8,8,0,0" ShowText="False" AllowDefaultButton="False"
@@ -132,8 +139,8 @@
                     </dxe:ButtonInfo>
                 </dxe:ButtonEdit>
             </Grid>
-            <Separator DockPanel.Dock="Left" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Separator Grid.Column="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <dxlc:LayoutGroup Margin="30" Header="Intézmény adatai" View="GroupBox" Orientation="Vertical"
                         Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0">
                     <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
@@ -274,6 +281,6 @@
                     </dxlc:LayoutControl>
                 </dxlc:LayoutGroup>
             </ScrollViewer>
-        </DockPanel>
+        </Grid>
     </DockPanel>
 </utilities:ViewExtender>

@@ -64,7 +64,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     if (!nonexist) ud = me.userdata.Where(b => b.AccountDataIdUD == DetailsModifyMDataSet.UserID).Single();
@@ -124,7 +124,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             ud = new userdata();
             try
             {
-                using (me = new medicalEntities())
+                using (me = new MedicalModel())
                 {
                     me.Database.Connection.Open();
                     DetailsModifyMDataSet.UserID = (int)GlobalVM.GlobalM.AccountID;
