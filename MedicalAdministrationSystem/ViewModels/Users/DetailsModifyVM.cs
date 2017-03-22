@@ -64,7 +64,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     if (!nonexist) ud = me.userdata.Where(b => b.AccountDataIdUD == DetailsModifyMDataSet.UserID).Single();
@@ -96,8 +96,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -124,7 +125,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             ud = new userdata();
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     DetailsModifyMDataSet.UserID = (int)GlobalVM.GlobalM.AccountID;
@@ -142,8 +143,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }

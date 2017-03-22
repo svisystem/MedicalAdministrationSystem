@@ -1,4 +1,4 @@
-﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Statistics.Interval"
+﻿<Utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Statistics.Interval"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -6,8 +6,8 @@
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities" Width="240">
-    <utilities:ViewExtender.Resources>
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities" Width="240">
+    <Utilities:ViewExtender.Resources>
         <Style x:Key="{dxet:EditorListBoxThemeKey ResourceKey=RadioButtonItemStyle, IsThemeIndependent=True}"
                 BasedOn="{StaticResource {dxet:EditorListBoxThemeKey ResourceKey=RadioButtonItemStyle}}"
                 TargetType="{x:Type dxe:ListBoxEditItem}">
@@ -44,7 +44,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </utilities:ViewExtender.Resources>
+    </Utilities:ViewExtender.Resources>
     <DockPanel x:Name="question">
         <Separator DockPanel.Dock="Right" Margin="0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
                 BorderThickness="0" />
@@ -66,7 +66,7 @@
                 BorderThickness="0" />
         <Grid DockPanel.Dock="Top">
             <dxe:CheckEdit x:Name="FixDate" Padding="10,0,0,0" EditValueChanged="ClickEvent" Focusable="False" 
-                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, Path=intervalEnabled.FixDate}" />
+                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Utilities:ViewExtender}}, Path=intervalEnabled.FixDate}" />
             <TextBlock Padding="10,3,5,5" Foreground="#FF373A3D" Text="Adott időpontban" IsHitTestVisible="False"
                     Margin="24,11,0,10" />
         </Grid>
@@ -88,7 +88,7 @@
         </dxe:DateEdit>
         <Grid DockPanel.Dock="Top">
             <dxe:CheckEdit x:Name="IntervalDate" Padding="10,0,0,0" EditValueChanged="ClickEvent" Focusable="False"
-                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, Path=intervalEnabled.IntervalDate}" />
+                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Utilities:ViewExtender}}, Path=intervalEnabled.IntervalDate}" />
             <TextBlock Padding="10,3,5,5" Foreground="#FF373A3D" Text="Adott intervallumban" IsHitTestVisible="False"
                     Margin="24,11,0,10" />
         </Grid>
@@ -128,7 +128,7 @@
         </dxe:DateEdit>
         <Grid DockPanel.Dock="Top">
             <dxe:CheckEdit x:Name="Continuous" Padding="10,0,0,0" EditValueChanged="ClickEvent" Focusable="False"
-                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, Path=intervalEnabled.Continuous}" />
+                    EditValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Utilities:ViewExtender}}, Path=intervalEnabled.Continuous}" />
             <TextBlock Padding="10,3,5,5" Foreground="#FF373A3D" Text="Folyamatában" IsHitTestVisible="False"
                     Margin="24,11,0,10" />
         </Grid>
@@ -163,4 +163,4 @@
             </dxe:ListBoxEdit.ItemTemplate>
         </dxe:ListBoxEdit>
     </DockPanel>
-</utilities:ViewExtender>
+</Utilities:ViewExtender>

@@ -18,12 +18,12 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
         protected internal int PatientId;
         protected internal async Task TemplatePage(RichEditControl editor, string ExaminationName, string ExaminationCode, Action Save, bool Type)
         {
-            await Loading.Show();
-            await Task.Factory.StartNew(() =>
+            await Utilities.Loading.Show();
+            await Task.Run(() =>
             {
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     workingConn = true;
                     me.Database.Connection.Open();
                     companydata cd = me.companydata.Where(a => a.IdCD == GlobalVM.GlobalM.CompanyId).Single();
@@ -47,8 +47,9 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
                         ExaminationName,
                         ExaminationCode);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                     return null;
                 }
@@ -56,17 +57,14 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
                 {
                     me.Database.Connection.Close();
                 }
-            }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
-            {
+            }, CancellationToken.None).ContinueWith(task =>
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
                 {
                     using (MemoryStream ms = new MemoryStream(task.Result.ToArray()))
                         editor.LoadDocument(ms, DocumentFormat.OpenXml);
                     Save();
                     await Loading.Hide();
-                }));
-                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-            });
+                })));
         }
         protected internal void CloseQuestion(Action action, bool modified)
         {

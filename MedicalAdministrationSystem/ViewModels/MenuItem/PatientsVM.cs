@@ -56,8 +56,8 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             if (GlobalVM.GlobalM.UserID.Equals(null))
             {
-                dialog = new Dialog(true, "Felhasználó adatai", () =>
-                    new MenuButtonsEnabled()
+                dialog = new Dialog(true, "Felhasználó adatai", async () =>
+                    await new MenuButtonsEnabled()
                     {
                         modifier = true
                     }.LoadItem(GlobalVM.StockLayout.usersTBI)
@@ -70,8 +70,8 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             }
             else if (GlobalVM.GlobalM.CompanyId.Equals(null))
             {
-                dialog = new Dialog(true, "Intézmény adatai", () =>
-                    new MenuButtonsEnabled()
+                dialog = new Dialog(true, "Intézmény adatai", async () =>
+                    await new MenuButtonsEnabled()
                     {
                         modifier = true
                     }.LoadItem(GivenBack)

@@ -6,10 +6,6 @@ namespace MedicalAdministrationSystem.Views.Global
     {
         public StockWindow()
         {
-            Start();
-        }
-        protected internal void Start()
-        {
             InitializeComponent();
         }
     }

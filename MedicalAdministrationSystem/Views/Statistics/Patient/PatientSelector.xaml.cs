@@ -12,21 +12,20 @@ namespace MedicalAdministrationSystem.Views.Statistics.Patient
         private Action<int> DeleteItems { get; set; }
         public PatientSelector(StatisticsM.Step Item, Action<int> DeleteItems)
         {
-            Start();
+            Start(Item, DeleteItems);
+        }
+        private async void Start(StatisticsM.Step Item, Action<int> DeleteItems)
+        {
+            await Loading.Show();
             this.DeleteItems = DeleteItems;
             PatientSelectorVM = new PatientSelectorVM(Item);
             this.DataContext = PatientSelectorVM;
             InitializeComponent();
         }
-        private async void Start()
-        {
-            await Loading.Show();
-        }
         private void DeleteClick(object sender, System.Windows.RoutedEventArgs e)
         {
             DeleteItems(PatientSelectorVM.Item.Id);
         }
-
         private void Next(object sender, System.Windows.RoutedEventArgs e)
         {
             EnabledChange(false);

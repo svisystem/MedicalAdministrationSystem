@@ -11,7 +11,6 @@ namespace MedicalAdministrationSystem.Views.Fragments
     {
         public Visible Bookmark { get; set; } = new Visible() { Visibility = Visibility.Collapsed };
         protected internal Action close;
-        private BufferedStream bs;
         private MemoryStream memstream;
         public PdfViewer(Action close, MemoryStream ms)
         {
@@ -19,22 +18,34 @@ namespace MedicalAdministrationSystem.Views.Fragments
             this.close = close;
             InitializeComponent();
             memstream = new MemoryStream(ms.ToArray());
-            bs = new BufferedStream(memstream);
-            pdfViewer.DocumentSource = bs;
+            pdfViewer.DocumentSource = new BufferedStream(memstream);
+            pdfViewer.ZoomMode = ZoomMode.FitToWidth;
         }
-        public PdfViewer(MemoryStream ms)
+        Action Load;
+        public PdfViewer(MemoryStream ms, Action Load)
         {
+            this.Load = Load;
             this.DataContext = this;
             InitializeComponent();
             exit.Visibility = Visibility.Collapsed;
             memstream = new MemoryStream(ms.ToArray());
-            bs = new BufferedStream(memstream);
-            pdfViewer.DocumentSource = bs;
+            pdfViewer.DocumentLoaded += DocumentLoaded;
+            pdfViewer.DocumentSource = new BufferedStream(memstream);
+            pdfViewer.ZoomMode = ZoomMode.FitToWidth;
         }
-
+        private void DocumentLoaded(object sender, RoutedEventArgs e)
+        {
+            Load();
+        }
+        protected internal void ClearStream()
+        {
+            memstream.SetLength(0);
+            (pdfViewer.DocumentSource as BufferedStream).SetLength(0);
+            pdfViewer.DocumentSource = null;
+        }
         private void Close(object sender, RoutedEventArgs e)
         {
-            pdfViewer.DocumentSource = null;
+            ClearStream();
             close();
         }
         private void SpecifiedZoom(double factor)

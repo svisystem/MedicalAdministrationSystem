@@ -1,6 +1,5 @@
 ﻿using DevExpress.Xpf.Editors;
 using MedicalAdministrationSystem.Models.Schedule;
-using MedicalAdministrationSystem.ViewModels;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
 using System.Collections.ObjectModel;
@@ -72,9 +71,11 @@ namespace MedicalAdministrationSystem.Views.Schedule
                     else e.SetError("A mező tartalma nem megfelelő", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
                 }
             }
+            ForceBinding(sender, e);
         }
         private void tajNumber_Validate(object sender, ValidationEventArgs e)
         {
+            validatorClass.GetType().GetProperty(GetSenderName(sender)).SetValue(validatorClass, false);
             if (string.IsNullOrEmpty(e.Value as string))
                 e.SetError("A TAJ szám kitöltése kötelező", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
             else
@@ -117,8 +118,8 @@ namespace MedicalAdministrationSystem.Views.Schedule
                 e.SetError("A mezőt nem lehet üresen hagyni", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Information);
                 (sender as DateEdit).EditValue = e.Value;
             }
-            else if (e.Value as DateTime? < (DateTime)startDateTime.EditValue)
-                e.SetError("Nem lehet az időpont vége korábban mint a kezdete", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
+            else if (e.Value as DateTime? <= (DateTime)startDateTime.EditValue)
+                e.SetError("Nem lehet az időpont vége kisebb vagy egyenlő a kezdetével", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else
             {
                 (sender as DateEdit).EditValue = e.Value;
@@ -130,10 +131,10 @@ namespace MedicalAdministrationSystem.Views.Schedule
         }
         private void CloseButton(object sender, System.Windows.RoutedEventArgs e)
         {
-            CloseMethod();
             if ((sender as Button).Name == "btnOk")
                 (this.DataContext as OwnAppointmentFormViewModel).RegistrateEnabled((bool)visited.IsChecked);
             else (this.DataContext as OwnAppointmentFormViewModel).CollectionGetChanges(false);
+            CloseMethod();
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)

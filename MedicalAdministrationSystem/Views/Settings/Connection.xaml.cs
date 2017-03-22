@@ -37,9 +37,9 @@ namespace MedicalAdministrationSystem.Views.Settings
         private void portNumber_Validate(object sender, ValidationEventArgs e)
         {
             connectionValid.portNumber = false;
-            if (string.IsNullOrEmpty(e.Value as string)) e.SetError("A mező kitöltése kötelező", 
+            if (string.IsNullOrEmpty(e.Value as string)) e.SetError("A mező kitöltése kötelező",
                 DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
-                else if (e.Value.ToString().Where(char.IsDigit).Count() != e.Value.ToString().Length)
+            else if (e.Value.ToString().Where(char.IsDigit).Count() != e.Value.ToString().Length)
                 e.SetError("A mező csak számokat tartalmazhat", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical);
             else
             {

@@ -1,9 +1,7 @@
 ﻿using DevExpress.Xpf.Core;
 using MedicalAdministrationSystem.ViewModels;
-using System;
+using MedicalAdministrationSystem.ViewModels.Utilities;
 using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -13,11 +11,9 @@ namespace MedicalAdministrationSystem
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            ApplicationThemeHelper.ApplicationThemeName = Theme.MetropolisLightName;
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
             GlobalVM.StartUp();
-            Task.Factory.StartNew(() =>
-            Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                ApplicationThemeHelper.UpdateApplicationThemeName()))
-            , CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 
             CultureInfo culture = CultureInfo.CreateSpecificCulture("hu-HU");
 
@@ -31,5 +27,8 @@ namespace MedicalAdministrationSystem
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
+
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) =>
+            Log.WriteException(e.Exception);
     }
 }

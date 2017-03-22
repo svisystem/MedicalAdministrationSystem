@@ -20,7 +20,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Start(imported, ID);
         }
         private void Start(bool imported, int ID)
-        { 
+        {
             ExaminationViewM = new ExaminationViewM();
             ExaminationViewM.Imported = imported;
             ExaminationViewM.Id = ID;
@@ -33,7 +33,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
 
@@ -63,17 +63,16 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
         private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
-            {
                 ExaminationViewM.AcceptChanges();
-            }
             else ConnectionMessage();
             await Utilities.Loading.Hide();
         }

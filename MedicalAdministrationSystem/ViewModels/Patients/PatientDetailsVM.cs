@@ -66,7 +66,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     if (!newForm) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
@@ -118,12 +118,13 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 }
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
-        private void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
@@ -135,7 +136,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 dialog = new Dialog(false, "Páciens adatok", async () => await Utilities.Loading.Hide());
                 dialog.content = new TextBlock("Sikeresen " + temp + " az adatokat.");
                 dialog.Start();
-                new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.patientsTBI);
+                await new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.patientsTBI);
             }
             else ConnectionMessage();
         }
@@ -143,7 +144,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     PatientDetailsMDataSet.FullGenderList = me.gender_fx.ToList();
@@ -155,8 +156,9 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }

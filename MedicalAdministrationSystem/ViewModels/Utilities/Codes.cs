@@ -15,19 +15,20 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         protected internal async Task<string> Generate(int UserId, int PatientId)
         {
             await Loading.Show();
-            return await Task.Factory.StartNew(() =>
+            return await Task.Run(() =>
             {
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     workingConn = true;
                     me.Database.Connection.Open();
                     return Generate(
                         (int)me.userdata.Where(a => a.IdUD == UserId).Select(a => a.SealNumberUD).Single(),
                         me.patientdata.Where(b => b.IdPD == PatientId).Select(b => b.TAJNumberPD).Single());
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                     return null;
                 }
@@ -35,7 +36,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 {
                     me.Database.Connection.Close();
                 }
-            }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
+            }, CancellationToken.None).ContinueWith(task =>
             {
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>

@@ -12,7 +12,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         protected internal async void StatisticsLoad()
         {
-            await Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() => new Views.Statistics.Statistics()), new Views.Global.StockVerticalMenuItem());
         }
     }

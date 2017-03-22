@@ -49,7 +49,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     if (EditEvidenceM.Imported)
@@ -123,8 +123,9 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -178,7 +179,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 foreach (DocumentControlM.ListElement item in EditEvidenceM.EvidenceList)
@@ -301,19 +302,20 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
-        private void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
                 dialog = new Dialog(false, "Módosítások mentése", async () => await Utilities.Loading.Hide());
                 dialog.content = new Views.Dialogs.TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
-                new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.evidenceTBI);
+                await new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.evidenceTBI);
             }
             else ConnectionMessage();
         }

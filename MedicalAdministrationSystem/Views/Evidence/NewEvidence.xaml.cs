@@ -24,7 +24,7 @@ namespace MedicalAdministrationSystem.Views.Evidence
             this.DataContext = NewEvidenceVM;
             InitializeComponent();
             button = Save;
-            NewEvidenceVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => newEvidenceValid.Validate(newEvidenceValid)), SetEnabledSave, new Action<bool>(delegate (bool x) { }));
+            NewEvidenceVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => newEvidenceValid.Validate(newEvidenceValid)), SetEnabledSave, (bool x) => { });
             validatorClass = newEvidenceValid;
             ConnectValidators();
             await Loading.Hide();
@@ -33,10 +33,7 @@ namespace MedicalAdministrationSystem.Views.Evidence
         {
             date.Validate += date_Validate;
         }
-        protected internal bool Dirty()
-        {
-            return NewEvidenceVM.VMDirty();
-        }
+        protected internal bool Dirty() => NewEvidenceVM.VMDirty();
         private void date_Validate(object sender, ValidationEventArgs e)
         {
             newEvidenceValid.date = false;

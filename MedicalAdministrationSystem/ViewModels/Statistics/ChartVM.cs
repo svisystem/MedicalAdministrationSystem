@@ -561,7 +561,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
         }
         protected internal async void Duplicate()
         {
-            await Task.Run(() =>
+            await Task.Factory.StartNew(() =>
             {
                 ObservableCollection<ChartM.Record> collection = new ObservableCollection<ChartM.Record>();
                 foreach (ChartM.Record item in ChartM.FullRecords) collection.Add(item);
@@ -569,7 +569,8 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
             }, CancellationToken.None).ContinueWith(async task =>
             {
                 ChartM.ViewRecords = task.Result;
-                await SetLayout(ChartM.ViewRecords, ChartM.SingleRecord, ChartM.FullRecords.OrderByDescending(r => r.Date).FirstOrDefault().Date.Date, ChartM.Step, ChartM.Legends);
+                await SetLayout(ChartM.ViewRecords, ChartM.SingleRecord, ChartM.FullRecords.OrderByDescending(r => r.Date).FirstOrDefault().Date.Date,
+                    ChartM.Step, ChartM.Legends);
             });
         }
         protected internal bool Continual() => ChartM.FullRecords.GroupBy(r => r.Date.Date).Count() > 1;
@@ -626,7 +627,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
         }
         private async void SearchForItem(int Id, bool Visible)
         {
-            await Loading.Show();
+            await Utilities.Loading.Show();
             await Task.Run(async () =>
             {
                 if (Visible)

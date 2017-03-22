@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.Views.Statistics
 {
@@ -27,15 +26,14 @@ namespace MedicalAdministrationSystem.Views.Statistics
             ChartVM = new ChartVM(SetLayout, Steps);
             this.DataContext = ChartVM;
             InitializeComponent();
-
         }
         private async Task SetLayout(ObservableCollection<ChartM.Record> Data, ObservableCollection<ChartM.Record> AssistData,
             DateTime Date, string Step, ObservableCollection<ChartM.Legend> Legends)
         {
-            await Task.Run(async () =>
+            await Task.Factory.StartNew(() =>
             {
                 if (ChartVM.Continual())
-                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                    this.Dispatcher.Invoke(new Action(() =>
                     {
                         CheckType(ChartVM.Main, mainContent, Data, Step, Legends);
                         (mainContent.Content as ChartBase).SelectedData = ChartVM.SelectSingleData;
@@ -51,7 +49,7 @@ namespace MedicalAdministrationSystem.Views.Statistics
                         };
                     }));
                 else
-                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                    this.Dispatcher.Invoke(new Action(() =>
                     {
                         CheckType(ChartVM.Secondary, mainContent, AssistData, Step, Legends);
 
@@ -61,8 +59,7 @@ namespace MedicalAdministrationSystem.Views.Statistics
                                 ChartVM.TypeCheck(ChartVM.Secondary, typeof(Bar)) : secondary == true ? true : (bool)main);
                     }));
 
-                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                    CheckType(typeof(Pie), mainContent, AssistData, Step, Legends)));
+                this.Dispatcher.Invoke(new Action(() => CheckType(typeof(Pie), mainContent, AssistData, Step, Legends)));
             }, CancellationToken.None).ContinueWith(async task =>
             {
                 continual = ChartVM.Continual();
@@ -100,7 +97,7 @@ namespace MedicalAdministrationSystem.Views.Statistics
         private int Ratio() => (bool)continual ? 2 : 1;
         private void CalculateSize(object sender, SizeChangedEventArgs e) => CalculateContainerSizes();
         protected internal bool Dirty() => false;
-        private void NewQuery(object sender, RoutedEventArgs e) => new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.statisticsTBI);
+        private async void NewQuery(object sender, RoutedEventArgs e) => await new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.statisticsTBI);
         private void listBox_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e.WidthChanged) CalculateContainerSizes();

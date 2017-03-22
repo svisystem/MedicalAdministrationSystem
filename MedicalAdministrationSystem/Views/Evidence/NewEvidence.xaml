@@ -1,4 +1,4 @@
-﻿<utilities:ViewExtender xmlns:Fragments="clr-namespace:MedicalAdministrationSystem.Views.Fragments"
+﻿<Utilities:ViewExtender xmlns:Fragments="clr-namespace:MedicalAdministrationSystem.Views.Fragments"
         x:Class="MedicalAdministrationSystem.Views.Evidence.NewEvidence"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,8 +8,8 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
-    <utilities:ViewExtender.Resources>
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <Utilities:ViewExtender.Resources>
         <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
             <Viewbox Stretch="None">
                 <Grid Width="16" Height="16">
@@ -40,7 +40,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </utilities:ViewExtender.Resources>
+    </Utilities:ViewExtender.Resources>
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Right"
                 Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, UpdateSourceTrigger=Explicit}">
@@ -119,4 +119,4 @@
         </DockPanel>
         <ContentControl x:Name="content" IsTabStop="False" />
     </DockPanel>
-</utilities:ViewExtender>
+</Utilities:ViewExtender>

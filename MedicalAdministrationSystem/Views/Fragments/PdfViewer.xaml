@@ -5,7 +5,15 @@
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+        xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+        xmlns:dxdv="http://schemas.devexpress.com/winfx/2008/xaml/documentviewer"
         xmlns:dxpdf="http://schemas.devexpress.com/winfx/2008/xaml/pdf">
+    <UserControl.Resources>
+        <dxpdf:PdfItalicToItalicConverter x:Key="pdfItalicConverter" />
+        <dxpdf:PdfBoldToBoldConverter x:Key="pdfBoldConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,12 +23,18 @@
                 AllowQuickCustomization="False">
             <dxb:ToolBarControl.Items>
                 <dxb:BarButtonItem Name="bExport" Content="Exportálás"
-                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Export_32x32.png" KeyGesture="Ctrl+E" Command="{Binding ElementName=pdfViewer, Path=SaveAsCommand}"
-                        Hint="Fájl kiexportálása" Description="A megnyitott PDF dokumentum kiexprtálása" />
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Export_32x32.png"
+                        KeyGesture="Ctrl+E" Command="{Binding ElementName=pdfViewer, Path=SaveAsCommand}"
+                        Hint="Fájl kiexportálása" Description="A megnyitott PDF dokumentum kiexportálása" />
                 <dxb:BarButtonItem Name="bPrint" Content="Nyomtatás"
-                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Print_32x32.png" KeyGesture="Ctrl+P" Description="A megnyitott PDF dokumentum nyomtatása." Hint="Fájl nyomtatása"
+                        LargeGlyph="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Print_32x32.png"
+                        KeyGesture="Ctrl+P" Description="A megnyitott PDF dokumentum nyomtatása." Hint="Fájl nyomtatása"
                         Command="{Binding ElementName=pdfViewer, Path=PrintDocumentCommand}" />
                 <dxb:BarItemLinkSeparator />
+                <dxb:BarButtonItem Name="bBookmark" Content="Könyvjelzők"
+                        LargeGlyph="pack://application:,,,/MedicalAdministrationSystem;component/Icons/Bookmark.png"
+                        Hint="Könyvjelzők megnyitása" Description="Könyvjelzők panel megnyitása/bezárása."
+                        ItemClick="bBookmark_ItemClick" />
                 <dxb:BarButtonItem Name="bSearch" Content="Keresés"
                         LargeGlyph="{dx:DXImageOffice2013 Image=Find_32x32.png}" KeyGesture="Ctrl+F" Hint="Keresés"
                         Description="Keresősáv megynyitása."
@@ -73,10 +87,8 @@
                         <dxb:BarButtonItem Content="100%" CommandParameter="1" ItemClick="SpecifiedZoom" />
                         <dxb:BarButtonItem Content="125%" CommandParameter="1.25" ItemClick="SpecifiedZoom" />
                         <dxb:BarButtonItem Content="150%" CommandParameter="1.5" ItemClick="SpecifiedZoom" />
-                        <dxb:BarButtonItem Content="200%" CommandParameter="2"
-                                ItemClick="SpecifiedZoom" />
-                        <dxb:BarButtonItem Content="400%" CommandParameter="4"
-                                ItemClick="SpecifiedZoom" />
+                        <dxb:BarButtonItem Content="200%" CommandParameter="2" ItemClick="SpecifiedZoom" />
+                        <dxb:BarButtonItem Content="400%" CommandParameter="4" ItemClick="SpecifiedZoom" />
                         <dxb:BarButtonItem Content="500%" CommandParameter="5" ItemClick="SpecifiedZoom" />
                         <dxb:BarItemLinkSeparator />
                         <dxb:BarButtonItem Content="Tényleges méret" ItemClick="ActualSize" />
@@ -86,11 +98,144 @@
                 </dxb:BarSubItem>
             </dxb:ToolBarControl.Items>
         </dxb:ToolBarControl>
-        <Button Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right"
-                VerticalAlignment="Center" BorderBrush="{x:Null}" BorderThickness="0" Click="Close" x:Name="exit">
-            <Image Source="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Close_32x32.png" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
+        <Button Margin="0,0,7,0" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                BorderBrush="{x:Null}" BorderThickness="0" Click="Close" x:Name="exit">
+            <Image Source="pack://application:,,,/DevExpress.Images.v16.1;component/DevAV/Actions/Close_32x32.png"
+                    Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
         </Button>
-        <dxpdf:PdfViewerControl x:Name="pdfViewer" Grid.Row="1" CommandBarStyle="None" MaxHeight="80000" Margin="-4"
-                ShowStartScreen="False" ZoomMode="FitToWidth" DetachStreamOnLoadComplete="False" />
+        <dxpdf:PdfViewerControl x:Name="pdfViewer" Grid.Row="1" MaxHeight="80000" ShowStartScreen="False"
+                DetachStreamOnLoadComplete="False" AsyncDocumentLoad="True">
+            <dxpdf:PdfViewerControl.RibbonTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                                Margin="0" />
+                        <dxdo:DockLayoutManager>
+                            <dxdo:LayoutGroup Margin="0" Padding="0">
+                                <dxdo:LayoutPanel ShowBorder="False" ShowCloseButton="False" ShowPinButton="False"
+                                        AllowContextMenu="False" AllowDrag="False" MinWidth="110"
+                                        Visibility="{Binding Bookmark.Visibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                    <dxdo:LayoutPanel.Template>
+                                        <ControlTemplate TargetType="{x:Type dxdo:LayoutPanel}">
+                                            <ContentPresenter Content="{TemplateBinding Control}" />
+                                        </ControlTemplate>
+                                    </dxdo:LayoutPanel.Template>
+                                    <DockPanel>
+                                        <Separator DockPanel.Dock="Right"
+                                                Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+                                        <TextBlock FontSize="18.667" DockPanel.Dock="Top" Text="Könyvjelzők"
+                                                IsHitTestVisible="False" Foreground="#FF373A3D" Padding="5"
+                                                HorizontalAlignment="Left" />
+                                        <Separator DockPanel.Dock="Top"
+                                                Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
+                                        <dxpdf:PdfOutlinesViewerControl
+                                                Settings="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualDocumentMapSettings, RelativeSource={RelativeSource Self}}"
+                                                Style="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualDocumentMapSettings.OutlinesViewerStyle, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <dxpdf:PdfOutlinesViewerControl.Template>
+                                                <ControlTemplate TargetType="{x:Type dxpdf:PdfOutlinesViewerControl}">
+                                                    <dxg:GridControl SelectionMode="Row" x:Name="PART_GridControl"
+                                                            ItemsSource="{TemplateBinding ActualSource}"
+                                                            ShowBorder="False">
+                                                        <dxmvvm:Interaction.Behaviors>
+                                                            <dxmvvm:KeyToCommand EventName="PreviewKeyDown"
+                                                                    Command="{x:Static dxdv:DocumentMapCommands.GoToNodeCommand}"
+                                                                    CommandParameter="{Binding Path=CurrentItem, ElementName=PART_GridControl}"
+                                                                    MarkRoutedEventsAsHandled="True" KeyGesture="Enter" />
+                                                        </dxmvvm:Interaction.Behaviors>
+                                                        <dxg:GridControl.View>
+                                                            <dxg:TreeListView x:Name="PART_TreeView"
+                                                                    AllowPerPixelScrolling="True"
+                                                                    VerticalScrollbarVisibility="Auto"
+                                                                    Style="{TemplateBinding TreeViewStyle}">
+                                                                <dxmvvm:Interaction.Behaviors>
+                                                                    <dxmvvm:EventToCommand
+                                                                            Command="{x:Static dxdv:DocumentMapCommands.GoToNodeCommand}"
+                                                                            EventName="MouseLeftButtonUp">
+                                                                        <dxmvvm:EventToCommand.EventArgsConverter>
+                                                                            <dxdv:MouseEventArgsToDataRowConverter
+                                                                                    ChangedButton="Left" />
+                                                                        </dxmvvm:EventToCommand.EventArgsConverter>
+                                                                    </dxmvvm:EventToCommand>
+                                                                </dxmvvm:Interaction.Behaviors>
+                                                            </dxg:TreeListView>
+                                                        </dxg:GridControl.View>
+                                                        <dxg:GridControl.Columns>
+                                                            <dxg:GridColumn FieldName="Title">
+                                                                <dxg:GridColumn.EditSettings>
+                                                                    <dxe:TextEditSettings TextWrapping="Wrap" />
+                                                                </dxg:GridColumn.EditSettings>
+                                                                <dxg:GridColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <dxe:InplaceBaseEdit x:Name="PART_Editor"
+                                                                                FontStyle="{Binding Path=RowData.Row.Italic, Converter={StaticResource pdfItalicConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                                FontWeight="{Binding Path=RowData.Row.Bold, Converter={StaticResource pdfBoldConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                                    </DataTemplate>
+                                                                </dxg:GridColumn.CellTemplate>
+                                                            </dxg:GridColumn>
+                                                        </dxg:GridControl.Columns>
+                                                    </dxg:GridControl>
+                                                </ControlTemplate>
+                                            </dxpdf:PdfOutlinesViewerControl.Template>
+                                        </dxpdf:PdfOutlinesViewerControl>
+                                    </DockPanel>
+                                </dxdo:LayoutPanel>
+                                <dxdo:LayoutPanel ShowCaption="False" ShowBorder="False" Padding="0">
+                                    <dxdo:LayoutPanel.Template>
+                                        <ControlTemplate TargetType="{x:Type dxdo:LayoutPanel}">
+                                            <dxpdf:PdfPresenterControl Margin="-4">
+                                                <dxb:BarManager.DXContextMenu>
+                                                    <dxb:PopupMenu>
+                                                        <dxpdf:SelectToolBarItem Content="Kijelölő eszköz"
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.SelectTool}"
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.SelectToolCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxpdf:HandToolBarItem Content="Kéz eszköz"
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.HandTool}"
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.HandToolCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxpdf:MarqueeZoomBarItem Content="Nagyító"
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.MarqueeZoom}"
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.MarqueeZoomCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxb:BarItemLinkSeparator />
+                                                        <dxdv:PreviousViewBarItem
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.PreviousView}"
+                                                                Content="Előző nézet"
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.PreviousViewCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                IsEnabled="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).UndoRedoManager.CanUndo, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxdv:NextViewBarItem
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.NextView}"
+                                                                Content="Következő nézet"
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.NextViewCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                IsEnabled="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).UndoRedoManager.CanRedo, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxb:BarItemLinkSeparator />
+                                                        <dxdv:ClockwiseRotateBarItem
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.ClockwiseRotate}"
+                                                                Content="Forgatás óra járásával megegyező irányba"
+                                                                KeyGesture=""
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.ClockwiseRotateCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxdv:CounterClockwiseRotateBarItem
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.CounterClockwiseRotate}"
+                                                                Content="Forgatás óra járásával ellentétes irányba"
+                                                                KeyGesture=""
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.CounterClockwiseRotateCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxb:BarItemLinkSeparator />
+                                                        <dxpdf:PrintDocumentBarItem
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.PrintContext}"
+                                                                Content="Nyomtatás"
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.PrintDocumentCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <dxpdf:FindTextBarItem
+                                                                dxpdf:PdfViewerControl.BarItemName="{x:Static dxpdf:DefaultPdfBarManagerItemNames.FindContext}"
+                                                                Content="Keresés"
+                                                                Command="{Binding Path=(dxpdf:PdfViewerControl.ActualViewer).ActualCommandProvider.ShowFindTextCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    </dxb:PopupMenu>
+                                                </dxb:BarManager.DXContextMenu>
+                                            </dxpdf:PdfPresenterControl>
+                                        </ControlTemplate>
+                                    </dxdo:LayoutPanel.Template>
+                                </dxdo:LayoutPanel>
+                            </dxdo:LayoutGroup>
+                        </dxdo:DockLayoutManager>
+                    </DockPanel>
+                </DataTemplate>
+            </dxpdf:PdfViewerControl.RibbonTemplate>
+        </dxpdf:PdfViewerControl>
     </Grid>
 </UserControl>

@@ -1,12 +1,12 @@
-﻿<utilities:ChartBase xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Utilities:ChartBase xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:MedicalAdministrationSystem.Views.Statistics.Graphs"
         xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
         x:Class="MedicalAdministrationSystem.Views.Statistics.Graphs.Line" Loaded="SetDefaultView">
-    <utilities:ChartBase.Resources>
+    <Utilities:ChartBase.Resources>
         <dxc:BrushOverlayConverter x:Key="brushOverlayConverter" />
-    </utilities:ChartBase.Resources>
+    </Utilities:ChartBase.Resources>
     <dxc:ChartControl BorderBrush="{x:Null}" BorderThickness="0" DataSource="{Binding Data}"
             CustomDrawCrosshair="GetArgumentValue" MouseLeftButtonUp="SetSelectedValues" Padding="10,0,10,10"
             MouseLeave="CheckerLeave" MouseLeftButtonDown="CheckerDown" x:Name="ChartControl"
@@ -40,4 +40,4 @@
             </dxc:XYDiagram2D.SeriesTemplate>
         </dxc:XYDiagram2D>
     </dxc:ChartControl>
-</utilities:ChartBase>
+</Utilities:ChartBase>

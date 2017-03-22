@@ -12,17 +12,16 @@ namespace MedicalAdministrationSystem.Views.Statistics.Employee
         private Action<int> DeleteItems { get; set; }
         public EmployeeSelector(StatisticsM.Step Item, Action<int> DeleteItems)
         {
-            Start();
+            Start(Item, DeleteItems);
+        }
+        private async void Start(StatisticsM.Step Item, Action<int> DeleteItems)
+        {
+            await Loading.Show();
             this.DeleteItems = DeleteItems;
             EmployeeSelectorVM = new EmployeeSelectorVM(Item);
             this.DataContext = EmployeeSelectorVM;
             InitializeComponent();
         }
-        private async void Start()
-        {
-            await Loading.Show();
-        }
-
         private void DeleteClick(object sender, System.Windows.RoutedEventArgs e)
         {
             DeleteItems(EmployeeSelectorVM.Item.Id);

@@ -41,7 +41,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Patient
                         });
                     }));
 
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     me.Database.Connection.Open();
 
                     foreach (object patient in me.patientdata.OrderBy(u => u.NamePD).Select(u => new { u.IdPD, u.NamePD, u.TAJNumberPD }).ToList())
@@ -65,8 +65,9 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Patient
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
             }, CancellationToken.None).ContinueWith(task =>

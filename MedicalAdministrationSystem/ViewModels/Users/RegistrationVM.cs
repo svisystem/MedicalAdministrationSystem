@@ -29,15 +29,12 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
             Execute.RunWorkerAsync();
         }
-        protected internal bool UserCheck(string user)
-        {
-            return RegistrationM.ExistUsers.Any(l => l == user);
-        }
+        protected internal bool UserCheck(string user) =>RegistrationM.ExistUsers.Any(l => l == user);
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     RegistrationM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
@@ -46,8 +43,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -61,7 +59,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     await me.Database.Connection.OpenAsync();
                     RegistrationM.PriviledgesID = me.priviledges.Where(b => b.NameP == RegistrationM.PriviledgesSelected).Select(b => b.IdP).Single();
@@ -79,14 +77,14 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
         private async void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
             if (workingConn)
             {
                 await Utilities.Loading.Hide();
@@ -97,16 +95,16 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else ConnectionMessage();
         }
-        private void OkMethod()
+        private async void OkMethod()
         {
             MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-            mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
+            await mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
         }
-        private void CancelMethod()
+        private async void CancelMethod()
         {
             MenuButtonsEnabled mbe = new MenuButtonsEnabled();
             mbe.modifier = false;
-            mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
+            await mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
         }
         protected internal bool PriviledgeCheck(string selected)
         {

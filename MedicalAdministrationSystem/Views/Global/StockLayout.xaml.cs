@@ -64,7 +64,7 @@ namespace MedicalAdministrationSystem.Views.Global
         {
             Check(sender as TileBarItem, LogOutLoad, Back);
         }
-        protected async internal void ScheduleLoad()
+        protected internal async void ScheduleLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Collapsed;
@@ -73,7 +73,7 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void PatiensLoad(bool? modifier = null, string Name = null, string Taj = null, int? Id = null)
+        protected internal async void PatiensLoad(bool? modifier = null, string Name = null, string Taj = null, int? Id = null)
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -82,7 +82,7 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = patientsTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void ExaminationLoad()
+        protected internal async void ExaminationLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -90,7 +90,7 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = examinationTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void ExaminationLoad(bool modifier, bool imported, int ID)
+        protected internal async void ExaminationLoad(bool modifier, bool imported, int ID)
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -99,7 +99,7 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = examinationTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void EvidenceLoad()
+        protected internal async void EvidenceLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -107,7 +107,7 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = evidenceTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void EvidenceLoad(bool modifier, bool imported, int ID)
+        protected internal async void EvidenceLoad(bool modifier, bool imported, int ID)
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -116,21 +116,21 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = evidenceTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void LabLoad()
+        protected internal async void LabLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
             //TODO
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void PrescriptionLoad()
+        protected internal async void PrescriptionLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
             //TODO
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void BillingLoad()
+        protected internal async void BillingLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -138,7 +138,7 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = billingTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void BillingLoad(int ID)
+        protected internal async void BillingLoad(int ID)
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -146,7 +146,7 @@ namespace MedicalAdministrationSystem.Views.Global
             currentItem = billingTBI;
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void StatisticsLoad()
+        protected internal async void StatisticsLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Collapsed;
@@ -155,7 +155,7 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void UsersLoad()
+        protected internal async void UsersLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -165,7 +165,7 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void UsersLoad(bool modifier)
+        protected internal async void UsersLoad(bool modifier)
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -175,7 +175,7 @@ namespace MedicalAdministrationSystem.Views.Global
             SelectedPatient();
             await ViewModels.Utilities.Loading.Hide();
         }
-        protected async internal void SettingsLoad()
+        protected internal async void SettingsLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             menu.Visibility = System.Windows.Visibility.Visible;
@@ -187,12 +187,12 @@ namespace MedicalAdministrationSystem.Views.Global
         }
         protected internal void HelpLoad()
         {
+            earlierItem = currentItem;
             currentItem = helpTBI;
             new HelpVM().Start();
             Back();
-            SelectedPatient();
         }
-        protected async internal void LogOutLoad()
+        protected internal async void LogOutLoad()
         {
             await ViewModels.Utilities.Loading.Show();
             new LogoutVM().Click(Back);
@@ -215,28 +215,32 @@ namespace MedicalAdministrationSystem.Views.Global
             {
                 earlierItem = currentItem;
                 currentItem = tile;
-                GlobalVM.StockLayout.tileBar.SelectedItem = tile;
+                tileBar.SelectedItem = tile;
             }
         }
         protected internal void Back()
         {
             currentItem = earlierItem;
-            GlobalVM.StockLayout.tileBar.SelectedItem = currentItem;
+            tileBar.SelectedItem = currentItem;
         }
         private void SelectedPatient()
         {
             if (headerContent.Content != null)
                 (headerContent.Content as SelectedPatient).Dispose();
         }
-
         private async void StockLayoutLoaded(object sender, System.Windows.RoutedEventArgs e)
         {
             await ViewModels.Utilities.Loading.Show();
             MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-            mbe.SingleChange(GlobalVM.StockLayout.usersTBI, System.Windows.Visibility.Visible);
-            mbe.SingleChange(GlobalVM.StockLayout.helpTBI, System.Windows.Visibility.Visible);
-            mbe.LoadItem(GlobalVM.StockLayout.usersTBI);
+            mbe.SingleChange(usersTBI, System.Windows.Visibility.Visible);
+            mbe.SingleChange(helpTBI, System.Windows.Visibility.Visible);
+            await mbe.LoadItem(usersTBI);
             await ViewModels.Utilities.Loading.Hide();
+        }
+
+        private void tileBar_SelectionChanging(object sender, DevExpress.Xpf.WindowsUI.Base.SelectionChangingEventArgs e)
+        {
+            if (e.NewValue == helpTBI) e.Cancel = true;
         }
     }
 }

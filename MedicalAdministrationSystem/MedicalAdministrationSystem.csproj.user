@@ -11,4 +11,10 @@
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>C:\MedicalAdministrationSystem\MedicalAdministrationSystem\Dlls\</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
+  </PropertyGroup>
 </Project>

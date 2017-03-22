@@ -34,7 +34,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 SurgeryTimeM.UserRegistrateDate = me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().RegistrateTimeAD;
@@ -67,8 +67,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -120,7 +121,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 foreach (int id in SurgeryTimeM.Erased)
@@ -233,8 +234,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -262,10 +264,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             NewButton.enabler.Enabled = Validate();
             SaveButtonValid();
         }
-        protected internal bool Validate()
-        {
-            return !SurgeryTimeM.Exceptions.Any(ex => !ex.Valid);
-        }
+        protected internal bool Validate() => !SurgeryTimeM.Exceptions.Any(ex => !ex.Valid);
         private void NewItem()
         {
             SurgeryTimeM.Exceptions.Add(new SurgeryTimeM.Exception());

@@ -58,6 +58,6 @@ namespace MedicalAdministrationSystem.Views.Examination
             }), DispatcherPriority.Loaded);
             await Loading.Hide();
         }
-        
+
     }
 }

@@ -19,7 +19,11 @@ namespace MedicalAdministrationSystem.Views.Statistics
         private Action<int> DeleteItems { get; set; }
         public Interval(StatisticsM.Step Item, Action<int> DeleteItems)
         {
-            Start();
+            Start(Item, DeleteItems);
+        }
+        private async void Start(StatisticsM.Step Item, Action<int> DeleteItems)
+        {
+            await Loading.Show();
             IntervalVM = new IntervalVM(Item, CreateEnabled);
             this.DeleteItems = DeleteItems;
             this.DataContext = IntervalVM;
@@ -121,10 +125,6 @@ namespace MedicalAdministrationSystem.Views.Statistics
                 IntervalVM.ScalesEnabler();
             }
             CreateEnabled();
-        }
-        private async void Start()
-        {
-            await Loading.Show();
         }
         private void fixDateEdit_Validate(object sender, ValidationEventArgs e)
         {

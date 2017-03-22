@@ -12,15 +12,15 @@ namespace MedicalAdministrationSystem.Views.Statistics.Service
         private Action<int> DeleteItems { get; set; }
         public ServiceSelector(StatisticsM.Step Item, Action<int> DeleteItems)
         {
-            Start();
+            Start(Item, DeleteItems);
+        }
+        private async void Start(StatisticsM.Step Item, Action<int> DeleteItems)
+        {
+            await Loading.Show();
             this.DeleteItems = DeleteItems;
             ServiceSelectorVM = new ServiceSelectorVM(Item);
             this.DataContext = ServiceSelectorVM;
             InitializeComponent();
-        }
-        private async void Start()
-        {
-            await Loading.Show();
         }
         private void DeleteClick(object sender, System.Windows.RoutedEventArgs e)
         {

@@ -49,7 +49,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 importedexaminationdata ied = new importedexaminationdata()
@@ -89,19 +89,20 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
-        private void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
                 dialog = new Dialog(false, "Módosítások mentése", async () => await Utilities.Loading.Hide());
                 dialog.content = new Views.Dialogs.TextBlock("A módosítások mentése sikeresen megtörtént");
                 dialog.Start();
-                new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.examinationTBI);
+                await new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.examinationTBI);
             }
             else ConnectionMessage();
         }

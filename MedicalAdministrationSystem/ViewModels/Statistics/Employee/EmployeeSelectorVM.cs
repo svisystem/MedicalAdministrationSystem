@@ -42,7 +42,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Employee
                          });
                      }));
 
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     me.Database.Connection.Open();
 
                     foreach (object employee in me.userdata.OrderBy(u => u.NameUD).Select(u => new { u.IdUD, u.NameUD }).ToList())
@@ -64,8 +64,9 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Employee
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
             }, CancellationToken.None).ContinueWith(task =>

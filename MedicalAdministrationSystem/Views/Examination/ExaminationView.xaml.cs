@@ -20,7 +20,7 @@ namespace MedicalAdministrationSystem.Views.Examination
             ExaminationViewVM = new ExaminationViewVM(imported, ID);
             this.DataContext = ExaminationViewVM;
             InitializeComponent();
-            ExaminationViewVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => examinationViewValid.Validate(examinationViewValid)), delegate { }, delegate { });
+            ExaminationViewVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => examinationViewValid.Validate(examinationViewValid)), (bool x) => { }, (bool x) => { });
             validatorClass = examinationViewValid;
             ConnectValidators();
         }

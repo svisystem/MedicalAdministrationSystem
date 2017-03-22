@@ -56,11 +56,8 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Patient
                         });
                     }));
             }, CancellationToken.None).ContinueWith(task =>
-            {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
-                    await Loading.Hide()
-                ));
-            });
+                   await Loading.Hide())));
         }
         protected internal void EnabledChange(bool enabled)
         {

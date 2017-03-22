@@ -36,7 +36,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 PriviledgesM.PriviledgesList = me.priviledges.ToList();
                 PriviledgesM.Priviledges.Clear();
@@ -64,8 +64,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -99,7 +100,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 if (PriviledgesM.Erased.Count != 0)
                 {
@@ -220,8 +221,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 PriviledgesM.Erased.Clear();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -275,14 +277,15 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 int temp = PriviledgesM.PriviledgesList.Where(b => b.IdP == PriviledgeSelectedRow.Selected.IdP).Select(b => b.IdP).Single();
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     me.Database.Connection.Open();
                     listtemp = me.accountdata.Where(a => a.PriviledgesIdAD == temp).Count();
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
                 if (listtemp == 0)

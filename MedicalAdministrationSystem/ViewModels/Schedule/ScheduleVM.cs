@@ -62,7 +62,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
 
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 foreach (ScheduleM.Doctor doctor in me.userdata.Where(a => !me.accountdata.FirstOrDefault(b => b.IdAD == a.AccountDataIdUD).DeletedAD).ToList()
@@ -110,8 +110,9 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -129,7 +130,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             }
             else ConnectionMessage();
         }
-        protected async internal void Refresh()
+        protected internal async void Refresh()
         {
             await Utilities.Loading.Show();
             ScheduleM.Appointments.Clear();
@@ -150,7 +151,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             {
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     me.Database.Connection.Open();
 
                     scheduledata dbAppointment = me.scheduledata.Where(s => s.IdSD == appointment.Id).Single();
@@ -208,8 +209,9 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
             }
@@ -227,7 +229,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                 ScheduleM.Appointments.Where(s => !s.StoreInDB).Single();
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 newperson np = new newperson();
@@ -284,8 +286,9 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -319,18 +322,23 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             if (from) Load = true;
             if (Load && !runOnce && workingConn)
             {
-                SchedulerColorSchemaCollection colorSchemas = (GlobalVM.StockLayout.actualContent.Content as Views.Schedule.Schedule).scheduler.GetResourceColorSchemasCopy();
-                for (int i = 0; i < tempdoc.Count; i++)
+                try
                 {
-                    tempdoc[i].Color = colorSchemas[i % colorSchemas.Count].Cell.ToArgb();
-                    ScheduleM.Doctors.Add(tempdoc[i]);
+                    SchedulerColorSchemaCollection colorSchemas =
+                        (GlobalVM.StockLayout.actualContent.Content as Views.Schedule.Schedule).scheduler.GetResourceColorSchemasCopy();
+                    for (int i = 0; i < tempdoc.Count; i++)
+                    {
+                        tempdoc[i].Color = colorSchemas[i % colorSchemas.Count].Cell.ToArgb();
+                        ScheduleM.Doctors.Add(tempdoc[i]);
+                    }
+                    runOnce = true;
                 }
-                runOnce = true;
+                catch { }
             }
         }
         private List<int> EraseInt;
         private BackgroundWorker Erase = new BackgroundWorker();
-        protected async internal void EraseMethod(List<int> list)
+        protected internal async void EraseMethod(List<int> list)
         {
             await Utilities.Loading.Show();
             dialog = new Dialog(true, "Időpont törlése", Erase.RunWorkerAsync, async () => await Utilities.Loading.Hide(), true);
@@ -344,7 +352,7 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             foreach (int item in EraseInt)
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     me.Database.Connection.Open();
 
                     scheduledata sd = me.scheduledata.Where(s => s.IdSD == item).FirstOrDefault();
@@ -357,8 +365,9 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
         }
@@ -372,9 +381,9 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             }
             else ConnectionMessage();
         }
-        protected internal void NewPatient(int Id)
+        protected internal async void NewPatient(int Id)
         {
-            new MenuButtonsEnabled()
+            await new MenuButtonsEnabled()
             {
                 modifier = true,
                 Id = Id,

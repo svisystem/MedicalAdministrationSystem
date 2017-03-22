@@ -13,15 +13,15 @@ namespace MedicalAdministrationSystem.Views.Statistics.Employee
         private Action<int> DeleteItems { get; set; }
         public EmployeeQuestion(StatisticsM.Step Item, Action<int> DeleteItems, bool? All)
         {
-            Start();
+            Start(Item, DeleteItems, All);
+        }
+        private async void Start(StatisticsM.Step Item, Action<int> DeleteItems, bool? All)
+        {
+            await Loading.Show();
             this.DeleteItems = DeleteItems;
             EmployeeQuestionVM = new EmployeeQuestionVM(Item, All);
             this.DataContext = EmployeeQuestionVM;
             InitializeComponent();
-        }
-        private async void Start()
-        {
-            await Loading.Show();
         }
         private void DeleteClick(object sender, System.Windows.RoutedEventArgs e)
         {

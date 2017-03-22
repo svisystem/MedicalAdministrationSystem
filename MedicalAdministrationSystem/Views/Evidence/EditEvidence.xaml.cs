@@ -26,7 +26,7 @@ namespace MedicalAdministrationSystem.Views.Evidence
             this.DataContext = EditEvidenceVM;
             InitializeComponent();
             button = Save;
-            EditEvidenceVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => editEvidenceValid.Validate(editEvidenceValid)), SetEnabledSave, delegate { });
+            EditEvidenceVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => editEvidenceValid.Validate(editEvidenceValid)), SetEnabledSave, (bool x) => { });
             validatorClass = editEvidenceValid;
             ConnectValidators();
         }

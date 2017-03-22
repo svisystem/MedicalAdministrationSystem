@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using MedicalAdministrationSystem.DataAccess;
+﻿using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Settings;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
-using System.Collections.Generic;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 
 namespace MedicalAdministrationSystem.ViewModels.Settings
 {
@@ -39,7 +38,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 UsersMViewElements.UserDatas = me.accountdata.ToList();
 
@@ -47,8 +46,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
             UsersMViewElements.Priviledges = UsersMDataSet.PriviledgesList.Select(a => a.NameP).ToList();
@@ -72,8 +72,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             if (workingConn)
             {
-
-
                 foreach (object row in UsersMViewElements.Users)
                     (row as UserAdministrateMViewElements.UserRow).AcceptChanges();
                 UsersMViewElements.AcceptChanges();
@@ -93,7 +91,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 for (int i = 0; i < UsersMViewElements.UserDatas.Count; i++)
                 {
@@ -142,8 +140,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -161,10 +160,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             }
             else ConnectionMessage();
         }
-        protected internal bool VMDirty()
-        {
-            return UsersMViewElements.Users.Any(u => u.IsChanged);
-        }
+        protected internal bool VMDirty() => UsersMViewElements.Users.Any(u => u.IsChanged);
         protected internal void NewPassMethod()
         {
             dialog = new Dialog(false, "Jelszó megváltoztatása", OkMethod, () => { }, false);

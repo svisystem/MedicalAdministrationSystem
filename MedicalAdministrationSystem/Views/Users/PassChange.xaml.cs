@@ -1,5 +1,4 @@
 ﻿using DevExpress.Xpf.Editors;
-using MedicalAdministrationSystem.ViewModels;
 using MedicalAdministrationSystem.ViewModels.Users;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using System.Linq;

@@ -27,17 +27,11 @@ namespace MedicalAdministrationSystem.Views.Schedule
             scheduler.Views.DayView.WorkTime = TimeOfDayInterval.Day;
             scheduler.Views.WorkWeekView.AppointmentDisplayOptions.StatusDisplayType = AppointmentStatusDisplayType.Never;
             scheduler.Views.WorkWeekView.WorkTime = TimeOfDayInterval.Day;
-            await Loading.Hide();
         }
-        protected internal bool Dirty()
-        {
-            return false;
-        }
+        protected internal bool Dirty() => false;
 
-        private void scheduler_PopupMenuShowing(object sender, SchedulerMenuEventArgs e)
-        {
+        private void scheduler_PopupMenuShowing(object sender, SchedulerMenuEventArgs e) =>
             e.Menu.ItemLinks.Clear();
-        }
 
         private void ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -68,7 +62,8 @@ namespace MedicalAdministrationSystem.Views.Schedule
 
         private void biEditAppointment_IsEnabledChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue && (bool)scheduler.SelectedAppointments[0].CustomFields["StillNotVisited"])
+            if ((bool)e.NewValue && scheduler.SelectedAppointments.Count != 0 && 
+                (bool)scheduler.SelectedAppointments[0].CustomFields["StillNotVisited"])
                 biRegistratePatient.IsEnabled = true;
             else biRegistratePatient.IsEnabled = false;
         }
@@ -76,7 +71,6 @@ namespace MedicalAdministrationSystem.Views.Schedule
         {
             biRegistratePatient.IsEnabled = enabled;
         }
-
         private void scheduler_AppointmentDrag(object sender, AppointmentDragEventArgs e)
         {
             if (scheduler.SelectedAppointments.Any(sa => sa.Start < DateTime.Now)) e.Allow = false;
@@ -85,7 +79,6 @@ namespace MedicalAdministrationSystem.Views.Schedule
         {
             ScheduleVM.Modified();
         }
-
         private void biRegistratePatient_ItemClick(object sender, ItemClickEventArgs e)
         {
             ScheduleVM.NewPatient((int)scheduler.SelectedAppointments[0].Id);

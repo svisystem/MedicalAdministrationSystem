@@ -4,6 +4,7 @@ using MedicalAdministrationSystem.Models.Examination;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
 using MedicalAdministrationSystem.Views.Global;
+using System;
 using System.ComponentModel;
 using System.Linq;
 
@@ -32,7 +33,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             ExaminationsM.Erased.Clear();
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 if (SelectedPatient.SelectedPatientVM.Count() == 0)
@@ -102,8 +103,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -130,7 +132,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 foreach (ExaminationsM.ErasedItem item in ExaminationsM.Erased)
@@ -166,8 +168,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -196,9 +199,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             await Utilities.Loading.Show();
             new FormChecking(() => OkMethod(false), () => { }, true);
         }
-        private void OkMethod(bool which)
+        private async void OkMethod(bool which)
         {
-            new MenuButtonsEnabled()
+            await new MenuButtonsEnabled()
             {
                 modifier = which,
                 Id = ExaminationsM.SelectedExamination.Id,
@@ -236,7 +239,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 eraseable = false;
 
@@ -249,8 +252,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }

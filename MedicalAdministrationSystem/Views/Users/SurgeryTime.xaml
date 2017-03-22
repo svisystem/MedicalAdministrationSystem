@@ -1,4 +1,4 @@
-﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Users.SurgeryTime"
+﻿<Utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Users.SurgeryTime"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,8 +6,8 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities" Loaded="ViewLoaded">
-    <utilities:ViewExtender.Resources>
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities" Loaded="ViewLoaded">
+    <Utilities:ViewExtender.Resources>
         <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
             <Viewbox Stretch="None">
                 <Grid Width="16" Height="16">
@@ -38,7 +38,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </utilities:ViewExtender.Resources>
+    </Utilities:ViewExtender.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel DockPanel.Dock="Bottom" Height="40">
             <Separator DockPanel.Dock="Top" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
@@ -90,7 +90,7 @@
                                             HorizontalAlignment="Right" Padding="0,0,3,0" IsHitTestVisible="False"
                                             DockPanel.Dock="Right"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}"
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}"
                                             EditValue="{Binding SurgeryTimeM.Monday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DockPanel>
                             </Grid>
@@ -105,7 +105,7 @@
                                             DockPanel.Dock="Right"
                                             EditValue="{Binding SurgeryTimeM.Tuesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}" />
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}" />
                                 </DockPanel>
                             </Grid>
                             <Grid Margin="0,1,0,16">
@@ -119,7 +119,7 @@
                                             DockPanel.Dock="Right"
                                             EditValue="{Binding SurgeryTimeM.Wednesday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}" />
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}" />
                                 </DockPanel>
                             </Grid>
                             <Grid Margin="0,1,0,16">
@@ -133,7 +133,7 @@
                                             DockPanel.Dock="Right"
                                             EditValue="{Binding SurgeryTimeM.Thursday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}" />
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}" />
                                 </DockPanel>
                             </Grid>
                             <Grid Margin="0,1,0,16">
@@ -147,7 +147,7 @@
                                             DockPanel.Dock="Right"
                                             EditValue="{Binding SurgeryTimeM.Friday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}" />
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}" />
                                 </DockPanel>
                             </Grid>
                             <Grid Margin="0,1,0,16">
@@ -161,7 +161,7 @@
                                             DockPanel.Dock="Right"
                                             EditValue="{Binding SurgeryTimeM.Saturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}" />
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}" />
                                 </DockPanel>
                             </Grid>
                             <Grid Margin="0,1,0,1">
@@ -175,7 +175,7 @@
                                             DockPanel.Dock="Right"
                                             EditValue="{Binding SurgeryTimeM.Sunday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}" />
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}" />
                                 </DockPanel>
                             </Grid>
                         </StackPanel>
@@ -189,7 +189,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -206,7 +206,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -223,7 +223,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -240,7 +240,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -257,7 +257,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -274,7 +274,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -291,7 +291,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -310,7 +310,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Monday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -327,7 +327,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Tuesday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -344,7 +344,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Wednesday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -361,7 +361,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Thursday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -378,7 +378,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Friday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -395,7 +395,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105" Margin="0,0,0,15"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Saturday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -412,7 +412,7 @@
                                     MaskIgnoreBlank="False" Spin="Spin" HorizontalAlignment="Left" Height="22"
                                     VerticalAlignment="Center" Width="105"
                                     IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}">
+                                                AncestorType={x:Type Utilities:ViewExtender}}, Path=surgeryTimeEnabled.Sunday}">
                                 <dxe:ButtonInfo GlyphKind="Cancel" Click="DateEditErase" ToolTip="Mező törlése" />
                                 <dxe:ButtonInfo GlyphKind="DropDown"
                                         Command="{Binding Path=(dxe:ButtonEdit.OwnerEdit).OpenPopupCommand, RelativeSource={RelativeSource Self}}" />
@@ -426,4 +426,4 @@
             </dxlc:LayoutGroup>
         </ScrollViewer>
     </DockPanel>
-</utilities:ViewExtender>
+</Utilities:ViewExtender>

@@ -12,15 +12,15 @@ namespace MedicalAdministrationSystem.Views.Statistics.Finance
         private Action<int> DeleteItems { get; set; }
         public FinanceQuestion(StatisticsM.Step Item, Action<int> DeleteItems)
         {
-            Start();
+            Start(Item, DeleteItems);
+        }
+        private async void Start(StatisticsM.Step Item, Action<int> DeleteItems)
+        {
+            await Loading.Show();
             this.DeleteItems = DeleteItems;
             FinanceQuestionVM = new FinanceQuestionVM(Item);
             this.DataContext = FinanceQuestionVM;
             InitializeComponent();
-        }
-        private async void Start()
-        {
-            await Loading.Show();
         }
         private void DeleteClick(object sender, System.Windows.RoutedEventArgs e)
         {

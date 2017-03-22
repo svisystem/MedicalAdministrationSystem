@@ -2,7 +2,6 @@
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MedicalAdministrationSystem.ViewModels.Statistics
 {
@@ -13,12 +12,16 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
         private Action CreateEnabled { get; set; }
         protected internal IntervalVM(StatisticsM.Step Item, Action CreateEnabled)
         {
+            Start(Item, CreateEnabled);
+        }
+        private async void Start(StatisticsM.Step Item, Action CreateEnabled)
+        {
             this.Item = Item;
             this.CreateEnabled = CreateEnabled;
             IntervalM = new IntervalM();
             IntervalM.PropertyChanged += SelectedScale_PropertyChanged;
             Start();
-            Task.Run(async () => await Loading.Hide());
+            await Loading.Hide();
         }
         private void Start()
         {

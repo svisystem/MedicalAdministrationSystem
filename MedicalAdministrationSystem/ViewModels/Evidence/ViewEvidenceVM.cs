@@ -38,7 +38,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
 
@@ -113,17 +113,16 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
         private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
-            {
                 ViewEvidenceM.AcceptChanges();
-            }
             else ConnectionMessage();
             await Utilities.Loading.Hide();
         }

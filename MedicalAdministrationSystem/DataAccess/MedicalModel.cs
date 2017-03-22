@@ -4,8 +4,7 @@ namespace MedicalAdministrationSystem.DataAccess
 
     public partial class MedicalModel : DbContext
     {
-        public MedicalModel()
-            : base("name=MedicalDb")
+        public MedicalModel(string nameOrConnectionString) : base(nameOrConnectionString)
         {
         }
 

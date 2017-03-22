@@ -33,10 +33,7 @@ namespace MedicalAdministrationSystem.Views.Evidence
         {
             date.Validate += date_Validate;
         }
-        protected internal bool Dirty()
-        {
-            return ImportEvidenceVM.VMDirty();
-        }
+        protected internal bool Dirty() => ImportEvidenceVM.VMDirty();
         private void date_Validate(object sender, ValidationEventArgs e)
         {
             importEvidenceValid.date = false;

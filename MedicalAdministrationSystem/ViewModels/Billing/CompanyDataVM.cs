@@ -40,7 +40,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
 
@@ -52,8 +52,9 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -73,7 +74,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             CompanyDataM.Erased.Clear();
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     foreach (CompanyDataM.Company item in me.companydata.ToList()
                         .Select(a => new CompanyDataM.Company
@@ -97,8 +98,9 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -184,7 +186,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 if (CompanyDataM.SelectedCompany.ID == null) eraseable = true;
@@ -198,8 +200,9 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -236,7 +239,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 if (CompanyDataM.Erased.Count != 0)
                 {
@@ -285,8 +288,9 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }

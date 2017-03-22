@@ -20,7 +20,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     await me.Database.Connection.OpenAsync();
 
                     List<object> patients = Members.Count == 0 ? me.patientdata.Join(me.scheduleperson_st, p => p.IdPD, sc => sc.ExistedIdSP, (p, sc) =>
@@ -63,8 +63,9 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
                     workingConn = true;
                     return new ObservableCollection<ChartM.Record>(collection);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                     return null;
                 }

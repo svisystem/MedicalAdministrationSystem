@@ -1,4 +1,4 @@
-﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Users.PassChange"
+﻿<Utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Users.PassChange"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,8 +6,8 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-    xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
-    <utilities:ViewExtender.Resources>
+    xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <Utilities:ViewExtender.Resources>
         <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
             <Viewbox Stretch="None">
                 <Grid Width="16" Height="16">
@@ -36,7 +36,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </utilities:ViewExtender.Resources>
+    </Utilities:ViewExtender.Resources>
     <dxlc:LayoutGroup Margin="0,30,0,0" Header="Jelszó módosítása" View="GroupBox" Orientation="Vertical" Width="350" 
         VerticalAlignment="Top" HorizontalAlignment="Center">
         <dxlc:LayoutControl Orientation="Vertical" ItemSpace="15" Padding="0" Margin="5">
@@ -84,4 +84,4 @@
             </dxlc:LayoutItem>
         </dxlc:LayoutControl>
     </dxlc:LayoutGroup>
-</utilities:ViewExtender>
+</Utilities:ViewExtender>

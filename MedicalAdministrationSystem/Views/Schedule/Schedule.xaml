@@ -11,7 +11,7 @@
         xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
         xmlns:dxo="http://schemas.devexpress.com/winfx/2008/xaml/office"
         xmlns:Schedule="clr-namespace:MedicalAdministrationSystem.ViewModels.Schedule"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
         x:Class="MedicalAdministrationSystem.Views.Schedule.Schedule" Loaded="UserControlLoaded">
     <UserControl.Resources>
         <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Critical, IsThemeIndependent=true}">
@@ -124,7 +124,7 @@
                                 <dxsch:ResourcesCheckedListBoxControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Ellipse Fill="{Binding Id, Converter={utilities:ResourceColorConverter}}"
+                                            <Ellipse Fill="{Binding Id, Converter={Utilities:ResourceColorConverter}}"
                                                     Width="13" Height="13" Margin="0,0,5,0" VerticalAlignment="Stretch"
                                                     Stroke="#FFB9B9B9" />
                                             <TextBlock Text="{Binding Caption}" Margin="0,0,5,0" />

@@ -35,7 +35,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 PatientListM.FullZipCodeList = me.zipcode_fx.ToList();
                 PatientListM.FullSettlementList = me.settlement_fx.ToList();
@@ -49,8 +49,9 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -91,7 +92,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 if (!PatientListM.SelectedUser.Id.Equals(0))
@@ -128,8 +129,9 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -193,7 +195,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 if (PatientListM.Erased.Count != 0)
                 {
@@ -234,8 +236,9 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }

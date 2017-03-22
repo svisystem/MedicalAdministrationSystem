@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Configuration;
-using MedicalAdministrationSystem.Models.Settings;
+﻿using MedicalAdministrationSystem.Models.Settings;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
+using System;
+using System.ComponentModel;
 
 namespace MedicalAdministrationSystem.ViewModels.Settings
 {
@@ -13,7 +12,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
         private PasswordManager PasswordManager { get; set; }
-        private Configuration config { get; set; }
         private Action SecurityLoad { get; set; }
         protected internal SecurityVM(Action SecurityLoad)
         {
@@ -23,14 +21,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Loading = new BackgroundWorker();
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
-            config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             Loading.RunWorkerAsync();
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
-            SecurityM.RegSecurityUser = config.AppSettings.Settings["securityUserName"].Value;
-            SecurityM.RegSecurityPass = config.AppSettings.Settings["securityPassword"].Value;
-            SecurityM.RegSecurityPassSalt = config.AppSettings.Settings["securityPasswordSalt"].Value;
+            SecurityM.RegSecurityUser = ConfigurationManager.ConfigurationManagerM.SecurityUsername;
+            SecurityM.RegSecurityPass = ConfigurationManager.ConfigurationManagerM.SecurityPassword;
+            SecurityM.RegSecurityPassSalt = ConfigurationManager.ConfigurationManagerM.SecurityPasswordSalt;
         }
         private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -55,36 +52,25 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         private void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
-            config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            if (SecurityM.NewSecurityUser.Length != 0)
+            if (!string.IsNullOrEmpty(SecurityM.NewSecurityUser))
+                ConfigurationManager.ConfigurationManagerM.SecurityUsername = SecurityM.NewSecurityUser;
+            if (!string.IsNullOrEmpty(SecurityM.NewSecurityPass))
             {
-                config.AppSettings.Settings["securityUserName"].Value = SecurityM.NewSecurityUser;
+                ConfigurationManager.ConfigurationManagerM.SecurityPasswordSalt = PasswordManager.GetSaltString();
+                ConfigurationManager.ConfigurationManagerM.SecurityPassword = PasswordManager.GenerateHashWithSalt
+                    (SecurityM.NewSecurityPass, ConfigurationManager.ConfigurationManagerM.SecurityPasswordSalt);
             }
-            if (SecurityM.NewSecurityPass.Length != 0)
-            {
-                config.AppSettings.Settings["securityPasswordSalt"].Value = PasswordManager.GetSaltString();
-                config.AppSettings.Settings["securityPassword"].Value = PasswordManager.GenerateHashWithSalt
-                    (SecurityM.NewSecurityPass, config.AppSettings.Settings["securityPasswordSalt"].Value);
-            }
-            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.Save();
         }
         private void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             dialog = new Dialog(false, "Sikeres adatómódosítás", SecurityLoad);
-            dialog.content = new TextBlock("Sikeresen módosított a biztonsági profilt");
+            dialog.content = new TextBlock("Sikeresen módosította a biztonsági profilt");
             dialog.Start();
         }
-        protected internal bool RegSecurityUserCompare(string value)
-        {
-            return SecurityM.RegSecurityUser.Equals(value);
-        }
-        protected internal bool PasswordMatch(string pass)
-        {
-            return PasswordManager.IsPasswordMatch(pass, SecurityM.RegSecurityPassSalt, SecurityM.RegSecurityPass);
-        }
-        protected internal bool VMDirty()
-        {
-            return SecurityM.IsChanged;
-        }
+        protected internal bool RegSecurityUserCompare(string value) => SecurityM.RegSecurityUser.Equals(value);
+        protected internal bool PasswordMatch(string pass) =>
+            PasswordManager.IsPasswordMatch(pass, SecurityM.RegSecurityPassSalt, SecurityM.RegSecurityPass);
+        protected internal bool VMDirty() => SecurityM.IsChanged;
     }
 }

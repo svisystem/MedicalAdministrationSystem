@@ -13,7 +13,7 @@ namespace MedicalAdministrationSystem.Views.Users
         private LoginValid loginValid { get; set; } = new LoginValid();
         public Login()
         {
-            Start();   
+            Start();
         }
         private async void Start()
         {

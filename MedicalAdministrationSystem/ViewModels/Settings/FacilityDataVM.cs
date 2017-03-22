@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Linq;
-using MedicalAdministrationSystem.DataAccess;
+﻿using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Settings;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicalAdministrationSystem.ViewModels.Settings
@@ -20,7 +19,6 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         private BackgroundWorker Execute { get; set; }
         protected internal BackgroundWorker ZipCodeSearch { get; set; }
         protected internal BackgroundWorker SettlementSearch { get; set; }
-        private Configuration config { get; set; }
         private companydata cd { get; set; }
         protected internal FacilityDataVM()
         {
@@ -43,7 +41,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     FacilityDataMDataSet.FullZipCodeList = me.zipcode_fx.ToList();
@@ -59,8 +57,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -77,7 +76,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 });
                 FacilityDataMDataSet.Companies = temp;
                 FacilityDataMViewElements.AcceptChanges();
-                
+
                 if (GlobalVM.GlobalM.CompanyId != null)
                     FacilityDataMDataSet.SelectedCompany = FacilityDataMDataSet.Companies.Where(a => a.ID == Convert.ToInt32(GlobalVM.GlobalM.CompanyId)).Single();
                 else FacilityDataMDataSet.SelectedCompany = FacilityDataMDataSet.Companies.Where(a => a.ID == 0).Single();
@@ -92,7 +91,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             {
                 try
                 {
-                    using (me = new MedicalModel())
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
                         me.Database.Connection.Open();
                         cd = me.companydata.Where(b => b.IdCD == FacilityDataMDataSet.SelectedCompany.ID).Single();
@@ -100,8 +99,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                         workingConn = true;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
             }
@@ -197,7 +197,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     if (!FacilityDataMDataSet.SelectedCompany.ID.Equals(0)) cd = me.companydata.Where(b => b.IdCD == FacilityDataMDataSet.SelectedCompany.ID).Single();
@@ -218,35 +218,37 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
             int newValue = 0;
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     newValue = me.companydata.Where(a => a.NameCD == FacilityDataMViewElements.Name).Select(a => a.IdCD).Single();
                     me.Database.Connection.Close();
                     workingConn = true;
                 }
-                config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
                 if (FacilityDataMDataSet.SelectedCompany.ID.Equals(0))
                 {
-                    config.AppSettings.Settings["facilityId"].Value = newValue.ToString();
+                    ConfigurationManager.ConfigurationManagerM.FacilityId = newValue.ToString();
                     GlobalVM.GlobalM.CompanyId = newValue;
                 }
                 else
                 {
-                    config.AppSettings.Settings["facilityId"].Value = FacilityDataMDataSet.SelectedCompany.ID.ToString();
+                    ConfigurationManager.ConfigurationManagerM.FacilityId = FacilityDataMDataSet.SelectedCompany.ID.ToString();
                     GlobalVM.GlobalM.CompanyId = FacilityDataMDataSet.SelectedCompany.ID;
                 }
-                config.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.Save();
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
 

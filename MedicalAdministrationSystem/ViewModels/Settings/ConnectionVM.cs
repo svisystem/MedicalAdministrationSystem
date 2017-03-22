@@ -1,9 +1,8 @@
-﻿using System.ComponentModel;
-using System.Configuration;
-using System.Windows.Forms;
-using MedicalAdministrationSystem.Models.Settings;
+﻿using MedicalAdministrationSystem.Models.Settings;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace MedicalAdministrationSystem.ViewModels.Settings
 {
@@ -12,25 +11,21 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         public ConnectionM ConnectionM { get; set; }
         private BackgroundWorker Loading { get; set; }
         private BackgroundWorker Execute { get; set; }
-        private Configuration config { get; set; }
         protected internal ConnectionVM()
         {
             ConnectionM = new ConnectionM();
             Loading = new BackgroundWorker();
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
-            config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             Loading.RunWorkerAsync();
         }
         private void LoadingModel(object sender, DoWorkEventArgs e)
         {
-            string temp = config.ConnectionStrings.ConnectionStrings["MedicalDb"].ConnectionString;
-            string[] splitted = temp.Split(new char[] { ';', '=' });
-            ConnectionM.HostName = splitted[3];
-            ConnectionM.PortNumber = splitted[5];
-            ConnectionM.DatabaseName = splitted[11];
-            ConnectionM.UserId = splitted[7];
-            ConnectionM.Password = splitted[9];
+            ConnectionM.HostName = ConfigurationManager.ConfigurationManagerM.Server;
+            ConnectionM.PortNumber = ConfigurationManager.ConfigurationManagerM.PortNumber;
+            ConnectionM.DatabaseName = ConfigurationManager.ConfigurationManagerM.Database;
+            ConnectionM.UserId = ConfigurationManager.ConfigurationManagerM.UserId;
+            ConnectionM.Password = ConfigurationManager.ConfigurationManagerM.Password;
         }
         private async void LoadingModelComplete(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -53,11 +48,12 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         }
         private void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
-            config.ConnectionStrings.ConnectionStrings["MedicalDb"].ConnectionString =
-                "\"persistsecurityinfo=True;server=" + ConnectionM.HostName + ";port=" + ConnectionM.PortNumber + ";user id=" + ConnectionM.UserId + 
-                ";password=" + ConnectionM.Password + ";database=" + ConnectionM.DatabaseName + "\"";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("connectionStrings");
+            ConfigurationManager.ConfigurationManagerM.Server = ConnectionM.HostName;
+            ConfigurationManager.ConfigurationManagerM.PortNumber = ConnectionM.PortNumber;
+            ConfigurationManager.ConfigurationManagerM.Database = ConnectionM.DatabaseName;
+            ConfigurationManager.ConfigurationManagerM.UserId = ConnectionM.UserId;
+            ConfigurationManager.ConfigurationManagerM.Password = ConnectionM.Password;
+            ConfigurationManager.Save();
         }
         private void ExecuteCompleted(object sender, RunWorkerCompletedEventArgs e)
         {

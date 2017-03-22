@@ -1,6 +1,5 @@
 ﻿using MedicalAdministrationSystem.ViewModels.Statistics;
 using MedicalAdministrationSystem.ViewModels.Utilities;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.Views.Statistics
@@ -10,14 +9,15 @@ namespace MedicalAdministrationSystem.Views.Statistics
         protected internal StatisticsVM StatisticsVM { get; set; }
         public Statistics()
         {
-            Task.Run(async () => await Loading.Show());
+            Start();
+        }
+        private async void Start()
+        {
+            await Loading.Show();
             StatisticsVM = new StatisticsVM();
             this.DataContext = StatisticsVM;
             InitializeComponent();
         }
-        protected internal bool Dirty()
-        {
-            return false;
-        }
+        protected internal bool Dirty() => false;
     }
 }

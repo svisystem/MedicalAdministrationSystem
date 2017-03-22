@@ -15,12 +15,12 @@ namespace MedicalAdministrationSystem.Views.Patients
         protected internal Action Selected { get; set; }
         public PatientList(Action Selected)
         {
-            this.Selected = Selected;
-            Start();
+            Start(Selected);
         }
-        private async void Start()
+        private async void Start(Action Selected)
         {
             await Loading.Show();
+            this.Selected = Selected;
             PatientListVM = new PatientListVM(view_Loaded);
             this.DataContext = PatientListVM;
             InitializeComponent();
@@ -44,8 +44,7 @@ namespace MedicalAdministrationSystem.Views.Patients
         }
         private async void view_Loaded()
         {
-            await this.Dispatcher.BeginInvoke(new Action(() =>
-                 view.BestFitColumns()), DispatcherPriority.Loaded);
+            this.Dispatcher.Invoke(new Action(() => view.BestFitColumns()));
             await Loading.Hide();
         }
         private void check_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

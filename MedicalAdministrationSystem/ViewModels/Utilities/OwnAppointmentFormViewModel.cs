@@ -16,7 +16,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         public Action<bool> RegistrateEnabled { get; set; }
         public Action<bool> CollectionGetChanges { get; set; }
-        public static OwnAppointmentFormViewModel Create(SchedulerControl control, DevExpress.XtraScheduler.Appointment apt, 
+        public static OwnAppointmentFormViewModel Create(SchedulerControl control, DevExpress.XtraScheduler.Appointment apt,
             ObservableCollection<ScheduleM.Patient> Patients, Action<bool> RegistrateEnabled, Action<bool> CollectionGetChanges)
         {
             return ViewModelSource.Create(() => new OwnAppointmentFormViewModel(control, apt)
@@ -28,9 +28,8 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
 
         public OwnAppointmentFormViewModel(SchedulerControl control, DevExpress.XtraScheduler.Appointment apt)
-            : base(control, apt) {
-
-        }
+            : base(control, apt)
+        { }
         protected override bool CloseChangedAppointment()
         {
             return true;

@@ -34,7 +34,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 foreach (CreateBillM.Company item in me.companydata.ToList().
@@ -64,8 +64,9 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -108,7 +109,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
                 Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
                 Execute.RunWorkerAsync();
-            }, async () => await Utilities.Loading.Hide(), true);
+            }, async () =>  await Utilities.Loading.Hide(), true);
             dialog.content = new TextBlock("Biztos elkészíti a számlát?\n\n" +
                 "Későbbi módosításra nem lesz már lehetőség");
             dialog.Start();
@@ -127,7 +128,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
 
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 CreateBillM.CompanyData from = me.companydata.Where(cd => cd.IdCD == GlobalVM.GlobalM.CompanyId).Select(
@@ -203,13 +204,14 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
         int billId;
-        private void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
+        private async void ExecuteComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (workingConn)
             {
@@ -217,7 +219,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 dialog.content = new TextBlock("Sikeresen elkészítettük a számlát");
                 dialog.Start();
 
-                new MenuButtonsEnabled()
+                await new MenuButtonsEnabled()
                 {
                     Id = billId
                 }.LoadItem(GlobalVM.StockLayout.billingTBI);

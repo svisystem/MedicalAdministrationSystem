@@ -20,7 +20,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     await me.Database.Connection.OpenAsync();
 
                     List<Income> incomes = me.billing.Join(me.currentpricesforeachbill_st, b => b.IdB, cp => cp.IdB, (b, cp) => new { b.DateTimeB, cp.IdPFS }).
@@ -65,8 +65,9 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
                     workingConn = true;
                     return new ObservableCollection<ChartM.Record>(collection);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                     return null;
                 }

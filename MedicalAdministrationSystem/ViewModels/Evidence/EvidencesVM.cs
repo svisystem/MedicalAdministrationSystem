@@ -34,7 +34,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             EvidencesM.Erased.Clear();
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 if (me.evidencedata.Where(ex => ex.PatientIdED == EvidencesM.PatientId).Count() != 0)
@@ -127,8 +127,9 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -161,7 +162,7 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
 
                 foreach (EvidencesM.ErasedItem item in EvidencesM.Erased)
@@ -209,8 +210,9 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -255,9 +257,9 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             await Utilities.Loading.Show();
             new FormChecking(() => OkMethod(false), () => { }, true);
         }
-        private void OkMethod(bool which)
+        private async void OkMethod(bool which)
         {
-            new MenuButtonsEnabled()
+            await new MenuButtonsEnabled()
             {
                 modifier = which,
                 Id = EvidencesM.SelectedEvidence.Id,

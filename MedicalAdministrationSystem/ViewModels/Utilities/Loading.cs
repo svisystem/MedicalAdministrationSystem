@@ -14,12 +14,23 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         static async internal Task Show()
         {
             counter++;
-            if (counter.Equals(1))
+            if (counter.Equals(1) && !showed)
             {
                 metroWindow.Focusable = false;
                 loading.Loaded += Loaded;
                 await metroWindow.ShowMetroDialogAsync(loading);
             }
+        }
+        private static async void Loaded(object sender, RoutedEventArgs e)
+        {
+            if (counter.Equals(0))
+            {
+                metroWindow.Focusable = true;
+                loading.Unloaded += Unloaded;
+                await metroWindow.HideMetroDialogAsync(loading);
+            }
+            else showed = true;
+            loading.Loaded -= Loaded;
         }
         static async internal Task Hide()
         {
@@ -27,20 +38,20 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             if (counter.Equals(0) && showed)
             {
                 metroWindow.Focusable = true;
+                loading.Unloaded += Unloaded;
                 await metroWindow.HideMetroDialogAsync(loading);
-                showed = false;
             }
         }
-        private static async void Loaded(object sender, RoutedEventArgs e)
+        private static async void Unloaded(object sender, RoutedEventArgs e)
         {
-            showed = true;
-            if (counter.Equals(0))
+            if (counter != 0)
             {
-                metroWindow.Focusable = true;
-                await metroWindow.HideMetroDialogAsync(loading);
-                showed = false;
+                metroWindow.Focusable = false;
+                loading.Loaded += Loaded;
+                await metroWindow.ShowMetroDialogAsync(loading);
             }
-            loading.Loaded -= Loaded;
+            else showed = false;
+            loading.Unloaded -= Unloaded;
         }
     }
 }

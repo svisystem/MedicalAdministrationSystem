@@ -7,7 +7,7 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
     <UserControl.Resources>
         <ControlTemplate x:Key="comboBoxTemplate">
             <dxg:GridControl DataSource="{Binding Path=(dxe:BaseEdit.OwnerEdit).ItemsSource, RelativeSource={RelativeSource Self}}"

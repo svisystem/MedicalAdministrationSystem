@@ -5,7 +5,6 @@ using MedicalAdministrationSystem.Views.Dialogs;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows;
 
 namespace MedicalAdministrationSystem.ViewModels.Settings
 {
@@ -30,7 +29,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 ServicesM.Services.Clear();
                 foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == null).ToList())
@@ -47,8 +46,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -76,7 +76,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 if (ServicesM.Erased.Count != 0)
                     foreach (int service in ServicesM.Erased)
@@ -137,8 +137,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 ServicesM.Erased.Clear();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }

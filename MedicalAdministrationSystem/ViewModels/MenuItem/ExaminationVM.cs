@@ -81,7 +81,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         protected internal async void ExaminationsLoad()
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
@@ -90,7 +90,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         protected internal async void NewExaminationLoad()
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
@@ -99,7 +99,7 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         protected internal async void ImportExaminationLoad()
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
@@ -108,19 +108,19 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         protected internal async void ViewLoad(bool imported, int ID)
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             view.IsEnabledTrigger = true;
             await ViewLoad(new Func<UserControl>(() => new ExaminationView(imported, ID)), view);
         }
         protected internal async void EditLoad(bool imported, int ID)
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             edit.IsEnabledTrigger = true;
             await ViewLoad(new Func<UserControl>(() => new ExaminationEdit(imported, ID)), edit);
         }
         protected internal async void ExaminationPlanLoad()
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();

@@ -69,8 +69,7 @@ namespace MedicalAdministrationSystem.Views.Settings
         }
         private async void view_Loaded()
         {
-            await this.Dispatcher.BeginInvoke(new Action(() =>
-                 view.BestFitColumns()), DispatcherPriority.Loaded);
+            this.Dispatcher.Invoke(new Action(() => view.BestFitColumns()));
             ServicesVM.SetStartValue();
             await Loading.Hide();
         }

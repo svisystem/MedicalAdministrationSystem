@@ -3,6 +3,7 @@ using MedicalAdministrationSystem.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
@@ -34,19 +35,19 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         public MenuButtonsEnabled(priviledges priviledges)
         {
             foreach (Item item in menuItems)
-                if (Convert.ToBoolean(priviledges.GetType().GetProperty(item.DataBaseName, BindingFlags.Instance | 
+                if (Convert.ToBoolean(priviledges.GetType().GetProperty(item.DataBaseName, BindingFlags.Instance |
                     BindingFlags.Public | BindingFlags.NonPublic).GetValue(priviledges)))
                     item.Tile.Visibility = Visibility.Visible;
                 else item.Tile.Visibility = Visibility.Collapsed;
             GlobalVM.StockLayout.billingTBI.IsEnabled = !GlobalVM.StockLayout.patientsTBI.IsVisible;
         }
         public MenuButtonsEnabled() { }
-        protected internal void LoadFirst()
+        protected internal async void LoadFirst()
         {
             foreach (Item item in menuItems)
                 if (Visible(item.Tile) && Enabled(item.Tile))
                 {
-                    LoadItem(item.Tile);
+                    await LoadItem(item.Tile);
                     break;
                 }
         }
@@ -57,7 +58,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         protected internal void SingleChange(TileBarItem item, Visibility vis) => item.Visibility = vis;
         private bool Visible(TileBarItem item) => item.Visibility == Visibility.Visible;
         private bool Enabled(TileBarItem item) => item.IsEnabled;
-        protected internal async void LoadItem(TileBarItem item)
+        protected internal async Task LoadItem(TileBarItem item)
         {
             if (Visible(item) && Enabled(item))
             {

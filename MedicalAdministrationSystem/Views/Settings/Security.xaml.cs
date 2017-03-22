@@ -16,7 +16,7 @@ namespace MedicalAdministrationSystem.Views.Settings
         private PasswordValid passwordValid { get; set; }
         public Security(Action SecurityLoad)
         {
-            Start(SecurityLoad);   
+            Start(SecurityLoad);
         }
         private async void Start(Action SecurityLoad)
         {

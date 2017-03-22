@@ -39,7 +39,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 ObservableCollection<BillsM.Bill> collection = new ObservableCollection<BillsM.Bill>();
                 try
                 {
-                    me = new MedicalModel();
+                    me = new MedicalModel(ConfigurationManager.Connect());
                     await me.Database.Connection.OpenAsync();
 
                     if (BillsM.PatientId == 0)
@@ -78,14 +78,15 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                     workingConn = true;
                     return collection;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                     return null;
                 }
             }, CancellationToken.None).ContinueWith(task =>
             {
-                if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action (() => ConnectionMessage()));
+                if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
                 else
                 {
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Loaded()));
@@ -94,9 +95,9 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 return null;
             });
         }
-        protected internal void View()
+        protected internal async void View()
         {
-            new MenuButtonsEnabled()
+            await new MenuButtonsEnabled()
             {
                 Id = BillsM.SelectedBill.Id
             }.LoadItem(GlobalVM.StockLayout.billingTBI);

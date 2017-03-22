@@ -18,9 +18,6 @@ namespace MedicalAdministrationSystem.Views.Billing
             ViewBillVM = new ViewBillVM(Id, ref content);
             this.DataContext = ViewBillVM;
         }
-        protected internal bool Dirty()
-        {
-            return false;
-        }
+        protected internal bool Dirty() => false;
     }
 }

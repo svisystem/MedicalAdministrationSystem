@@ -29,7 +29,7 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == null).ToList())
                     ExaminationPlanM.Services.Add(new ExaminationPlanM.Service
@@ -43,8 +43,9 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -71,8 +72,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
         }
         protected internal void Add()
         {
-            WordEditor.ExaminationPlanItem(ExaminationPlanM.Selected.Name, 
-                ExaminationPlanM.Selected.Details != null ? ExaminationPlanM.Selected.Details : null, 
+            WordEditor.ExaminationPlanItem(ExaminationPlanM.Selected.Name,
+                ExaminationPlanM.Selected.Details != null ? ExaminationPlanM.Selected.Details : null,
                 ExaminationPlanM.Selected.Price != 0 ? ExaminationPlanM.Selected.Price.ToString("##,#", new CultureInfo("hu-HU")) : null);
         }
         protected internal bool VMDirty()

@@ -4,7 +4,6 @@ using MedicalAdministrationSystem.Views.Patients;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels
 {
@@ -41,11 +40,12 @@ namespace MedicalAdministrationSystem.ViewModels
                 new FormChecking(Ok, () => { }, true);
             }
         }
-        private void Ok()
+        private async void Ok()
         {
-            MenuButtonsEnabled mbe = new MenuButtonsEnabled();
-            mbe.modifier = false;
-            mbe.LoadItem(GlobalVM.StockLayout.patientsTBI);
+            await new MenuButtonsEnabled()
+            {
+                modifier = false
+            }.LoadItem(GlobalVM.StockLayout.patientsTBI);
         }
         protected internal void Dispose()
         {
@@ -79,10 +79,10 @@ namespace MedicalAdministrationSystem.ViewModels
                 Selected();
             }
         }
-        private void OkMethod()
+        private async void OkMethod()
         {
             Dispose();
-            new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.patientsTBI);
+            await new MenuButtonsEnabled().LoadItem(GlobalVM.StockLayout.patientsTBI);
             Selected();
         }
         protected internal void Add(bool Imported, int Id, string Name, string Code, DateTime Date)

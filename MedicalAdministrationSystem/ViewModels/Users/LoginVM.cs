@@ -6,13 +6,11 @@ using MedicalAdministrationSystem.Views.Global;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels.Users
 {
@@ -24,7 +22,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         private BackgroundWorker bgw1 { get; set; }
         private BackgroundWorker bgw2 { get; set; }
         private BackgroundWorker offlinebgw { get; set; }
-        private Configuration config { get; set; }
         protected internal LoginVM()
         {
             LoginM = new LoginM();
@@ -32,50 +29,44 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         }
         protected internal async void Start()
         {
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 try
                 {
-                    using (me = new MedicalModel())
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
                         me.Database.Connection.Open();
                         LoginM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
                         me.Database.Connection.Close();
                         workingConn = true;
                     }
-                    config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    if (config.AppSettings.Settings["facilityId"].Value != string.Empty) GlobalVM.GlobalM.CompanyId = Convert.ToInt32(config.AppSettings.Settings["facilityId"].Value);
+                    if (ConfigurationManager.ConfigurationManagerM.FacilityId != string.Empty)
+                        GlobalVM.GlobalM.CompanyId = Convert.ToInt32(ConfigurationManager.ConfigurationManagerM.FacilityId);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
                 finally
                 {
                     if (!workingConn)
-                    {
-                        config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                        LoginM.ExistUsers = new List<string> { config.AppSettings.Settings["securityUserName"].Value };
-                    }
+                        LoginM.ExistUsers = new List<string> { ConfigurationManager.ConfigurationManagerM.SecurityUsername };
                 }
-            }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
+            }, CancellationToken.None).ContinueWith(async task =>
             {
                 LoginM.AcceptChanges();
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
+                if (!workingConn)
                 {
-                    if (!workingConn)
-                    {
-                        dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", () => { });
-                        dialog.content = new TextBlock("Adatbáziskapcsolat nélkül nem lehet megfelelően használni az alkalmazást\n" +
-                            "Első használat alkalmával be kell konfigurálni az adatbázis kapcsolatot\n" +
-                            "Kérjük jelezze a problémát a rendszergazdának");
-                        dialog.Start();
-                        (GlobalVM.StockLayout.verticalMenu.Children[0] as StockVerticalMenuItem).IsEnabledTrigger = false;
-                    }
-                    await Utilities.Loading.Hide();
-                }));
-                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-            });
+                    dialog = new Dialog(true, "Nem sikerült elérni az adatbázist", async () => await Utilities.Loading.Hide());
+                    dialog.content = new TextBlock("Adatbáziskapcsolat nélkül nem lehet megfelelően használni az alkalmazást\n" +
+                        "Első használat alkalmával be kell konfigurálni az adatbázis kapcsolatot\n" +
+                        "Kérjük jelezze a problémát a rendszergazdának");
+                    dialog.Start();
+                    (GlobalVM.StockLayout.verticalMenu.Children[0] as StockVerticalMenuItem).IsEnabledTrigger = false;
+                }
+                else await Utilities.Loading.Hide();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
         protected internal async void ExecuteMethod()
         {
@@ -94,17 +85,14 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 dialog.Start();
             }
         }
-        protected internal bool UserCheck(string user)
-        {
-            return LoginM.ExistUsers.Any(u => u == user);
-        }
+        protected internal bool UserCheck(string user) => LoginM.ExistUsers.Any(u => u == user);
         private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             if (workingConn)
             {
                 try
                 {
-                    using (me = new MedicalModel())
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
                         await me.Database.Connection.OpenAsync();
                         GlobalVM.GlobalM.AccountID = await me.accountdata.Where(a => a.UserNameAD == LoginM.Username && a.DeletedAD != true).Select(a => a.IdAD).SingleAsync();
@@ -123,15 +111,16 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                         workingConn = true;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.WriteException(ex);
                     workingConn = false;
                 }
             }
             else
             {
-                LoginM.RegPass = config.AppSettings.Settings["securityPassword"].Value;
-                LoginM.RegPassSalt = config.AppSettings.Settings["securityPasswordSalt"].Value;
+                LoginM.RegPass = ConfigurationManager.ConfigurationManagerM.SecurityPassword;
+                LoginM.RegPassSalt = ConfigurationManager.ConfigurationManagerM.SecurityPasswordSalt;
 
             }
         }
@@ -153,7 +142,11 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else
             {
-                dialog = new Dialog(true, "Sikertelen belépés", async () => await Utilities.Loading.Hide());
+                dialog = new Dialog(true, "Sikertelen belépés", async () =>
+                {
+                    GlobalVM.GlobalM.AccountID = null;
+                    await Utilities.Loading.Hide();
+                });
                 dialog.content = new TextBlock("Nem egyeznek meg a beírt adatok\n" +
                     "Kérjük ellenőrizze le őket");
                 dialog.Start();
@@ -166,14 +159,14 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             mbe.SingleChange(GlobalVM.StockLayout.settingsTBI, Visibility.Visible);
             mbe.SingleChange(GlobalVM.StockLayout.logoutTBI, Visibility.Visible);
             GlobalVM.GlobalM.Secure = true;
-            mbe.LoadItem(GlobalVM.StockLayout.settingsTBI);
+            await mbe.LoadItem(GlobalVM.StockLayout.settingsTBI);
             await Utilities.Loading.Hide();
         }
         private async void bgw1_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     await me.Database.Connection.OpenAsync();
                     LoginM.Verified = await me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.VerifiedByAdminAD).SingleAsync();
@@ -181,8 +174,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -214,7 +208,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     await me.Database.Connection.OpenAsync();
                     GlobalVM.GlobalM.PriviledgeID = await me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(b => b.PriviledgesIdAD).SingleAsync();
@@ -225,8 +219,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -241,9 +236,6 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else ConnectionMessage();
         }
-        protected internal bool VMDirty()
-        {
-            return LoginM.IsChanged;
-        }
+        protected internal bool VMDirty() => LoginM.IsChanged;
     }
 }

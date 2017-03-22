@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.ViewModels.Utilities
 {
@@ -25,16 +24,13 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
         }
         protected internal async Task ViewLoad(Func<UserControl> method, StockVerticalMenuItem button)
         {
-            await Task.Factory.StartNew(method, 
-            CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(task =>
+            await Task.Factory.StartNew(method,
+            CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(async task =>
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
-                {
-                    GlobalVM.StockLayout.actualContent.Content = task.Result;
-                    button.button_Click(button.button, new RoutedEventArgs(Button.ClickEvent));
-                    await Loading.Hide();
-                }));
-            });
+                GlobalVM.StockLayout.actualContent.Content = task.Result;
+                button.button_Click(button.button, new RoutedEventArgs(Button.ClickEvent));
+                await Loading.Hide();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
             currentItem = button;
         }
 

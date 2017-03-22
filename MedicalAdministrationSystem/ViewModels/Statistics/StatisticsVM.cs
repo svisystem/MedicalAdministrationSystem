@@ -6,7 +6,6 @@ using MedicalAdministrationSystem.Views.Statistics.Finance;
 using MedicalAdministrationSystem.Views.Statistics.Patient;
 using MedicalAdministrationSystem.Views.Statistics.Service;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MedicalAdministrationSystem.ViewModels.Statistics
 {
@@ -15,11 +14,15 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
         public StatisticsM StatisticsM { get; set; }
         protected internal StatisticsVM()
         {
+            Start();
+        }
+        private async void Start()
+        {
             StatisticsM = new StatisticsM();
             StatisticsM.Steps.Add(new StatisticsM.Step() { Id = 0 });
             StatisticsM.Steps[0].Item = new Default(StatisticsM.Steps[0]);
             StatisticsM.Steps[0].PropertyChanged += DefaultChanged;
-            Task.Run(async () => await Loading.Hide());
+            await Loading.Hide();
         }
         private void DefaultChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

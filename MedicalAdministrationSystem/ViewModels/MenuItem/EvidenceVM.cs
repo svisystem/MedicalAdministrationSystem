@@ -72,7 +72,7 @@ namespace MedicalAdministrationSystem.ViewModels
         }
         protected internal async void EvidencesLoad()
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
@@ -81,7 +81,7 @@ namespace MedicalAdministrationSystem.ViewModels
         }
         protected internal async void NewEvidenceLoad()
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
@@ -90,7 +90,7 @@ namespace MedicalAdministrationSystem.ViewModels
         }
         protected internal async void ImportEvidenceLoad()
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             await ViewLoad(new Func<UserControl>(() =>
             {
                 SetBack();
@@ -99,13 +99,13 @@ namespace MedicalAdministrationSystem.ViewModels
         }
         protected internal async void ViewEvidenceLoad(bool imported, int ID)
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             viewEvidence.IsEnabledTrigger = true;
             await ViewLoad(new Func<UserControl>(() => new ViewEvidence(imported, ID)), viewEvidence);
         }
         protected internal async void EditEvidenceLoad(bool imported, int ID)
         {
-            await Utilities.Loading.Show();
+           await Utilities.Loading.Show();
             editEvidence.IsEnabledTrigger = true;
             await ViewLoad(new Func<UserControl>(() => new EditEvidence(imported, ID)), editEvidence);
         }

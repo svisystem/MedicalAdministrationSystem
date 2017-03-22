@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
-using System.Linq;
-using MedicalAdministrationSystem.DataAccess;
+﻿using MedicalAdministrationSystem.DataAccess;
 using MedicalAdministrationSystem.Models.Users;
-using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.ViewModels.MenuItem;
+using MedicalAdministrationSystem.ViewModels.Utilities;
 using MedicalAdministrationSystem.Views.Dialogs;
+using System;
+using System.ComponentModel;
+using System.Linq;
 
 namespace MedicalAdministrationSystem.ViewModels.Users
 {
@@ -43,7 +44,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     await me.Database.Connection.OpenAsync();
                     accountdata ad = new accountdata();
@@ -57,8 +58,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -84,7 +86,7 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         {
             try
             {
-                using (me = new MedicalModel())
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
                     me.Database.Connection.Open();
                     PassChangeM.RegPass = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PasswordAD).Single();
@@ -94,8 +96,9 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     workingConn = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }

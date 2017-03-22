@@ -1,4 +1,4 @@
-﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Fragments.ExceptedTime"
+﻿<Utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Fragments.ExceptedTime"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,8 +6,8 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
-    <utilities:ViewExtender.Resources>
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities">
+    <Utilities:ViewExtender.Resources>
         <DataTemplate x:Key="{dxet:ErrorTypesThemeKeyExtension ResourceKey=Information, IsThemeIndependent=true}">
             <Viewbox Stretch="None">
                 <Grid Width="16" Height="16">
@@ -42,7 +42,7 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
         <Image x:Key="minus" Source="{dx:DXImageGrayscale Image=Remove_32x32.png}" Width="32" Height="32"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" />
-    </utilities:ViewExtender.Resources>
+    </Utilities:ViewExtender.Resources>
     <DockPanel>
         <Separator DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0" />
         <Button x:Name="image" DockPanel.Dock="Left" Width="50" Padding="0" Margin="10,0" Height="50" VerticalAlignment="Center"
@@ -90,4 +90,4 @@
             </dxe:DateEdit>
         </DockPanel>
     </DockPanel>
-</utilities:ViewExtender>
+</Utilities:ViewExtender>

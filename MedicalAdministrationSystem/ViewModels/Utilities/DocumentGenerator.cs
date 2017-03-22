@@ -399,7 +399,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             if (to.Phone != null)
                 if (!exist2)
                 {
-                    range7 = doc.InsertText(right[0, 0].Range.Start, "Telefon: " + to.Phone );
+                    range7 = doc.InsertText(right[0, 0].Range.Start, "Telefon: " + to.Phone);
                     exist2 = true;
                 }
                 else doc.InsertText(right[0, 0].Range.Start, "Telefon: " + to.Phone + "\n");
@@ -441,7 +441,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
             if (to.TaxNumber != null)
                 if (!exist2)
                 {
-                    range7 = doc.InsertText(right[0, 0].Range.Start, "Adószám: " + to.TaxNumber );
+                    range7 = doc.InsertText(right[0, 0].Range.Start, "Adószám: " + to.TaxNumber);
                     exist2 = true;
                 }
                 else doc.InsertText(right[0, 0].Range.Start, "Adószám: " + to.TaxNumber + "\n");

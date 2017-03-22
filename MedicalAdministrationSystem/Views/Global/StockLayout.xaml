@@ -8,7 +8,8 @@
         x:Class="MedicalAdministrationSystem.Views.Global.StockLayout" SnapsToDevicePixels="True"
         Loaded="StockLayoutLoaded">
     <DockPanel LastChildFill="True">
-        <dxnav:TileBar x:Name="tileBar" Padding="0,15,0,15" VerticalAlignment="Top" DockPanel.Dock="Top">
+        <dxnav:TileBar x:Name="tileBar" Padding="0,15,0,15" VerticalAlignment="Top" DockPanel.Dock="Top"
+                       SelectionChanging="tileBar_SelectionChanging">
             <dxnav:TileBarItem x:Name="scheduleTBI" Content="Előjegyzés" SelectionPadding="2" Height="78" Width="160"
                     Margin="0" Padding="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
                     Background="#FF3C6193"

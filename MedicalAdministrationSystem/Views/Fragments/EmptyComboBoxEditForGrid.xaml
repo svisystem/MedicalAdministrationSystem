@@ -1,4 +1,4 @@
-﻿<utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Fragments.EmptyComboBoxEditForGrid"
+﻿<Utilities:ViewExtender x:Class="MedicalAdministrationSystem.Views.Fragments.EmptyComboBoxEditForGrid"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,9 +7,9 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-        xmlns:utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
+        xmlns:Utilities="clr-namespace:MedicalAdministrationSystem.ViewModels.Utilities"
         x:Name="emptyComboBoxEditForGrid">
-    <utilities:ViewExtender.Resources>
+    <Utilities:ViewExtender.Resources>
         <ControlTemplate x:Key="comboBoxTemplate">
             <DockPanel>
                 <DockPanel Height="40" DockPanel.Dock="Bottom">
@@ -19,7 +19,7 @@
                             Margin="0">
                         <Button Margin="0,0,10,0" VerticalAlignment="Center" Padding="5,0,0,0"
                                 HorizontalContentAlignment="Center" x:Name="import" IsEnabled="{Binding RelativeSource=
-                                {RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, 
+                                {RelativeSource FindAncestor, AncestorType={x:Type Utilities:ViewExtender}}, 
                                 Path=ImportEnable}" Click="Import"
                                 ToolTip="A kiválasztott vizsgálatok hozzárendelése az aktuális státuszhoz">
                             <StackPanel Orientation="Horizontal">
@@ -30,7 +30,7 @@
                             </StackPanel>
                         </Button>
                         <Button VerticalAlignment="Center" Padding="5,0,0,0" x:Name="export" IsEnabled="{Binding RelativeSource=
-                                {RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, 
+                                {RelativeSource FindAncestor, AncestorType={x:Type Utilities:ViewExtender}}, 
                                 Path=ExportEnable}" HorizontalContentAlignment="Center"
                                 ToolTip="A státuszhoz rendelt vizsgálatok kimentése" Click="Export">
                             <StackPanel Orientation="Horizontal">
@@ -75,15 +75,15 @@
                 </dxg:GridControl>
             </DockPanel>
         </ControlTemplate>
-    </utilities:ViewExtender.Resources>
+    </Utilities:ViewExtender.Resources>
     <Grid>
-        <utilities:EmptyComboBoxEdit x:Name="associatedExaminations"
+        <Utilities:EmptyComboBoxEdit x:Name="associatedExaminations"
                 ItemsSource="{Binding EmptyComboBoxEditM.List, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 PopupContentTemplate="{StaticResource comboBoxTemplate}"
                 AllowDefaultButton="True" IsTextEditable="False" IsReadOnly="True" ShowBorder="False" Margin="-1" />
         <TextBlock Margin="0,0,15,0" Foreground="#FF373A3D" IsHitTestVisible="False" Background="White"
                 Padding="4,2,3,0" Text="{Binding RelativeSource=
-                                {RelativeSource FindAncestor, AncestorType={x:Type utilities:ViewExtender}}, 
+                                {RelativeSource FindAncestor, AncestorType={x:Type Utilities:ViewExtender}}, 
                                 Path=Count}" FlowDirection="RightToLeft" />
     </Grid>
-</utilities:ViewExtender>
+</Utilities:ViewExtender>

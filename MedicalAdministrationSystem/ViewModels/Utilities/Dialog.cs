@@ -52,7 +52,7 @@ namespace MedicalAdministrationSystem.ViewModels.Utilities
                 else DialogBase.no.Content = "Mégse";
                 DialogBase.no.Click += Cancelmethod;
             }
-            
+
             DialogBase.yes.Focus();
             GlobalVM.MainWindow.Focusable = false;
             await GlobalVM.MainWindow.ShowMetroDialogAsync(DialogBase);

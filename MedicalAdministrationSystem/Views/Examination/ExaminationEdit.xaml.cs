@@ -22,7 +22,7 @@ namespace MedicalAdministrationSystem.Views.Examination
             this.DataContext = ExaminationEditVM;
             InitializeComponent();
             button = Save;
-            ExaminationEditVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => examinationEditValid.Validate(examinationEditValid)), SetEnabledSave, delegate { });
+            ExaminationEditVM.ParameterPassingAfterLoad(ref content, new Func<bool>(() => examinationEditValid.Validate(examinationEditValid)), SetEnabledSave, (bool x) => { });
             validatorClass = examinationEditValid;
             ConnectValidators();
         }

@@ -1,7 +1,6 @@
 ﻿using MedicalAdministrationSystem.Models.Statistics;
 using MedicalAdministrationSystem.ViewModels.Statistics;
 using MedicalAdministrationSystem.ViewModels.Utilities;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MedicalAdministrationSystem.Views.Statistics
@@ -11,7 +10,11 @@ namespace MedicalAdministrationSystem.Views.Statistics
         protected internal DefaultVM DefaultVM { get; set; }
         public Default(StatisticsM.Step Item)
         {
-            Task.Run(async () => await Loading.Show());
+            Start(Item);
+        }
+        private async void Start(StatisticsM.Step Item)
+        {
+            await Loading.Show();
             DefaultVM = new DefaultVM(Item);
             this.DataContext = DefaultVM;
             InitializeComponent();

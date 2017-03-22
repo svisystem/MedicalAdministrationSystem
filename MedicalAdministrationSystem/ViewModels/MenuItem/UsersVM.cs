@@ -109,15 +109,16 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         {
             try
             {
-                me = new MedicalModel();
+                me = new MedicalModel(ConfigurationManager.Connect());
                 me.Database.Connection.Open();
                 me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().DeletedAD = true;
                 me.SaveChanges();
                 me.Database.Connection.Close();
                 workingConn = true;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.WriteException(ex);
                 workingConn = false;
             }
         }
@@ -126,7 +127,8 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             await Utilities.Loading.Hide();
             if (workingConn)
             {
-                dialog = new Dialog(false, "Felhasználói fiók törlése", async () => {
+                dialog = new Dialog(false, "Felhasználói fiók törlése", async () =>
+                {
                     await Utilities.Loading.Show();
                     new LogoutVM().OkMethod(false);
                 });
@@ -141,9 +143,11 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
         }
         private void Question()
         {
-            dialog = new Dialog(false, "Bejelentkezett felhasználó nem regisztrálhat újra", async () => {
+            dialog = new Dialog(false, "Bejelentkezett felhasználó nem regisztrálhat újra", async () =>
+            {
                 await Utilities.Loading.Show();
-                new LogoutVM().OkMethod(true); }, CancelMethod, true);
+                new LogoutVM().OkMethod(true);
+            }, CancelMethod, true);
             dialog.content = new Views.Dialogs.TextBlock("Amennyiben több felhasználó hasznája az alkalmazást ugyanazon a gépen," +
                 " a regisztrációhoz előbb ki kell jelentkeznie az aktuális felhasználónak\n" +
                 "Szeretne most kijelentkezni az alkalmazásból?");
