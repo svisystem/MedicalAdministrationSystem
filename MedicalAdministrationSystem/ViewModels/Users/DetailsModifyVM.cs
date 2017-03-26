@@ -60,13 +60,13 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     if (!nonexist) ud = me.userdata.Where(b => b.AccountDataIdUD == DetailsModifyMDataSet.UserID).Single();
                     ud.AccountDataIdUD = DetailsModifyMDataSet.UserID;
                     ud.NameUD = DetailsModifyMViewElements.UserName;
@@ -88,13 +88,12 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     if (nonexist)
                     {
                         me.userdata.Add(ud);
-                        me.SaveChanges();
+                        await me.SaveChangesAsync();
                         GlobalVM.GlobalM.UserID = me.userdata.Where(a => a.AccountDataIdUD == GlobalVM.GlobalM.AccountID).Select(a => a.IdUD).Single();
                     }
-                    me.SaveChanges();
-                    me.Database.Connection.Close();
-                    workingConn = true;
+                    await me.SaveChangesAsync();
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -120,14 +119,14 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             }
             else ConnectionMessage();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             ud = new userdata();
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     DetailsModifyMDataSet.UserID = (int)GlobalVM.GlobalM.AccountID;
                     if (!GlobalVM.GlobalM.UserID.Equals(null))
                     {
@@ -139,9 +138,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     DetailsModifyMDataSet.FullZipCodeList = me.zipcode_fx.ToList();
                     DetailsModifyMDataSet.FullSettlementList = me.settlement_fx.ToList();
                     DetailsModifyMDataSet.SettlementZipSwitch = me.settlementzipcode_st.ToList();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {

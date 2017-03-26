@@ -39,42 +39,43 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 ObservableCollection<BillsM.Bill> collection = new ObservableCollection<BillsM.Bill>();
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    await me.Database.Connection.OpenAsync();
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
+                    {
+                        await me.Database.Connection.OpenAsync();
 
-                    if (BillsM.PatientId == 0)
-                    {
-                        foreach (BillsM.Bill bill in me.billing.ToList().Select(b => new BillsM.Bill()
+                        if (BillsM.PatientId == 0)
                         {
-                            Id = b.IdB,
-                            Personal = b.CompanyIdToB == null,
-                            DoctorName = me.userdata.Where(u => u.IdUD == b.UserIdB).FirstOrDefault().NameUD,
-                            Patient = me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD,
-                            Code = b.CodeB,
-                            BillingName = b.CompanyIdToB == null ?
-                            me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD :
-                            me.companydata.Where(c => c.IdCD == b.CompanyIdToB).FirstOrDefault().NameCD,
-                            DateTime = b.DateTimeB
-                        }))
-                            collection.Add(bill);
-                    }
-                    else
-                    {
-                        foreach (BillsM.Bill bill in me.billing.Where(b => b.PatientIdB == BillsM.PatientId).ToList().Select(b => new BillsM.Bill()
+                            foreach (BillsM.Bill bill in me.billing.ToList().Select(b => new BillsM.Bill()
+                            {
+                                Id = b.IdB,
+                                Personal = b.CompanyIdToB == null,
+                                DoctorName = me.userdata.Where(u => u.IdUD == b.UserIdB).FirstOrDefault().NameUD,
+                                Patient = me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD,
+                                Code = b.CodeB,
+                                BillingName = b.CompanyIdToB == null ?
+                                me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD :
+                                me.companydata.Where(c => c.IdCD == b.CompanyIdToB).FirstOrDefault().NameCD,
+                                DateTime = b.DateTimeB
+                            }))
+                                collection.Add(bill);
+                        }
+                        else
                         {
-                            Id = b.IdB,
-                            Personal = b.CompanyIdToB == null,
-                            DoctorName = me.userdata.Where(u => u.IdUD == b.UserIdB).FirstOrDefault().NameUD,
-                            Patient = me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD,
-                            Code = b.CodeB,
-                            BillingName = b.CompanyIdToB == null ?
-                            me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD :
-                            me.companydata.Where(c => c.IdCD == b.CompanyIdToB).FirstOrDefault().NameCD,
-                            DateTime = b.DateTimeB
-                        }))
-                            collection.Add(bill);
+                            foreach (BillsM.Bill bill in me.billing.Where(b => b.PatientIdB == BillsM.PatientId).ToList().Select(b => new BillsM.Bill()
+                            {
+                                Id = b.IdB,
+                                Personal = b.CompanyIdToB == null,
+                                DoctorName = me.userdata.Where(u => u.IdUD == b.UserIdB).FirstOrDefault().NameUD,
+                                Patient = me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD,
+                                Code = b.CodeB,
+                                BillingName = b.CompanyIdToB == null ?
+                                me.patientdata.Where(p => p.IdPD == b.PatientIdB).FirstOrDefault().NamePD :
+                                me.companydata.Where(c => c.IdCD == b.CompanyIdToB).FirstOrDefault().NameCD,
+                                DateTime = b.DateTimeB
+                            }))
+                                collection.Add(bill);
+                        }
                     }
-                    me.Database.Connection.Close();
                     workingConn = true;
                     return collection;
                 }

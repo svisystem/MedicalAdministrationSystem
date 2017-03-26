@@ -31,18 +31,17 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     NewExaminationM.Treats = me.servicesdata.Where(t => t.DeletedTD == null)
                         .Select(t => t.NameTD).ToList();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -82,48 +81,48 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                examinationdata ed = new examinationdata()
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    PatientIdEX = NewExaminationM.PatientId,
-                    DoctorIdEX = (int)GlobalVM.GlobalM.UserID,
-                    DateTimeEX = (DateTime)NewExaminationM.ExaminationDate,
-                    ServiceIdEX = me.servicesdata.Where(t => t.NameTD == NewExaminationM.SelectedTreat).Single().IdTD,
-                    CodeEX = NewExaminationM.ExaminationCode,
-                    CompanyIdEX = (int)GlobalVM.GlobalM.CompanyId
-                };
-                me.examinationdata.Add(ed);
-                me.SaveChanges();
+                    await me.Database.Connection.OpenAsync();
 
-                int id = ed.IdEX;
-
-                for (int i = 0; i < NewExaminationM.ExaminationList.Count - 1; i++)
-                {
-                    examinationdatadocuments edd = new examinationdatadocuments()
+                    examinationdata ed = new examinationdata()
                     {
-                        DataEXD = NewExaminationM.ExaminationList[i].File.ToArray(),
-                        TypeEXD = NewExaminationM.ExaminationList[i].ButtonType,
-                        FileTypeEXD = NewExaminationM.ExaminationList[i].FileType
+                        PatientIdEX = NewExaminationM.PatientId,
+                        DoctorIdEX = (int)GlobalVM.GlobalM.UserID,
+                        DateTimeEX = (DateTime)NewExaminationM.ExaminationDate,
+                        ServiceIdEX = me.servicesdata.Where(t => t.NameTD == NewExaminationM.SelectedTreat).Single().IdTD,
+                        CodeEX = NewExaminationM.ExaminationCode,
+                        CompanyIdEX = (int)GlobalVM.GlobalM.CompanyId
                     };
-                    me.examinationdatadocuments.Add(edd);
-                    me.SaveChanges();
+                    me.examinationdata.Add(ed);
+                    await me.SaveChangesAsync();
 
-                    int ide = edd.IdEXD;
-                    me.examinationdatadocuments_st.Add(new examinationdatadocuments_st()
+                    int id = ed.IdEX;
+
+                    for (int i = 0; i < NewExaminationM.ExaminationList.Count - 1; i++)
                     {
-                        IdEX = id,
-                        IdEXD = ide
-                    });
-                    me.SaveChanges();
-                }
+                        examinationdatadocuments edd = new examinationdatadocuments()
+                        {
+                            DataEXD = NewExaminationM.ExaminationList[i].File.ToArray(),
+                            TypeEXD = NewExaminationM.ExaminationList[i].ButtonType,
+                            FileTypeEXD = NewExaminationM.ExaminationList[i].FileType
+                        };
+                        me.examinationdatadocuments.Add(edd);
+                        await me.SaveChangesAsync();
 
-                me.Database.Connection.Close();
+                        int ide = edd.IdEXD;
+                        me.examinationdatadocuments_st.Add(new examinationdatadocuments_st()
+                        {
+                            IdEX = id,
+                            IdEXD = ide
+                        });
+                        await me.SaveChangesAsync();
+                    }
+                }
                 workingConn = true;
             }
             catch (Exception ex)

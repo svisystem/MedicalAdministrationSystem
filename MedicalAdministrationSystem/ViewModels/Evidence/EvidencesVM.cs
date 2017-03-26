@@ -28,103 +28,104 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             EvidencesM.Evidences.Clear();
             EvidencesM.Erased.Clear();
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                if (me.evidencedata.Where(ex => ex.PatientIdED == EvidencesM.PatientId).Count() != 0)
-                    foreach (EvidencesM.Evidence item in me.evidencedata.Where(ex => ex.PatientIdED == EvidencesM.PatientId).ToList()
-                        .Select(ex => new EvidencesM.Evidence
-                        {
-                            Id = ex.IdED,
-                            Imported = false,
-                            Code = ex.CodeED,
-                            Date = ex.DateTimeED,
-                            DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdED).FirstOrDefault().NameUD,
-                            DocCount = me.evidencedatadocuments_st.Where(exd => exd.IdED == ex.IdED).Count(),
-                            EditEvidence = !GlobalVM.GlobalM.JustImportDocuments
-                        }))
-                        EvidencesM.Evidences.Add(item);
-
-                if (me.importedevidencedata.Where(ex => ex.PatientIED == EvidencesM.PatientId).Count() != 0)
-                    foreach (EvidencesM.Evidence item in me.importedevidencedata.Where(ex => ex.PatientIED == EvidencesM.PatientId).ToList()
-                        .Select(ex => new EvidencesM.Evidence
-                        {
-                            Id = ex.IdIED,
-                            Imported = true,
-                            Code = ex.CodeIED,
-                            Date = ex.DateTimeIED,
-                            DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdIED).FirstOrDefault().NameUD,
-                            DocCount = me.importedevidencedatadocuments_st.Where(exd => exd.IdIED == ex.IdIED).Count(),
-                            EditEvidence = true
-                        }))
-                        EvidencesM.Evidences.Add(item);
-
-                foreach (EvidencesM.Evidence item in EvidencesM.Evidences)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (item.Imported)
-                    {
-                        foreach (SelectedPatientM.ExaminationItem element in me.examinationdata.Where(ed =>
-                            me.examinationeachimportedevidence_st.Where(eeie => eeie.IdIED == item.Id)
-                            .Select(eeie => eeie.IdEX).ToList().Any(c => c == ed.IdEX)).ToList().Select
-                            (ed => new SelectedPatientM.ExaminationItem
-                            {
-                                Code = ed.CodeEX,
-                                Date = ed.DateTimeEX,
-                                Id = ed.IdEX,
-                                Imported = false,
-                                Name = me.servicesdata.Where(t => t.IdTD == ed.ServiceIdEX).FirstOrDefault().NameTD
-                            }))
-                            item.BelongDocs.Add(element);
+                    await me.Database.Connection.OpenAsync();
 
-                        foreach (SelectedPatientM.ExaminationItem element in me.importedexaminationdata.Where(ed =>
-                            me.importedexaminationeachimportedevidence_st.Where(eeie => eeie.IdIED == item.Id)
-                            .Select(eeie => eeie.IdIEX).ToList().Any(c => c == ed.IdIEX)).ToList().Select
-                            (ed => new SelectedPatientM.ExaminationItem
+                    if (me.evidencedata.Where(ex => ex.PatientIdED == EvidencesM.PatientId).Count() != 0)
+                        foreach (EvidencesM.Evidence item in me.evidencedata.Where(ex => ex.PatientIdED == EvidencesM.PatientId).ToList()
+                            .Select(ex => new EvidencesM.Evidence
                             {
-                                Code = ed.CodeIEX,
-                                Date = ed.DateTimeIEX,
-                                Id = ed.IdIEX,
-                                Imported = true,
-                                Name = ed.NameIEX
-                            }))
-                            item.BelongDocs.Add(element);
-                    }
-                    else
-                    {
-                        foreach (SelectedPatientM.ExaminationItem element in me.examinationdata.Where(ed =>
-                            me.examinationeachevidence_st.Where(eeie => eeie.IdED == item.Id)
-                            .Select(eeie => eeie.IdEX).ToList().Any(c => c == ed.IdEX)).ToList().Select
-                            (ed => new SelectedPatientM.ExaminationItem
-                            {
-                                Code = ed.CodeEX,
-                                Date = ed.DateTimeEX,
-                                Id = ed.IdEX,
+                                Id = ex.IdED,
                                 Imported = false,
-                                Name = me.servicesdata.Where(t => t.IdTD == ed.ServiceIdEX).FirstOrDefault().NameTD
+                                Code = ex.CodeED,
+                                Date = ex.DateTimeED,
+                                DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdED).FirstOrDefault().NameUD,
+                                DocCount = me.evidencedatadocuments_st.Where(exd => exd.IdED == ex.IdED).Count(),
+                                EditEvidence = !GlobalVM.GlobalM.JustImportDocuments
                             }))
-                            item.BelongDocs.Add(element);
+                            EvidencesM.Evidences.Add(item);
 
-                        foreach (SelectedPatientM.ExaminationItem element in me.importedexaminationdata.Where(ed =>
-                            me.importedexaminationeachevidence_st.Where(eeie => eeie.IdED == item.Id)
-                            .Select(eeie => eeie.IdIEX).ToList().Any(c => c == ed.IdIEX)).ToList().Select
-                            (ed => new SelectedPatientM.ExaminationItem
+                    if (me.importedevidencedata.Where(ex => ex.PatientIED == EvidencesM.PatientId).Count() != 0)
+                        foreach (EvidencesM.Evidence item in me.importedevidencedata.Where(ex => ex.PatientIED == EvidencesM.PatientId).ToList()
+                            .Select(ex => new EvidencesM.Evidence
                             {
-                                Code = ed.CodeIEX,
-                                Date = ed.DateTimeIEX,
-                                Id = ed.IdIEX,
+                                Id = ex.IdIED,
                                 Imported = true,
-                                Name = ed.NameIEX
+                                Code = ex.CodeIED,
+                                Date = ex.DateTimeIED,
+                                DoctorName = me.userdata.Where(u => u.IdUD == ex.UserDataIdIED).FirstOrDefault().NameUD,
+                                DocCount = me.importedevidencedatadocuments_st.Where(exd => exd.IdIED == ex.IdIED).Count(),
+                                EditEvidence = true
                             }))
-                            item.BelongDocs.Add(element);
+                            EvidencesM.Evidences.Add(item);
+
+                    foreach (EvidencesM.Evidence item in EvidencesM.Evidences)
+                    {
+                        if (item.Imported)
+                        {
+                            foreach (SelectedPatientM.ExaminationItem element in me.examinationdata.Where(ed =>
+                                me.examinationeachimportedevidence_st.Where(eeie => eeie.IdIED == item.Id)
+                                .Select(eeie => eeie.IdEX).ToList().Any(c => c == ed.IdEX)).ToList().Select
+                                (ed => new SelectedPatientM.ExaminationItem
+                                {
+                                    Code = ed.CodeEX,
+                                    Date = ed.DateTimeEX,
+                                    Id = ed.IdEX,
+                                    Imported = false,
+                                    Name = me.servicesdata.Where(t => t.IdTD == ed.ServiceIdEX).FirstOrDefault().NameTD
+                                }))
+                                item.BelongDocs.Add(element);
+
+                            foreach (SelectedPatientM.ExaminationItem element in me.importedexaminationdata.Where(ed =>
+                                me.importedexaminationeachimportedevidence_st.Where(eeie => eeie.IdIED == item.Id)
+                                .Select(eeie => eeie.IdIEX).ToList().Any(c => c == ed.IdIEX)).ToList().Select
+                                (ed => new SelectedPatientM.ExaminationItem
+                                {
+                                    Code = ed.CodeIEX,
+                                    Date = ed.DateTimeIEX,
+                                    Id = ed.IdIEX,
+                                    Imported = true,
+                                    Name = ed.NameIEX
+                                }))
+                                item.BelongDocs.Add(element);
+                        }
+                        else
+                        {
+                            foreach (SelectedPatientM.ExaminationItem element in me.examinationdata.Where(ed =>
+                                me.examinationeachevidence_st.Where(eeie => eeie.IdED == item.Id)
+                                .Select(eeie => eeie.IdEX).ToList().Any(c => c == ed.IdEX)).ToList().Select
+                                (ed => new SelectedPatientM.ExaminationItem
+                                {
+                                    Code = ed.CodeEX,
+                                    Date = ed.DateTimeEX,
+                                    Id = ed.IdEX,
+                                    Imported = false,
+                                    Name = me.servicesdata.Where(t => t.IdTD == ed.ServiceIdEX).FirstOrDefault().NameTD
+                                }))
+                                item.BelongDocs.Add(element);
+
+                            foreach (SelectedPatientM.ExaminationItem element in me.importedexaminationdata.Where(ed =>
+                                me.importedexaminationeachevidence_st.Where(eeie => eeie.IdED == item.Id)
+                                .Select(eeie => eeie.IdIEX).ToList().Any(c => c == ed.IdIEX)).ToList().Select
+                                (ed => new SelectedPatientM.ExaminationItem
+                                {
+                                    Code = ed.CodeIEX,
+                                    Date = ed.DateTimeIEX,
+                                    Id = ed.IdIEX,
+                                    Imported = true,
+                                    Name = ed.NameIEX
+                                }))
+                                item.BelongDocs.Add(element);
+                        }
                     }
                 }
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -158,56 +159,57 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                foreach (EvidencesM.ErasedItem item in EvidencesM.Erased)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (item.Imported)
+                    await me.Database.Connection.OpenAsync();
+
+                    foreach (EvidencesM.ErasedItem item in EvidencesM.Erased)
                     {
-                        me.examinationeachimportedevidence_st.RemoveRange
-                            (me.examinationeachimportedevidence_st.Where(ex => ex.IdIED == item.Id).ToList());
+                        if (item.Imported)
+                        {
+                            me.examinationeachimportedevidence_st.RemoveRange
+                                (me.examinationeachimportedevidence_st.Where(ex => ex.IdIED == item.Id).ToList());
 
-                        me.importedexaminationeachimportedevidence_st.RemoveRange
-                            (me.importedexaminationeachimportedevidence_st.Where(ex => ex.IdIED == item.Id).ToList());
+                            me.importedexaminationeachimportedevidence_st.RemoveRange
+                                (me.importedexaminationeachimportedevidence_st.Where(ex => ex.IdIED == item.Id).ToList());
 
-                        me.evidencedatadocuments.RemoveRange
-                            (me.evidencedatadocuments.Where(ex => me.importedevidencedatadocuments_st.Where
-                            (ied => ied.IdIED == item.Id).Select(ied => ied.IdEDD).ToList().Any(c => c == ex.IdEDD)));
+                            me.evidencedatadocuments.RemoveRange
+                                (me.evidencedatadocuments.Where(ex => me.importedevidencedatadocuments_st.Where
+                                (ied => ied.IdIED == item.Id).Select(ied => ied.IdEDD).ToList().Any(c => c == ex.IdEDD)));
 
-                        me.importedevidencedatadocuments_st.RemoveRange
-                            (me.importedevidencedatadocuments_st.Where(ied => ied.IdIED == item.Id));
+                            me.importedevidencedatadocuments_st.RemoveRange
+                                (me.importedevidencedatadocuments_st.Where(ied => ied.IdIED == item.Id));
 
-                        me.importedevidencedata.Remove
-                            (me.importedevidencedata.Where(ex => ex.IdIED == item.Id).Single());
+                            me.importedevidencedata.Remove
+                                (me.importedevidencedata.Where(ex => ex.IdIED == item.Id).Single());
+                        }
+
+                        else
+                        {
+                            me.examinationeachevidence_st.RemoveRange
+                                (me.examinationeachevidence_st.Where(ex => ex.IdED == item.Id).ToList());
+
+                            me.importedexaminationeachevidence_st.RemoveRange
+                                (me.importedexaminationeachevidence_st.Where(ex => ex.IdED == item.Id).ToList());
+
+                            me.evidencedatadocuments.RemoveRange
+                                (me.evidencedatadocuments.Where(ex => me.evidencedatadocuments_st.Where
+                                (ied => ied.IdED == item.Id).Select(ied => ied.IdEDD).ToList().Any(c => c == ex.IdEDD)));
+
+                            me.evidencedatadocuments_st.RemoveRange
+                                (me.evidencedatadocuments_st.Where(ied => ied.IdED == item.Id));
+
+                            me.evidencedata.Remove
+                                (me.evidencedata.Where(ex => ex.IdED == item.Id).Single());
+                        }
                     }
 
-                    else
-                    {
-                        me.examinationeachevidence_st.RemoveRange
-                            (me.examinationeachevidence_st.Where(ex => ex.IdED == item.Id).ToList());
-
-                        me.importedexaminationeachevidence_st.RemoveRange
-                            (me.importedexaminationeachevidence_st.Where(ex => ex.IdED == item.Id).ToList());
-
-                        me.evidencedatadocuments.RemoveRange
-                            (me.evidencedatadocuments.Where(ex => me.evidencedatadocuments_st.Where
-                            (ied => ied.IdED == item.Id).Select(ied => ied.IdEDD).ToList().Any(c => c == ex.IdEDD)));
-
-                        me.evidencedatadocuments_st.RemoveRange
-                            (me.evidencedatadocuments_st.Where(ied => ied.IdED == item.Id));
-
-                        me.evidencedata.Remove
-                            (me.evidencedata.Where(ex => ex.IdED == item.Id).Single());
-                    }
+                    await me.SaveChangesAsync();
                 }
-
-                me.SaveChanges();
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

@@ -34,13 +34,13 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
 
                     if (ViewEvidenceM.Imported)
                     {
@@ -109,9 +109,8 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             }))
                             AddList(item);
                     }
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {

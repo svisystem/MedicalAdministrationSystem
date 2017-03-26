@@ -62,7 +62,7 @@
                         </dxe:ButtonInfo>
                     </dxe:ButtonEdit>
                     <Button Height="29" Content="Változtatások mentése" HorizontalAlignment="Right"
-                            VerticalAlignment="Center" Click="Save" Margin="0,0,8,0" x:Name="save"/>
+                            VerticalAlignment="Center" Click="Save" Margin="0,0,8,0" x:Name="save" />
                 </DockPanel>
                 <Separator DockPanel.Dock="Bottom" Margin="0" />
                 <Grid DockPanel.Dock="Left">

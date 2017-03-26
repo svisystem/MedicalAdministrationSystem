@@ -25,25 +25,26 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                ServicesM.Services.Clear();
-                foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == null).ToList())
-                    ServicesM.Services.Add(new ServicesM.Service
-                    {
-                        ID = row.IdTD,
-                        Name = row.NameTD,
-                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
-                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS,
-                        Details = row.DetailsTD,
-                        Valid = true,
-                        New = false
-                    });
-                me.Database.Connection.Close();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    ServicesM.Services.Clear();
+                    foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == null).ToList())
+                        ServicesM.Services.Add(new ServicesM.Service
+                        {
+                            ID = row.IdTD,
+                            Name = row.NameTD,
+                            Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
+                            Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS,
+                            Details = row.DetailsTD,
+                            Valid = true,
+                            New = false
+                        });
+                }
                 workingConn = true;
             }
             catch (Exception ex)
@@ -72,69 +73,70 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                if (ServicesM.Erased.Count != 0)
-                    foreach (int service in ServicesM.Erased)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    if (ServicesM.Erased.Count != 0)
+                        foreach (int service in ServicesM.Erased)
+                            try
+                            {
+                                me.servicesdata.Where(a => a.IdTD == service).Single().DeletedTD = DateTime.Now;
+                                await me.SaveChangesAsync();
+                            }
+                            catch { }
+                    for (int i = 0; i < ServicesM.Services.Count; i++)
+                    {
                         try
                         {
-                            me.servicesdata.Where(a => a.IdTD == service).Single().DeletedTD = DateTime.Now;
-                            me.SaveChanges();
+                            servicesdata tr = new servicesdata();
+                            pricesforeachservice pfs = new pricesforeachservice();
+                            if (ServicesM.Services[i].New)
+                            {
+                                tr.NameTD = ServicesM.Services[i].Name;
+                                pfs.VatPFS = (int)ServicesM.Services[i].Vat;
+                                pfs.PricePFS = (int)ServicesM.Services[i].Price;
+                                tr.DetailsTD = ServicesM.Services[i].Details;
+                                me.servicesdata.Add(tr);
+                                await me.SaveChangesAsync();
+                                pfs.ServiceDataIdPFS = tr.IdTD;
+                                pfs.WhenChangedPFS = DateTime.Now;
+                                me.pricesforeachservice.Add(pfs);
+                                await me.SaveChangesAsync();
+                                ServicesM.Services[i].ID = tr.IdTD;
+                                ServicesM.Services[i].New = false;
+                            }
+                            else
+                            {
+                                int temp = ServicesM.Services[i].ID;
+                                tr = me.servicesdata.Where(a => a.IdTD == temp).Single();
+                                pfs = me.pricesforeachservice.Where(pf => pf.ServiceDataIdPFS == temp).OrderByDescending(pf => pf.IdPFS).FirstOrDefault();
+                                if (!ServicesM.Services[i].Name.Equals(tr.NameTD))
+                                    tr.NameTD = ServicesM.Services[i].Name;
+                                if (string.IsNullOrEmpty(ServicesM.Services[i].Details) || (ServicesM.Services[i].Details != tr.DetailsTD))
+                                    tr.DetailsTD = ServicesM.Services[i].Details;
+                                if (!ServicesM.Services[i].Vat.Equals(pfs.VatPFS) || !ServicesM.Services[i].Price.Equals(pfs.PricePFS))
+                                {
+                                    pfs = new pricesforeachservice()
+                                    {
+                                        PricePFS = (int)ServicesM.Services[i].Price,
+                                        VatPFS = (int)ServicesM.Services[i].Vat,
+                                        ServiceDataIdPFS = temp,
+                                        WhenChangedPFS = DateTime.Now
+                                    };
+                                    me.pricesforeachservice.Add(pfs);
+                                }
+                                await me.SaveChangesAsync();
+                            }
                         }
                         catch { }
-                for (int i = 0; i < ServicesM.Services.Count; i++)
-                {
-                    try
-                    {
-                        servicesdata tr = new servicesdata();
-                        pricesforeachservice pfs = new pricesforeachservice();
-                        if (ServicesM.Services[i].New)
-                        {
-                            tr.NameTD = ServicesM.Services[i].Name;
-                            pfs.VatPFS = (int)ServicesM.Services[i].Vat;
-                            pfs.PricePFS = (int)ServicesM.Services[i].Price;
-                            tr.DetailsTD = ServicesM.Services[i].Details;
-                            me.servicesdata.Add(tr);
-                            me.SaveChanges();
-                            pfs.ServiceDataIdPFS = tr.IdTD;
-                            pfs.WhenChangedPFS = DateTime.Now;
-                            me.pricesforeachservice.Add(pfs);
-                            me.SaveChanges();
-                            ServicesM.Services[i].ID = tr.IdTD;
-                            ServicesM.Services[i].New = false;
-                        }
-                        else
-                        {
-                            int temp = ServicesM.Services[i].ID;
-                            tr = me.servicesdata.Where(a => a.IdTD == temp).Single();
-                            pfs = me.pricesforeachservice.Where(pf => pf.ServiceDataIdPFS == temp).OrderByDescending(pf => pf.IdPFS).FirstOrDefault();
-                            if (!ServicesM.Services[i].Name.Equals(tr.NameTD))
-                                tr.NameTD = ServicesM.Services[i].Name;
-                            if (string.IsNullOrEmpty(ServicesM.Services[i].Details) || (ServicesM.Services[i].Details != tr.DetailsTD))
-                                tr.DetailsTD = ServicesM.Services[i].Details;
-                            if (!ServicesM.Services[i].Vat.Equals(pfs.VatPFS) || !ServicesM.Services[i].Price.Equals(pfs.PricePFS))
-                            {
-                                pfs = new pricesforeachservice()
-                                {
-                                    PricePFS = (int)ServicesM.Services[i].Price,
-                                    VatPFS = (int)ServicesM.Services[i].Vat,
-                                    ServiceDataIdPFS = temp,
-                                    WhenChangedPFS = DateTime.Now
-                                };
-                                me.pricesforeachservice.Add(pfs);
-                            }
-                            me.SaveChanges();
-                        }
                     }
-                    catch { }
+                    await me.SaveChangesAsync();
+                    ServicesM.Erased.Clear();
                 }
-                me.SaveChanges();
-                me.Database.Connection.Close();
-                ServicesM.Erased.Clear();
                 workingConn = true;
             }
             catch (Exception ex)

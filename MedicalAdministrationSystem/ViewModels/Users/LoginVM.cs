@@ -29,17 +29,16 @@ namespace MedicalAdministrationSystem.ViewModels.Users
         }
         protected internal async void Start()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
                     using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        me.Database.Connection.Open();
+                        await me.Database.Connection.OpenAsync();
                         LoginM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
-                        me.Database.Connection.Close();
-                        workingConn = true;
                     }
+                    workingConn = true;
                     if (ConfigurationManager.ConfigurationManagerM.FacilityId != string.Empty)
                         GlobalVM.GlobalM.CompanyId = Convert.ToInt32(ConfigurationManager.ConfigurationManagerM.FacilityId);
                 }
@@ -107,9 +106,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
 
                         LoginM.RegPass = await me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PasswordAD).SingleAsync();
                         LoginM.RegPassSalt = await me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PassSaltAD).SingleAsync();
-                        me.Database.Connection.Close();
-                        workingConn = true;
                     }
+                    workingConn = true;
                 }
                 catch (Exception ex)
                 {
@@ -170,9 +168,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                 {
                     await me.Database.Connection.OpenAsync();
                     LoginM.Verified = await me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.VerifiedByAdminAD).SingleAsync();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -215,9 +212,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     pr = await me.priviledges.Where(b => b.IdP == GlobalVM.GlobalM.PriviledgeID).SingleAsync();
                     GlobalVM.GlobalM.AllSee = pr.AllSeeP;
                     GlobalVM.GlobalM.JustImportDocuments = pr.JustImportDocumentsP;
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {

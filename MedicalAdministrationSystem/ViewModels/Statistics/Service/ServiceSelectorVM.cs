@@ -42,26 +42,26 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Service
                         });
                     }));
 
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    me.Database.Connection.Open();
-
-                    foreach (object Service in me.servicesdata.OrderBy(u => u.NameTD).Select(u => new { u.IdTD, u.NameTD }).ToList())
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                        {
-                            ServiceSelectorM.Services.Add(new ServiceSelectorM.Service()
-                            {
-                                Id = (int)Service.GetType().GetProperty("IdTD", BindingFlags.Instance | BindingFlags.Public |
-                                    BindingFlags.NonPublic).GetValue(Service),
-                                Name = (string)Service.GetType().GetProperty("NameTD", BindingFlags.Instance | BindingFlags.Public |
-                                    BindingFlags.NonPublic).GetValue(Service),
-                                Enabled = false,
-                                Button = new CheckButton(SwitchAllFunctionality)
-                            });
-                        }));
-                    }
+                        await me.Database.Connection.OpenAsync();
 
-                    me.Database.Connection.Close();
+                        foreach (object Service in me.servicesdata.OrderBy(u => u.NameTD).Select(u => new { u.IdTD, u.NameTD }).ToList())
+                        {
+                            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                            {
+                                ServiceSelectorM.Services.Add(new ServiceSelectorM.Service()
+                                {
+                                    Id = (int)Service.GetType().GetProperty("IdTD", BindingFlags.Instance | BindingFlags.Public |
+                                        BindingFlags.NonPublic).GetValue(Service),
+                                    Name = (string)Service.GetType().GetProperty("NameTD", BindingFlags.Instance | BindingFlags.Public |
+                                        BindingFlags.NonPublic).GetValue(Service),
+                                    Enabled = false,
+                                    Button = new CheckButton(SwitchAllFunctionality)
+                                });
+                            }));
+                        }
+                    }
                     workingConn = true;
                 }
                 catch (Exception ex)

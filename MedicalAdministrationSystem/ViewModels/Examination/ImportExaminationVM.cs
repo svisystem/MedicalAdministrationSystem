@@ -45,48 +45,48 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                importedexaminationdata ied = new importedexaminationdata()
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    PatientIdIEX = ImportExaminationM.PatientId,
-                    DoctorIdIEX = (int)GlobalVM.GlobalM.UserID,
-                    DateTimeIEX = (DateTime)ImportExaminationM.ExaminationDate,
-                    NameIEX = ImportExaminationM.ExaminationName,
-                    CodeIEX = ImportExaminationM.ExaminationCode,
-                    CompanyIdIEX = (int)GlobalVM.GlobalM.CompanyId
-                };
-                me.importedexaminationdata.Add(ied);
-                me.SaveChanges();
+                    await me.Database.Connection.OpenAsync();
 
-                int id = ied.IdIEX;
-
-                for (int i = 0; i < ImportExaminationM.ExaminationList.Count - 1; i++)
-                {
-                    examinationdatadocuments ed = new examinationdatadocuments()
+                    importedexaminationdata ied = new importedexaminationdata()
                     {
-                        DataEXD = ImportExaminationM.ExaminationList[i].File.ToArray(),
-                        TypeEXD = ImportExaminationM.ExaminationList[i].ButtonType,
-                        FileTypeEXD = ImportExaminationM.ExaminationList[i].FileType
+                        PatientIdIEX = ImportExaminationM.PatientId,
+                        DoctorIdIEX = (int)GlobalVM.GlobalM.UserID,
+                        DateTimeIEX = (DateTime)ImportExaminationM.ExaminationDate,
+                        NameIEX = ImportExaminationM.ExaminationName,
+                        CodeIEX = ImportExaminationM.ExaminationCode,
+                        CompanyIdIEX = (int)GlobalVM.GlobalM.CompanyId
                     };
-                    me.examinationdatadocuments.Add(ed);
-                    me.SaveChanges();
+                    me.importedexaminationdata.Add(ied);
+                    await me.SaveChangesAsync();
 
-                    int ide = ed.IdEXD;
-                    me.importedexaminationdatadocuments_st.Add(new importedexaminationdatadocuments_st()
+                    int id = ied.IdIEX;
+
+                    for (int i = 0; i < ImportExaminationM.ExaminationList.Count - 1; i++)
                     {
-                        IdIEX = id,
-                        IdEXD = ide
-                    });
-                    me.SaveChanges();
-                }
+                        examinationdatadocuments ed = new examinationdatadocuments()
+                        {
+                            DataEXD = ImportExaminationM.ExaminationList[i].File.ToArray(),
+                            TypeEXD = ImportExaminationM.ExaminationList[i].ButtonType,
+                            FileTypeEXD = ImportExaminationM.ExaminationList[i].FileType
+                        };
+                        me.examinationdatadocuments.Add(ed);
+                        await me.SaveChangesAsync();
 
-                me.Database.Connection.Close();
+                        int ide = ed.IdEXD;
+                        me.importedexaminationdatadocuments_st.Add(new importedexaminationdatadocuments_st()
+                        {
+                            IdIEX = id,
+                            IdEXD = ide
+                        });
+                        await me.SaveChangesAsync();
+                    }
+                }
                 workingConn = true;
             }
             catch (Exception ex)

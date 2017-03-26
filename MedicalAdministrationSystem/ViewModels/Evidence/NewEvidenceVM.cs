@@ -62,67 +62,67 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                evidencedata ed = new evidencedata()
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    PatientIdED = NewEvidenceM.PatientId,
-                    UserDataIdED = (int)GlobalVM.GlobalM.UserID,
-                    CodeED = NewEvidenceM.Code,
-                    //Schedule
-                    DateTimeED = (DateTime)NewEvidenceM.Date,
-                    CompanyIdED = (int)GlobalVM.GlobalM.CompanyId
-                };
+                    await me.Database.Connection.OpenAsync();
 
-                me.evidencedata.Add(ed);
-                me.SaveChanges();
-
-                int id = ed.IdED;
-
-                for (int i = 0; i < NewEvidenceM.EvidenceList.Count - 1; i++)
-                {
-                    evidencedatadocuments edd = new evidencedatadocuments()
+                    evidencedata ed = new evidencedata()
                     {
-                        DataEDD = NewEvidenceM.EvidenceList[i].File.ToArray(),
-                        TypeEDD = NewEvidenceM.EvidenceList[i].ButtonType,
-                        FileTypeEDD = NewEvidenceM.EvidenceList[i].FileType
+                        PatientIdED = NewEvidenceM.PatientId,
+                        UserDataIdED = (int)GlobalVM.GlobalM.UserID,
+                        CodeED = NewEvidenceM.Code,
+                        //Schedule
+                        DateTimeED = (DateTime)NewEvidenceM.Date,
+                        CompanyIdED = (int)GlobalVM.GlobalM.CompanyId
                     };
-                    me.evidencedatadocuments.Add(edd);
-                    me.SaveChanges();
 
-                    int ide = edd.IdEDD;
-                    me.evidencedatadocuments_st.Add(new evidencedatadocuments_st()
-                    {
-                        IdED = id,
-                        IdEDD = ide
-                    });
-                    me.SaveChanges();
-                }
+                    me.evidencedata.Add(ed);
+                    await me.SaveChangesAsync();
 
-                foreach (SelectedPatientM.ExaminationItem item in GetList())
-                {
-                    if (item.Imported)
+                    int id = ed.IdED;
+
+                    for (int i = 0; i < NewEvidenceM.EvidenceList.Count - 1; i++)
                     {
-                        me.importedexaminationeachevidence_st.Add(new importedexaminationeachevidence_st()
+                        evidencedatadocuments edd = new evidencedatadocuments()
                         {
-                            IdIEX = item.Id,
+                            DataEDD = NewEvidenceM.EvidenceList[i].File.ToArray(),
+                            TypeEDD = NewEvidenceM.EvidenceList[i].ButtonType,
+                            FileTypeEDD = NewEvidenceM.EvidenceList[i].FileType
+                        };
+                        me.evidencedatadocuments.Add(edd);
+                        await me.SaveChangesAsync();
+
+                        int ide = edd.IdEDD;
+                        me.evidencedatadocuments_st.Add(new evidencedatadocuments_st()
+                        {
+                            IdED = id,
+                            IdEDD = ide
+                        });
+                        await me.SaveChangesAsync();
+                    }
+
+                    foreach (SelectedPatientM.ExaminationItem item in GetList())
+                    {
+                        if (item.Imported)
+                        {
+                            me.importedexaminationeachevidence_st.Add(new importedexaminationeachevidence_st()
+                            {
+                                IdIEX = item.Id,
+                                IdED = id
+                            });
+                        }
+                        else me.examinationeachevidence_st.Add(new examinationeachevidence_st()
+                        {
+                            IdEX = item.Id,
                             IdED = id
                         });
+                        await me.SaveChangesAsync();
                     }
-                    else me.examinationeachevidence_st.Add(new examinationeachevidence_st()
-                    {
-                        IdEX = item.Id,
-                        IdED = id
-                    });
-                    me.SaveChanges();
                 }
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

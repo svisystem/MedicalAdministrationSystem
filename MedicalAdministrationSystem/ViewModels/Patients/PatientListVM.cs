@@ -31,22 +31,23 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             RefreshTable.RunWorkerCompleted += new RunWorkerCompletedEventHandler(RefreshTableComplete);
             Loading.RunWorkerAsync();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                PatientListM.FullZipCodeList = me.zipcode_fx.ToList();
-                PatientListM.FullSettlementList = me.settlement_fx.ToList();
-                PatientListM.FullUsersList = me.userdata.Where(a => !me.accountdata.FirstOrDefault(b => b.IdAD == a.AccountDataIdUD).DeletedAD).ToList()
-                    .Where(n => me.priviledges.FirstOrDefault(p => p.IdP == me.accountdata.FirstOrDefault(b => b.IdAD == n.AccountDataIdUD).PriviledgesIdAD).IsDoctorP)
-                    .Select(a => new PatientListM.UserList
-                    {
-                        Id = a.IdUD,
-                        Name = a.NameUD
-                    }).ToList();
-                me.Database.Connection.Close();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    PatientListM.FullZipCodeList = me.zipcode_fx.ToList();
+                    PatientListM.FullSettlementList = me.settlement_fx.ToList();
+                    PatientListM.FullUsersList = me.userdata.Where(a => !me.accountdata.FirstOrDefault(b => b.IdAD == a.AccountDataIdUD).DeletedAD).ToList()
+                        .Where(n => me.priviledges.FirstOrDefault(p => p.IdP == me.accountdata.FirstOrDefault(b => b.IdAD == n.AccountDataIdUD).PriviledgesIdAD).IsDoctorP)
+                        .Select(a => new PatientListM.UserList
+                        {
+                            Id = a.IdUD,
+                            Name = a.NameUD
+                        }).ToList();
+                }
                 workingConn = true;
             }
             catch (Exception ex)
@@ -88,45 +89,46 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
         }
 
         List<PatientListM.Patient> temp;
-        private void RefreshTableDoWork(object sender, DoWorkEventArgs e)
+        private async void RefreshTableDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                if (!PatientListM.SelectedUser.Id.Equals(0))
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    List<int> belongToCurr = me.belong_st.Where(a => a.IdUD == PatientListM.SelectedUser.Id).Select(a => a.IdPD).ToList();
-                    temp = me.patientdata.Where(a => belongToCurr.Contains(a.IdPD)).Select(a => new PatientListM.Patient
+                    await me.Database.Connection.OpenAsync();
+
+                    if (!PatientListM.SelectedUser.Id.Equals(0))
                     {
-                        Id = a.IdPD,
-                        Name = a.NamePD,
-                        BirthName = a.BirthNamePD,
-                        BirthPlaceId = a.BirthPlacePD,
-                        BirthDate = a.BirthDatePD,
-                        TajNumber = a.TAJNumberPD,
-                        ZipCodeId = a.ZipCodePD,
-                        SettlementId = a.SettlementPD,
-                        Address = a.AddressPD,
-                        Belong = me.belong_st.Where(b => b.IdPD == a.IdPD).Select(b => b.IdUD).ToList()
-                    }).ToList();
+                        List<int> belongToCurr = me.belong_st.Where(a => a.IdUD == PatientListM.SelectedUser.Id).Select(a => a.IdPD).ToList();
+                        temp = me.patientdata.Where(a => belongToCurr.Contains(a.IdPD)).Select(a => new PatientListM.Patient
+                        {
+                            Id = a.IdPD,
+                            Name = a.NamePD,
+                            BirthName = a.BirthNamePD,
+                            BirthPlaceId = a.BirthPlacePD,
+                            BirthDate = a.BirthDatePD,
+                            TajNumber = a.TAJNumberPD,
+                            ZipCodeId = a.ZipCodePD,
+                            SettlementId = a.SettlementPD,
+                            Address = a.AddressPD,
+                            Belong = me.belong_st.Where(b => b.IdPD == a.IdPD).Select(b => b.IdUD).ToList()
+                        }).ToList();
+                    }
+                    else if (GlobalVM.GlobalM.AllSee)
+                        temp = me.patientdata.Select(a => new PatientListM.Patient
+                        {
+                            Id = a.IdPD,
+                            Name = a.NamePD,
+                            BirthName = a.BirthNamePD,
+                            BirthPlaceId = a.BirthPlacePD,
+                            BirthDate = a.BirthDatePD,
+                            TajNumber = a.TAJNumberPD,
+                            ZipCodeId = a.ZipCodePD,
+                            SettlementId = a.SettlementPD,
+                            Address = a.AddressPD,
+                            Belong = me.belong_st.Where(b => b.IdPD == a.IdPD).Select(b => b.IdUD).ToList()
+                        }).ToList();
                 }
-                else if (GlobalVM.GlobalM.AllSee)
-                    temp = me.patientdata.Select(a => new PatientListM.Patient
-                    {
-                        Id = a.IdPD,
-                        Name = a.NamePD,
-                        BirthName = a.BirthNamePD,
-                        BirthPlaceId = a.BirthPlacePD,
-                        BirthDate = a.BirthDatePD,
-                        TajNumber = a.TAJNumberPD,
-                        ZipCodeId = a.ZipCodePD,
-                        SettlementId = a.SettlementPD,
-                        Address = a.AddressPD,
-                        Belong = me.belong_st.Where(b => b.IdPD == a.IdPD).Select(b => b.IdUD).ToList()
-                    }).ToList();
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -191,49 +193,50 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                if (PatientListM.Erased.Count != 0)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    foreach (int patient in PatientListM.Erased)
+                    await me.Database.Connection.OpenAsync();
+                    if (PatientListM.Erased.Count != 0)
                     {
-                        me.belong_st.RemoveRange(me.belong_st.Where(a => a.IdPD == patient));
-                        me.examinationeachevidence_st.RemoveRange(me.examinationeachevidence_st.Where
-                            (b => me.examinationdata.Where(a => a.PatientIdEX == patient).Select(a => a.IdEX).ToList().Any(c => c == b.IdEX)));
-                        me.examinationdata.RemoveRange(me.examinationdata.Where(a => a.PatientIdEX == patient));
-                        me.evidencedata.RemoveRange(me.evidencedata.Where(a => a.PatientIdED == patient));
-                        me.scheduledata.RemoveRange(me.scheduledata.Where(a => a.PatientIdSD == patient));
-                        me.patientdata.Remove(me.patientdata.Where(a => a.IdPD == patient).Single());
-                        me.SaveChanges();
-                    }
-                }
-                foreach (PatientListM.Patient patient in PatientListM.PatientList)
-                    if (!patient.BelongUsers.Where(a => a.Belong == true).Select(a => a.Id).ToList().SequenceEqual(patient.Belong))
-                        foreach (PatientListM.UserList user in patient.BelongUsers)
+                        foreach (int patient in PatientListM.Erased)
                         {
-                            belong_st temp = me.belong_st.Where(a => a.IdPD == patient.Id && a.IdUD == user.Id).FirstOrDefault();
-                            if (user.Belong && temp == null)
-                            {
-                                me.belong_st.Add(new belong_st
-                                {
-                                    IdPD = patient.Id,
-                                    IdUD = user.Id,
-                                    WhenBelongBS = DateTime.Now
-                                });
-                                patient.Belong.Add(user.Id);
-                            }
-                            if (!user.Belong && temp != null)
-                            {
-                                me.belong_st.Remove(me.belong_st.Where(a => a.IdPD == patient.Id && a.IdUD == user.Id).Single());
-                                patient.Belong.Remove(user.Id);
-                            }
+                            me.belong_st.RemoveRange(me.belong_st.Where(a => a.IdPD == patient));
+                            me.examinationeachevidence_st.RemoveRange(me.examinationeachevidence_st.Where
+                                (b => me.examinationdata.Where(a => a.PatientIdEX == patient).Select(a => a.IdEX).ToList().Any(c => c == b.IdEX)));
+                            me.examinationdata.RemoveRange(me.examinationdata.Where(a => a.PatientIdEX == patient));
+                            me.evidencedata.RemoveRange(me.evidencedata.Where(a => a.PatientIdED == patient));
+                            me.scheduledata.RemoveRange(me.scheduledata.Where(a => a.PatientIdSD == patient));
+                            me.patientdata.Remove(me.patientdata.Where(a => a.IdPD == patient).Single());
+                            await me.SaveChangesAsync();
                         }
-                me.SaveChanges();
-                me.Database.Connection.Close();
+                    }
+                    foreach (PatientListM.Patient patient in PatientListM.PatientList)
+                        if (!patient.BelongUsers.Where(a => a.Belong == true).Select(a => a.Id).ToList().SequenceEqual(patient.Belong))
+                            foreach (PatientListM.UserList user in patient.BelongUsers)
+                            {
+                                belong_st temp = me.belong_st.Where(a => a.IdPD == patient.Id && a.IdUD == user.Id).FirstOrDefault();
+                                if (user.Belong && temp == null)
+                                {
+                                    me.belong_st.Add(new belong_st
+                                    {
+                                        IdPD = patient.Id,
+                                        IdUD = user.Id,
+                                        WhenBelongBS = DateTime.Now
+                                    });
+                                    patient.Belong.Add(user.Id);
+                                }
+                                if (!user.Belong && temp != null)
+                                {
+                                    me.belong_st.Remove(me.belong_st.Where(a => a.IdPD == patient.Id && a.IdUD == user.Id).Single());
+                                    patient.Belong.Remove(user.Id);
+                                }
+                            }
+                    await me.SaveChangesAsync();
+                }
                 workingConn = true;
             }
             catch (Exception ex)

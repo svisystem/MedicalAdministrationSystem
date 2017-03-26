@@ -62,13 +62,13 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     if (!newForm) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
                     else selected = new patientdata();
                     selected.NamePD = PatientDetailsMViewElements.UserName;
@@ -94,7 +94,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                     if (newForm)
                     {
                         me.patientdata.Add(selected);
-                        me.SaveChanges();
+                        await me.SaveChangesAsync();
 
                         if (me.priviledges.Single(p => p.IdP == GlobalVM.GlobalM.PriviledgeID).IsDoctorP)
                             me.belong_st.Add(new belong_st()
@@ -113,8 +113,7 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
                             me.scheduledata.Where(sd => sd.IdSD == selectedId).Single().StillNotVisitedSD = false;
                         }
                     }
-                    me.SaveChanges();
-                    me.Database.Connection.Close();
+                    await me.SaveChangesAsync();
                 }
                 workingConn = true;
             }
@@ -140,21 +139,20 @@ namespace MedicalAdministrationSystem.ViewModels.Patients
             }
             else ConnectionMessage();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     PatientDetailsMDataSet.FullGenderList = me.gender_fx.ToList();
                     PatientDetailsMDataSet.FullZipCodeList = me.zipcode_fx.ToList();
                     PatientDetailsMDataSet.FullSettlementList = me.settlement_fx.ToList();
                     PatientDetailsMDataSet.SettlementZipSwitch = me.settlementzipcode_st.ToList();
                     if (!newForm) selected = me.patientdata.Where(a => a.IdPD == selectedId).Single();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {

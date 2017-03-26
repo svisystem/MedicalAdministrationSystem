@@ -37,13 +37,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Loading.RunWorkerAsync();
         }
         List<FacilityDataMDataSet.Company> temp;
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     FacilityDataMDataSet.FullZipCodeList = me.zipcode_fx.ToList();
                     FacilityDataMDataSet.FullSettlementList = me.settlement_fx.ToList();
                     FacilityDataMDataSet.SettlementZipSwitch = me.settlementzipcode_st.ToList();
@@ -53,9 +53,8 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                             ID = a.IdCD,
                             Name = a.NameCD
                         }).ToList();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -85,7 +84,7 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
 
             await Utilities.Loading.Hide();
         }
-        private void RefreshModel(object sender, DoWorkEventArgs e)
+        private async void RefreshModel(object sender, DoWorkEventArgs e)
         {
             if (!FacilityDataMDataSet.SelectedCompany.ID.Equals(0))
             {
@@ -93,11 +92,10 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                 {
                     using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        me.Database.Connection.Open();
+                        await me.Database.Connection.OpenAsync();
                         cd = me.companydata.Where(b => b.IdCD == FacilityDataMDataSet.SelectedCompany.ID).Single();
-                        me.Database.Connection.Close();
-                        workingConn = true;
                     }
+                    workingConn = true;
                 }
                 catch (Exception ex)
                 {
@@ -193,13 +191,13 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     if (!FacilityDataMDataSet.SelectedCompany.ID.Equals(0)) cd = me.companydata.Where(b => b.IdCD == FacilityDataMDataSet.SelectedCompany.ID).Single();
                     else cd = new companydata();
                     cd.NameCD = FacilityDataMViewElements.Name;
@@ -213,10 +211,9 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
                     if (FacilityDataMViewElements.Email != null) cd.EmailCD = FacilityDataMViewElements.Email;
                     if (FacilityDataMViewElements.WebPage != null) cd.WebPageCD = FacilityDataMViewElements.WebPage;
                     if (FacilityDataMDataSet.SelectedCompany.ID.Equals(0)) me.companydata.Add(cd);
-                    me.SaveChanges();
-                    me.Database.Connection.Close();
-                    workingConn = true;
+                    await me.SaveChangesAsync();
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -228,11 +225,10 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     newValue = me.companydata.Where(a => a.NameCD == FacilityDataMViewElements.Name).Select(a => a.IdCD).Single();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
 
                 if (FacilityDataMDataSet.SelectedCompany.ID.Equals(0))
                 {

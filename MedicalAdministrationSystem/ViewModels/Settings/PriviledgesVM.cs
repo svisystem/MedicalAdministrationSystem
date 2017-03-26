@@ -32,36 +32,37 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             await Utilities.Loading.Show();
             new FormChecking(Loading.RunWorkerAsync, () => { }, true);
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                PriviledgesM.PriviledgesList = me.priviledges.ToList();
-                PriviledgesM.Priviledges.Clear();
-                foreach (priviledges row in PriviledgesM.PriviledgesList)
-                    PriviledgesM.Priviledges.Add(new Priviledge
-                    {
-                        IdP = row.IdP,
-                        NameP = row.NameP,
-                        ScheduleP = row.ScheduleP,
-                        PatientP = row.PatientP,
-                        ExaminationP = row.ExaminationP,
-                        LabP = row.LabP,
-                        EvidenceP = row.EvidenceP,
-                        PrescriptionP = row.PrescriptionP,
-                        BillingP = row.BillingP,
-                        StatisticP = row.StatisticP,
-                        SettingP = row.SettingP,
-                        AllSeeP = row.AllSeeP,
-                        IsDoctorP = row.IsDoctorP,
-                        IncludeScheduleP = row.IncludeScheduleP,
-                        JustImportDocumentsP = row.JustImportDocumentsP,
-                        New = false,
-                        Enabled = true
-                    });
-                me.Database.Connection.Close();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    PriviledgesM.PriviledgesList = me.priviledges.ToList();
+                    PriviledgesM.Priviledges.Clear();
+                    foreach (priviledges row in PriviledgesM.PriviledgesList)
+                        PriviledgesM.Priviledges.Add(new Priviledge
+                        {
+                            IdP = row.IdP,
+                            NameP = row.NameP,
+                            ScheduleP = row.ScheduleP,
+                            PatientP = row.PatientP,
+                            ExaminationP = row.ExaminationP,
+                            LabP = row.LabP,
+                            EvidenceP = row.EvidenceP,
+                            PrescriptionP = row.PrescriptionP,
+                            BillingP = row.BillingP,
+                            StatisticP = row.StatisticP,
+                            SettingP = row.SettingP,
+                            AllSeeP = row.AllSeeP,
+                            IsDoctorP = row.IsDoctorP,
+                            IncludeScheduleP = row.IncludeScheduleP,
+                            JustImportDocumentsP = row.JustImportDocumentsP,
+                            New = false,
+                            Enabled = true
+                        });
+                }
                 workingConn = true;
             }
             catch (Exception ex)
@@ -96,129 +97,130 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                if (PriviledgesM.Erased.Count != 0)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    foreach (int priviledge in PriviledgesM.Erased)
+                    await me.Database.Connection.OpenAsync();
+                    if (PriviledgesM.Erased.Count != 0)
                     {
+                        foreach (int priviledge in PriviledgesM.Erased)
+                        {
+                            try
+                            {
+                                me.priviledges.Remove(me.priviledges.Where(a => a.IdP == priviledge).Single());
+                                await me.SaveChangesAsync();
+                            }
+                            catch { }
+                        }
+                    }
+                    for (int i = 0; i < PriviledgesM.Priviledges.Count; i++)
+                    {
+                        int temp = PriviledgesM.Priviledges[i].IdP;
                         try
                         {
-                            me.priviledges.Remove(me.priviledges.Where(a => a.IdP == priviledge).Single());
-                            me.SaveChanges();
+                            priviledges pr = new priviledges();
+                            if (PriviledgesM.Priviledges[i].New)
+                            {
+                                pr.NameP = PriviledgesM.Priviledges[i].NameP;
+                                pr.ScheduleP = PriviledgesM.Priviledges[i].ScheduleP;
+                                pr.PatientP = PriviledgesM.Priviledges[i].PatientP;
+                                pr.ExaminationP = PriviledgesM.Priviledges[i].ExaminationP;
+                                pr.LabP = PriviledgesM.Priviledges[i].LabP;
+                                pr.EvidenceP = PriviledgesM.Priviledges[i].EvidenceP;
+                                pr.PrescriptionP = PriviledgesM.Priviledges[i].PrescriptionP;
+                                pr.BillingP = PriviledgesM.Priviledges[i].BillingP;
+                                pr.StatisticP = PriviledgesM.Priviledges[i].StatisticP;
+                                pr.SettingP = PriviledgesM.Priviledges[i].SettingP;
+                                pr.AllSeeP = PriviledgesM.Priviledges[i].AllSeeP;
+                                pr.IsDoctorP = PriviledgesM.Priviledges[i].IsDoctorP;
+                                pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
+                                pr.JustImportDocumentsP = PriviledgesM.Priviledges[i].JustImportDocumentsP;
+                                me.priviledges.Add(pr);
+                                await me.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                pr = me.priviledges.Where(a => a.IdP == temp).Single();
+                                if (!PriviledgesM.Priviledges[i].NameP.Equals(pr.NameP))
+                                {
+                                    pr.NameP = PriviledgesM.Priviledges[i].NameP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].ScheduleP.Equals(pr.ScheduleP))
+                                {
+                                    pr.ScheduleP = PriviledgesM.Priviledges[i].ScheduleP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].PatientP.Equals(pr.PatientP))
+                                {
+                                    pr.PatientP = PriviledgesM.Priviledges[i].PatientP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].ExaminationP.Equals(pr.ExaminationP))
+                                {
+                                    pr.ExaminationP = PriviledgesM.Priviledges[i].ExaminationP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].LabP.Equals(pr.LabP))
+                                {
+                                    pr.LabP = PriviledgesM.Priviledges[i].LabP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].EvidenceP.Equals(pr.EvidenceP))
+                                {
+                                    pr.EvidenceP = PriviledgesM.Priviledges[i].EvidenceP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].PrescriptionP.Equals(pr.PrescriptionP))
+                                {
+                                    pr.PrescriptionP = PriviledgesM.Priviledges[i].PrescriptionP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].BillingP.Equals(pr.BillingP))
+                                {
+                                    pr.BillingP = PriviledgesM.Priviledges[i].BillingP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].StatisticP.Equals(pr.StatisticP))
+                                {
+                                    pr.StatisticP = PriviledgesM.Priviledges[i].StatisticP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].SettingP.Equals(pr.SettingP))
+                                {
+                                    pr.SettingP = PriviledgesM.Priviledges[i].SettingP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].AllSeeP.Equals(pr.AllSeeP))
+                                {
+                                    pr.AllSeeP = PriviledgesM.Priviledges[i].AllSeeP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].IsDoctorP.Equals(pr.IsDoctorP))
+                                {
+                                    pr.IsDoctorP = PriviledgesM.Priviledges[i].IsDoctorP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].IncludeScheduleP.Equals(pr.IncludeScheduleP))
+                                {
+                                    pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
+                                    await me.SaveChangesAsync();
+                                }
+                                if (!PriviledgesM.Priviledges[i].JustImportDocumentsP.Equals(pr.JustImportDocumentsP))
+                                {
+                                    pr.JustImportDocumentsP = PriviledgesM.Priviledges[i].JustImportDocumentsP;
+                                    await me.SaveChangesAsync();
+                                }
+                            }
                         }
                         catch { }
                     }
+                    await me.SaveChangesAsync();
+                    PriviledgesM.Erased.Clear();
                 }
-                for (int i = 0; i < PriviledgesM.Priviledges.Count; i++)
-                {
-                    int temp = PriviledgesM.Priviledges[i].IdP;
-                    try
-                    {
-                        priviledges pr = new priviledges();
-                        if (PriviledgesM.Priviledges[i].New)
-                        {
-                            pr.NameP = PriviledgesM.Priviledges[i].NameP;
-                            pr.ScheduleP = PriviledgesM.Priviledges[i].ScheduleP;
-                            pr.PatientP = PriviledgesM.Priviledges[i].PatientP;
-                            pr.ExaminationP = PriviledgesM.Priviledges[i].ExaminationP;
-                            pr.LabP = PriviledgesM.Priviledges[i].LabP;
-                            pr.EvidenceP = PriviledgesM.Priviledges[i].EvidenceP;
-                            pr.PrescriptionP = PriviledgesM.Priviledges[i].PrescriptionP;
-                            pr.BillingP = PriviledgesM.Priviledges[i].BillingP;
-                            pr.StatisticP = PriviledgesM.Priviledges[i].StatisticP;
-                            pr.SettingP = PriviledgesM.Priviledges[i].SettingP;
-                            pr.AllSeeP = PriviledgesM.Priviledges[i].AllSeeP;
-                            pr.IsDoctorP = PriviledgesM.Priviledges[i].IsDoctorP;
-                            pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
-                            pr.JustImportDocumentsP = PriviledgesM.Priviledges[i].JustImportDocumentsP;
-                            me.priviledges.Add(pr);
-                            me.SaveChanges();
-                        }
-                        else
-                        {
-                            pr = me.priviledges.Where(a => a.IdP == temp).Single();
-                            if (!PriviledgesM.Priviledges[i].NameP.Equals(pr.NameP))
-                            {
-                                pr.NameP = PriviledgesM.Priviledges[i].NameP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].ScheduleP.Equals(pr.ScheduleP))
-                            {
-                                pr.ScheduleP = PriviledgesM.Priviledges[i].ScheduleP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].PatientP.Equals(pr.PatientP))
-                            {
-                                pr.PatientP = PriviledgesM.Priviledges[i].PatientP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].ExaminationP.Equals(pr.ExaminationP))
-                            {
-                                pr.ExaminationP = PriviledgesM.Priviledges[i].ExaminationP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].LabP.Equals(pr.LabP))
-                            {
-                                pr.LabP = PriviledgesM.Priviledges[i].LabP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].EvidenceP.Equals(pr.EvidenceP))
-                            {
-                                pr.EvidenceP = PriviledgesM.Priviledges[i].EvidenceP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].PrescriptionP.Equals(pr.PrescriptionP))
-                            {
-                                pr.PrescriptionP = PriviledgesM.Priviledges[i].PrescriptionP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].BillingP.Equals(pr.BillingP))
-                            {
-                                pr.BillingP = PriviledgesM.Priviledges[i].BillingP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].StatisticP.Equals(pr.StatisticP))
-                            {
-                                pr.StatisticP = PriviledgesM.Priviledges[i].StatisticP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].SettingP.Equals(pr.SettingP))
-                            {
-                                pr.SettingP = PriviledgesM.Priviledges[i].SettingP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].AllSeeP.Equals(pr.AllSeeP))
-                            {
-                                pr.AllSeeP = PriviledgesM.Priviledges[i].AllSeeP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].IsDoctorP.Equals(pr.IsDoctorP))
-                            {
-                                pr.IsDoctorP = PriviledgesM.Priviledges[i].IsDoctorP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].IncludeScheduleP.Equals(pr.IncludeScheduleP))
-                            {
-                                pr.IncludeScheduleP = PriviledgesM.Priviledges[i].IncludeScheduleP;
-                                me.SaveChanges();
-                            }
-                            if (!PriviledgesM.Priviledges[i].JustImportDocumentsP.Equals(pr.JustImportDocumentsP))
-                            {
-                                pr.JustImportDocumentsP = PriviledgesM.Priviledges[i].JustImportDocumentsP;
-                                me.SaveChanges();
-                            }
-                        }
-                    }
-                    catch { }
-                }
-                me.SaveChanges();
-                me.Database.Connection.Close();
-                PriviledgesM.Erased.Clear();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -270,17 +272,18 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             EraseBackground.RunWorkerAsync();
         }
         int listtemp;
-        private void EraseBackgroundDoWork(object sender, DoWorkEventArgs e)
+        private async void EraseBackgroundDoWork(object sender, DoWorkEventArgs e)
         {
             if (!PriviledgeSelectedRow.Selected.New)
             {
                 int temp = PriviledgesM.PriviledgesList.Where(b => b.IdP == PriviledgeSelectedRow.Selected.IdP).Select(b => b.IdP).Single();
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    me.Database.Connection.Open();
-                    listtemp = me.accountdata.Where(a => a.PriviledgesIdAD == temp).Count();
-                    me.Database.Connection.Close();
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
+                    {
+                        await me.Database.Connection.OpenAsync();
+                        listtemp = me.accountdata.Where(a => a.PriviledgesIdAD == temp).Count();
+                    }
                     workingConn = true;
                 }
                 catch (Exception ex)

@@ -27,53 +27,35 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             ExaminationsM.Examinations.Clear();
             ExaminationsM.Erased.Clear();
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                if (SelectedPatient.SelectedPatientVM.Count() == 0)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId).Count() != 0)
-                        foreach (ExaminationsM.Examination item in me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId)
-                            .Select(ex => new ExaminationsM.Examination
-                            {
-                                Id = ex.IdEX,
-                                Imported = false,
-                                Name = me.servicesdata.Where(t => t.IdTD == ex.ServiceIdEX).FirstOrDefault().NameTD,
-                                Code = ex.CodeEX,
-                                DateTime = ex.DateTimeEX,
-                                DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
-                                DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
-                                Editable = !GlobalVM.GlobalM.JustImportDocuments
-                            }).ToList())
-                            ExaminationsM.Examinations.Add(item);
+                    await me.Database.Connection.OpenAsync();
 
-                    if (me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId).Count() != 0)
-                        foreach (ExaminationsM.Examination item in me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId)
-                        .Select(ex => new ExaminationsM.Examination
-                        {
-                            Id = ex.IdIEX,
-                            Imported = true,
-                            Name = ex.NameIEX,
-                            Code = ex.CodeIEX,
-                            DateTime = ex.DateTimeIEX,
-                            DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdIEX).FirstOrDefault().NameUD,
-                            DocumentCount = me.importedexaminationdatadocuments_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
-                            Editable = true
-                        }).ToList())
-                            ExaminationsM.Examinations.Add(item);
-                }
-                else
-                {
-                    foreach (SelectedPatientM.ExaminationItem item in SelectedPatient.SelectedPatientVM.SelectedPatientM.List)
+                    if (SelectedPatient.SelectedPatientVM.Count() == 0)
                     {
-                        if (item.Imported)
-                            ExaminationsM.Examinations.Add(me.importedexaminationdata.Where(ex => ex.IdIEX == item.Id)
+                        if (me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId).Count() != 0)
+                            foreach (ExaminationsM.Examination item in me.examinationdata.Where(ex => ex.PatientIdEX == ExaminationsM.PatientId)
+                                .Select(ex => new ExaminationsM.Examination
+                                {
+                                    Id = ex.IdEX,
+                                    Imported = false,
+                                    Name = me.servicesdata.Where(t => t.IdTD == ex.ServiceIdEX).FirstOrDefault().NameTD,
+                                    Code = ex.CodeEX,
+                                    DateTime = ex.DateTimeEX,
+                                    DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
+                                    DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
+                                    Editable = !GlobalVM.GlobalM.JustImportDocuments
+                                }).ToList())
+                                ExaminationsM.Examinations.Add(item);
+
+                        if (me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId).Count() != 0)
+                            foreach (ExaminationsM.Examination item in me.importedexaminationdata.Where(ex => ex.PatientIdIEX == ExaminationsM.PatientId)
                             .Select(ex => new ExaminationsM.Examination
                             {
                                 Id = ex.IdIEX,
@@ -84,23 +66,42 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                                 DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdIEX).FirstOrDefault().NameUD,
                                 DocumentCount = me.importedexaminationdatadocuments_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
                                 Editable = true
-                            }).Single());
-                        else ExaminationsM.Examinations.Add(me.examinationdata.Where(ex => ex.IdEX == item.Id)
-                            .Select(ex => new ExaminationsM.Examination
-                            {
-                                Id = ex.IdEX,
-                                Imported = false,
-                                Name = me.servicesdata.Where(t => t.IdTD == ex.ServiceIdEX).FirstOrDefault().NameTD,
-                                Code = ex.CodeEX,
-                                DateTime = ex.DateTimeEX,
-                                DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
-                                DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
-                                Editable = !GlobalVM.GlobalM.JustImportDocuments
-                            }).Single());
+                            }).ToList())
+                                ExaminationsM.Examinations.Add(item);
+                    }
+                    else
+                    {
+                        foreach (SelectedPatientM.ExaminationItem item in SelectedPatient.SelectedPatientVM.SelectedPatientM.List)
+                        {
+                            if (item.Imported)
+                                ExaminationsM.Examinations.Add(me.importedexaminationdata.Where(ex => ex.IdIEX == item.Id)
+                                .Select(ex => new ExaminationsM.Examination
+                                {
+                                    Id = ex.IdIEX,
+                                    Imported = true,
+                                    Name = ex.NameIEX,
+                                    Code = ex.CodeIEX,
+                                    DateTime = ex.DateTimeIEX,
+                                    DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdIEX).FirstOrDefault().NameUD,
+                                    DocumentCount = me.importedexaminationdatadocuments_st.Where(exd => exd.IdIEX == ex.IdIEX).Count(),
+                                    Editable = true
+                                }).Single());
+                            else ExaminationsM.Examinations.Add(me.examinationdata.Where(ex => ex.IdEX == item.Id)
+                                .Select(ex => new ExaminationsM.Examination
+                                {
+                                    Id = ex.IdEX,
+                                    Imported = false,
+                                    Name = me.servicesdata.Where(t => t.IdTD == ex.ServiceIdEX).FirstOrDefault().NameTD,
+                                    Code = ex.CodeEX,
+                                    DateTime = ex.DateTimeEX,
+                                    DoctorName = me.userdata.Where(u => u.IdUD == ex.DoctorIdEX).FirstOrDefault().NameUD,
+                                    DocumentCount = me.examinationdatadocuments_st.Where(exd => exd.IdEX == ex.IdEX).Count(),
+                                    Editable = !GlobalVM.GlobalM.JustImportDocuments
+                                }).Single());
 
+                        }
                     }
                 }
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -128,44 +129,45 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                foreach (ExaminationsM.ErasedItem item in ExaminationsM.Erased)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (item.Imported)
+                    await me.Database.Connection.OpenAsync();
+
+                    foreach (ExaminationsM.ErasedItem item in ExaminationsM.Erased)
                     {
-                        me.examinationdatadocuments.RemoveRange
-                            (me.examinationdatadocuments.Where(ex => me.importedexaminationdatadocuments_st.Where
-                            (ied => ied.IdIEX == item.Id).Select(ied => ied.IdEXD).ToList().Any(c => c == ex.IdEXD)));
+                        if (item.Imported)
+                        {
+                            me.examinationdatadocuments.RemoveRange
+                                (me.examinationdatadocuments.Where(ex => me.importedexaminationdatadocuments_st.Where
+                                (ied => ied.IdIEX == item.Id).Select(ied => ied.IdEXD).ToList().Any(c => c == ex.IdEXD)));
 
-                        me.importedexaminationdatadocuments_st.RemoveRange
-                            (me.importedexaminationdatadocuments_st.Where(ex => ex.IdIEX == item.Id));
+                            me.importedexaminationdatadocuments_st.RemoveRange
+                                (me.importedexaminationdatadocuments_st.Where(ex => ex.IdIEX == item.Id));
 
-                        me.importedexaminationdata.Remove
-                            (me.importedexaminationdata.Where(ex => ex.IdIEX == item.Id).Single());
+                            me.importedexaminationdata.Remove
+                                (me.importedexaminationdata.Where(ex => ex.IdIEX == item.Id).Single());
+                        }
+
+                        else if (!item.Imported)
+                        {
+                            me.examinationdatadocuments.RemoveRange
+                                (me.examinationdatadocuments.Where(ex => me.examinationdatadocuments_st.Where
+                                (ied => ied.IdEX == item.Id).Select(ied => ied.IdEXD).ToList().Any(c => c == ex.IdEXD)));
+
+                            me.examinationdatadocuments_st.RemoveRange
+                                (me.examinationdatadocuments_st.Where(ex => ex.IdEX == item.Id));
+
+                            me.examinationdata.Remove
+                                (me.examinationdata.Where(ex => ex.IdEX == item.Id).Single());
+                        }
                     }
 
-                    else if (!item.Imported)
-                    {
-                        me.examinationdatadocuments.RemoveRange
-                            (me.examinationdatadocuments.Where(ex => me.examinationdatadocuments_st.Where
-                            (ied => ied.IdEX == item.Id).Select(ied => ied.IdEXD).ToList().Any(c => c == ex.IdEXD)));
-
-                        me.examinationdatadocuments_st.RemoveRange
-                            (me.examinationdatadocuments_st.Where(ex => ex.IdEX == item.Id));
-
-                        me.examinationdata.Remove
-                            (me.examinationdata.Where(ex => ex.IdEX == item.Id).Single());
-                    }
+                    await me.SaveChangesAsync();
                 }
-
-                me.SaveChanges();
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -235,21 +237,21 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             dialog.Start();
         }
         private bool eraseable;
-        private void EraseDoWork(object sender, DoWorkEventArgs e)
+        private async void EraseDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                eraseable = false;
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    eraseable = false;
 
-                if (ExaminationsM.SelectedExamination.Imported)
-                    eraseable = !me.importedexaminationeachevidence_st.Any(ieee => ieee.IdIEX == ExaminationsM.SelectedExamination.Id) ||
-                        !me.importedexaminationeachimportedevidence_st.Any(ieee => ieee.IdIEX == ExaminationsM.SelectedExamination.Id);
-                else eraseable = !me.examinationeachevidence_st.Any(ieee => ieee.IdEX == ExaminationsM.SelectedExamination.Id) ||
-                        !me.examinationeachimportedevidence_st.Any(ieee => ieee.IdEX == ExaminationsM.SelectedExamination.Id);
-
-                me.Database.Connection.Close();
+                    if (ExaminationsM.SelectedExamination.Imported)
+                        eraseable = !me.importedexaminationeachevidence_st.Any(ieee => ieee.IdIEX == ExaminationsM.SelectedExamination.Id) ||
+                            !me.importedexaminationeachimportedevidence_st.Any(ieee => ieee.IdIEX == ExaminationsM.SelectedExamination.Id);
+                    else eraseable = !me.examinationeachevidence_st.Any(ieee => ieee.IdEX == ExaminationsM.SelectedExamination.Id) ||
+                            !me.examinationeachimportedevidence_st.Any(ieee => ieee.IdEX == ExaminationsM.SelectedExamination.Id);
+                }
                 workingConn = true;
             }
             catch (Exception ex)

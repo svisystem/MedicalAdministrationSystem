@@ -29,13 +29,13 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
 
                     if (ExaminationViewM.Imported)
                     {
@@ -59,9 +59,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                         Where(iex => iex.IdEX == ExaminationViewM.Id).FirstOrDefault().ServiceIdEX).Single().NameTD;
                         ExaminationViewM.ExaminationDate = me.examinationdata.Where(iex => iex.IdEX == ExaminationViewM.Id).Single().DateTimeEX;
                     }
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {

@@ -18,34 +18,39 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
         protected internal int PatientId;
         protected internal async Task TemplatePage(RichEditControl editor, string ExaminationName, string ExaminationCode, Action Save, bool Type)
         {
-            await Utilities.Loading.Show();
-            await Task.Run(() =>
+            await Loading.Show();
+            await Task.Run(async () =>
             {
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    workingConn = true;
-                    me.Database.Connection.Open();
-                    companydata cd = me.companydata.Where(a => a.IdCD == GlobalVM.GlobalM.CompanyId).Single();
-                    userdata ud = me.userdata.Where(a => a.IdUD == GlobalVM.GlobalM.UserID).Single();
-                    patientdata pd = me.patientdata.Where(a => a.IdPD == PatientId).Single();
-                    return new DocumentGenerator().Template(
-                        Type,
-                        cd.NameCD,
-                        me.zipcode_fx.Where(a => a.IdZC == cd.ZipCodeCD).Select(a => a.DataZC).Single().ToString(),
-                        me.settlement_fx.Where(a => a.IdS == cd.SettlementCD).Select(a => a.DataS).Single(),
-                        cd.AddressCD,
-                        ud.NameUD,
-                        (int)ud.SealNumberUD,
-                        pd.NamePD,
-                        pd.MotherNamePD,
-                        pd.BirthDatePD,
-                        pd.TAJNumberPD,
-                        me.zipcode_fx.Where(a => a.IdZC == pd.ZipCodePD).Select(a => a.DataZC).Single().ToString(),
-                        me.settlement_fx.Where(a => a.IdS == pd.SettlementPD).Select(a => a.DataS).Single(),
-                        pd.AddressPD,
-                        ExaminationName,
-                        ExaminationCode);
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
+                    {
+                        await me.Database.Connection.OpenAsync();
+
+                        companydata cd = me.companydata.Where(a => a.IdCD == GlobalVM.GlobalM.CompanyId).Single();
+                        userdata ud = me.userdata.Where(a => a.IdUD == GlobalVM.GlobalM.UserID).Single();
+                        patientdata pd = me.patientdata.Where(a => a.IdPD == PatientId).Single();
+                        MemoryStream ms = new DocumentGenerator().Template(
+                            Type,
+                            cd.NameCD,
+                            me.zipcode_fx.Where(a => a.IdZC == cd.ZipCodeCD).Select(a => a.DataZC).Single().ToString(),
+                            me.settlement_fx.Where(a => a.IdS == cd.SettlementCD).Select(a => a.DataS).Single(),
+                            cd.AddressCD,
+                            ud.NameUD,
+                            (int)ud.SealNumberUD,
+                            pd.NamePD,
+                            pd.MotherNamePD,
+                            pd.BirthDatePD,
+                            pd.TAJNumberPD,
+                            me.zipcode_fx.Where(a => a.IdZC == pd.ZipCodePD).Select(a => a.DataZC).Single().ToString(),
+                            me.settlement_fx.Where(a => a.IdS == pd.SettlementPD).Select(a => a.DataS).Single(),
+                            pd.AddressPD,
+                            ExaminationName,
+                            ExaminationCode);
+
+                        workingConn = true;
+                        return ms;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -53,18 +58,20 @@ namespace MedicalAdministrationSystem.ViewModels.Fragments
                     workingConn = false;
                     return null;
                 }
-                finally
+            }, CancellationToken.None).ContinueWith(async task =>
+            {
+                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
                 {
-                    me.Database.Connection.Close();
-                }
-            }, CancellationToken.None).ContinueWith(task =>
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
-                {
-                    using (MemoryStream ms = new MemoryStream(task.Result.ToArray()))
-                        editor.LoadDocument(ms, DocumentFormat.OpenXml);
-                    Save();
+                    if (!workingConn) ConnectionMessage();
+                    else
+                    {
+                        using (MemoryStream ms = new MemoryStream(task.Result.ToArray()))
+                            editor.LoadDocument(ms, DocumentFormat.OpenXml);
+                        Save();
+                    }
                     await Loading.Hide();
-                })));
+                }));
+            });
         }
         protected internal void CloseQuestion(Action action, bool modified)
         {

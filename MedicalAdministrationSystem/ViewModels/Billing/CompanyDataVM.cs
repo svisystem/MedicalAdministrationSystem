@@ -36,21 +36,19 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             LoadingList.RunWorkerCompleted += LoadingListComplete;
             LoadingFixMembers.RunWorkerAsync();
         }
-        private void LoadingFixMembersModel(object sender, DoWorkEventArgs e)
+        private async void LoadingFixMembersModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
 
                     CompanyDataM.FullZipCodeList = me.zipcode_fx.ToList();
                     CompanyDataM.FullSettlementList = me.settlement_fx.ToList();
                     CompanyDataM.SettlementZipSwitch = me.settlementzipcode_st.ToList();
-
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -68,7 +66,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             }
             else ConnectionMessage();
         }
-        private void LoadingListModel(object sender, DoWorkEventArgs e)
+        private async void LoadingListModel(object sender, DoWorkEventArgs e)
         {
             CompanyDataM.Companies.Clear();
             CompanyDataM.Erased.Clear();
@@ -76,6 +74,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
+                    await me.Database.Connection.OpenAsync();
                     foreach (CompanyDataM.Company item in me.companydata.ToList()
                         .Select(a => new CompanyDataM.Company
                         {
@@ -94,9 +93,8 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                             WebPage = a.WebPageCD,
                         }))
                         CompanyDataM.Companies.Add(item);
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -182,22 +180,22 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             else fromInvalidRow = false;
         }
         private bool eraseable;
-        private void EraseDoWork(object sender, DoWorkEventArgs e)
+        private async void EraseDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
 
-                if (CompanyDataM.SelectedCompany.ID == null) eraseable = true;
-                else eraseable = !(me.billing.Any(b => b.CompanyIdFromB == CompanyDataM.SelectedCompany.ID ||
-                        b.CompanyIdToB == CompanyDataM.SelectedCompany.ID) ||
-                        me.examinationdata.Any(ex => ex.CompanyIdEX == CompanyDataM.SelectedCompany.ID) ||
-                        me.evidencedata.Any(ex => ex.CompanyIdED == CompanyDataM.SelectedCompany.ID) ||
-                        me.importedexaminationdata.Any(ex => ex.CompanyIdIEX == CompanyDataM.SelectedCompany.ID) ||
-                        me.importedevidencedata.Any(ex => ex.CompanyIdIED == CompanyDataM.SelectedCompany.ID));
-
-                me.Database.Connection.Close();
+                    if (CompanyDataM.SelectedCompany.ID == null) eraseable = true;
+                    else eraseable = !(me.billing.Any(b => b.CompanyIdFromB == CompanyDataM.SelectedCompany.ID ||
+                            b.CompanyIdToB == CompanyDataM.SelectedCompany.ID) ||
+                            me.examinationdata.Any(ex => ex.CompanyIdEX == CompanyDataM.SelectedCompany.ID) ||
+                            me.evidencedata.Any(ex => ex.CompanyIdED == CompanyDataM.SelectedCompany.ID) ||
+                            me.importedexaminationdata.Any(ex => ex.CompanyIdIEX == CompanyDataM.SelectedCompany.ID) ||
+                            me.importedevidencedata.Any(ex => ex.CompanyIdIED == CompanyDataM.SelectedCompany.ID));
+                }
                 workingConn = true;
             }
             catch (Exception ex)
@@ -235,57 +233,58 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                if (CompanyDataM.Erased.Count != 0)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    foreach (int company in CompanyDataM.Erased)
-                        try
+                    await me.Database.Connection.OpenAsync();
+                    if (CompanyDataM.Erased.Count != 0)
+                    {
+                        foreach (int company in CompanyDataM.Erased)
+                            try
+                            {
+                                me.companydata.Remove(me.companydata.Where(a => a.IdCD == company).FirstOrDefault());
+                            }
+                            catch { }
+                        await me.SaveChangesAsync();
+                    }
+                    foreach (CompanyDataM.Company company in CompanyDataM.Companies)
+                    {
+                        if (company.ID == null)
                         {
-                            me.companydata.Remove(me.companydata.Where(a => a.IdCD == company).FirstOrDefault());
+                            me.companydata.Add(new companydata()
+                            {
+                                NameCD = company.Name,
+                                ZipCodeCD = company.ZipCodeId,
+                                SettlementCD = company.SettlementId,
+                                AddressCD = company.Address,
+                                TAXNumberCD = company.TaxNumber,
+                                RegistrationNumberCD = company.RegistrationNumber,
+                                InvoiceNumberCD = company.InvoiceNumber,
+                                PhoneCD = company.Phone,
+                                EmailCD = company.Email,
+                                WebPageCD = company.WebPage
+                            });
                         }
-                        catch { }
-                    me.SaveChanges();
-                }
-                foreach (CompanyDataM.Company company in CompanyDataM.Companies)
-                {
-                    if (company.ID == null)
-                    {
-                        me.companydata.Add(new companydata()
+                        else if (company.IsChanged)
                         {
-                            NameCD = company.Name,
-                            ZipCodeCD = company.ZipCodeId,
-                            SettlementCD = company.SettlementId,
-                            AddressCD = company.Address,
-                            TAXNumberCD = company.TaxNumber,
-                            RegistrationNumberCD = company.RegistrationNumber,
-                            InvoiceNumberCD = company.InvoiceNumber,
-                            PhoneCD = company.Phone,
-                            EmailCD = company.Email,
-                            WebPageCD = company.WebPage
-                        });
+                            companydata cd = me.companydata.Where(c => c.IdCD == company.ID).Single();
+                            cd.NameCD = company.Name;
+                            cd.ZipCodeCD = company.ZipCodeId;
+                            cd.SettlementCD = company.SettlementId;
+                            cd.AddressCD = company.Address;
+                            cd.TAXNumberCD = company.TaxNumber;
+                            cd.RegistrationNumberCD = company.RegistrationNumber;
+                            cd.InvoiceNumberCD = company.InvoiceNumber;
+                            cd.PhoneCD = company.Phone;
+                            cd.EmailCD = company.Email;
+                            cd.WebPageCD = company.WebPage;
+                        }
+                        await me.SaveChangesAsync();
                     }
-                    else if (company.IsChanged)
-                    {
-                        companydata cd = me.companydata.Where(c => c.IdCD == company.ID).Single();
-                        cd.NameCD = company.Name;
-                        cd.ZipCodeCD = company.ZipCodeId;
-                        cd.SettlementCD = company.SettlementId;
-                        cd.AddressCD = company.Address;
-                        cd.TAXNumberCD = company.TaxNumber;
-                        cd.RegistrationNumberCD = company.RegistrationNumber;
-                        cd.InvoiceNumberCD = company.InvoiceNumber;
-                        cd.PhoneCD = company.Phone;
-                        cd.EmailCD = company.Email;
-                        cd.WebPageCD = company.WebPage;
-                    }
-                    me.SaveChanges();
                 }
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

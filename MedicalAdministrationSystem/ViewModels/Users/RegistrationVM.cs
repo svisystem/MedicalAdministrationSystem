@@ -29,19 +29,18 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteCompleted);
             Execute.RunWorkerAsync();
         }
-        protected internal bool UserCheck(string user) =>RegistrationM.ExistUsers.Any(l => l == user);
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        protected internal bool UserCheck(string user) => RegistrationM.ExistUsers.Any(l => l == user);
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     RegistrationM.ExistUsers = me.accountdata.Where(a => a.DeletedAD != true).Select(a => a.UserNameAD).ToList();
                     RegistrationM.PriviledgesList = me.priviledges.Select(a => a.NameP).ToList();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -73,9 +72,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     ad.RegistrateTimeAD = DateTime.Now;
                     me.accountdata.Add(ad);
                     await me.SaveChangesAsync();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {

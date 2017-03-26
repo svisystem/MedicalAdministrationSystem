@@ -45,13 +45,13 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     if (EditEvidenceM.Imported)
                     {
                         me.evidencedatadocuments.Where(ex => me.importedevidencedatadocuments_st.Where
@@ -119,9 +119,8 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
                             }))
                             AddList(item);
                     }
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -175,131 +174,131 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             dialog.content = new Views.Dialogs.TextBlock("Biztosan elmenti a Státuszban végrehajtott módosításokat?");
             dialog.Start();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                foreach (DocumentControlM.ListElement item in EditEvidenceM.EvidenceList)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (item.DBId != null)
+                    await me.Database.Connection.OpenAsync();
+
+                    foreach (DocumentControlM.ListElement item in EditEvidenceM.EvidenceList)
                     {
-                        evidencedatadocuments edd = me.evidencedatadocuments.Where(ed => ed.IdEDD == item.DBId).Single();
-                        edd.DataEDD = edd.DataEDD != item.File.ToArray() ? item.File.ToArray() : edd.DataEDD;
-                        edd.FileTypeEDD = edd.FileTypeEDD != item.FileType ? item.FileType : edd.FileTypeEDD;
-                    }
-                    else if (item.File != null)
-                    {
-                        evidencedatadocuments ed = new evidencedatadocuments()
+                        if (item.DBId != null)
                         {
-                            DataEDD = item.File.ToArray(),
-                            TypeEDD = item.ButtonType,
-                            FileTypeEDD = item.FileType
-                        };
+                            evidencedatadocuments edd = me.evidencedatadocuments.Where(ed => ed.IdEDD == item.DBId).Single();
+                            edd.DataEDD = edd.DataEDD != item.File.ToArray() ? item.File.ToArray() : edd.DataEDD;
+                            edd.FileTypeEDD = edd.FileTypeEDD != item.FileType ? item.FileType : edd.FileTypeEDD;
+                        }
+                        else if (item.File != null)
+                        {
+                            evidencedatadocuments ed = new evidencedatadocuments()
+                            {
+                                DataEDD = item.File.ToArray(),
+                                TypeEDD = item.ButtonType,
+                                FileTypeEDD = item.FileType
+                            };
 
-                        me.evidencedatadocuments.Add(ed);
-                        me.SaveChanges();
-                        int ide = ed.IdEDD;
+                            me.evidencedatadocuments.Add(ed);
+                            await me.SaveChangesAsync();
+                            int ide = ed.IdEDD;
 
+                            if (EditEvidenceM.Imported)
+                            {
+                                me.importedevidencedatadocuments_st.Add(new importedevidencedatadocuments_st()
+                                {
+                                    IdIED = EditEvidenceM.Id,
+                                    IdEDD = ide
+                                });
+                                await me.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                me.evidencedatadocuments_st.Add(new evidencedatadocuments_st()
+                                {
+                                    IdED = EditEvidenceM.Id,
+                                    IdEDD = ide
+                                });
+                                await me.SaveChangesAsync();
+                            }
+                        }
+                        await me.SaveChangesAsync();
+                    }
+
+                    foreach (int id in DocumentControlVM.Erased())
+                    {
                         if (EditEvidenceM.Imported)
-                        {
-                            me.importedevidencedatadocuments_st.Add(new importedevidencedatadocuments_st()
-                            {
-                                IdIED = EditEvidenceM.Id,
-                                IdEDD = ide
-                            });
-                            me.SaveChanges();
-                        }
-                        else
-                        {
-                            me.evidencedatadocuments_st.Add(new evidencedatadocuments_st()
-                            {
-                                IdED = EditEvidenceM.Id,
-                                IdEDD = ide
-                            });
-                            me.SaveChanges();
-                        }
+                            me.importedevidencedatadocuments_st.Remove
+                                (me.importedevidencedatadocuments_st.Where(ex => ex.IdEDD == id).Single());
+
+                        else me.evidencedatadocuments_st.Remove
+                                (me.evidencedatadocuments_st.Where(ex => ex.IdEDD == id).Single());
+
+                        me.evidencedatadocuments.Remove
+                            (me.evidencedatadocuments.Where(ex => ex.IdEDD == id).Single());
+
+                        await me.SaveChangesAsync();
                     }
-                    me.SaveChanges();
-                }
 
-                foreach (int id in DocumentControlVM.Erased())
-                {
-                    if (EditEvidenceM.Imported)
-                        me.importedevidencedatadocuments_st.Remove
-                            (me.importedevidencedatadocuments_st.Where(ex => ex.IdEDD == id).Single());
-
-                    else me.evidencedatadocuments_st.Remove
-                            (me.evidencedatadocuments_st.Where(ex => ex.IdEDD == id).Single());
-
-                    me.evidencedatadocuments.Remove
-                        (me.evidencedatadocuments.Where(ex => ex.IdEDD == id).Single());
-
-                    me.SaveChanges();
-                }
-
-                foreach (EmptyComboBoxEditM.ErasedItem erased in GetErased())
-                {
-                    if (EditEvidenceM.Imported)
-                        if (erased.Imported) me.importedexaminationeachimportedevidence_st.Remove(
-                            me.importedexaminationeachimportedevidence_st.Where(ieeie => ieeie.IdIEX == erased.Id).FirstOrDefault());
-                        else me.examinationeachimportedevidence_st.Remove(
-                            me.examinationeachimportedevidence_st.Where(eeie => eeie.IdEX == erased.Id).FirstOrDefault());
-                    else if (erased.Imported) me.importedexaminationeachevidence_st.Remove(
-                            me.importedexaminationeachevidence_st.Where(ieee => ieee.IdIEX == erased.Id).FirstOrDefault());
-                    else me.examinationeachevidence_st.Remove(
-                        me.examinationeachevidence_st.Where(eee => eee.IdEX == erased.Id).FirstOrDefault());
-                    me.SaveChanges();
-                }
-
-                foreach (SelectedPatientM.ExaminationItem exist in GetList())
-                {
-                    if (EditEvidenceM.Imported)
-                        if (exist.Imported)
-                        {
-                            if (!me.importedexaminationeachimportedevidence_st.Any(ieeie => ieeie.IdIEX == exist.Id))
-                                me.importedexaminationeachimportedevidence_st.Add(new importedexaminationeachimportedevidence_st()
-                                {
-                                    IdIEX = exist.Id,
-                                    IdIED = EditEvidenceM.Id
-                                });
-                        }
-                        else
-                        {
-                            if (!me.examinationeachimportedevidence_st.Any(eeie => eeie.IdEX == exist.Id))
-                                me.examinationeachimportedevidence_st.Add(new examinationeachimportedevidence_st()
-                                {
-                                    IdEX = exist.Id,
-                                    IdIED = EditEvidenceM.Id
-                                });
-                        }
-                    else
+                    foreach (EmptyComboBoxEditM.ErasedItem erased in GetErased())
                     {
-                        if (exist.Imported)
-                        {
-                            if (!me.importedexaminationeachevidence_st.Any(ieee => ieee.IdIEX == exist.Id))
-                                me.importedexaminationeachevidence_st.Add(new importedexaminationeachevidence_st()
-                                {
-                                    IdIEX = exist.Id,
-                                    IdED = EditEvidenceM.Id
-                                });
-                        }
+                        if (EditEvidenceM.Imported)
+                            if (erased.Imported) me.importedexaminationeachimportedevidence_st.Remove(
+                                me.importedexaminationeachimportedevidence_st.Where(ieeie => ieeie.IdIEX == erased.Id).FirstOrDefault());
+                            else me.examinationeachimportedevidence_st.Remove(
+                                me.examinationeachimportedevidence_st.Where(eeie => eeie.IdEX == erased.Id).FirstOrDefault());
+                        else if (erased.Imported) me.importedexaminationeachevidence_st.Remove(
+                                me.importedexaminationeachevidence_st.Where(ieee => ieee.IdIEX == erased.Id).FirstOrDefault());
+                        else me.examinationeachevidence_st.Remove(
+                            me.examinationeachevidence_st.Where(eee => eee.IdEX == erased.Id).FirstOrDefault());
+                        await me.SaveChangesAsync();
+                    }
+
+                    foreach (SelectedPatientM.ExaminationItem exist in GetList())
+                    {
+                        if (EditEvidenceM.Imported)
+                            if (exist.Imported)
+                            {
+                                if (!me.importedexaminationeachimportedevidence_st.Any(ieeie => ieeie.IdIEX == exist.Id))
+                                    me.importedexaminationeachimportedevidence_st.Add(new importedexaminationeachimportedevidence_st()
+                                    {
+                                        IdIEX = exist.Id,
+                                        IdIED = EditEvidenceM.Id
+                                    });
+                            }
+                            else
+                            {
+                                if (!me.examinationeachimportedevidence_st.Any(eeie => eeie.IdEX == exist.Id))
+                                    me.examinationeachimportedevidence_st.Add(new examinationeachimportedevidence_st()
+                                    {
+                                        IdEX = exist.Id,
+                                        IdIED = EditEvidenceM.Id
+                                    });
+                            }
                         else
                         {
-                            if (!me.examinationeachevidence_st.Any(eee => eee.IdEX == exist.Id))
-                                me.examinationeachevidence_st.Add(new examinationeachevidence_st()
-                                {
-                                    IdEX = exist.Id,
-                                    IdED = EditEvidenceM.Id
-                                });
+                            if (exist.Imported)
+                            {
+                                if (!me.importedexaminationeachevidence_st.Any(ieee => ieee.IdIEX == exist.Id))
+                                    me.importedexaminationeachevidence_st.Add(new importedexaminationeachevidence_st()
+                                    {
+                                        IdIEX = exist.Id,
+                                        IdED = EditEvidenceM.Id
+                                    });
+                            }
+                            else
+                            {
+                                if (!me.examinationeachevidence_st.Any(eee => eee.IdEX == exist.Id))
+                                    me.examinationeachevidence_st.Add(new examinationeachevidence_st()
+                                    {
+                                        IdEX = exist.Id,
+                                        IdED = EditEvidenceM.Id
+                                    });
+                            }
                         }
+                        await me.SaveChangesAsync();
                     }
-                    me.SaveChanges();
                 }
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

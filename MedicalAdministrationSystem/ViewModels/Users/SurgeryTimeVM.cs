@@ -30,41 +30,41 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             Loading.RunWorkerCompleted += LoadingModelComplete;
         }
         List<SurgeryTimeM.Day> Actual = new List<SurgeryTimeM.Day>();
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                SurgeryTimeM.UserRegistrateDate = me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().RegistrateTimeAD;
-
-                for (int i = 1; i <= 7; i++)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    usersschedule item = me.usersschedule.Where(u => u.UserDataIdUS == GlobalVM.GlobalM.UserID && u.DayOfWeekUS == i).OrderByDescending(u => u.WhenCreateUS).FirstOrDefault();
-                    if (item != null)
+                    await me.Database.Connection.OpenAsync();
+
+                    SurgeryTimeM.UserRegistrateDate = me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().RegistrateTimeAD;
+
+                    for (int i = 1; i <= 7; i++)
                     {
-                        SurgeryTimeM.GetType().GetProperty(DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, true);
-                        SurgeryTimeM.GetType().GetProperty("Start" + DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, item.StartTimeUS);
-                        SurgeryTimeM.GetType().GetProperty("Finish" + DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, item.FinishTimeUS);
-                        SetActual(i, item.StartTimeUS, item.FinishTimeUS);
+                        usersschedule item = me.usersschedule.Where(u => u.UserDataIdUS == GlobalVM.GlobalM.UserID && u.DayOfWeekUS == i).OrderByDescending(u => u.WhenCreateUS).FirstOrDefault();
+                        if (item != null)
+                        {
+                            SurgeryTimeM.GetType().GetProperty(DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, true);
+                            SurgeryTimeM.GetType().GetProperty("Start" + DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, item.StartTimeUS);
+                            SurgeryTimeM.GetType().GetProperty("Finish" + DayOfWeek(item.DayOfWeekUS)).SetValue(SurgeryTimeM, item.FinishTimeUS);
+                            SetActual(i, item.StartTimeUS, item.FinishTimeUS);
+                        }
                     }
+
+                    foreach (SurgeryTimeM.Exception item in me.exceptedschedule.Where(ex => ex.UserDataIdES == GlobalVM.GlobalM.UserID).ToList().
+                        Select(ex => new SurgeryTimeM.Exception()
+                        {
+                            DBId = ex.IdES,
+                            Included = ex.IncludedES,
+                            StartDateTime = ex.StartDateES,
+                            FinishDateTime = ex.FinishDateED,
+                            Valid = true
+                        }))
+                        SurgeryTimeM.Exceptions.Add(item);
+
+                    CollectionChange();
                 }
-
-                foreach (SurgeryTimeM.Exception item in me.exceptedschedule.Where(ex => ex.UserDataIdES == GlobalVM.GlobalM.UserID).ToList().
-                    Select(ex => new SurgeryTimeM.Exception()
-                    {
-                        DBId = ex.IdES,
-                        Included = ex.IncludedES,
-                        StartDateTime = ex.StartDateES,
-                        FinishDateTime = ex.FinishDateED,
-                        Valid = true
-                    }))
-                    SurgeryTimeM.Exceptions.Add(item);
-
-                CollectionChange();
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -117,121 +117,122 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             dialog.content = new TextBlock("Valóban menteni szeretné a Rendelési időben végrehajtott változtatásait?");
             dialog.Start();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                foreach (int id in SurgeryTimeM.Erased)
-                    me.exceptedschedule.Remove(me.exceptedschedule.Where(ex => ex.IdES == id).FirstOrDefault());
-
-                foreach (SurgeryTimeM.Exception item in SurgeryTimeM.Exceptions)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (item.DBId == null) me.exceptedschedule.Add(new exceptedschedule()
+                    await me.Database.Connection.OpenAsync();
+
+                    foreach (int id in SurgeryTimeM.Erased)
+                        me.exceptedschedule.Remove(me.exceptedschedule.Where(ex => ex.IdES == id).FirstOrDefault());
+
+                    foreach (SurgeryTimeM.Exception item in SurgeryTimeM.Exceptions)
                     {
-                        IncludedES = item.Included,
-                        UserDataIdES = (int)GlobalVM.GlobalM.UserID,
-                        StartDateES = (DateTime)item.StartDateTime,
-                        FinishDateED = (DateTime)item.FinishDateTime
-                    });
-                    else
-                    {
-                        exceptedschedule es = me.exceptedschedule.Where(ex => ex.IdES == item.DBId).Single();
-                        es.IncludedES = item.Included;
-                        es.StartDateES = (DateTime)item.StartDateTime;
-                        es.FinishDateED = (DateTime)item.FinishDateTime;
+                        if (item.DBId == null) me.exceptedschedule.Add(new exceptedschedule()
+                        {
+                            IncludedES = item.Included,
+                            UserDataIdES = (int)GlobalVM.GlobalM.UserID,
+                            StartDateES = (DateTime)item.StartDateTime,
+                            FinishDateED = (DateTime)item.FinishDateTime
+                        });
+                        else
+                        {
+                            exceptedschedule es = me.exceptedschedule.Where(ex => ex.IdES == item.DBId).Single();
+                            es.IncludedES = item.Included;
+                            es.StartDateES = (DateTime)item.StartDateTime;
+                            es.FinishDateED = (DateTime)item.FinishDateTime;
+                        }
                     }
-                }
 
-                if (SurgeryTimeM.Monday && Changed(1))
-                {
-                    me.usersschedule.Add(new usersschedule()
+                    if (SurgeryTimeM.Monday && Changed(1))
                     {
-                        DayOfWeekUS = 1,
-                        UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
-                        StartTimeUS = (DateTime)SurgeryTimeM.StartMonday,
-                        FinishTimeUS = (DateTime)SurgeryTimeM.FinishMonday,
-                        WhenCreateUS = DateTime.Now
-                    });
-                    SetActual(1, (DateTime)SurgeryTimeM.StartMonday, (DateTime)SurgeryTimeM.FinishMonday);
-                }
-                if (SurgeryTimeM.Tuesday && Changed(2))
-                {
-                    me.usersschedule.Add(new usersschedule()
+                        me.usersschedule.Add(new usersschedule()
+                        {
+                            DayOfWeekUS = 1,
+                            UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
+                            StartTimeUS = (DateTime)SurgeryTimeM.StartMonday,
+                            FinishTimeUS = (DateTime)SurgeryTimeM.FinishMonday,
+                            WhenCreateUS = DateTime.Now
+                        });
+                        SetActual(1, (DateTime)SurgeryTimeM.StartMonday, (DateTime)SurgeryTimeM.FinishMonday);
+                    }
+                    if (SurgeryTimeM.Tuesday && Changed(2))
                     {
-                        DayOfWeekUS = 2,
-                        UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
-                        StartTimeUS = (DateTime)SurgeryTimeM.StartTuesday,
-                        FinishTimeUS = (DateTime)SurgeryTimeM.FinishTuesday,
-                        WhenCreateUS = DateTime.Now
-                    });
-                    SetActual(2, (DateTime)SurgeryTimeM.StartTuesday, (DateTime)SurgeryTimeM.FinishTuesday);
-                }
-                if (SurgeryTimeM.Wednesday && Changed(3))
-                {
-                    me.usersschedule.Add(new usersschedule()
+                        me.usersschedule.Add(new usersschedule()
+                        {
+                            DayOfWeekUS = 2,
+                            UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
+                            StartTimeUS = (DateTime)SurgeryTimeM.StartTuesday,
+                            FinishTimeUS = (DateTime)SurgeryTimeM.FinishTuesday,
+                            WhenCreateUS = DateTime.Now
+                        });
+                        SetActual(2, (DateTime)SurgeryTimeM.StartTuesday, (DateTime)SurgeryTimeM.FinishTuesday);
+                    }
+                    if (SurgeryTimeM.Wednesday && Changed(3))
                     {
-                        DayOfWeekUS = 3,
-                        UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
-                        StartTimeUS = (DateTime)SurgeryTimeM.StartWednesday,
-                        FinishTimeUS = (DateTime)SurgeryTimeM.FinishWednesday,
-                        WhenCreateUS = DateTime.Now
-                    });
-                    SetActual(3, (DateTime)SurgeryTimeM.StartWednesday, (DateTime)SurgeryTimeM.FinishWednesday);
-                }
-                if (SurgeryTimeM.Thursday && Changed(4))
-                {
-                    me.usersschedule.Add(new usersschedule()
+                        me.usersschedule.Add(new usersschedule()
+                        {
+                            DayOfWeekUS = 3,
+                            UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
+                            StartTimeUS = (DateTime)SurgeryTimeM.StartWednesday,
+                            FinishTimeUS = (DateTime)SurgeryTimeM.FinishWednesday,
+                            WhenCreateUS = DateTime.Now
+                        });
+                        SetActual(3, (DateTime)SurgeryTimeM.StartWednesday, (DateTime)SurgeryTimeM.FinishWednesday);
+                    }
+                    if (SurgeryTimeM.Thursday && Changed(4))
                     {
-                        DayOfWeekUS = 4,
-                        UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
-                        StartTimeUS = (DateTime)SurgeryTimeM.StartThursday,
-                        FinishTimeUS = (DateTime)SurgeryTimeM.FinishThursday,
-                        WhenCreateUS = DateTime.Now
-                    });
-                    SetActual(4, (DateTime)SurgeryTimeM.StartThursday, (DateTime)SurgeryTimeM.FinishThursday);
-                }
-                if (SurgeryTimeM.Friday && Changed(5))
-                {
-                    me.usersschedule.Add(new usersschedule()
+                        me.usersschedule.Add(new usersschedule()
+                        {
+                            DayOfWeekUS = 4,
+                            UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
+                            StartTimeUS = (DateTime)SurgeryTimeM.StartThursday,
+                            FinishTimeUS = (DateTime)SurgeryTimeM.FinishThursday,
+                            WhenCreateUS = DateTime.Now
+                        });
+                        SetActual(4, (DateTime)SurgeryTimeM.StartThursday, (DateTime)SurgeryTimeM.FinishThursday);
+                    }
+                    if (SurgeryTimeM.Friday && Changed(5))
                     {
-                        DayOfWeekUS = 5,
-                        UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
-                        StartTimeUS = (DateTime)SurgeryTimeM.StartFriday,
-                        FinishTimeUS = (DateTime)SurgeryTimeM.FinishFriday,
-                        WhenCreateUS = DateTime.Now
-                    });
-                    SetActual(5, (DateTime)SurgeryTimeM.StartFriday, (DateTime)SurgeryTimeM.FinishFriday);
-                }
-                if (SurgeryTimeM.Saturday && Changed(6))
-                {
-                    me.usersschedule.Add(new usersschedule()
+                        me.usersschedule.Add(new usersschedule()
+                        {
+                            DayOfWeekUS = 5,
+                            UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
+                            StartTimeUS = (DateTime)SurgeryTimeM.StartFriday,
+                            FinishTimeUS = (DateTime)SurgeryTimeM.FinishFriday,
+                            WhenCreateUS = DateTime.Now
+                        });
+                        SetActual(5, (DateTime)SurgeryTimeM.StartFriday, (DateTime)SurgeryTimeM.FinishFriday);
+                    }
+                    if (SurgeryTimeM.Saturday && Changed(6))
                     {
-                        DayOfWeekUS = 6,
-                        UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
-                        StartTimeUS = (DateTime)SurgeryTimeM.StartSaturday,
-                        FinishTimeUS = (DateTime)SurgeryTimeM.FinishSaturday,
-                        WhenCreateUS = DateTime.Now
-                    });
-                    SetActual(6, (DateTime)SurgeryTimeM.StartSaturday, (DateTime)SurgeryTimeM.FinishSaturday);
-                }
-                if (SurgeryTimeM.Sunday && Changed(7))
-                {
-                    me.usersschedule.Add(new usersschedule()
+                        me.usersschedule.Add(new usersschedule()
+                        {
+                            DayOfWeekUS = 6,
+                            UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
+                            StartTimeUS = (DateTime)SurgeryTimeM.StartSaturday,
+                            FinishTimeUS = (DateTime)SurgeryTimeM.FinishSaturday,
+                            WhenCreateUS = DateTime.Now
+                        });
+                        SetActual(6, (DateTime)SurgeryTimeM.StartSaturday, (DateTime)SurgeryTimeM.FinishSaturday);
+                    }
+                    if (SurgeryTimeM.Sunday && Changed(7))
                     {
-                        DayOfWeekUS = 7,
-                        UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
-                        StartTimeUS = (DateTime)SurgeryTimeM.StartSunday,
-                        FinishTimeUS = (DateTime)SurgeryTimeM.FinishSunday,
-                        WhenCreateUS = DateTime.Now
-                    });
-                    SetActual(7, (DateTime)SurgeryTimeM.StartSunday, (DateTime)SurgeryTimeM.FinishSunday);
-                }
+                        me.usersschedule.Add(new usersschedule()
+                        {
+                            DayOfWeekUS = 7,
+                            UserDataIdUS = (int)GlobalVM.GlobalM.UserID,
+                            StartTimeUS = (DateTime)SurgeryTimeM.StartSunday,
+                            FinishTimeUS = (DateTime)SurgeryTimeM.FinishSunday,
+                            WhenCreateUS = DateTime.Now
+                        });
+                        SetActual(7, (DateTime)SurgeryTimeM.StartSunday, (DateTime)SurgeryTimeM.FinishSunday);
+                    }
 
-                me.SaveChanges();
-                me.Database.Connection.Close();
+                    await me.SaveChangesAsync();
+                }
                 workingConn = true;
             }
             catch (Exception ex)

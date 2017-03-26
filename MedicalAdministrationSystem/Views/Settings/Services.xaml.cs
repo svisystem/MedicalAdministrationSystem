@@ -3,7 +3,6 @@ using MedicalAdministrationSystem.ViewModels.Settings;
 using MedicalAdministrationSystem.ViewModels.Utilities;
 using System;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace MedicalAdministrationSystem.Views.Settings
 {

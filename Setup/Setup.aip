@@ -20,7 +20,7 @@
     <ROW Property="ProductCode" Value="1033:{A0E24E10-880B-4C85-ABF4-6381B66A0E9D} 1038:{CD288BF1-28C4-4A9B-8978-2716712C3535} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Egészségügyi Betegnyilvántartó Rendszer"/>
-    <ROW Property="ProductVersion" Value="0.7.1" Type="32"/>
+    <ROW Property="ProductVersion" Value="0.8.1.2" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{295FEC90-D14D-441B-A267-F6857151D610}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -243,7 +243,7 @@
     <ROW UpgradeCode="[|UpgradeCode]" VersionMin="[|ProductVersion]" Attributes="2" ActionProperty="AI_NEWERPRODUCTFOUND"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqComponent">
-    <ROW PrereqKey="FB44691010D74C6D89B33E019630EAF6" DisplayName=".NET Framework 4.5" SetupFileUrl="http://download.microsoft.com/download/b/a/4/ba4a7e71-2906-4b2d-a0e1-80cf16844f5f/dotnetfx45_full_x86_x64.exe" Location="1" ExactSize="50352408" WinNTVersions="Windows XP x86 Service Pack 3, Windows Server 2003 x86 Service Pack 2, Windows 8 x86, Windows 8.1 x86, Windows 10 x86" WinNT64Versions="Windows XP x64 Service Pack 2, Windows Server 2003 x64 Service Pack 2, Windows 8 x64, Windows Server 2012 x64, Windows 8.1 x64, Windows Server 2012 R2 x64, Windows 10 x64, Windows Server 2016 x64" Operator="1" NoUiComLine="/q /norestart" Options="xy" MD5="d02dc8b69a702a47c083278938c4d2f1" TargetName=".NET Framework 4.5"/>
+    <ROW PrereqKey="FB44691010D74C6D89B33E019630EAF6" DisplayName=".NET Framework 4.5" SetupFileUrl="http://download.microsoft.com/download/b/a/4/ba4a7e71-2906-4b2d-a0e1-80cf16844f5f/dotnetfx45_full_x86_x64.exe" Location="1" ExactSize="50352408" WinNTVersions="Windows XP x86 Service Pack 3, Windows Server 2003 x86 Service Pack 2, Windows 8 x86, Windows 8.1 x86, Windows 10 x86" WinNT64Versions="Windows XP x64 Service Pack 2, Windows Server 2003 x64 Service Pack 2, Windows 8 x64, Windows Server 2012 x64, Windows 8.1 x64, Windows Server 2012 R2 x64, Windows 10 x64, Windows Server 2016 x64" Operator="1" NoUiComLine="/q /norestart" Options="xym" MD5="d02dc8b69a702a47c083278938c4d2f1" TargetName=".NET Framework 4.5"/>
     <ATTRIBUTE name="PrereqsOrder" value="FB44691010D74C6D89B33E019630EAF6"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqSearchComponent">

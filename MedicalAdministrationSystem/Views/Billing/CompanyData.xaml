@@ -97,13 +97,9 @@
                         </dxg:GridColumn>
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>
-                        <dxg:TableView x:Name="view" SearchPanelNullText="Keresés" ShowGroupPanel="False"
+                        <dxg:TableView x:Name="view" ShowSearchPanelMode="Always" SearchPanelNullText="Keresés" ShowGroupPanel="False"
                                 ShowIndicator="False" AllowScrollAnimation="True" SearchPanelHorizontalAlignment="Right"
-                                BestFitMode="AllRows" AutoWidth="True" BeforeLayoutRefresh="view_BeforeLayoutRefresh"
-                                AllowSorting="False" AllowGrouping="False" AllowColumnFiltering="False"
-                                AllowFilterEditor="False" ShowFilterPanelMode="Never" AllowColumnMoving="False"
-                                IsColumnMenuEnabled="False" SearchPanelImmediateMRUPopup="False"
-                                ShowSearchPanelMode="Always" />
+                                BestFitMode="AllRows" AutoWidth="True" BeforeLayoutRefresh="view_BeforeLayoutRefresh"/>
                     </dxg:GridControl.View>
                 </dxg:GridControl>
                 <dxe:ButtonEdit Height="29" Margin="8,8,0,0" ShowText="False" AllowDefaultButton="False"

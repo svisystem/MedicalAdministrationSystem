@@ -55,59 +55,59 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
         }
         List<ScheduleM.Doctor> tempdoc = new List<ScheduleM.Doctor>();
         ObservableCollection<ScheduleM.Appointment> tempApp = new ObservableCollection<ScheduleM.Appointment>();
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             tempdoc.Clear();
             tempApp.Clear();
 
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                foreach (ScheduleM.Doctor doctor in me.userdata.Where(a => !me.accountdata.FirstOrDefault(b => b.IdAD == a.AccountDataIdUD).DeletedAD).ToList()
-                    .Where(n => me.priviledges.FirstOrDefault(p => p.IdP == me.accountdata.FirstOrDefault(b => b.IdAD == n.AccountDataIdUD).PriviledgesIdAD).IncludeScheduleP).ToList()
-                    .Select(a => new ScheduleM.Doctor
-                    {
-                        Id = a.IdUD,
-                        Name = a.NameUD,
-                    }))
-                    tempdoc.Add(doctor);
-
-                foreach (ScheduleM.Patient patient in me.patientdata.OrderBy(p => p.NamePD).Select(p => new ScheduleM.Patient()
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    Id = p.IdPD,
-                    Name = p.NamePD,
-                    TajNumber = p.TAJNumberPD
-                }))
-                    ScheduleM.Patients.Add(patient);
+                    await me.Database.Connection.OpenAsync();
 
-                if (me.scheduledata.Count() != 0)
-                    foreach (scheduledata appointment in me.scheduledata.ToList())
-                    {
-                        ScheduleM.Appointment app = new ScheduleM.Appointment()
+                    foreach (ScheduleM.Doctor doctor in me.userdata.Where(a => !me.accountdata.FirstOrDefault(b => b.IdAD == a.AccountDataIdUD).DeletedAD).ToList()
+                        .Where(n => me.priviledges.FirstOrDefault(p => p.IdP == me.accountdata.FirstOrDefault(b => b.IdAD == n.AccountDataIdUD).PriviledgesIdAD).IncludeScheduleP).ToList()
+                        .Select(a => new ScheduleM.Doctor
                         {
-                            StillNotVisited = appointment.StillNotVisitedSD,
-                            DoctorId = appointment.DoctorIdSD,
-                            EndTime = appointment.FinishSD,
-                            Id = appointment.IdSD,
-                            Label = appointment.StatusSD,
-                            Notes = appointment.NotesSD,
-                            PatientName = !appointment.StillNotVisitedSD ? ScheduleM.Patients.Where(p => p.Id == me.scheduleperson_st.
-                            Where(sp => sp.IdSP == appointment.PatientIdSD).FirstOrDefault().ExistedIdSP).FirstOrDefault().Name :
-                            me.newperson.Where(n => n.IdNP == me.scheduleperson_st.Where(sp => sp.IdSP == appointment.PatientIdSD).
-                            FirstOrDefault().NewPersonIdSP).FirstOrDefault().PatientNameNP,
-                            StartTime = appointment.StartSD,
-                            StoreInDB = true,
-                            PatientTajNumber = !appointment.StillNotVisitedSD ? ScheduleM.Patients.Where(p => p.Id == me.scheduleperson_st.
-                            Where(sp => sp.IdSP == appointment.PatientIdSD).FirstOrDefault().ExistedIdSP).FirstOrDefault().TajNumber :
-                            me.newperson.Where(n => n.IdNP == me.scheduleperson_st.Where(sp => sp.IdSP == appointment.PatientIdSD).
-                            FirstOrDefault().NewPersonIdSP).FirstOrDefault().TAJNumberNP
-                        };
-                        tempApp.Add(app);
-                    }
+                            Id = a.IdUD,
+                            Name = a.NameUD,
+                        }))
+                        tempdoc.Add(doctor);
 
-                me.Database.Connection.Close();
+                    foreach (ScheduleM.Patient patient in me.patientdata.OrderBy(p => p.NamePD).Select(p => new ScheduleM.Patient()
+                    {
+                        Id = p.IdPD,
+                        Name = p.NamePD,
+                        TajNumber = p.TAJNumberPD
+                    }))
+                        ScheduleM.Patients.Add(patient);
+
+                    if (me.scheduledata.Count() != 0)
+                        foreach (scheduledata appointment in me.scheduledata.ToList())
+                        {
+                            ScheduleM.Appointment app = new ScheduleM.Appointment()
+                            {
+                                StillNotVisited = appointment.StillNotVisitedSD,
+                                DoctorId = appointment.DoctorIdSD,
+                                EndTime = appointment.FinishSD,
+                                Id = appointment.IdSD,
+                                Label = appointment.StatusSD,
+                                Notes = appointment.NotesSD,
+                                PatientName = !appointment.StillNotVisitedSD ? ScheduleM.Patients.Where(p => p.Id == me.scheduleperson_st.
+                                Where(sp => sp.IdSP == appointment.PatientIdSD).FirstOrDefault().ExistedIdSP).FirstOrDefault().Name :
+                                me.newperson.Where(n => n.IdNP == me.scheduleperson_st.Where(sp => sp.IdSP == appointment.PatientIdSD).
+                                FirstOrDefault().NewPersonIdSP).FirstOrDefault().PatientNameNP,
+                                StartTime = appointment.StartSD,
+                                StoreInDB = true,
+                                PatientTajNumber = !appointment.StillNotVisitedSD ? ScheduleM.Patients.Where(p => p.Id == me.scheduleperson_st.
+                                Where(sp => sp.IdSP == appointment.PatientIdSD).FirstOrDefault().ExistedIdSP).FirstOrDefault().TajNumber :
+                                me.newperson.Where(n => n.IdNP == me.scheduleperson_st.Where(sp => sp.IdSP == appointment.PatientIdSD).
+                                FirstOrDefault().NewPersonIdSP).FirstOrDefault().TAJNumberNP
+                            };
+                            tempApp.Add(app);
+                        }
+                }
                 workingConn = true;
             }
             catch (Exception ex)
@@ -144,69 +144,69 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             if (ScheduleM.Appointments.Any(s => s.IsChanged)) Modify.RunWorkerAsync();
         }
         private BackgroundWorker Modify = new BackgroundWorker();
-        private void ModifyDoWork(object sender, DoWorkEventArgs e)
+        private async void ModifyDoWork(object sender, DoWorkEventArgs e)
         {
             foreach (ScheduleM.Appointment appointment in
                 ScheduleM.Appointments.Where(s => s.IsChanged && s.StoreInDB))
             {
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    me.Database.Connection.Open();
-
-                    scheduledata dbAppointment = me.scheduledata.Where(s => s.IdSD == appointment.Id).Single();
-
-                    if (dbAppointment.StillNotVisitedSD != appointment.StillNotVisited)
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        if (dbAppointment.StillNotVisitedSD)
-                        {
+                        await me.Database.Connection.OpenAsync();
 
-                            scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
-                            me.newperson.Remove(me.newperson.Where(np => np.IdNP == spst.NewPersonIdSP).Single());
-                            spst.NewPersonIdSP = null;
-                            spst.ExistedIdSP = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
-                            dbAppointment.StillNotVisitedSD = false;
-                            me.SaveChanges();
+                        scheduledata dbAppointment = me.scheduledata.Where(s => s.IdSD == appointment.Id).Single();
+
+                        if (dbAppointment.StillNotVisitedSD != appointment.StillNotVisited)
+                        {
+                            if (dbAppointment.StillNotVisitedSD)
+                            {
+
+                                scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
+                                me.newperson.Remove(me.newperson.Where(np => np.IdNP == spst.NewPersonIdSP).Single());
+                                spst.NewPersonIdSP = null;
+                                spst.ExistedIdSP = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
+                                dbAppointment.StillNotVisitedSD = false;
+                                await me.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
+                                spst.ExistedIdSP = null;
+
+                                newperson np = new newperson();
+                                dbAppointment.StillNotVisitedSD = true;
+                                np.PatientNameNP = appointment.PatientName;
+                                np.TAJNumberNP = appointment.PatientTajNumber;
+                                me.newperson.Add(np);
+                                await me.SaveChangesAsync();
+                                spst.NewPersonIdSP = np.IdNP;
+                                await me.SaveChangesAsync();
+                            }
+                            await me.SaveChangesAsync();
+                        }
+                        else if (dbAppointment.StillNotVisitedSD)
+                        {
+                            newperson newp = me.newperson.Where(per => per.IdNP == me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single();
+                            if (newp.PatientNameNP != appointment.PatientName) newp.PatientNameNP = appointment.PatientName;
+                            if (newp.TAJNumberNP != appointment.PatientTajNumber) newp.TAJNumberNP = appointment.PatientTajNumber;
+                            await me.SaveChangesAsync();
                         }
                         else
                         {
                             scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
-                            spst.ExistedIdSP = null;
-
-                            newperson np = new newperson();
-                            dbAppointment.StillNotVisitedSD = true;
-                            np.PatientNameNP = appointment.PatientName;
-                            np.TAJNumberNP = appointment.PatientTajNumber;
-                            me.newperson.Add(np);
-                            me.SaveChanges();
-                            spst.NewPersonIdSP = np.IdNP;
-                            me.SaveChanges();
+                            spst.ExistedIdSP = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
+                            await me.SaveChangesAsync();
                         }
-                        me.SaveChanges();
-                    }
-                    else if (dbAppointment.StillNotVisitedSD)
-                    {
-                        newperson newp = me.newperson.Where(per => per.IdNP == me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single();
-                        if (newp.PatientNameNP != appointment.PatientName) newp.PatientNameNP = appointment.PatientName;
-                        if (newp.TAJNumberNP != appointment.PatientTajNumber) newp.TAJNumberNP = appointment.PatientTajNumber;
-                        me.SaveChanges();
-                    }
-                    else
-                    {
-                        scheduleperson_st spst = me.scheduleperson_st.Where(sp => sp.IdSP == dbAppointment.PatientIdSD).Single();
-                        spst.ExistedIdSP = ScheduleM.Patients.Where(p => p.TajNumber == appointment.PatientTajNumber).Single().Id;
-                        me.SaveChanges();
-                    }
 
-                    if (appointment.StillNotVisited != dbAppointment.StillNotVisitedSD) dbAppointment.StillNotVisitedSD = appointment.StillNotVisited;
-                    if (appointment.StartTime != dbAppointment.StartSD) dbAppointment.StartSD = appointment.StartTime;
-                    if (appointment.EndTime != dbAppointment.FinishSD) dbAppointment.FinishSD = appointment.EndTime;
-                    if (appointment.DoctorId != dbAppointment.DoctorIdSD) dbAppointment.DoctorIdSD = appointment.DoctorId;
-                    if (appointment.Notes != dbAppointment.NotesSD) dbAppointment.NotesSD = appointment.Notes;
-                    if (appointment.Label != dbAppointment.StatusSD) dbAppointment.StatusSD = appointment.Label;
-                    me.SaveChanges();
-
-                    me.Database.Connection.Close();
+                        if (appointment.StillNotVisited != dbAppointment.StillNotVisitedSD) dbAppointment.StillNotVisitedSD = appointment.StillNotVisited;
+                        if (appointment.StartTime != dbAppointment.StartSD) dbAppointment.StartSD = appointment.StartTime;
+                        if (appointment.EndTime != dbAppointment.FinishSD) dbAppointment.FinishSD = appointment.EndTime;
+                        if (appointment.DoctorId != dbAppointment.DoctorIdSD) dbAppointment.DoctorIdSD = appointment.DoctorId;
+                        if (appointment.Notes != dbAppointment.NotesSD) dbAppointment.NotesSD = appointment.Notes;
+                        if (appointment.Label != dbAppointment.StatusSD) dbAppointment.StatusSD = appointment.Label;
+                        await me.SaveChangesAsync();
+                    }
                     workingConn = true;
                 }
                 catch (Exception ex)
@@ -223,67 +223,67 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
         }
         private BackgroundWorker Create = new BackgroundWorker();
         int NewId;
-        private void CreateDoWork(object sender, DoWorkEventArgs e)
+        private async void CreateDoWork(object sender, DoWorkEventArgs e)
         {
             ScheduleM.Appointment appointment =
                 ScheduleM.Appointments.Where(s => !s.StoreInDB).Single();
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                newperson np = new newperson();
-                int belong;
-                if (appointment.StillNotVisited)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    np.PatientNameNP = appointment.PatientName;
-                    np.TAJNumberNP = appointment.PatientTajNumber;
-                    me.newperson.Add(np);
-                    me.SaveChanges();
+                    await me.Database.Connection.OpenAsync();
 
-                    belong = np.IdNP;
-                }
-                else belong = ScheduleM.Patients.Single(p => p.TajNumber == appointment.PatientTajNumber).Id;
-
-                scheduleperson_st spst;
-                if (appointment.StillNotVisited)
-                {
-                    spst = new scheduleperson_st()
+                    newperson np = new newperson();
+                    int belong;
+                    if (appointment.StillNotVisited)
                     {
-                        ExistedIdSP = null,
-                        NewPersonIdSP = belong
-                    };
-                    me.scheduleperson_st.Add(spst);
-                }
-                else if (!me.scheduleperson_st.Any(sc => sc.ExistedIdSP == belong))
-                {
-                    spst = new scheduleperson_st()
+                        np.PatientNameNP = appointment.PatientName;
+                        np.TAJNumberNP = appointment.PatientTajNumber;
+                        me.newperson.Add(np);
+                        await me.SaveChangesAsync();
+
+                        belong = np.IdNP;
+                    }
+                    else belong = ScheduleM.Patients.Single(p => p.TajNumber == appointment.PatientTajNumber).Id;
+
+                    scheduleperson_st spst;
+                    if (appointment.StillNotVisited)
                     {
-                        ExistedIdSP = belong,
-                        NewPersonIdSP = null
+                        spst = new scheduleperson_st()
+                        {
+                            ExistedIdSP = null,
+                            NewPersonIdSP = belong
+                        };
+                        me.scheduleperson_st.Add(spst);
+                    }
+                    else if (!me.scheduleperson_st.Any(sc => sc.ExistedIdSP == belong))
+                    {
+                        spst = new scheduleperson_st()
+                        {
+                            ExistedIdSP = belong,
+                            NewPersonIdSP = null
+                        };
+                        me.scheduleperson_st.Add(spst);
+                    }
+                    else spst = me.scheduleperson_st.Single(sc => sc.ExistedIdSP == belong);
+                    await me.SaveChangesAsync();
+
+                    scheduledata sd = new scheduledata()
+                    {
+                        StillNotVisitedSD = appointment.StillNotVisited,
+                        StartSD = appointment.StartTime,
+                        FinishSD = appointment.EndTime,
+                        PatientIdSD = spst.IdSP,
+                        DoctorIdSD = appointment.DoctorId,
+                        NotesSD = appointment.Notes,
+                        StatusSD = appointment.Label
                     };
-                    me.scheduleperson_st.Add(spst);
+
+                    me.scheduledata.Add(sd);
+                    await me.SaveChangesAsync();
+
+                    NewId = sd.IdSD;
                 }
-                else spst = me.scheduleperson_st.Single(sc => sc.ExistedIdSP == belong);
-                me.SaveChanges();
-
-                scheduledata sd = new scheduledata()
-                {
-                    StillNotVisitedSD = appointment.StillNotVisited,
-                    StartSD = appointment.StartTime,
-                    FinishSD = appointment.EndTime,
-                    PatientIdSD = spst.IdSP,
-                    DoctorIdSD = appointment.DoctorId,
-                    NotesSD = appointment.Notes,
-                    StatusSD = appointment.Label
-                };
-
-                me.scheduledata.Add(sd);
-                me.SaveChanges();
-
-                NewId = sd.IdSD;
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -347,22 +347,22 @@ namespace MedicalAdministrationSystem.ViewModels.Schedule
             dialog.Start();
             EraseInt = list;
         }
-        private void EraseDoWork(object sender, DoWorkEventArgs e)
+        private async void EraseDoWork(object sender, DoWorkEventArgs e)
         {
             foreach (int item in EraseInt)
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    me.Database.Connection.Open();
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
+                    {
+                        await me.Database.Connection.OpenAsync();
 
-                    scheduledata sd = me.scheduledata.Where(s => s.IdSD == item).FirstOrDefault();
-                    if (sd.StillNotVisitedSD) me.newperson.Remove(me.newperson.Where(np => np.IdNP == me.scheduleperson_st.
-                        Where(sps => sps.IdSP == sd.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single());
-                    me.scheduleperson_st.Remove(me.scheduleperson_st.Where(sps => sps.IdSP == sd.PatientIdSD).Single());
-                    me.scheduledata.Remove(sd);
-                    me.SaveChanges();
-
-                    me.Database.Connection.Close();
+                        scheduledata sd = me.scheduledata.Where(s => s.IdSD == item).FirstOrDefault();
+                        if (sd.StillNotVisitedSD) me.newperson.Remove(me.newperson.Where(np => np.IdNP == me.scheduleperson_st.
+                            Where(sps => sps.IdSP == sd.PatientIdSD).FirstOrDefault().NewPersonIdSP).Single());
+                        me.scheduleperson_st.Remove(me.scheduleperson_st.Where(sps => sps.IdSP == sd.PatientIdSD).Single());
+                        me.scheduledata.Remove(sd);
+                        await me.SaveChangesAsync();
+                    }
                     workingConn = true;
                 }
                 catch (Exception ex)

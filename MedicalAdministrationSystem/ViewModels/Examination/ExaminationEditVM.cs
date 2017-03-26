@@ -31,13 +31,13 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Loading.DoWork += new DoWorkEventHandler(LoadingModel);
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     if (ExaminationEditM.Imported)
                     {
                         me.examinationdatadocuments.Where(ex => me.importedexaminationdatadocuments_st.Where
@@ -60,9 +60,8 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
                         Where(iex => iex.IdEX == ExaminationEditM.Id).FirstOrDefault().ServiceIdEX).Single().NameTD;
                         ExaminationEditM.ExaminationDate = me.examinationdata.Where(iex => iex.IdEX == ExaminationEditM.Id).Single().DateTimeEX;
                     }
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -104,72 +103,72 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             dialog.content = new Views.Dialogs.TextBlock("Biztosan elmenti a vizsgálati anyagokon végrehajtott módosításokat?");
             dialog.Start();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                foreach (DocumentControlM.ListElement item in ExaminationEditM.ExaminationList)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (item.DBId != null)
+                    await me.Database.Connection.OpenAsync();
+
+                    foreach (DocumentControlM.ListElement item in ExaminationEditM.ExaminationList)
                     {
-                        examinationdatadocuments edd = me.examinationdatadocuments.Where(ed => ed.IdEXD == item.DBId).Single();
-                        edd.DataEXD = edd.DataEXD != item.File.ToArray() ? item.File.ToArray() : edd.DataEXD;
-                        edd.FileTypeEXD = edd.FileTypeEXD != item.FileType ? item.FileType : edd.FileTypeEXD;
-                    }
-                    else if (item.File != null)
-                    {
-                        examinationdatadocuments ed = new examinationdatadocuments()
+                        if (item.DBId != null)
                         {
-                            DataEXD = item.File.ToArray(),
-                            TypeEXD = item.ButtonType,
-                            FileTypeEXD = item.FileType
-                        };
+                            examinationdatadocuments edd = me.examinationdatadocuments.Where(ed => ed.IdEXD == item.DBId).Single();
+                            edd.DataEXD = edd.DataEXD != item.File.ToArray() ? item.File.ToArray() : edd.DataEXD;
+                            edd.FileTypeEXD = edd.FileTypeEXD != item.FileType ? item.FileType : edd.FileTypeEXD;
+                        }
+                        else if (item.File != null)
+                        {
+                            examinationdatadocuments ed = new examinationdatadocuments()
+                            {
+                                DataEXD = item.File.ToArray(),
+                                TypeEXD = item.ButtonType,
+                                FileTypeEXD = item.FileType
+                            };
 
-                        me.examinationdatadocuments.Add(ed);
-                        me.SaveChanges();
-                        int ide = ed.IdEXD;
+                            me.examinationdatadocuments.Add(ed);
+                            await me.SaveChangesAsync();
+                            int ide = ed.IdEXD;
 
+                            if (ExaminationEditM.Imported)
+                            {
+                                me.importedexaminationdatadocuments_st.Add(new importedexaminationdatadocuments_st()
+                                {
+                                    IdIEX = ExaminationEditM.Id,
+                                    IdEXD = ide
+                                });
+                                await me.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                me.examinationdatadocuments_st.Add(new examinationdatadocuments_st()
+                                {
+                                    IdEX = ExaminationEditM.Id,
+                                    IdEXD = ide
+                                });
+                                await me.SaveChangesAsync();
+                            }
+                        }
+                        await me.SaveChangesAsync();
+                    }
+
+                    foreach (int id in DocumentControlVM.Erased())
+                    {
                         if (ExaminationEditM.Imported)
-                        {
-                            me.importedexaminationdatadocuments_st.Add(new importedexaminationdatadocuments_st()
-                            {
-                                IdIEX = ExaminationEditM.Id,
-                                IdEXD = ide
-                            });
-                            me.SaveChanges();
-                        }
-                        else
-                        {
-                            me.examinationdatadocuments_st.Add(new examinationdatadocuments_st()
-                            {
-                                IdEX = ExaminationEditM.Id,
-                                IdEXD = ide
-                            });
-                            me.SaveChanges();
-                        }
+                            me.importedexaminationdatadocuments_st.Remove
+                                (me.importedexaminationdatadocuments_st.Where(ex => ex.IdEXD == id).Single());
+
+                        else me.examinationdatadocuments_st.Remove
+                                (me.examinationdatadocuments_st.Where(ex => ex.IdEXD == id).Single());
+
+                        me.examinationdatadocuments.Remove
+                            (me.examinationdatadocuments.Where(ex => ex.IdEXD == id).Single());
+
+                        await me.SaveChangesAsync();
                     }
-                    me.SaveChanges();
                 }
-
-                foreach (int id in DocumentControlVM.Erased())
-                {
-                    if (ExaminationEditM.Imported)
-                        me.importedexaminationdatadocuments_st.Remove
-                            (me.importedexaminationdatadocuments_st.Where(ex => ex.IdEXD == id).Single());
-
-                    else me.examinationdatadocuments_st.Remove
-                            (me.examinationdatadocuments_st.Where(ex => ex.IdEXD == id).Single());
-
-                    me.examinationdatadocuments.Remove
-                        (me.examinationdatadocuments.Where(ex => ex.IdEXD == id).Single());
-
-                    me.SaveChanges();
-                }
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

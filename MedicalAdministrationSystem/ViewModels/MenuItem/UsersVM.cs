@@ -105,15 +105,16 @@ namespace MedicalAdministrationSystem.ViewModels.MenuItem
             Back();
             await Utilities.Loading.Hide();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().DeletedAD = true;
-                me.SaveChanges();
-                me.Database.Connection.Close();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    me.accountdata.Where(a => a.IdAD == GlobalVM.GlobalM.AccountID).Single().DeletedAD = true;
+                    await me.SaveChangesAsync();
+                }
                 workingConn = true;
             }
             catch (Exception ex)

@@ -27,38 +27,39 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    await me.Database.Connection.OpenAsync();
-
-                    List<int> patients = Members.Count == 0 ? patients = me.scheduleperson_st.Select(st => st.IdSP).ToList() :
-                        me.scheduleperson_st.Where(sc => Members.Any(m => m == sc.ExistedIdSP)).Select(u => u.IdSP).ToList();
-
                     List<ChartM.Record> collection = new List<ChartM.Record>();
-                    List<status_fx> statuses = me.status_fx.ToList();
 
-                    DateTime LocalStart = StartTime == null ? Correction(true, me.scheduledata.OrderBy(sc => sc.StartSD).FirstOrDefault().StartSD).Date : 
-                        Correction(true, (DateTime)StartTime).Date;
-                    DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
-                        Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
-                    FinishTime = LocalFinish;
-
-                    while (LocalStart.Date < ((DateTime)FinishTime).Date)
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        LocalFinish = NextStep(LocalStart);
-                        List<scheduledata> schedule = me.scheduledata.Where(sc => patients.Contains(sc.PatientIdSD) && 
-                            sc.StartSD > LocalStart && sc.FinishSD < LocalFinish).ToList();
-                        foreach (status_fx element in statuses)
-                            collection.Add(new ChartM.Record()
-                            {
-                                Id = statuses.IndexOf(element),
-                                Name = element.DataS,
-                                Date = LocalStart,
-                                Value1 = schedule.Count(sc => sc.StatusSD == element.IdS)
-                            });
-                        LocalStart = NextStep(LocalStart);
+                        await me.Database.Connection.OpenAsync();
 
+                        List<int> patients = Members.Count == 0 ? patients = me.scheduleperson_st.Select(st => st.IdSP).ToList() :
+                            me.scheduleperson_st.Where(sc => Members.Any(m => m == sc.ExistedIdSP)).Select(u => u.IdSP).ToList();
+                        List<status_fx> statuses = me.status_fx.ToList();
+
+                        DateTime LocalStart = StartTime == null ? Correction(true, me.scheduledata.OrderBy(sc => sc.StartSD).FirstOrDefault().StartSD).Date :
+                            Correction(true, (DateTime)StartTime).Date;
+                        DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
+                            Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
+                        FinishTime = LocalFinish;
+
+                        while (LocalStart.Date < ((DateTime)FinishTime).Date)
+                        {
+                            LocalFinish = NextStep(LocalStart);
+                            List<scheduledata> schedule = me.scheduledata.Where(sc => patients.Contains(sc.PatientIdSD) &&
+                                sc.StartSD > LocalStart && sc.FinishSD < LocalFinish).ToList();
+                            foreach (status_fx element in statuses)
+                                collection.Add(new ChartM.Record()
+                                {
+                                    Id = statuses.IndexOf(element),
+                                    Name = element.DataS,
+                                    Date = LocalStart,
+                                    Value1 = schedule.Count(sc => sc.StatusSD == element.IdS)
+                                });
+                            LocalStart = NextStep(LocalStart);
+
+                        }
                     }
-                    me.Database.Connection.Close();
                     workingConn = true;
                     return new ObservableCollection<ChartM.Record>(collection);
                 }
@@ -71,8 +72,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             }, CancellationToken.None).ContinueWith(task =>
                 {
                     if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
-                    else return task.Result;
-                    return null;
+                    return task.Result;
                 });
         }
     }

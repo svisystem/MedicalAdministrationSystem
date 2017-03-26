@@ -54,9 +54,8 @@ namespace MedicalAdministrationSystem.ViewModels.Users
                     ad.PassSaltAD = PassChangeM.NewPassSalt;
                     ad.PasswordAD = pwm.GenerateHashWithSalt(PassChangeM.NewPassword, PassChangeM.NewPassSalt);
                     await me.SaveChangesAsync();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {
@@ -82,19 +81,18 @@ namespace MedicalAdministrationSystem.ViewModels.Users
             usersVM.PassChangeLoad();
         }
 
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
                 using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    me.Database.Connection.Open();
+                    await me.Database.Connection.OpenAsync();
                     PassChangeM.RegPass = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PasswordAD).Single();
                     PassChangeM.RegPassSalt = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.PassSaltAD).Single();
                     PassChangeM.UserName = me.accountdata.Where(b => b.IdAD == GlobalVM.GlobalM.AccountID).Select(a => a.UserNameAD).Single();
-                    me.Database.Connection.Close();
-                    workingConn = true;
                 }
+                workingConn = true;
             }
             catch (Exception ex)
             {

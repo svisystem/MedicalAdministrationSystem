@@ -5,8 +5,7 @@ namespace MedicalAdministrationSystem.DataAccess
     public partial class MedicalModel : DbContext
     {
         public MedicalModel(string nameOrConnectionString) : base(nameOrConnectionString)
-        {
-        }
+        { }
 
         public virtual DbSet<accountdata> accountdata { get; set; }
         public virtual DbSet<belong_st> belong_st { get; set; }

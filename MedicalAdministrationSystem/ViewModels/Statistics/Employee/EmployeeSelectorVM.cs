@@ -42,26 +42,26 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Employee
                          });
                      }));
 
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    me.Database.Connection.Open();
-
-                    foreach (object employee in me.userdata.OrderBy(u => u.NameUD).Select(u => new { u.IdUD, u.NameUD }).ToList())
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                         {
-                             EmployeeSelectorM.Employees.Add(new EmployeeSelectorM.Employee()
-                             {
-                                 Id = (int)employee.GetType().GetProperty("IdUD", BindingFlags.Instance | BindingFlags.Public |
-                                     BindingFlags.NonPublic).GetValue(employee),
-                                 Name = (string)employee.GetType().GetProperty("NameUD", BindingFlags.Instance | BindingFlags.Public |
-                                     BindingFlags.NonPublic).GetValue(employee),
-                                 Enabled = false,
-                                 Button = new CheckButton(SwitchAllFunctionality)
-                             });
-                         }));
-                    }
+                        await me.Database.Connection.OpenAsync();
 
-                    me.Database.Connection.Close();
+                        foreach (object employee in me.userdata.OrderBy(u => u.NameUD).Select(u => new { u.IdUD, u.NameUD }).ToList())
+                        {
+                            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                             {
+                                 EmployeeSelectorM.Employees.Add(new EmployeeSelectorM.Employee()
+                                 {
+                                     Id = (int)employee.GetType().GetProperty("IdUD", BindingFlags.Instance | BindingFlags.Public |
+                                         BindingFlags.NonPublic).GetValue(employee),
+                                     Name = (string)employee.GetType().GetProperty("NameUD", BindingFlags.Instance | BindingFlags.Public |
+                                         BindingFlags.NonPublic).GetValue(employee),
+                                     Enabled = false,
+                                     Button = new CheckButton(SwitchAllFunctionality)
+                                 });
+                             }));
+                        }
+                    }
                     workingConn = true;
                 }
                 catch (Exception ex)

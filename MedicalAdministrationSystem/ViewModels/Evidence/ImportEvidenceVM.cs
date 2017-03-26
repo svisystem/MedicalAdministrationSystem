@@ -61,66 +61,66 @@ namespace MedicalAdministrationSystem.ViewModels.Evidence
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                importedevidencedata ied = new importedevidencedata()
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    PatientIED = ImportEvidenceM.PatientId,
-                    UserDataIdIED = (int)GlobalVM.GlobalM.UserID,
-                    CodeIED = ImportEvidenceM.Code,
-                    DateTimeIED = (DateTime)ImportEvidenceM.Date,
-                    CompanyIdIED = (int)GlobalVM.GlobalM.CompanyId
-                };
+                    await me.Database.Connection.OpenAsync();
 
-                me.importedevidencedata.Add(ied);
-                me.SaveChanges();
-
-                int id = ied.IdIED;
-
-                for (int i = 0; i < ImportEvidenceM.EvidenceList.Count - 1; i++)
-                {
-                    evidencedatadocuments edd = new evidencedatadocuments()
+                    importedevidencedata ied = new importedevidencedata()
                     {
-                        DataEDD = ImportEvidenceM.EvidenceList[i].File.ToArray(),
-                        TypeEDD = ImportEvidenceM.EvidenceList[i].ButtonType,
-                        FileTypeEDD = ImportEvidenceM.EvidenceList[i].FileType
+                        PatientIED = ImportEvidenceM.PatientId,
+                        UserDataIdIED = (int)GlobalVM.GlobalM.UserID,
+                        CodeIED = ImportEvidenceM.Code,
+                        DateTimeIED = (DateTime)ImportEvidenceM.Date,
+                        CompanyIdIED = (int)GlobalVM.GlobalM.CompanyId
                     };
-                    me.evidencedatadocuments.Add(edd);
-                    me.SaveChanges();
 
-                    int ide = edd.IdEDD;
-                    me.importedevidencedatadocuments_st.Add(new importedevidencedatadocuments_st()
-                    {
-                        IdIED = id,
-                        IdEDD = ide
-                    });
-                    me.SaveChanges();
-                }
+                    me.importedevidencedata.Add(ied);
+                    await me.SaveChangesAsync();
 
-                foreach (SelectedPatientM.ExaminationItem item in GetList())
-                {
-                    if (item.Imported)
+                    int id = ied.IdIED;
+
+                    for (int i = 0; i < ImportEvidenceM.EvidenceList.Count - 1; i++)
                     {
-                        me.importedexaminationeachimportedevidence_st.Add(new importedexaminationeachimportedevidence_st()
+                        evidencedatadocuments edd = new evidencedatadocuments()
                         {
-                            IdIEX = item.Id,
+                            DataEDD = ImportEvidenceM.EvidenceList[i].File.ToArray(),
+                            TypeEDD = ImportEvidenceM.EvidenceList[i].ButtonType,
+                            FileTypeEDD = ImportEvidenceM.EvidenceList[i].FileType
+                        };
+                        me.evidencedatadocuments.Add(edd);
+                        await me.SaveChangesAsync();
+
+                        int ide = edd.IdEDD;
+                        me.importedevidencedatadocuments_st.Add(new importedevidencedatadocuments_st()
+                        {
+                            IdIED = id,
+                            IdEDD = ide
+                        });
+                        await me.SaveChangesAsync();
+                    }
+
+                    foreach (SelectedPatientM.ExaminationItem item in GetList())
+                    {
+                        if (item.Imported)
+                        {
+                            me.importedexaminationeachimportedevidence_st.Add(new importedexaminationeachimportedevidence_st()
+                            {
+                                IdIEX = item.Id,
+                                IdIED = id
+                            });
+                        }
+                        else me.examinationeachimportedevidence_st.Add(new examinationeachimportedevidence_st()
+                        {
+                            IdEX = item.Id,
                             IdIED = id
                         });
+                        await me.SaveChangesAsync();
                     }
-                    else me.examinationeachimportedevidence_st.Add(new examinationeachimportedevidence_st()
-                    {
-                        IdEX = item.Id,
-                        IdIED = id
-                    });
-                    me.SaveChanges();
                 }
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

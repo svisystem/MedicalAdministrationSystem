@@ -30,38 +30,38 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-
-                foreach (CreateBillM.Company item in me.companydata.ToList().
-                    Select(c => new CreateBillM.Company()
-                    {
-                        Id = c.IdCD,
-                        Name = c.NameCD
-                    }))
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    if (item.Id != GlobalVM.GlobalM.CompanyId)
+                    await me.Database.Connection.OpenAsync();
+
+                    foreach (CreateBillM.Company item in me.companydata.ToList().
+                        Select(c => new CreateBillM.Company()
+                        {
+                            Id = c.IdCD,
+                            Name = c.NameCD
+                        }))
                     {
-                        CreateBillM.Companies.Add(item);
-                        CreateBillM.CompaniesView.Add(item.Name);
+                        if (item.Id != GlobalVM.GlobalM.CompanyId)
+                        {
+                            CreateBillM.Companies.Add(item);
+                            CreateBillM.CompaniesView.Add(item.Name);
+                        }
                     }
+
+                    foreach (CreateBillM.Service item in me.servicesdata.ToList().
+                        Select(s => new CreateBillM.Service()
+                        {
+                            Id = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().IdPFS,
+                            Name = s.NameTD,
+                            Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
+                            Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS
+                        }))
+                        CreateBillM.Services.Add(item);
                 }
-
-                foreach (CreateBillM.Service item in me.servicesdata.ToList().
-                    Select(s => new CreateBillM.Service()
-                    {
-                        Id = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().IdPFS,
-                        Name = s.NameTD,
-                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
-                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == s.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS
-                    }))
-                    CreateBillM.Services.Add(item);
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)
@@ -109,7 +109,7 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
                 Execute.DoWork += new DoWorkEventHandler(ExecuteDoWork);
                 Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
                 Execute.RunWorkerAsync();
-            }, async () =>  await Utilities.Loading.Hide(), true);
+            }, async () => await Utilities.Loading.Hide(), true);
             dialog.content = new TextBlock("Biztos elkészíti a számlát?\n\n" +
                 "Későbbi módosításra nem lesz már lehetőség");
             dialog.Start();
@@ -128,80 +128,81 @@ namespace MedicalAdministrationSystem.ViewModels.Billing
 
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
 
-                CreateBillM.CompanyData from = me.companydata.Where(cd => cd.IdCD == GlobalVM.GlobalM.CompanyId).Select(
-                    cd => new CreateBillM.CompanyData()
-                    {
-                        Name = cd.NameCD,
-                        ZipCode = me.zipcode_fx.Where(z => z.IdZC == cd.ZipCodeCD).FirstOrDefault().DataZC,
-                        Settlement = me.settlement_fx.Where(s => s.IdS == cd.SettlementCD).FirstOrDefault().DataS,
-                        Address = cd.AddressCD,
-                        TaxNumber = cd.TAXNumberCD,
-                        RegistrationNumber = cd.RegistrationNumberCD,
-                        InvoiceNumber = cd.InvoiceNumberCD,
-                        Phone = cd.PhoneCD,
-                        Email = cd.EmailCD,
-                        WebPage = cd.WebPageCD
-                    }).Single();
-
-                CreateBillM.CompanyData to;
-                if (CreateBillM.From)
-                    to = me.patientdata.Where(p => p.IdPD == PatientId).Select(
-                        p => new CreateBillM.CompanyData()
+                    CreateBillM.CompanyData from = me.companydata.Where(cd => cd.IdCD == GlobalVM.GlobalM.CompanyId).Select(
+                        cd => new CreateBillM.CompanyData()
                         {
-                            Name = p.BillingNamePD,
-                            ZipCode = me.zipcode_fx.Where(z => z.IdZC == p.BillingZipCodePD).FirstOrDefault().DataZC,
-                            Settlement = me.settlement_fx.Where(s => s.IdS == p.BillingSettlementPD).FirstOrDefault().DataS,
-                            Address = p.AddressPD
+                            Name = cd.NameCD,
+                            ZipCode = me.zipcode_fx.Where(z => z.IdZC == cd.ZipCodeCD).FirstOrDefault().DataZC,
+                            Settlement = me.settlement_fx.Where(s => s.IdS == cd.SettlementCD).FirstOrDefault().DataS,
+                            Address = cd.AddressCD,
+                            TaxNumber = cd.TAXNumberCD,
+                            RegistrationNumber = cd.RegistrationNumberCD,
+                            InvoiceNumber = cd.InvoiceNumberCD,
+                            Phone = cd.PhoneCD,
+                            Email = cd.EmailCD,
+                            WebPage = cd.WebPageCD
                         }).Single();
-                else
-                {
-                    int Id = CreateBillM.Companies.Where(cs => cs.Name == CreateBillM.SelectedCompany).Single().Id;
-                    companydata cd = me.companydata.Where(c => c.IdCD == Id).Single();
-                    to = new CreateBillM.CompanyData()
+
+                    CreateBillM.CompanyData to;
+                    if (CreateBillM.From)
+                        to = me.patientdata.Where(p => p.IdPD == PatientId).Select(
+                            p => new CreateBillM.CompanyData()
+                            {
+                                Name = p.BillingNamePD,
+                                ZipCode = me.zipcode_fx.Where(z => z.IdZC == p.BillingZipCodePD).FirstOrDefault().DataZC,
+                                Settlement = me.settlement_fx.Where(s => s.IdS == p.BillingSettlementPD).FirstOrDefault().DataS,
+                                Address = p.AddressPD
+                            }).Single();
+                    else
                     {
-                        Name = cd.NameCD,
-                        ZipCode = me.zipcode_fx.Where(z => z.IdZC == cd.ZipCodeCD).FirstOrDefault().DataZC,
-                        Settlement = me.settlement_fx.Where(s => s.IdS == cd.SettlementCD).FirstOrDefault().DataS,
-                        Address = cd.AddressCD,
-                        TaxNumber = cd.TAXNumberCD,
-                        RegistrationNumber = cd.RegistrationNumberCD,
-                        InvoiceNumber = cd.InvoiceNumberCD,
-                        Phone = cd.PhoneCD,
-                        Email = cd.EmailCD,
-                        WebPage = cd.WebPageCD
+                        int Id = CreateBillM.Companies.Where(cs => cs.Name == CreateBillM.SelectedCompany).Single().Id;
+                        companydata cd = me.companydata.Where(c => c.IdCD == Id).Single();
+                        to = new CreateBillM.CompanyData()
+                        {
+                            Name = cd.NameCD,
+                            ZipCode = me.zipcode_fx.Where(z => z.IdZC == cd.ZipCodeCD).FirstOrDefault().DataZC,
+                            Settlement = me.settlement_fx.Where(s => s.IdS == cd.SettlementCD).FirstOrDefault().DataS,
+                            Address = cd.AddressCD,
+                            TaxNumber = cd.TAXNumberCD,
+                            RegistrationNumber = cd.RegistrationNumberCD,
+                            InvoiceNumber = cd.InvoiceNumberCD,
+                            Phone = cd.PhoneCD,
+                            Email = cd.EmailCD,
+                            WebPage = cd.WebPageCD
+                        };
+                    }
+
+                    billing b = new billing()
+                    {
+                        PatientIdB = PatientId,
+                        UserIdB = (int)GlobalVM.GlobalM.UserID,
+                        CompanyIdFromB = (int)GlobalVM.GlobalM.CompanyId,
+                        CompanyIdToB = !CreateBillM.From ? CreateBillM.Companies.Where(c => c.Name == CreateBillM.SelectedCompany).Single().Id : (int?)null,
+                        CodeB = CreateBillM.Code,
+                        DateTimeB = DateTime.Now,
+                        BillB = new DocumentGenerator().Billing(CreateBillM.Code, from, to, CreateBillM.PrintList, PriceWithoutVat, Vat, CreateBillM.Price).ToArray()
                     };
+
+                    me.billing.Add(b);
+
+                    await me.SaveChangesAsync();
+
+                    billId = b.IdB;
+
+                    foreach (CreateBillM.PrintItem item in CreateBillM.PrintList)
+                        me.currentpricesforeachbill_st.Add(new currentpricesforeachbill_st()
+                        {
+                            IdB = billId,
+                            IdPFS = item.Id
+                        });
+
+                    await me.SaveChangesAsync();
+
                 }
-
-                billing b = new billing()
-                {
-                    PatientIdB = PatientId,
-                    UserIdB = (int)GlobalVM.GlobalM.UserID,
-                    CompanyIdFromB = (int)GlobalVM.GlobalM.CompanyId,
-                    CompanyIdToB = !CreateBillM.From ? CreateBillM.Companies.Where(c => c.Name == CreateBillM.SelectedCompany).Single().Id : (int?)null,
-                    CodeB = CreateBillM.Code,
-                    DateTimeB = DateTime.Now,
-                    BillB = new DocumentGenerator().Billing(CreateBillM.Code, from, to, CreateBillM.PrintList, PriceWithoutVat, Vat, CreateBillM.Price).ToArray()
-                };
-
-                me.billing.Add(b);
-
-                await me.SaveChangesAsync();
-
-                billId = b.IdB;
-
-                foreach (CreateBillM.PrintItem item in CreateBillM.PrintList)
-                    me.currentpricesforeachbill_st.Add(new currentpricesforeachbill_st()
-                    {
-                        IdB = billId,
-                        IdPFS = item.Id
-                    });
-
-                await me.SaveChangesAsync();
-
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

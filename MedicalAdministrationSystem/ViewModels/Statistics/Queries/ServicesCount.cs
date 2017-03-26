@@ -21,37 +21,38 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    await me.Database.Connection.OpenAsync();
-
-                    List<ServicesForCount> services = Members.Count == 0 ? me.servicesdata.Select(s => new ServicesForCount { Id = s.IdTD, Deleted = s.DeletedTD }).ToList():
-                        me.servicesdata.Where(s => Members.Any(m => m == s.IdTD)).Select(s => new ServicesForCount { Id = s.IdTD, Deleted = s.DeletedTD }).ToList();
-
-                    foreach (ServicesForCount service in services)
-                        service.Created = me.pricesforeachservice.OrderBy(pr => pr.WhenChangedPFS).Where(pr => pr.ServiceDataIdPFS == service.Id).FirstOrDefault().WhenChangedPFS;
-
                     List<ChartM.Record> collection = new List<ChartM.Record>();
 
-                    DateTime LocalStart = StartTime == null ? Correction(true, services.OrderBy(s => s.Created).FirstOrDefault().Created).Date :
-                        Correction(true, (DateTime)StartTime).Date;
-                    DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
-                        Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
-                    FinishTime = LocalFinish;
-
-                    while (LocalStart.Date < ((DateTime)FinishTime).Date)
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        LocalFinish = NextStep(LocalStart);
+                        await me.Database.Connection.OpenAsync();
 
-                        collection.Add(new ChartM.Record()
+                        List<ServicesForCount> services = Members.Count == 0 ? me.servicesdata.Select(s => new ServicesForCount { Id = s.IdTD, Deleted = s.DeletedTD }).ToList() :
+                            me.servicesdata.Where(s => Members.Any(m => m == s.IdTD)).Select(s => new ServicesForCount { Id = s.IdTD, Deleted = s.DeletedTD }).ToList();
+
+                        foreach (ServicesForCount service in services)
+                            service.Created = me.pricesforeachservice.OrderBy(pr => pr.WhenChangedPFS).Where(pr => pr.ServiceDataIdPFS == service.Id).FirstOrDefault().WhenChangedPFS;
+
+                        DateTime LocalStart = StartTime == null ? Correction(true, services.OrderBy(s => s.Created).FirstOrDefault().Created).Date :
+                            Correction(true, (DateTime)StartTime).Date;
+                        DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
+                            Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
+                        FinishTime = LocalFinish;
+
+                        while (LocalStart.Date < ((DateTime)FinishTime).Date)
                         {
-                            Id = 0,
-                            Name = "Szolgáltatások mennyisége",
-                            Date = LocalStart,
-                            Value1 = services.Count(s => s.Created < LocalFinish && (s.Deleted != null ? s.Deleted > LocalStart : true))
-                        });
-                        LocalStart = NextStep(LocalStart);
+                            LocalFinish = NextStep(LocalStart);
+
+                            collection.Add(new ChartM.Record()
+                            {
+                                Id = 0,
+                                Name = "Szolgáltatások mennyisége",
+                                Date = LocalStart,
+                                Value1 = services.Count(s => s.Created < LocalFinish && (s.Deleted != null ? s.Deleted > LocalStart : true))
+                            });
+                            LocalStart = NextStep(LocalStart);
+                        }
                     }
-                    me.Database.Connection.Close();
                     workingConn = true;
                     return new ObservableCollection<ChartM.Record>(collection);
                 }
@@ -64,8 +65,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             }, CancellationToken.None).ContinueWith(task =>
             {
                 if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
-                else return task.Result;
-                return null;
+                return task.Result;
             });
         }
         private class ServicesForCount

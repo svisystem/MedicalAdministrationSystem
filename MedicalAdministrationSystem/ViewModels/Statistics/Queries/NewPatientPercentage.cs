@@ -20,47 +20,48 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    await me.Database.Connection.OpenAsync();
-
-                    List<DateTime> patients = Members.Count == 0 ? me.patientdata.Select(p => p.CreatedPD).ToList() :
-                    me.patientdata.Where(p => Members.Any(m => m == p.IdPD)).Select(p => p.CreatedPD).ToList();
-
                     List<ChartM.Record> collection = new List<ChartM.Record>();
 
-                    DateTime LocalStart = StartTime == null ? Correction(true, patients.OrderBy(p => p).FirstOrDefault().Date) :
-                        Correction(true, (DateTime)StartTime).Date;
-                    DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
-                        Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
-                    FinishTime = LocalFinish;
-
-                    int counter = 0;
-
-                    while (LocalStart.Date < ((DateTime)FinishTime).Date)
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        LocalFinish = NextStep(LocalStart);
-                        if (patients.Any(p => p < LocalFinish))
+                        await me.Database.Connection.OpenAsync();
+
+                        List<DateTime> patients = Members.Count == 0 ? me.patientdata.Select(p => p.CreatedPD).ToList() :
+                        me.patientdata.Where(p => Members.Any(m => m == p.IdPD)).Select(p => p.CreatedPD).ToList();
+
+                        DateTime LocalStart = StartTime == null ? Correction(true, patients.OrderBy(p => p).FirstOrDefault().Date) :
+                            Correction(true, (DateTime)StartTime).Date;
+                        DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
+                            Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
+                        FinishTime = LocalFinish;
+
+                        int counter = 0;
+
+                        while (LocalStart.Date < ((DateTime)FinishTime).Date)
                         {
-                            collection.Add(new ChartM.Record()
+                            LocalFinish = NextStep(LocalStart);
+                            if (patients.Any(p => p < LocalFinish))
                             {
-                                Id = 0,
-                                Name = "Meglévő",
-                                Date = LocalStart,
-                                Value1 = counter
-                            });
-                            int newPatientsCount = patients.Count(p => p < LocalFinish.Date && p > LocalStart.Date);
-                            counter += newPatientsCount;
-                            collection.Add(new ChartM.Record()
-                            {
-                                Id = 1,
-                                Name = "Új",
-                                Date = LocalStart,
-                                Value1 = newPatientsCount
-                            });
+                                collection.Add(new ChartM.Record()
+                                {
+                                    Id = 0,
+                                    Name = "Meglévő",
+                                    Date = LocalStart,
+                                    Value1 = counter
+                                });
+                                int newPatientsCount = patients.Count(p => p < LocalFinish.Date && p > LocalStart.Date);
+                                counter += newPatientsCount;
+                                collection.Add(new ChartM.Record()
+                                {
+                                    Id = 1,
+                                    Name = "Új",
+                                    Date = LocalStart,
+                                    Value1 = newPatientsCount
+                                });
+                            }
+                            LocalStart = NextStep(LocalStart);
                         }
-                        LocalStart = NextStep(LocalStart);
                     }
-                    me.Database.Connection.Close();
                     workingConn = true;
                     return new ObservableCollection<ChartM.Record>(collection);
                 }
@@ -73,8 +74,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             }, CancellationToken.None).ContinueWith(task =>
             {
                 if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
-                else return task.Result;
-                return null;
+                return task.Result;
             });
         }
     }

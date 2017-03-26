@@ -27,42 +27,43 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    await me.Database.Connection.OpenAsync();
-
-                    List<ServicesForPrice> services = Members.Count == 0 ? me.servicesdata.Select(s =>
-                        new ServicesForPrice { Id = s.IdTD, Name = s.NameTD, Deleted = s.DeletedTD }).ToList() :
-                        me.servicesdata.Where(s => Members.Any(m => m == s.IdTD)).Select(s =>
-                        new ServicesForPrice { Id = s.IdTD, Name = s.NameTD, Deleted = s.DeletedTD }).ToList();
-
                     List<ChartM.Record> collection = new List<ChartM.Record>();
 
-                    DateTime LocalStart = StartTime == null ? Correction(true, me.pricesforeachservice.OrderBy(s => s.WhenChangedPFS).FirstOrDefault().WhenChangedPFS).Date :
-                        Correction(true, (DateTime)StartTime).Date;
-                    DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
-                        Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
-                    FinishTime = LocalFinish;
-
-                    while (LocalStart.Date < ((DateTime)FinishTime).Date)
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        LocalFinish = NextStep(LocalStart);
-                        foreach (ServicesForPrice item in services)
+                        await me.Database.Connection.OpenAsync();
+
+                        List<ServicesForPrice> services = Members.Count == 0 ? me.servicesdata.Select(s =>
+                            new ServicesForPrice { Id = s.IdTD, Name = s.NameTD, Deleted = s.DeletedTD }).ToList() :
+                            me.servicesdata.Where(s => Members.Any(m => m == s.IdTD)).Select(s =>
+                            new ServicesForPrice { Id = s.IdTD, Name = s.NameTD, Deleted = s.DeletedTD }).ToList();
+
+                        DateTime LocalStart = StartTime == null ? Correction(true, me.pricesforeachservice.OrderBy(s => s.WhenChangedPFS).FirstOrDefault().WhenChangedPFS).Date :
+                            Correction(true, (DateTime)StartTime).Date;
+                        DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
+                            Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
+                        FinishTime = LocalFinish;
+
+                        while (LocalStart.Date < ((DateTime)FinishTime).Date)
                         {
-                            pricesforeachservice temp = me.pricesforeachservice.Where(pr => pr.ServiceDataIdPFS == item.Id && pr.WhenChangedPFS < LocalFinish).
-                                OrderByDescending(pr => pr.WhenChangedPFS).FirstOrDefault();
-                            if (temp != null && (item.Deleted != null ? ((DateTime)item.Deleted).Date > LocalStart : true))
-                                collection.Add(new ChartM.Record()
-                                {
-                                    Id = services.IndexOf(item),
-                                    Name = item.Name,
-                                    Date = LocalStart,
-                                    Value1 = temp.PricePFS,
-                                    Value2 = temp.PricePFS * temp.VatPFS / 100
-                                });
+                            LocalFinish = NextStep(LocalStart);
+                            foreach (ServicesForPrice item in services)
+                            {
+                                pricesforeachservice temp = me.pricesforeachservice.Where(pr => pr.ServiceDataIdPFS == item.Id && pr.WhenChangedPFS < LocalFinish).
+                                    OrderByDescending(pr => pr.WhenChangedPFS).FirstOrDefault();
+                                if (temp != null && (item.Deleted != null ? ((DateTime)item.Deleted).Date > LocalStart : true))
+                                    collection.Add(new ChartM.Record()
+                                    {
+                                        Id = services.IndexOf(item),
+                                        Name = item.Name,
+                                        Date = LocalStart,
+                                        Value1 = temp.PricePFS,
+                                        Value2 = temp.PricePFS * temp.VatPFS / 100
+                                    });
+                            }
+                            LocalStart = NextStep(LocalStart);
                         }
-                        LocalStart = NextStep(LocalStart);
                     }
-                    me.Database.Connection.Close();
                     workingConn = true;
                     return new ObservableCollection<ChartM.Record>(collection);
                 }
@@ -75,8 +76,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             }, CancellationToken.None).ContinueWith(task =>
             {
                 if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
-                else return task.Result;
-                return null;
+                return task.Result;
             });
         }
         private class ServicesForPrice

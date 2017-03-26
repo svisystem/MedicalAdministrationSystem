@@ -25,22 +25,23 @@ namespace MedicalAdministrationSystem.ViewModels.Examination
             Loading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadingModelComplete);
             Loading.RunWorkerAsync();
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == null).ToList())
-                    ExaminationPlanM.Services.Add(new ExaminationPlanM.Service
-                    {
-                        ID = row.IdTD,
-                        Name = row.NameTD,
-                        Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
-                        Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS,
-                        Details = row.DetailsTD
-                    });
-                me.Database.Connection.Close();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    foreach (servicesdata row in me.servicesdata.Where(a => a.DeletedTD == null).ToList())
+                        ExaminationPlanM.Services.Add(new ExaminationPlanM.Service
+                        {
+                            ID = row.IdTD,
+                            Name = row.NameTD,
+                            Vat = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().VatPFS,
+                            Price = me.pricesforeachservice.Where(pfs => pfs.ServiceDataIdPFS == row.IdTD).OrderByDescending(pfs => pfs.IdPFS).FirstOrDefault().PricePFS,
+                            Details = row.DetailsTD
+                        });
+                }
                 workingConn = true;
             }
             catch (Exception ex)

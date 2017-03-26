@@ -627,7 +627,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics
         }
         private async void SearchForItem(int Id, bool Visible)
         {
-            await Utilities.Loading.Show();
+            await Loading.Show();
             await Task.Run(async () =>
             {
                 if (Visible)

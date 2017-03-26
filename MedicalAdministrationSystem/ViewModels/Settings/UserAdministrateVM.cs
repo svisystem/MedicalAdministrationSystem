@@ -34,16 +34,17 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             await Utilities.Loading.Show();
             new FormChecking(Loading.RunWorkerAsync, () => { }, true);
         }
-        private void LoadingModel(object sender, DoWorkEventArgs e)
+        private async void LoadingModel(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                UsersMViewElements.UserDatas = me.accountdata.ToList();
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
+                {
+                    await me.Database.Connection.OpenAsync();
+                    UsersMViewElements.UserDatas = me.accountdata.ToList();
 
-                UsersMDataSet.PriviledgesList = me.priviledges.ToList();
-                me.Database.Connection.Close();
+                    UsersMDataSet.PriviledgesList = me.priviledges.ToList();
+                }
                 workingConn = true;
             }
             catch (Exception ex)
@@ -87,57 +88,58 @@ namespace MedicalAdministrationSystem.ViewModels.Settings
             Execute.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ExecuteComplete);
             Execute.RunWorkerAsync();
         }
-        private void ExecuteDoWork(object sender, DoWorkEventArgs e)
+        private async void ExecuteDoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                me = new MedicalModel(ConfigurationManager.Connect());
-                me.Database.Connection.Open();
-                for (int i = 0; i < UsersMViewElements.UserDatas.Count; i++)
+                using (me = new MedicalModel(ConfigurationManager.Connect()))
                 {
-                    int temp = UsersMViewElements.UserDatas[i].IdAD;
-                    try
+                    await me.Database.Connection.OpenAsync();
+                    for (int i = 0; i < UsersMViewElements.UserDatas.Count; i++)
                     {
-                        accountdata ac = me.accountdata.Where(a => a.IdAD == temp).Single();
-                        if (!UsersMViewElements.UserDatas[i].PasswordAD.Equals(ac.PasswordAD))
+                        int temp = UsersMViewElements.UserDatas[i].IdAD;
+                        try
                         {
-                            ac.PasswordAD = UsersMViewElements.UserDatas[i].PasswordAD;
-                            ac.PassSaltAD = UsersMViewElements.UserDatas[i].PassSaltAD;
-                            me.SaveChanges();
-                        }
-                        if (UsersMViewElements.Users[i].Priviledge != UsersMDataSet.PriviledgesList.Where(a => a.IdP == ac.PriviledgesIdAD).Select(a => a.NameP).Single())
-                        {
-                            string currpriv = UsersMViewElements.Users[i].Priviledge;
-                            ac.PriviledgesIdAD = UsersMDataSet.PriviledgesList.Where(a => a.NameP == currpriv).Select(a => a.IdP).Single();
-                            me.SaveChanges();
-                        }
-                        if (!UsersMViewElements.Users[i].Verified.Equals(ac.VerifiedByAdminAD))
-                        {
-                            ac.VerifiedByAdminAD = UsersMViewElements.Users[i].Verified;
-                            me.SaveChanges();
-                        }
-                        if (!UsersMViewElements.Users[i].Deleted.Equals(ac.DeletedAD))
-                        {
-                            ac.DeletedAD = UsersMViewElements.Users[i].Deleted;
-
-                            if (UsersMViewElements.Users[i].Deleted)
+                            accountdata ac = me.accountdata.Where(a => a.IdAD == temp).Single();
+                            if (!UsersMViewElements.UserDatas[i].PasswordAD.Equals(ac.PasswordAD))
                             {
-                                ac.DeletedTimeAD = DateTime.Now;
-                                me.exceptedschedule.RemoveRange(me.exceptedschedule.Where(ex => ex.UserDataIdES == me.userdata.Where(ud => ud.AccountDataIdUD == ac.IdAD).FirstOrDefault().IdUD).ToList());
+                                ac.PasswordAD = UsersMViewElements.UserDatas[i].PasswordAD;
+                                ac.PassSaltAD = UsersMViewElements.UserDatas[i].PassSaltAD;
+                                await me.SaveChangesAsync();
                             }
-                            else
+                            if (UsersMViewElements.Users[i].Priviledge != UsersMDataSet.PriviledgesList.Where(a => a.IdP == ac.PriviledgesIdAD).Select(a => a.NameP).Single())
                             {
-                                ac.RegistrateTimeAD = DateTime.Now;
-                                ac.DeletedTimeAD = null;
+                                string currpriv = UsersMViewElements.Users[i].Priviledge;
+                                ac.PriviledgesIdAD = UsersMDataSet.PriviledgesList.Where(a => a.NameP == currpriv).Select(a => a.IdP).Single();
+                                await me.SaveChangesAsync();
                             }
+                            if (!UsersMViewElements.Users[i].Verified.Equals(ac.VerifiedByAdminAD))
+                            {
+                                ac.VerifiedByAdminAD = UsersMViewElements.Users[i].Verified;
+                                await me.SaveChangesAsync();
+                            }
+                            if (!UsersMViewElements.Users[i].Deleted.Equals(ac.DeletedAD))
+                            {
+                                ac.DeletedAD = UsersMViewElements.Users[i].Deleted;
 
-                            me.SaveChanges();
+                                if (UsersMViewElements.Users[i].Deleted)
+                                {
+                                    ac.DeletedTimeAD = DateTime.Now;
+                                    me.exceptedschedule.RemoveRange(me.exceptedschedule.Where(ex => ex.UserDataIdES == me.userdata.Where(ud => ud.AccountDataIdUD == ac.IdAD).FirstOrDefault().IdUD).ToList());
+                                }
+                                else
+                                {
+                                    ac.RegistrateTimeAD = DateTime.Now;
+                                    ac.DeletedTimeAD = null;
+                                }
+
+                                await me.SaveChangesAsync();
+                            }
                         }
+                        catch { }
                     }
-                    catch { }
+                    await me.SaveChangesAsync();
                 }
-                me.SaveChanges();
-                me.Database.Connection.Close();
                 workingConn = true;
             }
             catch (Exception ex)

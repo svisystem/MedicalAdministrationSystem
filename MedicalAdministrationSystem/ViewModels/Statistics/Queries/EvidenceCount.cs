@@ -20,44 +20,45 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             {
                 try
                 {
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    await me.Database.Connection.OpenAsync();
-
-                    List<object> users = Members.Count == 0 ? users = me.userdata.ToList().Where(u => me.priviledges.FirstOrDefault(p => p.IdP ==
-                        me.accountdata.FirstOrDefault(a => a.IdAD == u.AccountDataIdUD).PriviledgesIdAD).IsDoctorP).Select(u =>
-                        new { u.IdUD, u.NameUD, me.accountdata.FirstOrDefault(a => a.IdAD == u.AccountDataIdUD).RegistrateTimeAD }).ToList<object>() :
-
-                        me.userdata.Where(u => Members.Any(m => m == u.IdUD)).ToList().Where(w => me.priviledges.FirstOrDefault(p => p.IdP ==
-                        me.accountdata.FirstOrDefault(a => a.IdAD == w.AccountDataIdUD).PriviledgesIdAD).IsDoctorP).Select(u =>
-                        new { u.IdUD, u.NameUD, me.accountdata.FirstOrDefault(a => a.IdAD == u.AccountDataIdUD).RegistrateTimeAD }).ToList<object>();
-
                     List<ChartM.Record> collection = new List<ChartM.Record>();
 
-                    foreach (object user in users)
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        int userId = (int)user.GetType().GetProperty("IdUD").GetValue(user);
-                        List<evidencedata> evidences = me.evidencedata.Where(ex => ex.UserDataIdED == userId).ToList();
+                        await me.Database.Connection.OpenAsync();
 
-                        DateTime regDate = ((DateTime)user.GetType().GetProperty("RegistrateTimeAD").GetValue(user)).Date;
-                        DateTime LocalStart = StartTime == null ? Correction(true, regDate) : Correction(true, (DateTime)StartTime).Date;
-                        DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
-                            Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
+                        List<object> users = Members.Count == 0 ? users = me.userdata.ToList().Where(u => me.priviledges.FirstOrDefault(p => p.IdP ==
+                            me.accountdata.FirstOrDefault(a => a.IdAD == u.AccountDataIdUD).PriviledgesIdAD).IsDoctorP).Select(u =>
+                            new { u.IdUD, u.NameUD, me.accountdata.FirstOrDefault(a => a.IdAD == u.AccountDataIdUD).RegistrateTimeAD }).ToList<object>() :
 
-                        while (LocalStart.Date < LocalFinish.Date)
+                            me.userdata.Where(u => Members.Any(m => m == u.IdUD)).ToList().Where(w => me.priviledges.FirstOrDefault(p => p.IdP ==
+                            me.accountdata.FirstOrDefault(a => a.IdAD == w.AccountDataIdUD).PriviledgesIdAD).IsDoctorP).Select(u =>
+                            new { u.IdUD, u.NameUD, me.accountdata.FirstOrDefault(a => a.IdAD == u.AccountDataIdUD).RegistrateTimeAD }).ToList<object>();
+
+                        foreach (object user in users)
                         {
-                            if (regDate.Date < NextStep(LocalStart).Date)
-                                collection.Add(new ChartM.Record()
-                            {
-                                Id = users.IndexOf(user),
-                                Name = user.GetType().GetProperty("NameUD").GetValue(user) as string,
-                                Date = LocalStart,
-                                Value1 = evidences.Count(b => b.DateTimeED.Date < NextStep(LocalStart))
-                            });
+                            int userId = (int)user.GetType().GetProperty("IdUD").GetValue(user);
+                            List<evidencedata> evidences = me.evidencedata.Where(ex => ex.UserDataIdED == userId).ToList();
 
-                            LocalStart = NextStep(LocalStart);
+                            DateTime regDate = ((DateTime)user.GetType().GetProperty("RegistrateTimeAD").GetValue(user)).Date;
+                            DateTime LocalStart = StartTime == null ? Correction(true, regDate) : Correction(true, (DateTime)StartTime).Date;
+                            DateTime LocalFinish = FinishTime == null ? (StartTime != null ? Correction(false, (DateTime)StartTime).Date :
+                                Correction(false, DateTime.Now).Date) : Correction(false, (DateTime)FinishTime).Date;
+
+                            while (LocalStart.Date < LocalFinish.Date)
+                            {
+                                if (regDate.Date < NextStep(LocalStart).Date)
+                                    collection.Add(new ChartM.Record()
+                                    {
+                                        Id = users.IndexOf(user),
+                                        Name = user.GetType().GetProperty("NameUD").GetValue(user) as string,
+                                        Date = LocalStart,
+                                        Value1 = evidences.Count(b => b.DateTimeED.Date < NextStep(LocalStart))
+                                    });
+
+                                LocalStart = NextStep(LocalStart);
+                            }
                         }
                     }
-                    me.Database.Connection.Close();
                     workingConn = true;
                     return new ObservableCollection<ChartM.Record>(collection);
                 }
@@ -70,8 +71,7 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Queries
             }, CancellationToken.None).ContinueWith(task =>
             {
                 if (!workingConn) Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ConnectionMessage()));
-                else return task.Result;
-                return null;
+                return task.Result;
             });
         }
     }

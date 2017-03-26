@@ -41,28 +41,28 @@ namespace MedicalAdministrationSystem.ViewModels.Statistics.Patient
                         });
                     }));
 
-                    me = new MedicalModel(ConfigurationManager.Connect());
-                    me.Database.Connection.Open();
-
-                    foreach (object patient in me.patientdata.OrderBy(u => u.NamePD).Select(u => new { u.IdPD, u.NamePD, u.TAJNumberPD }).ToList())
+                    using (me = new MedicalModel(ConfigurationManager.Connect()))
                     {
-                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                        {
-                            PatientSelectorM.Patients.Add(new PatientSelectorM.Patient()
-                            {
-                                Id = (int)patient.GetType().GetProperty("IdPD", BindingFlags.Instance | BindingFlags.Public |
-                                    BindingFlags.NonPublic).GetValue(patient),
-                                Name = (string)patient.GetType().GetProperty("NamePD", BindingFlags.Instance | BindingFlags.Public |
-                                    BindingFlags.NonPublic).GetValue(patient),
-                                Taj = (string)patient.GetType().GetProperty("TAJNumberPD", BindingFlags.Instance | BindingFlags.Public |
-                                    BindingFlags.NonPublic).GetValue(patient),
-                                Enabled = false,
-                                Button = new CheckButtonForPatients(SwitchAllFunctionality)
-                            });
-                        }));
-                    }
+                        await me.Database.Connection.OpenAsync();
 
-                    me.Database.Connection.Close();
+                        foreach (object patient in me.patientdata.OrderBy(u => u.NamePD).Select(u => new { u.IdPD, u.NamePD, u.TAJNumberPD }).ToList())
+                        {
+                            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                            {
+                                PatientSelectorM.Patients.Add(new PatientSelectorM.Patient()
+                                {
+                                    Id = (int)patient.GetType().GetProperty("IdPD", BindingFlags.Instance | BindingFlags.Public |
+                                        BindingFlags.NonPublic).GetValue(patient),
+                                    Name = (string)patient.GetType().GetProperty("NamePD", BindingFlags.Instance | BindingFlags.Public |
+                                        BindingFlags.NonPublic).GetValue(patient),
+                                    Taj = (string)patient.GetType().GetProperty("TAJNumberPD", BindingFlags.Instance | BindingFlags.Public |
+                                        BindingFlags.NonPublic).GetValue(patient),
+                                    Enabled = false,
+                                    Button = new CheckButtonForPatients(SwitchAllFunctionality)
+                                });
+                            }));
+                        }
+                    }
                     workingConn = true;
                 }
                 catch (Exception ex)
